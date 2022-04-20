@@ -4,54 +4,43 @@ PRAGMA FOREIGN_KEYS = ON;
 
 CREATE TRIGGER IF NOT EXISTS "User_is_owner"
 BEFORE INSERT ON "Restaurant"
-FOR EACH ROW
-WHEN EXISTS (
-    SELECT "User"."is_owner" FROM "User" WHERE (
-        "User"."id" = "New"."owner" AND "User"."is_owner" = 1
-    )
-)
+WHEN NOT EXISTS (SELECT * FROM "User" WHERE "id" = "New"."owner" AND "is_owner" = 1)
 BEGIN
-    INSERT INTO "Restaurant" VALUES ("New"."id", "New"."name", "New"."address", "New"."owner");
+    SELECT raise(ABORT, "Can't insert restaurant with non-owner user");
 END;
 
 -- Only clients can have a favorite restaurant
 
 CREATE TRIGGER IF NOT EXISTS "Client_favorite_restaurant"
 BEFORE INSERT ON "Favorite_restaurant"
-FOR EACH ROW
-WHEN EXISTS (
-    SELECT "User"."is_client" FROM "User", "Favorite_restaurant" WHERE (
-        "User"."is_client" = 1 AND "User"."id" = "New"."client"
-    )
-)
+WHEN NOT EXISTS (SELECT * FROM "User" WHERE "id" = "New"."client" AND "is_client" = 1)
 BEGIN
-    INSERT INTO "Favorite_restaurant" ("client") VALUES ("New"."client");
+    SELECT raise(ABORT, "Only clients have favorite restaurants");
 END;
 
 -- Only drivers can deliver orders
 
 CREATE TRIGGER IF NOT EXISTS "User_is_driver"
 BEFORE INSERT ON "Order"
-FOR EACH ROW
-WHEN EXISTS (
-    SELECT "User"."is_driver" FROM "User", "Order" WHERE (
-        "User"."is_driver" = 1 AND "User"."id" = "New"."driver"
-    )
-)
+WHEN NOT EXISTS (SELECT * FROM "User" WHERE "id" = "New"."driver" AND "is_driver" = 1)
 BEGIN
-    INSERT INTO "Order" ("driver") VALUES ("New"."driver");
+    SELECT raise(ABORT, "Only drivers can deliver orders");
 END;
 
 -- Only clients can have favorite dishes
 
 CREATE TRIGGER IF NOT EXISTS "Client_favorite_dish"
 BEFORE INSERT ON "Favorite_dish"
-FOR EACH ROW
-WHEN EXISTS(
-    SELECT "User"."is_client" FROM "User", "Order" WHERE (
-        "User"."is_client" = 1 AND "User"."id" = "New"."client"
-    )
-)
+WHEN NOT EXISTS (SELECT * FROM "User" WHERE "id" = "New"."client" AND "is_client" = 1)
 BEGIN
-    INSERT INTO "Favorite_dish" VALUES ("New"."client");
+    SELECT raise(ABORT, "Only clients have favorite dishes");
+END;
+
+-- Only clients can leave reviews
+
+CREATE TRIGGER IF NOT EXISTS "Client_review"
+BEFORE INSERT ON "Review"
+WHEN NOT EXISTS (SELECT * FROM "User" WHERE "id" = "New"."client" AND "is_client" = 1)
+BEGIN
+    SELECT raise(ABORT, "Only clients can leave reviews");
 END;

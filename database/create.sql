@@ -14,7 +14,6 @@ DROP TABLE IF EXISTS "User";
 
 DROP TABLE IF EXISTS "Dish_category";
 DROP TABLE IF EXISTS "Restaurant_category";
-DROP TABLE IF EXISTS "Restaurant_review";
 DROP TABLE IF EXISTS "Favorite_dish";
 DROP TABLE IF EXISTS "Favorite_restaurant";
 DROP TABLE IF EXISTS "Dish_order";
@@ -67,8 +66,10 @@ CREATE TABLE "Review" (
     "score" INTEGER NOT NULL,
     "text" text NOT NULL,
     "client" INTEGER NOT NULL,
+    "restaurant" INTEGER NOT NULL,
     PRIMARY KEY("id"),
     FOREIGN KEY("client") REFERENCES "User",
+    FOREIGN KEY("restaurant") REFERENCES "Restaurant",
     CONSTRAINT "score_in_range" CHECK (
         "score" >= 0 AND "score" <= 5
     )
@@ -111,14 +112,6 @@ CREATE TABLE "Restaurant_category" (
     PRIMARY KEY("restaurant", "category"),
     FOREIGN KEY("restaurant") REFERENCES "Restaurant",
     FOREIGN KEY("category") REFERENCES "Category"
-);
-
-CREATE TABLE "Restaurant_review" (
-    "restaurant" INTEGER NOT NULL,
-    "review" INTEGER NOT NULL,
-    PRIMARY KEY("restaurant", "review"),
-    FOREIGN KEY("restaurant") REFERENCES "Restaurant",
-    FOREIGN KEY("review") REFERENCES "Review"
 );
 
 CREATE TABLE "Favorite_restaurant" (
