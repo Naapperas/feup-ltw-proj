@@ -23,8 +23,8 @@ DROP TABLE IF EXISTS "Dish_menu";
 
 CREATE TABLE "Restaurant" (
     "id" INTEGER NOT NULL,
-    "name" text NOT NULL,
-    "address" text NOT NULL,
+    "name" TEXT NOT NULL,
+    "address" TEXT NOT NULL,
     "owner" INTEGER NOT NULL,
     PRIMARY KEY("id"),
     FOREIGN KEY("owner") REFERENCES "User",
@@ -34,7 +34,7 @@ CREATE TABLE "Restaurant" (
 
 CREATE TABLE "Menu" (
     "id" INTEGER NOT NULL,
-    "name" text NOT NULL,
+    "name" TEXT NOT NULL,
     "restaurant" INTEGER NOT NULL,
     PRIMARY KEY ("id"),
     FOREIGN KEY("restaurant") REFERENCES "Restaurant",
@@ -43,15 +43,15 @@ CREATE TABLE "Menu" (
 
 CREATE TABLE "Category" (
     "id" INTEGER NOT NULL,
-    "name" text NOT NULL,
+    "name" TEXT NOT NULL,
     PRIMARY KEY("id"),
     CONSTRAINT "nome_unico" UNIQUE ("name")
 );
 
 CREATE TABLE "Dish" (
     "id" INTEGER NOT NULL,
-    "name" text NOT NULL,
-    "price" FLOAT NOT NULL,
+    "name" TEXT NOT NULL,
+    "price" REAL NOT NULL,
     "restaurant" INTEGER NOT NULL,
     PRIMARY KEY("id"),
     FOREIGN KEY("restaurant") REFERENCES "Restaurant",
@@ -64,7 +64,7 @@ CREATE TABLE "Dish" (
 CREATE TABLE "Review" (
     "id" INTEGER NOT NULL,
     "score" INTEGER NOT NULL,
-    "text" text NOT NULL,
+    "TEXT" TEXT NOT NULL,
     "client" INTEGER NOT NULL,
     "restaurant" INTEGER NOT NULL,
     PRIMARY KEY("id"),
@@ -77,10 +77,10 @@ CREATE TABLE "Review" (
 
 CREATE TABLE "User" (
     "id" INTEGER NOT NULL,
-    "name" text NOT NULL,
-    "password" text NOT NULL,
-    "address" text NOT NULL,
-    "phone number" INTEGER NOT NULL,
+    "name" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "address" TEXT NOT NULL,
+    "phone_number" TEXT NOT NULL,
     "is_owner" BOOLEAN NOT NULL,
     "is_client" BOOLEAN NOT NULL,
     "is_driver" BOOLEAN NOT NULL,
@@ -89,7 +89,7 @@ CREATE TABLE "User" (
 
 CREATE TABLE "Order" (
     "id" INTEGER NOT NULL,
-    "state" text NOT NULL,
+    "state" TEXT NOT NULL,
     "delivery" BOOLEAN NOT NULL,
     "driver" INTEGER NOT NULL,
     PRIMARY KEY("id"),
