@@ -36,9 +36,11 @@ CREATE TABLE "Menu" (
     "id" INTEGER NOT NULL,
     "name" TEXT NOT NULL,
     "restaurant" INTEGER NOT NULL,
+    "price" INTEGER DEFAULT 0,
     PRIMARY KEY ("id"),
     FOREIGN KEY("restaurant") REFERENCES "Restaurant",
-    CONSTRAINT "nome_unico" UNIQUE ("name")
+    CONSTRAINT "nome_unico_por_restaurante" UNIQUE ("name", "restaurant"),
+    CONSTRAINT "preco_naeo_negativo" CHECK ("price" >= 0)
 );
 
 CREATE TABLE "Category" (

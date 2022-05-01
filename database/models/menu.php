@@ -9,7 +9,7 @@
 
             if (count($data) !== 2) throw new Exception("Should pass 2 parameters when creating Menu entries.");
 
-            static $createQuery = "INSERT INTO Menu VALUES (NULL, ?, ?);";
+            static $createQuery = "INSERT INTO Menu VALUES (NULL, ?, ?, 0);";
             static $retrieveQuery = "SELECT * FROM Menu WHERE name = ? AND restaurant = ?;";
         
             $creationResults = executeQuery(Menu::getDb(), $createQuery, $data);
@@ -22,7 +22,7 @@
 
             if (count($newData) !== 2) throw new Exception("Should pass 2 parameters when creating Menu entries.");
 
-            static $updateQuery = "UPDATE Menu SET restaurant = ?, name = ? WHERE id = ?;";
+            static $updateQuery = "UPDATE Menu SET restaurant = ?, name = ? WHERE id = ?;"; // intentionally left price out because it is supposed to be a derived attribute
             static $retrieveQuery = "SELECT * FROM Menu WHERE id = ?;";
         
             $newData[] = $id;

@@ -1,5 +1,8 @@
 -- note: this file is for testing purposes only
 
+.mode column
+.headers on
+
 -- tests for trigger #1
 
 INSERT INTO "User" VALUES (1, "nome", "pass", "addr", "1234", 1, 1, 1); -- owner
@@ -47,3 +50,13 @@ INSERT INTO "Restaurant" VALUES (5, "nomerees5", "addrres5", 9);
 
 INSERT INTO "Review" VALUES (1, 5, "desc", 9, 5); -- should pass
 INSERT INTO "Review" VALUES (2, 4, "desc1", 10, 5); -- should fail
+
+-- tests for trigger #6
+
+INSERT INTO Menu VALUES (1, "BrUHH", 4, 0);
+
+INSERT INTO Dish_menu VALUES (1, 1); -- should pass
+SELECT * FROM Menu;
+
+INSERT INTO Menu VALUES (2, "BrUHH", 1, 0);
+INSERT INTO Dish_menu VALUES (1, 2); -- should fail
