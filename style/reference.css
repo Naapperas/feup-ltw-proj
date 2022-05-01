@@ -4,6 +4,9 @@ body {
     flex-direction: column;
     gap: 16px;
     text-align: center;
+
+    max-width: 720px;
+    margin: auto;
 }
 
 section {
