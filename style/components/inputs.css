@@ -203,3 +203,110 @@ input[type="checkbox"].checkbox:disabled:indeterminate::before,
 input[type="radio"].radio:disabled:checked:before {
     display: none;
 }
+
+/* SWITCHES */
+input[type="checkbox"].switch {
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+
+    width: 32px;
+    height: 14px;
+    border-radius: 7px;
+    margin: 13px;
+
+    background-color: rgba(var(--tcolor-on-surface), 0.38);
+
+    appearance: none;
+    border: none;
+    outline: none;
+
+    transition: background-color;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out;
+}
+
+input[type="checkbox"].switch:checked {
+    background-color: rgba(var(--tcolor-primary), 0.38);
+}
+
+input[type="checkbox"].switch:disabled {
+    opacity: 38%;
+}
+
+input[type="checkbox"].switch::before,
+input[type="checkbox"].switch::after {
+    content: "";
+
+    display: block;
+    position: absolute;
+
+    border-radius: 50%;
+
+    transition: left, box-shadow, background-color;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out;
+}
+
+input[type="checkbox"].switch::before {
+    width: 40px;
+    height: 40px;
+
+    top: -13px;
+    left: -13px;
+
+    background-color: transparent;
+
+    --overlay: var(--overlay-surface);
+    box-shadow: var(--overlay);
+}
+
+input[type="checkbox"].switch::after {
+    width: 20px;
+    height: 20px;
+
+    top: -3px;
+    left: -3px;
+
+    background-color: var(--color-surface);
+
+    box-shadow: var(--elevation-2);
+}
+
+input[type="checkbox"].switch:checked::before {
+    left: 5px;
+}
+
+input[type="checkbox"].switch:checked::after {
+    left: 15px;
+
+    background-color: var(--color-primary);
+}
+
+input[type="checkbox"].switch:hover::before {
+    --overlay: var(--overlay-surface-hover);
+}
+
+input[type="checkbox"].switch:focus::before {
+    --overlay: var(--overlay-surface-focus);
+}
+
+input[type="checkbox"].switch:active::before {
+    --overlay: var(--overlay-surface-active);
+}
+
+input[type="checkbox"].switch:checked:hover::before {
+    --overlay: var(--overlay-surface-primary-hover);
+}
+
+input[type="checkbox"].switch:checked:focus::before {
+    --overlay: var(--overlay-surface-primary-focus);
+}
+
+input[type="checkbox"].switch:checked:active::before {
+    --overlay: var(--overlay-surface-primary-active);
+}
+
+input[type="checkbox"].switch:disabled::before {
+    box-shadow: none;
+}
