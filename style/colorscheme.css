@@ -1,0 +1,202 @@
+:root {
+    color-scheme: dark light;
+    background-color: var(--color-background);
+    color: var(--color-on-background);
+
+    --tcolor-primary: 98, 0, 238;
+    --tcolor-on-primary: 255, 255, 255;
+    --tcolor-primary-variant: 55, 0, 179;
+    --tcolor-on-primary-variant: 255, 255, 255;
+    --tcolor-secondary: 3, 218, 198;
+    --tcolor-on-secondary: 0, 0, 0;
+    --tcolor-secondary-variant: 1, 135, 134;
+    --tcolor-on-secondary-variant: 0, 0, 0;
+    --tcolor-background: 255, 255, 255;
+    --tcolor-on-background: 0, 0, 0;
+    --tcolor-surface: 255, 255, 255;
+    --tcolor-on-surface: 0, 0, 0;
+    --tcolor-error: 176, 0, 32;
+    --tcolor-on-error: 255, 255, 255;
+
+    --color-primary: rgb(var(--tcolor-primary));
+    --color-on-primary: rgb(var(--tcolor-on-primary));
+    --color-primary-variant: rgb(var(--tcolor-primary-variant));
+    --color-on-primary-variant: rgb(var(--tcolor-on-primary-variant));
+    --color-secondary: rgb(var(--tcolor-secondary));
+    --color-on-secondary: rgb(var(--tcolor-on-secondary));
+    --color-secondary-variant: rgb(var(--tcolor-secondary-variant));
+    --color-on-secondary-variant: rgb(var(--tcolor-on-secondary-variant));
+    --color-background: rgb(var(--tcolor-background));
+    --color-on-background: rgb(var(--tcolor-on-background));
+    --color-surface: rgb(var(--tcolor-surface));
+    --color-on-surface: rgb(var(--tcolor-on-surface));
+    --color-error: rgb(var(--tcolor-error));
+    --color-on-error: rgb(var(--tcolor-on-error));
+
+    --elevation-0: 0px 0px 0px 0px rgba(0, 0, 0, 0.2),
+        0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12);
+    --elevation-1: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+        0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+    --elevation-2: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+        0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    --elevation-3: 0px 3px 3px -2px rgba(0, 0, 0, 0.2),
+        0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
+    --elevation-4: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+        0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+        0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+    --elevation-5: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
+        0px 5px 8px 0px rgba(0, 0, 0, 0.14),
+        0px 1px 14px 0px rgba(0, 0, 0, 0.12);
+    --elevation-6: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
+        0px 6px 10px 0px rgba(0, 0, 0, 0.14),
+        0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+    --elevation-7: 0px 4px 5px -2px rgba(0, 0, 0, 0.2),
+        0px 7px 10px 1px rgba(0, 0, 0, 0.14),
+        0px 2px 16px 1px rgba(0, 0, 0, 0.12);
+    --elevation-8: 0px 5px 5px -3px rgba(0, 0, 0, 0.2),
+        0px 8px 10px 1px rgba(0, 0, 0, 0.14),
+        0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+    --elevation-9: 0px 5px 6px -3px rgba(0, 0, 0, 0.2),
+        0px 9px 12px 1px rgba(0, 0, 0, 0.14),
+        0px 3px 16px 2px rgba(0, 0, 0, 0.12);
+    --elevation-10: 0px 6px 6px -3px rgba(0, 0, 0, 0.2),
+        0px 10px 14px 1px rgba(0, 0, 0, 0.14),
+        0px 4px 18px 3px rgba(0, 0, 0, 0.12);
+    --elevation-11: 0px 6px 7px -4px rgba(0, 0, 0, 0.2),
+        0px 11px 15px 1px rgba(0, 0, 0, 0.14),
+        0px 4px 20px 3px rgba(0, 0, 0, 0.12);
+    --elevation-12: 0px 7px 8px -4px rgba(0, 0, 0, 0.2),
+        0px 12px 17px 2px rgba(0, 0, 0, 0.14),
+        0px 5px 22px 4px rgba(0, 0, 0, 0.12);
+    --elevation-13: 0px 7px 8px -4px rgba(0, 0, 0, 0.2),
+        0px 13px 19px 2px rgba(0, 0, 0, 0.14),
+        0px 5px 24px 4px rgba(0, 0, 0, 0.12);
+    --elevation-14: 0px 7px 9px -4px rgba(0, 0, 0, 0.2),
+        0px 14px 21px 2px rgba(0, 0, 0, 0.14),
+        0px 5px 26px 4px rgba(0, 0, 0, 0.12);
+    --elevation-15: 0px 8px 9px -5px rgba(0, 0, 0, 0.2),
+        0px 15px 22px 2px rgba(0, 0, 0, 0.14),
+        0px 6px 28px 5px rgba(0, 0, 0, 0.12);
+    --elevation-16: 0px 8px 10px -5px rgba(0, 0, 0, 0.2),
+        0px 16px 24px 2px rgba(0, 0, 0, 0.14),
+        0px 6px 30px 5px rgba(0, 0, 0, 0.12);
+    --elevation-17: 0px 8px 11px -5px rgba(0, 0, 0, 0.2),
+        0px 17px 26px 2px rgba(0, 0, 0, 0.14),
+        0px 6px 32px 5px rgba(0, 0, 0, 0.12);
+    --elevation-18: 0px 9px 11px -5px rgba(0, 0, 0, 0.2),
+        0px 18px 28px 2px rgba(0, 0, 0, 0.14),
+        0px 7px 34px 6px rgba(0, 0, 0, 0.12);
+    --elevation-19: 0px 9px 12px -6px rgba(0, 0, 0, 0.2),
+        0px 19px 29px 2px rgba(0, 0, 0, 0.14),
+        0px 7px 36px 6px rgba(0, 0, 0, 0.12);
+    --elevation-20: 0px 10px 13px -6px rgba(0, 0, 0, 0.2),
+        0px 20px 31px 3px rgba(0, 0, 0, 0.14),
+        0px 8px 38px 7px rgba(0, 0, 0, 0.12);
+    --elevation-21: 0px 10px 13px -6px rgba(0, 0, 0, 0.2),
+        0px 21px 33px 3px rgba(0, 0, 0, 0.14),
+        0px 8px 40px 7px rgba(0, 0, 0, 0.12);
+    --elevation-22: 0px 10px 14px -6px rgba(0, 0, 0, 0.2),
+        0px 22px 35px 3px rgba(0, 0, 0, 0.14),
+        0px 8px 42px 7px rgba(0, 0, 0, 0.12);
+    --elevation-23: 0px 11px 14px -7px rgba(0, 0, 0, 0.2),
+        0px 23px 36px 3px rgba(0, 0, 0, 0.14),
+        0px 9px 44px 8px rgba(0, 0, 0, 0.12);
+    --elevation-24: 0px 11px 15px -7px rgba(0, 0, 0, 0.2),
+        0px 24px 38px 3px rgba(0, 0, 0, 0.14),
+        0px 9px 46px 8px rgba(0, 0, 0, 0.12);
+
+    --overlay-common: inset 0 0 0 50000px;
+
+    --overlay-primary: var(--overlay-common) rgba(var(--tcolor-on-primary), 0);
+    --overlay-primary-hover: var(--overlay-common)
+        rgba(var(--tcolor-on-primary), 0.08);
+    --overlay-primary-focus: var(--overlay-common)
+        rgba(var(--tcolor-on-primary), 0.24);
+    --overlay-primary-active: var(--overlay-common)
+        rgba(var(--tcolor-on-primary), 0.32);
+
+    --overlay-surface: var(--overlay-common) rgba(var(--tcolor-on-surface), 0);
+    --overlay-surface-hover: var(--overlay-common)
+        rgba(var(--tcolor-on-surface), 0.04);
+    --overlay-surface-focus: var(--overlay-common)
+        rgba(var(--tcolor-on-surface), 0.12);
+    --overlay-surface-active: var(--overlay-common)
+        rgba(var(--tcolor-on-surface), 0.16);
+
+    --overlay-surface-primary: var(--overlay-common)
+        rgba(var(--tcolor-primary), 0);
+    --overlay-surface-primary-hover: var(--overlay-common)
+        rgba(var(--tcolor-primary), 0.04);
+    --overlay-surface-primary-focus: var(--overlay-common)
+        rgba(var(--tcolor-primary), 0.12);
+    --overlay-surface-primary-active: var(--overlay-common)
+        rgba(var(--tcolor-primary), 0.16);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --tcolor-primary: 187, 134, 252;
+        --tcolor-on-primary: 0, 0, 0;
+        --tcolor-primary-variant: 55, 0, 179;
+        --tcolor-on-primary-variant: 255, 255, 255;
+        --tcolor-secondary: 3, 218, 198;
+        --tcolor-on-secondary: 0, 0, 0;
+        --tcolor-secondary-variant: 3, 218, 198;
+        --tcolor-on-secondary-variant: 0, 0, 0;
+        --tcolor-background: 18, 18, 18;
+        --tcolor-on-background: 255, 255, 255;
+        --tcolor-surface: 18, 18, 18;
+        --tcolor-on-surface: 255, 255, 255;
+        --tcolor-error: 207, 102, 121;
+        --tcolor-on-error: 0, 0, 0;
+
+        --elevation-0: var(--overlay-common) rgba(255, 255, 255, 0);
+        --elevation-1: var(--overlay-common) rgba(255, 255, 255, 0.05);
+        --elevation-2: var(--overlay-common) rgba(255, 255, 255, 0.07);
+        --elevation-3: var(--overlay-common) rgba(255, 255, 255, 0.08);
+        --elevation-4: var(--overlay-common) rgba(255, 255, 255, 0.09);
+        --elevation-5: var(--overlay-common) rgba(255, 255, 255, 0.1);
+        --elevation-6: var(--overlay-common) rgba(255, 255, 255, 0.11);
+        --elevation-7: var(--overlay-common) rgba(255, 255, 255, 0.11);
+        --elevation-8: var(--overlay-common) rgba(255, 255, 255, 0.12);
+        --elevation-9: var(--overlay-common) rgba(255, 255, 255, 0.12);
+        --elevation-10: var(--overlay-common) rgba(255, 255, 255, 0.13);
+        --elevation-11: var(--overlay-common) rgba(255, 255, 255, 0.13);
+        --elevation-12: var(--overlay-common) rgba(255, 255, 255, 0.14);
+        --elevation-13: var(--overlay-common) rgba(255, 255, 255, 0.14);
+        --elevation-14: var(--overlay-common) rgba(255, 255, 255, 0.14);
+        --elevation-15: var(--overlay-common) rgba(255, 255, 255, 0.14);
+        --elevation-16: var(--overlay-common) rgba(255, 255, 255, 0.15);
+        --elevation-17: var(--overlay-common) rgba(255, 255, 255, 0.15);
+        --elevation-18: var(--overlay-common) rgba(255, 255, 255, 0.15);
+        --elevation-19: var(--overlay-common) rgba(255, 255, 255, 0.15);
+        --elevation-20: var(--overlay-common) rgba(255, 255, 255, 0.15);
+        --elevation-21: var(--overlay-common) rgba(255, 255, 255, 0.15);
+        --elevation-22: var(--overlay-common) rgba(255, 255, 255, 0.15);
+        --elevation-23: var(--overlay-common) rgba(255, 255, 255, 0.15);
+        --elevation-24: var(--overlay-common) rgba(255, 255, 255, 0.16);
+
+        --overlay-primary: var(--overlay-common) rgba(255, 255, 255, 0);
+        --overlay-primary-hover: var(--overlay-common) rgba(255, 255, 255, 0.04);
+        --overlay-primary-focus: var(--overlay-common) rgba(255, 255, 255, 0.12);
+        --overlay-primary-active: var(--overlay-common) rgba(255, 255, 255, 0.1);
+
+        --overlay-surface: var(--overlay-common)
+            rgba(var(--tcolor-on-surface), 0);
+        --overlay-surface-hover: var(--overlay-common)
+            rgba(var(--tcolor-on-surface), 0.04);
+        --overlay-surface-focus: var(--overlay-common)
+            rgba(var(--tcolor-on-surface), 0.12);
+        --overlay-surface-active: var(--overlay-common)
+            rgba(var(--tcolor-on-surface), 0.1);
+
+        --overlay-surface-primary: var(--overlay-common)
+            rgba(var(--tcolor-primary), 0);
+        --overlay-surface-primary-hover: var(--overlay-common)
+            rgba(var(--tcolor-primary), 0.04);
+        --overlay-surface-primary-focus: var(--overlay-common)
+            rgba(var(--tcolor-primary), 0.12);
+        --overlay-surface-primary-active: var(--overlay-common)
+            rgba(var(--tcolor-primary), 0.1);
+    }
+}

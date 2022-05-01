@@ -1,0 +1,92 @@
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 36px;
+    min-width: 64px;
+
+    cursor: pointer;
+
+    border: none;
+    border-radius: 500000px;
+    outline: none;
+
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.875rem;
+
+    transition: box-shadow 100ms ease-in-out;
+}
+
+.button.contained {
+    color: var(--color-on-primary);
+    background-color: var(--color-primary);
+
+    padding-inline: 16px;
+
+    --elevation: var(--elevation-2);
+    --overlay: var(--overlay-primary);
+
+    box-shadow: var(--elevation), var(--overlay);
+}
+
+.button.contained:hover {
+    --elevation: var(--elevation-4);
+    --overlay: var(--overlay-primary-hover);
+}
+
+.button.contained:focus {
+    --overlay: var(--overlay-primary-focus);
+}
+
+.button.contained:active {
+    --elevation: var(--elevation-0);
+    --overlay: var(--overlay-primary-active);
+}
+
+.button.outlined {
+    border: solid 1px currentColor;
+    padding-inline: 16px;
+}
+
+.button.text {
+    padding-inline: 8px;
+}
+
+.button.text,
+.button.outlined {
+    color: var(--color-primary);
+    background-color: transparent;
+
+    --overlay: var(--overlay-surface-primary);
+
+    box-shadow: var(--overlay);
+}
+
+.button.text:hover,
+.button.outlined:hover {
+    --overlay: var(--overlay-surface-primary-hover);
+}
+
+.button.text:focus,
+.button.outlined:focus {
+    --overlay: var(--overlay-surface-primary-focus);
+}
+
+.button.text:active,
+.button.outlined:active {
+    --overlay: var(--overlay-surface-primary-active);
+}
+
+.button:disabled {
+    color: var(--color-on-surface);
+    opacity: 38%;
+    cursor: initial;
+    box-shadow: none;
+}
+
+.button.contained:disabled {
+    background-color: rgba(var(--tcolor-on-surface), 38%);
+}
