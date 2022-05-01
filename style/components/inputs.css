@@ -1,3 +1,4 @@
+/* TEXTFIELDS */
 .textfield {
     position: relative;
 
@@ -11,7 +12,7 @@
     left: 16px;
     top: 50%;
     transform: translateY(-50%);
-    user-select: none;
+    pointer-events: none;
 
     transition-property: top, transform, font-size, color;
     transition-duration: 200ms;
@@ -70,4 +71,135 @@
 
 .textfield input:hover {
     background-color: rgba(var(--tcolor-on-surface), 12%);
+}
+
+/* CHECKBOXES AND RADIOS */
+input[type="checkbox"].checkbox,
+input[type="radio"].radio {
+    display: inline-grid;
+    grid-template: "center" auto / auto;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+
+    color: rgba(var(--tcolor-on-surface), 0.54);
+
+    appearance: none;
+    border: none;
+    outline: none;
+    margin: 0;
+    background-color: transparent;
+
+    --overlay: var(--overlay-surface);
+    box-shadow: var(--overlay);
+
+    transition: box-shadow, color;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out;
+}
+
+input[type="checkbox"].checkbox::before,
+input[type="checkbox"].checkbox::after,
+input[type="radio"].radio::before,
+input[type="radio"].radio::after {
+    grid-area: center;
+
+    display: block;
+
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
+    font-family: "Material Icons";
+    line-height: 1;
+}
+
+input[type="checkbox"].checkbox::before {
+    content: "check_box_outline_blank";
+}
+
+input[type="radio"].radio::before {
+    content: "radio_button_unchecked";
+}
+
+input[type="checkbox"].checkbox::after,
+input[type="radio"].radio::after {
+    clip-path: circle(0%);
+
+    transition: clip-path;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
+}
+
+input[type="checkbox"].checkbox::after {
+    content: "check_box";
+}
+
+input[type="checkbox"].checkbox:indeterminate::after {
+    content: "indeterminate_check_box";
+}
+
+input[type="radio"].radio::after {
+    content: "radio_button_checked";
+}
+
+input[type="checkbox"].checkbox:checked::after,
+input[type="checkbox"].checkbox:indeterminate::after,
+input[type="radio"].radio:checked::after {
+    clip-path: circle(50%);
+}
+
+input[type="checkbox"].checkbox:hover,
+input[type="radio"].radio:hover {
+    --overlay: var(--overlay-surface-hover);
+}
+
+input[type="checkbox"].checkbox:focus,
+input[type="radio"].radio:focus {
+    --overlay: var(--overlay-surface-focus);
+}
+
+input[type="checkbox"].checkbox:active,
+input[type="radio"].radio:active {
+    --overlay: var(--overlay-surface-active);
+}
+
+input[type="checkbox"].checkbox:checked,
+input[type="checkbox"].checkbox:indeterminate,
+input[type="radio"].radio:checked {
+    --overlay: var(--overlay-surface-primary);
+    color: var(--color-primary);
+}
+
+input[type="checkbox"].checkbox:checked:hover,
+input[type="checkbox"].checkbox:indeterminate:hover,
+input[type="radio"].radio:checked:hover {
+    --overlay: var(--overlay-surface-primary-hover);
+}
+
+input[type="checkbox"].checkbox:checked:focus,
+input[type="checkbox"].checkbox:indeterminate:focus,
+input[type="radio"].radio:checked:focus {
+    --overlay: var(--overlay-surface-primary-focus);
+}
+
+input[type="checkbox"].checkbox:checked:active,
+input[type="checkbox"].checkbox:indeterminate:active,
+input[type="radio"].radio:checked:active {
+    --overlay: var(--overlay-surface-primary-active);
+}
+
+input[type="checkbox"].checkbox:disabled,
+input[type="radio"].radio:disabled {
+    color: rgba(var(--tcolor-on-surface), 38%);
+    box-shadow: none;
+}
+
+input[type="checkbox"].checkbox:disabled:checked::before,
+input[type="checkbox"].checkbox:disabled:indeterminate::before,
+input[type="radio"].radio:disabled:checked:before {
+    display: none;
 }

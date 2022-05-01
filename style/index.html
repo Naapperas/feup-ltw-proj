@@ -29,8 +29,8 @@
             <a href="#button-links" class="button text">link</a>
         </section>
 
-        <section id="inputs">
-            <h2>Inputs</h2>
+        <section id="textfields">
+            <h2>Text Fields</h2>
             <div class="textfield">
                 <input
                     type="text"
@@ -49,6 +49,120 @@
                 />
                 <label for="text-error">Label</label>
             </div>
+        </section>
+
+        <section id="checkboxes">
+            <h2>Checkboxes</h2>
+
+            <label for="checked">
+                <input
+                    class="checkbox"
+                    type="checkbox"
+                    name="enabled"
+                    id="checked"
+                    checked
+                />
+                Label
+            </label>
+            <label for="unchecked">
+                <input
+                    class="checkbox"
+                    type="checkbox"
+                    name="enabled"
+                    id="unchecked"
+                />
+                Label
+            </label>
+            <label for="indeterminate">
+                <input
+                    class="checkbox"
+                    type="checkbox"
+                    name="enabled"
+                    id="indeterminate"
+                />
+                Label
+            </label>
+            <label for="checked-disabled">
+                <input
+                    class="checkbox"
+                    type="checkbox"
+                    name="disabled"
+                    id="checked-disabled"
+                    checked
+                    disabled
+                />
+                Label
+            </label>
+            <label for="unchecked-disabled">
+                <input
+                    class="checkbox"
+                    type="checkbox"
+                    name="disabled"
+                    id="unchecked-disabled"
+                    disabled
+                />
+                Label
+            </label>
+            <label for="indeterminate-disabled">
+                <input
+                    class="checkbox"
+                    type="checkbox"
+                    name="disabled"
+                    id="indeterminate-disabled"
+                    disabled
+                />
+                Label
+            </label>
+
+            <script>
+                document
+                    .querySelectorAll("input[type=checkbox][id^=indeterminate]")
+                    .forEach((i) => (i.indeterminate = true));
+            </script>
+        </section>
+
+        <section id="radios">
+            <h2>Radio Buttons</h2>
+            <label for="selected">
+                <input
+                    class="radio"
+                    type="radio"
+                    name="enabled"
+                    id="selected"
+                    checked
+                />
+                Label
+            </label>
+            <label for="deselected">
+                <input
+                    class="radio"
+                    type="radio"
+                    name="enabled"
+                    id="deselected"
+                />
+                Label
+            </label>
+            <label for="selected">
+                <input
+                    class="radio"
+                    type="radio"
+                    name="disabled"
+                    id="selected-disabled"
+                    checked
+                    disabled
+                />
+                Label
+            </label>
+            <label for="deselected-disabled">
+                <input
+                    class="radio"
+                    type="radio"
+                    name="disabled"
+                    id="deselected-disabled"
+                    disabled
+                />
+                Label
+            </label>
         </section>
     </body>
 </html>
