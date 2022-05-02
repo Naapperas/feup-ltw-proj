@@ -17,12 +17,19 @@ const getSliderBackgroundSVG = (width, percentage, fill) =>
 `.trim()
     );
 
-const getSliderCSS = (slider) => {
+const getSliderCSS = async (slider) => {
     const background = getSliderBackgroundSVG(
         slider.offsetWidth,
         slider.value / slider.max,
-        getComputedStyle(slider).getPropertyValue("--tcolor-primary")
+        getComputedStyle(slider).getPropertyValue(
+            slider.disabled ? "--tcolor-on-surface" : "--tcolor-primary"
+        )
     );
+
+    // Fixes flickering on firefox
+    const img = new Image();
+    img.src = background;
+    await img.decode();
 
     return `
 #${slider.id}::-webkit-slider-runnable-track {
@@ -40,7 +47,8 @@ document.querySelectorAll("input[type=range][id].slider").forEach((slider) => {
     const s = document.createElement("style");
     document.body.appendChild(s);
 
-    const eventListener = (e) => (s.innerHTML = getSliderCSS(slider));
+    const eventListener = async (e) =>
+        (s.innerHTML = await getSliderCSS(slider));
     slider.addEventListener("input", eventListener);
     window.addEventListener("resize", eventListener);
     eventListener();

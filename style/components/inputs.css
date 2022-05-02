@@ -325,6 +325,10 @@ input[type="range"].slider {
     outline: none;
 }
 
+input[type="range"].slider:disabled {
+    opacity: 0.38;
+}
+
 input[type="range"].slider::-webkit-slider-thumb {
     appearance: none;
 
@@ -342,6 +346,10 @@ input[type="range"].slider::-webkit-slider-thumb {
 
     /* Chrome is dumb */
     margin-top: -7px;
+
+    transition: outline;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out;
 }
 input[type="range"].slider::-moz-range-thumb {
     appearance: none;
@@ -357,6 +365,19 @@ input[type="range"].slider::-moz-range-thumb {
     outline-offset: -10px;
     background: var(--color-primary);
     box-shadow: var(--elevation-2);
+
+    transition: outline;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out;
+}
+
+input[type="range"].slider:disabled:-webkit-slider-thumb {
+    outline: none;
+    background-color: var(--color-on-surface);
+}
+input[type="range"].slider:disabled::-moz-range-thumb {
+    outline: none;
+    background-color: var(--color-on-surface);
 }
 
 input[type="range"].slider:hover::-webkit-slider-thumb {
