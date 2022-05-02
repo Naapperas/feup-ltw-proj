@@ -205,5 +205,65 @@
                 Label
             </label>
         </section>
+
+        <section id="sliders">
+            <h2 class="h4">Sliders</h2>
+
+            <label for="slider">
+                Label
+                <input
+                    class="slider"
+                    type="range"
+                    name="slider"
+                    id="slider"
+                    min="0"
+                    max="100"
+                    value="50"
+                />
+            </label>
+            <label for="slider-discrete">
+                Label
+                <input
+                    class="slider"
+                    type="range"
+                    name="slider-discrete"
+                    id="slider-discrete"
+                    min="0"
+                    max="100"
+                    value="50"
+                    step="10"
+                />
+            </label>
+
+            <label for="slider-disabled">
+                Label
+                <input
+                    class="slider"
+                    type="range"
+                    name="slider-disabled"
+                    id="slider-disabled"
+                    min="0"
+                    max="100"
+                    value="50"
+                    disabled
+                />
+            </label>
+            <label for="slider-discrete-disabled">
+                Label
+                <input
+                    class="slider"
+                    type="range"
+                    name="slider-discrete-disabled"
+                    id="slider-discrete-disabled"
+                    min="0"
+                    max="100"
+                    value="50"
+                    step="10"
+                    disabled
+                />
+            </label>
+
+            <script src="components/slider.js"></script>
+        </section>
     </body>
 </html>
