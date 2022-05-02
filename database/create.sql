@@ -93,9 +93,11 @@ CREATE TABLE "Order" (
     "id" INTEGER NOT NULL,
     "state" TEXT NOT NULL,
     "delivery" BOOLEAN NOT NULL,
+    "user_to_deliver" INTEGER NOT NULL,
     "driver" INTEGER NOT NULL,
     PRIMARY KEY("id"),
-    FOREIGN KEY("driver") REFERENCES "User"
+    FOREIGN KEY("driver") REFERENCES "User",
+    FOREIGN KEY ("user_to_deliver") REFERENCES "User"
 );
 
 -- Many to many
