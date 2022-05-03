@@ -17,7 +17,7 @@
          * 
          * @return array the newly created entry as an associative array
          */
-        abstract static function create(array $data);
+        abstract static function create(array $data): array;
 
         /**
          * Updates the entry with the given id and returns it.
@@ -27,7 +27,7 @@
          * 
          * @return array the updated entry as an associative array
          */
-        abstract static function update(int $id, array $newData);
+        abstract static function update(int $id, array $newData): array;
 
         /**
          * Deletes the entry with the given id and returns it.
@@ -36,6 +36,15 @@
          * 
          * @return array the deleted entry as an associative array
          */
-        abstract static function delete(int $id);
+        abstract static function delete(int $id): array;
+
+        /**
+         * Gets one entry/many entries based on its/their ids.
+         * 
+         * @param int|array id the id or ids to retrieve from the database
+         * 
+         * @return array the entry/entries to return
+         */
+        abstract static function get(int|array $id): array;
     }
 ?>
