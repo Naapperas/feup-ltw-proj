@@ -52,7 +52,14 @@
             return array();
         }
 
-        static function get(int|array $id): array {
+        static function get(int|array|null $id): array {
+
+            if ($id === null) {
+
+                $query = "SELECT * FROM Restaurant;";
+
+                return getQueryResults(Restaurant::getDb(), $query, true);
+            }
 
             $retrieveQuery = "SELECT * FROM Restaurant WHERE id = ?";
 

@@ -45,6 +45,6 @@
          * 
          * @return array the entry/entries to return
          */
-        abstract static function get(int|array $id): array;
+        abstract static function get(int|array|null $id): array;
     }
 ?>

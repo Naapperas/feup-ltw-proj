@@ -52,9 +52,16 @@
             return array();
         }
 
-        static function get(int|array $id): array {
+        static function get(int|array|null $id): array {
 
-            $retrieveQuery = "SELECT * FROM Dish WHERE id = ?";
+            if ($id === null) {
+
+                $query = "SELECT * FROM Dish;";
+
+                return getQueryResults(Dish::getDb(), $query, true);
+            }
+
+            $retrieveQuery = "SELECT * FROM Dish WHERE id = ?;";
 
             if (gettype($id) == 'integer') {
                 

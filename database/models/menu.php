@@ -52,9 +52,16 @@
             return array();
         }
 
-        static function get(int|array $id): array {
+        static function get(int|array|null $id): array {
 
-            $retrieveQuery = "SELECT * FROM Menu WHERE id = ?";
+            if ($id === null) {
+
+                $query = "SELECT * FROM Menu;";
+
+                return getQueryResults(Menu::getDb(), $query, true);
+            }
+
+            $retrieveQuery = "SELECT * FROM Menu WHERE id = ?;";
 
             if (gettype($id) == 'integer') {
                 

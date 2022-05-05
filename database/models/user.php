@@ -52,9 +52,16 @@
             return array();
         }
 
-        static function get(int|array $id): array {
+        static function get(int|array|null $id): array {
 
-            $retrieveQuery = "SELECT * FROM User WHERE id = ?";
+            if ($id === null) {
+
+                $query = "SELECT * FROM User;";
+
+                return getQueryResults(User::getDb(), $query, true);
+            }
+
+            $retrieveQuery = "SELECT * FROM User WHERE id = ?;";
 
             if (gettype($id) == 'integer') {
                 
