@@ -52,7 +52,7 @@
             return array();
         }
 
-        static function get(int|array|null $id): array {
+        static function get(int|array|null $id = null, bool $named = false): array {
 
             if ($id === null) {
 
@@ -73,13 +73,31 @@
                 
                 $result = array();
                 
-                foreach($id as $entry_id) {
-                    $object = getQueryResults(User::getDb(), $retrieveQuery, false, array($entry_id));
-    
-                    if ($object)
-                        $result[] = $object;
+                if ($named) {
 
-                }
+                    $retrieveQuery = "SELECT * FROM User WHERE ";
+                    
+                    $attrs = array();
+                    $values = array();
+
+                    foreach($id as $attribute=>$value) {
+                        $attrs[] = sprintf("%s = ?", $attribute);
+                        $values[] = $value;
+                    }
+
+                    $retrieveQuery .= implode(" AND ", $attrs);
+                    $retrieveQuery .= ";";
+
+                    $result = getQueryResults(User::getDb(), $retrieveQuery, true, $values);
+
+                } else
+                    foreach($id as $entry_id) {
+                        $object = getQueryResults(User::getDb(), $retrieveQuery, false, array($entry_id));
+        
+                        if ($object)
+                            $result[] = $object;
+
+                    }
 
                 return $result;
             }

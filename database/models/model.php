@@ -41,10 +41,11 @@
         /**
          * Gets one entry/many entries based on its/their ids.
          * 
-         * @param int|array id the id or ids to retrieve from the database
+         * @param int|array|null id the id or ids to retrieve from the database. If null, retrieve everything
+         * @param bool named weather the array given as input should be named (representing model attributes) or not (representing a collection of ids)
          * 
          * @return array the entry/entries to return
          */
-        abstract static function get(int|array|null $id): array;
+        abstract static function get(int|array|null $id = null, bool $named = false): array;
     }
 ?>

@@ -1,7 +1,5 @@
 <?php
 
-    require_once('connection.php');
-
     function userExists(PDO $db, string $username, string $password): bool {
 
         $query = 'SELECT * FROM users WHERE username = ? AND password = ?';
