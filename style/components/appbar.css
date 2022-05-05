@@ -1,0 +1,32 @@
+.appbar {
+    display: grid;
+    grid-template: "start title" auto / min-content auto;
+    grid-auto-flow: column;
+    grid-auto-columns: min-content;
+
+    align-items: center;
+    text-align: start;
+
+    width: 100%;
+    height: 56px;
+
+    padding-inline: 16px;
+    gap: 24px;
+
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+}
+
+.appbar > :nth-child(2) {
+    margin-left: 8px;
+}
+
+/* TODO: Move button color to variable */
+.appbar > .button {
+    color: inherit;
+    --overlay: --overlay-primary;
+}
+
+.appbar > .button.icon {
+    margin: -4px;
+}
