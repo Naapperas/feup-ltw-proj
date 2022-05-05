@@ -1,4 +1,4 @@
-.textfield {
+:is(.textfield, .select) {
     position: relative;
 
     justify-self: stretch;
@@ -6,7 +6,38 @@
     font-size: 1rem;
 }
 
-.textfield label {
+.select::after {
+    content: "arrow_drop_down";
+
+    display: block;
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
+    font-family: "Material Icons";
+    line-height: 1;
+    letter-spacing: initial;
+
+    pointer-events: none;
+
+    transition-property: transform;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out;
+}
+
+/* 
+I'd like this style to apply only to open selects,
+but that is impossible outside chromium
+*/
+.select:focus-within:after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+:is(.textfield, .select) label {
     position: absolute;
     left: 16px;
     top: 50%;
@@ -18,17 +49,20 @@
     transition-timing-function: ease-in-out;
 }
 
-.textfield input:is(:not(:placeholder-shown), :focus) ~ label {
+:is(.textfield input, .select select):is(:not(:placeholder-shown), :focus)
+    ~ label {
     top: 22px;
     font-size: 0.75rem;
     transform: translateY(-100%);
 }
 
-.textfield input:focus ~ label {
+:is(.textfield input, .select select):focus ~ label {
     color: var(--color-primary);
 }
 
-.textfield input {
+:is(.textfield input, .select select) {
+    appearance: none;
+
     height: 48px;
     padding: 20px 16px 4px 16px;
     min-width: 280px;
@@ -58,7 +92,14 @@
     transition-timing-function: ease-in-out;
 }
 
-.textfield input:focus {
+/* Only works on chromium, but at least it's something */
+.textfield input::-webkit-inner-spin-button {
+    width: 24px;
+    height: 24px;
+    margin-top: -8px;
+}
+
+:is(.textfield input, .select select):focus {
     border-color: var(--color-primary);
     border-width: 2px;
 }
@@ -67,15 +108,15 @@
     opacity: initial;
 }
 
-.textfield input:hover {
+:is(.textfield input, .select select):hover {
     background-color: rgba(var(--tcolor-on-surface), 12%);
 }
 
-.textfield input:disabled {
+:is(.textfield input, .select select):disabled {
     opacity: 38%;
     background-color: rgba(var(--tcolor-on-surface), 8%);
 }
 
-.textfield input:disabled ~ label {
+:is(.textfield input, .select select):disabled ~ label {
     opacity: 38%;
 }
