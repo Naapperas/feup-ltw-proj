@@ -27,9 +27,7 @@
 
             if ($result)
                 return $fetchMultiple ? $stmt->fetchAll() : $stmt->fetch();
-        } catch (PDOException) {
-            echo "yikes\n";
-        } // do nothing and leave block, expected behavior is to return false
+        } catch (PDOException) {} // do nothing and leave block, expected behavior is to return false
 
         return false;
     }
@@ -38,10 +36,7 @@
         try {
             if ($stmt = $db->prepare($query))
                 return array($stmt->execute($params), $stmt);
-        } catch (PDOException $e) {
-            echo "BRUH\n";
-            echo $e->getMessage();
-        } // do nothing and leave block, expected behavior is to return false
+        } catch (PDOException) {} // do nothing and leave block, expected behavior is to return false
 
         return array(false, null);
     }

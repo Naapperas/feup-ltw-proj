@@ -78,6 +78,4 @@
             }
         }
     }
-
-    print_r(Menu::delete(1));
 ?>
