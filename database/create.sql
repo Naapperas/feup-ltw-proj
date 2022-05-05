@@ -28,7 +28,6 @@ CREATE TABLE "Restaurant" (
     "owner" INTEGER NOT NULL,
     PRIMARY KEY("id"),
     FOREIGN KEY("owner") REFERENCES "User",
-    CONSTRAINT "nome_unico" UNIQUE ("name"),
     CONSTRAINT "address_unico" UNIQUE ("address")
 );
 
@@ -40,7 +39,7 @@ CREATE TABLE "Menu" (
     PRIMARY KEY ("id"),
     FOREIGN KEY("restaurant") REFERENCES "Restaurant",
     CONSTRAINT "nome_unico_por_restaurante" UNIQUE ("name", "restaurant"),
-    CONSTRAINT "preco_naeo_negativo" CHECK ("price" >= 0)
+    CONSTRAINT "preco_nao_negativo" CHECK ("price" >= 0)
 );
 
 CREATE TABLE "Category" (
@@ -57,7 +56,7 @@ CREATE TABLE "Dish" (
     "restaurant" INTEGER NOT NULL,
     PRIMARY KEY("id"),
     FOREIGN KEY("restaurant") REFERENCES "Restaurant",
-    CONSTRAINT "nome_unico" UNIQUE ("name")
+    CONSTRAINT "nome_unico_por_restaurante" UNIQUE ("name", "restaurant")
     CONSTRAINT "preco_positivo" CHECK (
         "price" > 0
     )
@@ -66,7 +65,7 @@ CREATE TABLE "Dish" (
 CREATE TABLE "Review" (
     "id" INTEGER NOT NULL,
     "score" INTEGER NOT NULL,
-    "TEXT" TEXT NOT NULL,
+    "text" TEXT NOT NULL,
     "client" INTEGER NOT NULL,
     "restaurant" INTEGER NOT NULL,
     PRIMARY KEY("id"),
