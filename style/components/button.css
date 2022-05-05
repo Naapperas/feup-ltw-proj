@@ -21,6 +21,22 @@
     transition: box-shadow 100ms ease-in-out;
 }
 
+.button .icon {
+    margin-left: -4px;
+    margin-right: 8px;
+}
+
+.button.icon {
+    width: 32px;
+    height: 32px;
+
+    min-width: initial;
+
+    text-transform: none;
+    font-size: 24px;
+    letter-spacing: initial;
+}
+
 .button.contained {
     color: var(--color-on-primary);
     background-color: var(--color-primary);
@@ -56,8 +72,7 @@
     padding-inline: 8px;
 }
 
-.button.text,
-.button.outlined {
+.button:is(.text, .outlined, .icon) {
     color: var(--color-primary);
     background-color: transparent;
 
@@ -66,18 +81,15 @@
     box-shadow: var(--overlay);
 }
 
-.button.text:hover,
-.button.outlined:hover {
+.button:is(.text, .outlined, .icon):hover {
     --overlay: var(--overlay-surface-primary-hover);
 }
 
-.button.text:focus,
-.button.outlined:focus {
+.button:is(.text, .outlined, .icon):focus {
     --overlay: var(--overlay-surface-primary-focus);
 }
 
-.button.text:active,
-.button.outlined:active {
+.button:is(.text, .outlined, .icon):active {
     --overlay: var(--overlay-surface-primary-active);
 }
 

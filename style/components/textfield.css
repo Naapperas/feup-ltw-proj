@@ -1,0 +1,81 @@
+.textfield {
+    position: relative;
+
+    justify-self: stretch;
+
+    font-size: 1rem;
+}
+
+.textfield label {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+
+    transition-property: top, transform, font-size, color;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out;
+}
+
+.textfield input:is(:not(:placeholder-shown), :focus) ~ label {
+    top: 22px;
+    font-size: 0.75rem;
+    transform: translateY(-100%);
+}
+
+.textfield input:focus ~ label {
+    color: var(--color-primary);
+}
+
+.textfield input {
+    height: 48px;
+    padding: 20px 16px 4px 16px;
+    min-width: 280px;
+
+    border-color: var(--color-on-surface);
+    border-style: none;
+    border-bottom-style: solid;
+    border-width: 1px;
+    border-radius: 8px 8px 0 0;
+
+    outline: none;
+
+    background-color: rgba(var(--tcolor-on-surface), 8%);
+
+    caret-color: var(--color-primary);
+
+    transition: border-width, border-color, background-color;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out;
+}
+
+.textfield input::placeholder {
+    opacity: 0;
+
+    transition-property: opacity;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out;
+}
+
+.textfield input:focus {
+    border-color: var(--color-primary);
+    border-width: 2px;
+}
+
+.textfield input:focus::placeholder {
+    opacity: initial;
+}
+
+.textfield input:hover {
+    background-color: rgba(var(--tcolor-on-surface), 12%);
+}
+
+.textfield input:disabled {
+    opacity: 38%;
+    background-color: rgba(var(--tcolor-on-surface), 8%);
+}
+
+.textfield input:disabled ~ label {
+    opacity: 38%;
+}

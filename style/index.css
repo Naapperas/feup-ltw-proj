@@ -3,6 +3,4 @@
 
 @import "./common.css";
 @import "./colorscheme.css";
-
-@import "./components/button.css";
-@import "./components/inputs.css";
+@import "./components/index.css";
