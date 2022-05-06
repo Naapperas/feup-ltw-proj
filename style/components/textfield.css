@@ -120,3 +120,11 @@ but that is impossible outside chromium
 :is(.textfield input, .select select):disabled ~ label {
     opacity: 38%;
 }
+
+:is(.textfield, .textfield input) {
+    width: 100%;
+}
+
+#textfields {
+    flex-direction: column;
+}
