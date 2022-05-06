@@ -7,10 +7,10 @@
         return !!getQueryResults($db, $query, false, array($username, sha1($password)));;
     }
 
-    function createUser(PDO $db, string $username, string $password, string $email, string $real_name): bool {
+    function createUser(PDO $db, string $username, string $password, string $email, string $address, string $phone_number): bool {
 
-        $query = 'INSERT INTO users VALUES(?, ?, ?)';
+        $query = 'INSERT INTO users VALUES(?, ?, ?, ?, ?)';
 
-        return executeQuery($db, $query, array($username, sha1($password), $real_name))[0];
+        return executeQuery($db, $query, array($username, $email, sha1($password), $address, $phone_number))[0];
     }
 ?>
