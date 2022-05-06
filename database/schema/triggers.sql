@@ -7,6 +7,7 @@ DROP TRIGGER IF EXISTS "Client_favorite_dish";
 DROP TRIGGER IF EXISTS "Client_review";
 DROP TRIGGER IF EXISTS "Menu_add_dish";
 DROP TRIGGER IF EXISTS "Menu_dish_same_restaurant";
+DROP TRIGGER IF EXISTS "Dont_deliver_to_yourself";
 
 -- Verify a user is an owner
 
@@ -53,15 +54,28 @@ BEGIN
     SELECT raise(ABORT, "Only clients can leave reviews");
 END;
 
+-- Dishes of a menu must belong to the menu's restaurant
+
 CREATE TRIGGER IF NOT EXISTS "Menu_dish_same_restaurant"
 BEFORE INSERT ON "Dish_menu"
-WHEN (SELECT restaurant FROM "Dish" WHERE id = NEW.dish) <> (SELECT restaurant FROM "Menu" WHERE id = NEW.menu)
+WHEN (SELECT "restaurant" FROM "Dish" WHERE "id" = "New"."dish") <> (SELECT "restaurant" FROM "Menu" WHERE "id" = "New"."menu")
 BEGIN
     SELECT raise(ABORT, "Dish and Menu must belong to the same restaurant");
 END;
 
+-- Update menu's price after a new dish is added to that menu
+
 CREATE TRIGGER IF NOT EXISTS "Menu_add_dish"
 AFTER INSERT ON "Dish_menu"
 BEGIN
-    UPDATE Menu SET price = price + (SELECT price FROM "Dish" WHERE "id" = NEW.dish) WHERE id = NEW.menu;
+    UPDATE "Menu" SET "price" = "price" + (SELECT "price" FROM "Dish" WHERE "id" = "New"."dish") WHERE "id" = "New"."menu";
+END;
+
+-- A driver cannot deliver an order to himself
+
+CREATE TRIGGER IF NOT EXISTS "Dont_deliver_to_yourself"
+BEFORE INSERT ON "Order"
+WHEN "New"."user_to_deliver" == "New"."driver"
+BEGIN
+    SELECT raise(ABORT, "Driver can't deliver an order to himself");
 END;

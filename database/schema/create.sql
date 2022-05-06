@@ -28,7 +28,7 @@ CREATE TABLE "Restaurant" (
     "owner" INTEGER NOT NULL,
     PRIMARY KEY("id"),
     FOREIGN KEY("owner") REFERENCES "User",
-    CONSTRAINT "address_unico" UNIQUE ("address")
+    CONSTRAINT "unique_address" UNIQUE ("address")
 );
 
 CREATE TABLE "Menu" (
@@ -38,15 +38,15 @@ CREATE TABLE "Menu" (
     "price" INTEGER DEFAULT 0,
     PRIMARY KEY ("id"),
     FOREIGN KEY("restaurant") REFERENCES "Restaurant",
-    CONSTRAINT "nome_unico_por_restaurante" UNIQUE ("name", "restaurant"),
-    CONSTRAINT "preco_nao_negativo" CHECK ("price" >= 0)
+    CONSTRAINT "unique_restaurant_name" UNIQUE ("name", "restaurant"),
+    CONSTRAINT "positive_price" CHECK ("price" >= 0)
 );
 
 CREATE TABLE "Category" (
     "id" INTEGER NOT NULL,
     "name" TEXT NOT NULL,
     PRIMARY KEY("id"),
-    CONSTRAINT "nome_unico" UNIQUE ("name")
+    CONSTRAINT "unique_name" UNIQUE ("name")
 );
 
 CREATE TABLE "Dish" (
@@ -56,8 +56,8 @@ CREATE TABLE "Dish" (
     "restaurant" INTEGER NOT NULL,
     PRIMARY KEY("id"),
     FOREIGN KEY("restaurant") REFERENCES "Restaurant",
-    CONSTRAINT "nome_unico_por_restaurante" UNIQUE ("name", "restaurant")
-    CONSTRAINT "preco_positivo" CHECK (
+    CONSTRAINT "unique_restaurant_name" UNIQUE ("name", "restaurant")
+    CONSTRAINT "positive_price" CHECK (
         "price" > 0
     )
 );
@@ -79,13 +79,17 @@ CREATE TABLE "Review" (
 CREATE TABLE "User" (
     "id" INTEGER NOT NULL,
     "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "address" TEXT NOT NULL,
     "phone_number" TEXT NOT NULL,
     "is_owner" BOOLEAN NOT NULL,
     "is_client" BOOLEAN NOT NULL,
     "is_driver" BOOLEAN NOT NULL,
-    PRIMARY KEY("id")
+    PRIMARY KEY("id"),
+    CONSTRAINT "unique_username" UNIQUE("name"),
+    CONSTRAINT "unique_email" UNIQUE("email"),
+    CONSTRAINT "unique_phone_number" UNIQUE("phone_number")
 );
 
 CREATE TABLE "Order" (
