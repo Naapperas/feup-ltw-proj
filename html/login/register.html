@@ -12,30 +12,32 @@
     <body>
         <h1 class="h1">XauFome</h1>
 
-        <section id="textfields">
-            <div class="textfield">
-                <input type="text" id="email" name="email" placeholder="">
-                <label for="email">Email</label>
-            </div>
-
-            <div class="textfield">
-                <input type="text" id="username" name="username" placeholder="">
-                <label for="username">Username</label>
-            </div>
-
-            <div class="textfield">
-                <input type="password" id="password" name="password" placeholder="">
-                <label for="password">Password</label>
-            </div>
-
-            <div class="textfield">
-                <input type="password" id="password" name="password" placeholder="">
-                <label for="password">Confirm Password</label>
-            </div>
-
-        </section>
-        
-        <button onclick="location.href='personal_data.html'" type="button" class="button">Next</button>
+        <form>
+            <section id="textfields">
+                <div class="textfield">
+                    <input type="email" id="email" name="email" placeholder="" required>
+                    <label for="email">Email</label>
+                </div>
+    
+                <div class="textfield">
+                    <input type="text" id="username" name="username" placeholder="" required>
+                    <label for="username">Username</label>
+                </div>
+    
+                <div class="textfield">
+                    <input type="password" id="password" name="password" placeholder="" required>
+                    <label for="password">Password</label>
+                </div>
+    
+                <div class="textfield">
+                    <input type="password" id="unused" name="unused" placeholder="" required>
+                    <label for="unused">Confirm Password</label>
+                </div>
+    
+            </section>
+            
+            <button class="button" formaction="./personal_data.html" formmethod="get">Next</button>
+        </form>
 
         <span>
             Already have an account?
