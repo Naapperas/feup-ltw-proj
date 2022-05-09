@@ -1,8 +1,17 @@
+// @ts-check
+
 "use strict";
 
-// Sliders suck.
-
-const getSliderBackgroundSVG = (width, percentage, fill, step) => {
+/**
+ * Creates an svg image to be used as the background of a slider element.
+ *
+ * @param {number} width The width of the slider element
+ * @param {number} percentage The slider progress percentage
+ * @param {string} fill The slider fill color
+ * @param {number} step The slider step percentage
+ * @returns {string} The svg background
+ */
+const _getSliderBackgroundSVG = (width, percentage, fill, step) => {
     let circles = "";
     let progressCircles = "";
 
@@ -40,14 +49,20 @@ const getSliderBackgroundSVG = (width, percentage, fill, step) => {
     );
 };
 
-const getSliderCSS = async (slider) => {
-    const background = getSliderBackgroundSVG(
+/**
+ * Creates the css that styles a slider element.
+ *
+ * @param {HTMLInputElement} slider The slider to style
+ * @returns {Promise<string>} The css
+ */
+const _getSliderCSS = async (slider) => {
+    const background = _getSliderBackgroundSVG(
         slider.offsetWidth,
-        slider.value / slider.max,
+        parseInt(slider.value) / parseInt(slider.max),
         getComputedStyle(slider).getPropertyValue(
             slider.disabled ? "--color-on-surface" : "--color-main"
         ),
-        slider.step / slider.max
+        parseInt(slider.step) / parseInt(slider.max)
     );
 
     // Fixes flickering on firefox
@@ -66,14 +81,25 @@ const getSliderCSS = async (slider) => {
 `.trim();
 };
 
-document.querySelectorAll("input[type=range][id].slider").forEach((slider) => {
+/**
+ * "Empowers" an html slider element using javascript.
+ *
+ * Creates a new style element to fix inconsistencies between browsers.
+ *
+ * @param {HTMLInputElement} slider The slider to empower
+ */
+const empowerSlider = (slider) => {
     // There may be a better way to do this
     const s = document.createElement("style");
-    document.body.appendChild(s);
+    document.head.appendChild(s);
 
-    const eventListener = async (e) =>
-        (s.innerHTML = await getSliderCSS(slider));
+    const eventListener = async () =>
+        (s.innerHTML = await _getSliderCSS(slider));
     slider.addEventListener("input", eventListener);
     window.addEventListener("resize", eventListener);
     eventListener();
-});
+};
+
+/** @type NodeListOf<HTMLInputElement> */
+const _sliders = document.querySelectorAll("input[type=range][id].slider");
+_sliders.forEach(empowerSlider);

@@ -6,18 +6,22 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Xau Fome - Login</title>
 
-        <link rel="stylesheet" href="../../style/index.css" />
+        <link rel="stylesheet" href="../style/index.css" />
+        <script src="../scripts/components/form.js" defer></script>
+        <!-- <script src="../scripts/form_login.js" defer></script> -->
     </head>
-    <body>
-        <h1 class="h1">XauFome</h1>
+    <body class="centered small-spacing small single column layout">
+        <h1 class="h3 color logo"></h1>
 
-        <section id="textfields">
+        <form action="../actions/login.php" method="post" class="form" empower>
             <div class="textfield">
                 <input
                     type="text"
+                    placeholder=" "
                     id="username"
                     name="username"
-                    placeholder=" "
+                    autocomplete="username"
+                    required
                 />
                 <label for="username">Username</label>
             </div>
@@ -25,23 +29,21 @@
             <div class="textfield">
                 <input
                     type="password"
+                    placeholder=" "
                     id="password"
                     name="password"
-                    placeholder=" "
+                    autocomplete="current-password"
+                    required
                 />
                 <label for="username">Password</label>
             </div>
-        </section>
 
-        <button type="button" class="button contained">Login</button>
+            <button type="submit" class="button contained">Login</button>
+        </form>
 
         <span>
             Don't have an account?
             <a href="register.html">Register</a>
         </span>
-
-        <footer>
-            <span>&copy; XauFome 2022</span>
-        </footer>
     </body>
 </html>

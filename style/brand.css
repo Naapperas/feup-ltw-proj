@@ -1,0 +1,13 @@
+.logo::before {
+    content: "Xau";
+    font-weight: 500;
+}
+
+.logo::after {
+    content: "Fome";
+    font-weight: 400;
+}
+
+.logo.color::after {
+    color: rgb(var(--color-main));
+}

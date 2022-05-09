@@ -1,16 +1,5 @@
 /* FOR REFERENCE SHEET ONLY, DO NOT USE IN PRODUCTION */
 
-body {
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    text-align: center;
-
-    max-width: 720px;
-    margin: auto;
-}
-
 section.card {
     display: flex;
     flex-direction: row;

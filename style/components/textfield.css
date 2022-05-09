@@ -2,6 +2,7 @@
     position: relative;
 
     justify-self: stretch;
+    height: 48px;
     width: 100%;
 
     font-size: 1rem;
@@ -76,13 +77,12 @@ but that is impossible outside chromium
 
     outline: none;
 
-    background-color: rgba(var(--color-on-surface), 8%);
+    background-color: rgb(var(--color-surface));
+
+    --opacity-overlay: 8%;
+    --color-overlay: var(--color-on-surface);
 
     caret-color: rgb(var(--color-main));
-
-    transition: border-width, border-color, background-color;
-    transition-duration: 200ms;
-    transition-timing-function: ease-in-out;
 }
 
 .textfield input::placeholder {
@@ -95,7 +95,6 @@ but that is impossible outside chromium
 
 /* Only works on chromium, but at least it's something */
 .textfield input::-webkit-inner-spin-button {
-    width: 24px;
     height: 24px;
     margin-top: -8px;
 }
@@ -109,15 +108,45 @@ but that is impossible outside chromium
     opacity: initial;
 }
 
+:is(.textfield input, .select select).error {
+    border-width: 2px;
+    border-color: rgb(var(--color-error));
+    caret-color: rgb(var(--color-error));
+}
+
+:is(.textfield input, .select select).error ~ label {
+    color: rgb(var(--color-error));
+}
+
 :is(.textfield input, .select select):hover {
-    background-color: rgba(var(--color-on-surface), 12%);
+    --opacity-overlay: calc(8% + var(--opacity-hover));
 }
 
 :is(.textfield input, .select select):disabled {
     opacity: var(--opacity-disabled);
+    --opacity-overlay: 8%;
     background-color: rgba(var(--color-on-surface), 8%);
 }
 
 :is(.textfield input, .select select):disabled ~ label {
     opacity: var(--opacity-disabled);
+}
+
+.textfield .toggle-visible {
+    position: absolute;
+    top: 4px;
+    right: 12px;
+
+    padding: 0;
+    margin-right: -8px;
+
+    --color-button: var(--color-on-surface);
+}
+
+.textfield .toggle-visible::before {
+    content: "visibility_off";
+}
+
+.textfield input[type="password"] ~ .toggle-visible::before {
+    content: "visibility";
 }

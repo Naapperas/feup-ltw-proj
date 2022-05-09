@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Xau Fome - Register</title>
+
+        <link rel="stylesheet" href="../style/index.css" />
+        <!-- <script src="../scripts/form_register.js" defer></script> -->
+        <script src="../scripts/components/form.js" defer></script>
+    </head>
+    <body class="centered small-spacing small single column layout">
+        <h1 class="h3 color logo"></h1>
+
+        <form
+            action="../actions/register.php"
+            method="post"
+            class="form sectioned"
+            empower
+        >
+            <fieldset class="section" section>
+                <div class="textfield">
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder=" "
+                        autocomplete="email"
+                        required
+                    />
+                    <label for="email">Email</label>
+                </div>
+
+                <div class="textfield">
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder=" "
+                        autocomplete="username"
+                        required
+                    />
+                    <label for="username">Username</label>
+                </div>
+
+                <div class="textfield">
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder=" "
+                        autocomplete="new-password"
+                        required
+                        minlength="8"
+                    />
+                    <label for="password">Password</label>
+                </div>
+
+                <button class="button contained" type="button" next>
+                    Next
+                </button>
+            </fieldset>
+
+            <fieldset class="section" section>
+                <div class="textfield">
+                    <input
+                        type="text"
+                        id="fname"
+                        name="fname"
+                        placeholder=" "
+                        autocomplete="given-name"
+                        required
+                    />
+                    <label for="fname">First name</label>
+                </div>
+
+                <div class="textfield">
+                    <input
+                        type="text"
+                        id="lname"
+                        name="lname"
+                        placeholder=" "
+                        autocomplete="family-name"
+                        required
+                    />
+                    <label for="last_name">Last name</label>
+                </div>
+
+                <div class="textfield">
+                    <input
+                        type="text"
+                        id="address"
+                        name="address"
+                        placeholder=" "
+                        autocomplete="street-address"
+                        required
+                    />
+                    <label for="address">Address</label>
+                </div>
+
+                <div class="textfield">
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        placeholder=" "
+                        autocomplete="tel"
+                        required
+                        pattern="\d{9}"
+                    />
+                    <label for="phone">Phone number</label>
+                </div>
+
+                <button class="button outlined" type="button" back>
+                    Go Back
+                </button>
+                <button class="button contained" type="submit">Register</button>
+            </fieldset>
+        </form>
+
+        <span>
+            Already have an account?
+            <a href="login.html">Login</a>
+        </span>
+    </body>
+</html>

@@ -1,0 +1,43 @@
+.column.layout {
+    display: grid;
+    margin-inline: auto;
+    width: 100%;
+}
+
+.centered.column.layout {
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    min-height: 100%;
+}
+
+.small-spacing.layout {
+    padding: 8px;
+    gap: 8px;
+}
+
+.medium-spacing.layout {
+    padding: 16px;
+    gap: 16px;
+}
+
+.large-spacing.layout {
+    padding: 32px;
+    gap: 32px;
+}
+
+.small.column.layout {
+    max-width: 480px;
+}
+
+.medium.column.layout {
+    max-width: 960px;
+}
+
+.large.column.layout {
+    max-width: 1440px;
+}
+
+.single.column.layout {
+    grid-template-columns: 1fr;
+}

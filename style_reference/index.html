@@ -7,9 +7,9 @@
         <title>CSS Test</title>
 
         <link rel="stylesheet" href="../style/index.css" />
-        <link rel="stylesheet" href="../style/reference.css" />
+        <link rel="stylesheet" href="./index.css" />
     </head>
-    <body>
+    <body class="centered medium medium-spacing single column layout">
         <h1 class="h3">Components Reference Sheet</h1>
 
         <section class="card" id="appbars">
@@ -299,6 +299,17 @@
 
             <div class="textfield">
                 <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder=" "
+                />
+                <label for="password">Password</label>
+                <button class="toggle-visible icon button" />
+            </div>
+
+            <div class="textfield">
+                <input
                     type="number"
                     name="number"
                     id="number"
@@ -350,6 +361,8 @@
                 </select>
                 <label for="options">Disabled</label>
             </div>
+
+            <script src="../scripts/components/textfield.js" defer></script>
         </section>
 
         <section class="card" id="checkboxes">
@@ -563,7 +576,7 @@
                 />
             </label>
 
-            <script src="../style/components/slider.js"></script>
+            <script src="../scripts/components/slider.js" defer></script>
         </section>
     </body>
 </html>

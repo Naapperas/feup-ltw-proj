@@ -1,0 +1,39 @@
+.form:not(.sectioned),
+.form.sectioned > .section {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+
+    padding: 16px;
+    gap: 16px;
+
+    grid-template-columns: repeat(3, auto);
+
+    grid-auto-flow: row;
+}
+
+.form:not(.sectioned) > button,
+.form.sectioned > .section > button {
+    flex: 1;
+}
+
+.form.sectioned > .section {
+    border: none;
+}
+
+.form.sectioned > .section.hidden {
+    pointer-events: none;
+    user-select: none;
+    opacity: 0%;
+}
+
+.form.sectioned {
+    display: grid;
+    grid-template: auto / 1fr;
+    overflow-x: visible;
+}
+
+.form.sectioned > * {
+    grid-area: 1 / 1;
+}
