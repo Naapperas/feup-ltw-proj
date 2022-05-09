@@ -25,9 +25,26 @@ const empowerForm = (form) => {
 
         if (backButton && i > 0) {
             section.classList.add("hidden");
+            section.ariaHidden = "true";
+            section
+                .querySelectorAll("input, select, textarea, button")
+                // @ts-ignore
+                .forEach((i) => (i.tabIndex = -1));
+
             backButton.addEventListener("click", () => {
                 section.classList.add("hidden");
+                section.ariaHidden = "true";
+                section
+                    .querySelectorAll("input, select, textarea, button")
+                    // @ts-ignore
+                    .forEach((i) => (i.tabIndex = -1));
+
                 sections[i - 1].classList.remove("hidden");
+                sections[i - 1].ariaHidden = "false";
+                sections[i - 1]
+                    .querySelectorAll("input, select, textarea, button")
+                    // @ts-ignore
+                    .forEach((i) => (i.tabIndex = 0));
             });
         }
 
@@ -43,7 +60,18 @@ const empowerForm = (form) => {
 
             nextButton.addEventListener("click", () => {
                 section.classList.add("hidden");
+                section.ariaHidden = "true";
+                section
+                    .querySelectorAll("input, select, textarea, button")
+                    // @ts-ignore
+                    .forEach((i) => (i.tabIndex = -1));
+
                 sections[i + 1].classList.remove("hidden");
+                sections[i + 1].ariaHidden = "false";
+                sections[i + 1]
+                    .querySelectorAll("input, select, textarea, button")
+                    // @ts-ignore
+                    .forEach((i) => (i.tabIndex = 0));
             });
         }
     });
