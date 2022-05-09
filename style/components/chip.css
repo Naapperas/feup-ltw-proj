@@ -1,0 +1,46 @@
+.chip {
+    display: flex;
+    align-items: center;
+
+    height: 32px;
+    border-radius: 16px;
+    padding-inline: 12px;
+
+    background-color: rgba(var(--color-on-surface), 12%);
+
+    white-space: nowrap;
+    font-size: 0.875rem;
+    line-height: 0.875rem;
+    font-weight: 400;
+    letter-spacing: 0.01785714285em;
+
+    --color-button: var(--color-on-surface);
+}
+
+.chip > .icon {
+    margin-left: -4px;
+    margin-right: 8px;
+
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+.chip > .button.icon {
+    margin-right: -12px;
+    margin-left: 0;
+
+    font-size: 18px;
+    width: 32px;
+    height: 32px;
+}
+
+.chip > .thumbnail {
+    width: 24px;
+    height: 24px;
+
+    border-radius: 50%;
+
+    margin-left: -8px;
+    margin-right: 8px;
+}

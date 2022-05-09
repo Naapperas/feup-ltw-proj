@@ -2,5 +2,5 @@
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
 @import "./common.css";
-@import "./colorscheme.css";
+@import "./theme.css";
 @import "./components/index.css";

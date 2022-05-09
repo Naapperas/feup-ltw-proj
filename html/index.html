@@ -12,19 +12,213 @@
     <body>
         <h1 class="h3">Components Reference Sheet</h1>
 
-        <section id="appbars">
+        <section class="card" id="appbars">
             <h2 class="h4">App Bars</h2>
 
             <div class="appbar">
                 <button class="icon button">menu</button>
-                <h3 class="h6">Title</h3>
+                <h3 class="h6">Normal</h3>
+                <button class="icon button">add</button>
+                <button class="icon button">share</button>
+                <button class="icon button">search</button>
+            </div>
+
+            <div class="appbar elevated">
+                <button class="icon button">menu</button>
+                <h3 class="h6">Elevated</h3>
                 <button class="icon button">add</button>
                 <button class="icon button">share</button>
                 <button class="icon button">search</button>
             </div>
         </section>
 
-        <section id="buttons">
+        <section class="card" id="cards">
+            <h2 class="h4">Cards</h2>
+
+            <article class="card">
+                <header>
+                    <img src="https://picsum.photos/40" alt="" class="avatar" />
+                    <h3 class="h6">Title goes here</h3>
+                    <span class="subtitle2 secondary">Secondary text</span>
+                </header>
+                <img
+                    src="https://picsum.photos/316/194"
+                    width="316"
+                    height="194"
+                    alt=""
+                    class="full media"
+                />
+                <span class="body2 secondary">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                    sed do eiusmod tempor
+                </span>
+                <section class="actions">
+                    <button class="button text">Action 1</button>
+                    <button class="button text">Action 2</button>
+                </section>
+            </article>
+
+            <article class="card elevated">
+                <header>
+                    <img src="https://picsum.photos/40" alt="" class="avatar" />
+                    <h3 class="h6">Title goes here</h3>
+                    <span class="subtitle2 secondary">Secondary text</span>
+                </header>
+                <img
+                    src="https://picsum.photos/316/194"
+                    width="316"
+                    height="194"
+                    alt=""
+                    class="full media"
+                />
+                <span class="body2 secondary">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                    sed do eiusmod tempor
+                </span>
+                <section class="actions">
+                    <button class="button text">Action 1</button>
+                    <button class="button text">Action 2</button>
+                </section>
+            </article>
+
+            <article class="card">
+                <img
+                    src="https://picsum.photos/316/194"
+                    alt=""
+                    class="media full"
+                />
+                <header>
+                    <h3 class="h5">Title</h3>
+                    <span class="caption secondary">
+                        <span
+                            class="icon"
+                            style="
+                                font-size: 12px;
+                                display: inline;
+                                vertical-align: bottom;
+                                color: #fed430;
+                            "
+                        >
+                            star_ratestar_ratestar_ratestar_ratestar_rate
+                        </span>
+                        4.5 (413)
+                    </span>
+                </header>
+                <section
+                    class="body2"
+                    style="display: flex; flex-direction: column; gap: 8px"
+                >
+                    <p>Secondary text</p>
+                    <p class="secondary">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit,
+                        sed do eiusmod tempor
+                    </p>
+                </section>
+                <hr class="divider" />
+                <section
+                    style="display: flex; flex-direction: column; gap: 8px"
+                >
+                    <span class="subtitle2">Subtitle</span>
+                    <div
+                        style="
+                            display: flex;
+                            gap: 8px;
+                            overflow-x: scroll;
+                            margin-inline: -16px;
+                            padding-inline: 16px;
+                        "
+                    >
+                        <div class="chip">Item 1</div>
+                        <div class="chip">Item 2</div>
+                        <div class="chip">Item 3</div>
+                        <div class="chip">Item 4</div>
+                        <div class="chip">Item 5</div>
+                        <div class="chip">Item 6</div>
+                    </div>
+                </section>
+                <section class="actions">
+                    <button class="button text">Action 1</button>
+                </section>
+            </article>
+
+            <article class="card elevated">
+                <img
+                    src="https://picsum.photos/316/194"
+                    alt=""
+                    class="media full"
+                />
+                <header>
+                    <h3 class="h5">Title</h3>
+                    <span class="caption secondary">
+                        <span
+                            class="icon"
+                            style="
+                                font-size: 12px;
+                                display: inline;
+                                vertical-align: bottom;
+                                color: #fed430;
+                            "
+                        >
+                            star_ratestar_ratestar_ratestar_ratestar_rate
+                        </span>
+                        4.5 (413)
+                    </span>
+                </header>
+                <section
+                    class="body2"
+                    style="display: flex; flex-direction: column; gap: 8px"
+                >
+                    <p>Secondary text</p>
+                    <p class="secondary">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit,
+                        sed do eiusmod tempor
+                    </p>
+                </section>
+                <hr class="divider" />
+                <section
+                    style="display: flex; flex-direction: column; gap: 8px"
+                >
+                    <span class="subtitle2">Subtitle</span>
+                    <div
+                        style="
+                            display: flex;
+                            gap: 8px;
+                            overflow-x: scroll;
+                            margin-inline: -16px;
+                            padding-inline: 16px;
+                        "
+                    >
+                        <div class="chip">Item 1</div>
+                        <div class="chip">Item 2</div>
+                        <div class="chip">Item 3</div>
+                        <div class="chip">Item 4</div>
+                        <div class="chip">Item 5</div>
+                        <div class="chip">Item 6</div>
+                    </div>
+                </section>
+                <section class="actions">
+                    <button class="button text">Action 1</button>
+                </section>
+            </article>
+        </section>
+
+        <section class="card" id="chips">
+            <h2 class="h4">Chips</h2>
+
+            <div class="chip">Simple</div>
+            <div class="chip"><span class="icon">favorite</span>With icon</div>
+            <div class="chip">
+                <img src="https://picsum.photos/24" alt="" class="thumbnail" />
+                With thumbnail
+            </div>
+            <div class="chip">
+                <img src="https://picsum.photos/24" alt="" class="thumbnail" />
+                Removable
+                <button class="icon button">cancel</button>
+            </div>
+        </section>
+
+        <section class="card" id="buttons">
             <h2 class="h4">Buttons</h2>
 
             <button class="button contained">button</button>
@@ -60,7 +254,7 @@
             <button disabled class="button icon">add</button>
         </section>
 
-        <section id="button-links">
+        <section class="card" id="button-links">
             <h2 class="h4">Button links</h2>
 
             <a href="#button-links" class="button contained">link</a>
@@ -80,7 +274,7 @@
             <a href="#button-links" class="button icon">add</a>
         </section>
 
-        <section id="textfields">
+        <section class="card" id="textfields">
             <h2 class="h4">Text Fields</h2>
 
             <div class="textfield">
@@ -158,7 +352,7 @@
             </div>
         </section>
 
-        <section id="checkboxes">
+        <section class="card" id="checkboxes">
             <h2 class="h4">Checkboxes</h2>
 
             <label for="checked">
@@ -228,7 +422,7 @@
             </script>
         </section>
 
-        <section id="radios">
+        <section class="card" id="radios">
             <h2 class="h4">Radio Buttons</h2>
             <label for="selected">
                 <input
@@ -272,7 +466,7 @@
             </label>
         </section>
 
-        <section id="switches">
+        <section class="card" id="switches">
             <h2 class="h4">Switches</h2>
 
             <label for="on">
@@ -312,7 +506,7 @@
             </label>
         </section>
 
-        <section id="sliders">
+        <section class="card" id="sliders">
             <h2 class="h4">Sliders</h2>
 
             <label for="slider">
@@ -369,7 +563,7 @@
                 />
             </label>
 
-            <script src="components/slider.js"></script>
+            <script src="../style/components/slider.js"></script>
         </section>
     </body>
 </html>

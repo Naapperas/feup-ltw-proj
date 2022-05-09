@@ -1,4 +1,9 @@
-.button {
+:root {
+    --color-button: var(--color-main);
+    --color-on-button: var(--color-on-main);
+}
+
+.button:is(.text, .outlined, .contained, .icon) {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,18 +23,16 @@
     font-weight: 500;
     letter-spacing: 0.08928571428em;
     user-select: none;
-
-    transition: box-shadow 100ms ease-in-out;
 }
 
-.button .icon {
+.button:is(.text, .outlined, .contained) .icon {
     margin-left: -4px;
     margin-right: 8px;
 }
 
 .button.icon {
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
 
     min-width: initial;
 
@@ -39,29 +42,21 @@
 }
 
 .button.contained {
-    color: var(--color-on-primary);
-    background-color: var(--color-primary);
+    color: rgba(var(--color-on-button), var(--opacity-high-emphasis));
+    background-color: rgb(var(--color-button));
 
     padding-inline: 16px;
 
     --elevation: var(--elevation-2);
-    --overlay: var(--overlay-primary);
-
-    box-shadow: var(--elevation), var(--overlay);
+    --color-overlay: var(--color-on-button);
 }
 
 .button.contained:hover {
     --elevation: var(--elevation-4);
-    --overlay: var(--overlay-primary-hover);
-}
-
-.button.contained:focus {
-    --overlay: var(--overlay-primary-focus);
 }
 
 .button.contained:active {
     --elevation: var(--elevation-0);
-    --overlay: var(--overlay-primary-active);
 }
 
 .button.outlined {
@@ -74,33 +69,31 @@
 }
 
 .button:is(.text, .outlined, .icon) {
-    color: var(--color-primary);
+    color: rgba(var(--color-button), var(--opacity-high-emphasis));
     background-color: transparent;
 
-    --overlay: var(--overlay-surface-primary);
-
-    box-shadow: var(--overlay);
+    --color-overlay: var(--color-button);
 }
 
-.button:is(.text, .outlined, .icon):hover {
-    --overlay: var(--overlay-surface-primary-hover);
+.button:is(.text, .outlined, .contained, .icon):hover {
+    --opacity-overlay: var(--opacity-hover);
 }
 
-.button:is(.text, .outlined, .icon):focus {
-    --overlay: var(--overlay-surface-primary-focus);
+.button:is(.text, .outlined, .contained, .icon):focus {
+    --opacity-overlay: var(--opacity-focus);
 }
 
-.button:is(.text, .outlined, .icon):active {
-    --overlay: var(--overlay-surface-primary-active);
+.button:is(.text, .outlined, .contained, .icon):active {
+    --opacity-overlay: var(--opacity-active);
 }
 
-.button:disabled {
-    color: var(--color-on-surface);
-    opacity: 38%;
+.button:is(.text, .outlined, .contained, .icon):disabled {
+    color: rgb(var(--color-on-surface));
+    opacity: var(--opacity-disabled);
     cursor: initial;
     box-shadow: none;
 }
 
 .button.contained:disabled {
-    background-color: rgba(var(--tcolor-on-surface), 38%);
+    background-color: rgba(var(--color-on-surface), var(--opacity-disabled));
 }

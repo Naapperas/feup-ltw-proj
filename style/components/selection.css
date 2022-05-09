@@ -10,7 +10,7 @@ input:is([type="checkbox"].checkbox, [type="radio"].radio) {
     height: 40px;
     border-radius: 50%;
 
-    color: rgba(var(--tcolor-on-surface), 0.54);
+    color: rgba(var(--color-on-surface), 0.54);
 
     appearance: none;
     border: none;
@@ -20,12 +20,7 @@ input:is([type="checkbox"].checkbox, [type="radio"].radio) {
 
     cursor: pointer;
 
-    --overlay: var(--overlay-surface);
-    box-shadow: var(--overlay);
-
-    transition: box-shadow, color;
-    transition-duration: 200ms;
-    transition-timing-function: ease-in-out;
+    --color-overlay: var(--color-on-surface);
 }
 
 input:is([type="checkbox"].checkbox, [type="radio"].radio)::before,
@@ -75,40 +70,25 @@ input[type="checkbox"].checkbox:indeterminate::after {
 }
 
 input:is([type="checkbox"].checkbox, [type="radio"].radio):hover {
-    --overlay: var(--overlay-surface-hover);
+    --opacity-overlay: var(--opacity-hover);
 }
 
 input:is([type="checkbox"].checkbox, [type="radio"].radio):focus {
-    --overlay: var(--overlay-surface-focus);
+    --opacity-overlay: var(--opacity-focus);
 }
 
 input:is([type="checkbox"].checkbox, [type="radio"].radio):active {
-    --overlay: var(--overlay-surface-active);
+    --opacity-overlay: var(--opacity-active);
 }
 
 input:is([type="checkbox"].checkbox, [type="radio"].radio):checked,
 input[type="checkbox"].checkbox:indeterminate {
-    --overlay: var(--overlay-surface-primary);
-    color: var(--color-primary);
-}
-
-input:is([type="checkbox"].checkbox, [type="radio"].radio):checked:hover,
-input[type="checkbox"].checkbox:indeterminate:hover {
-    --overlay: var(--overlay-surface-primary-hover);
-}
-
-input:is([type="checkbox"].checkbox, [type="radio"].radio):checked:focus,
-input[type="checkbox"].checkbox:indeterminate:focus {
-    --overlay: var(--overlay-surface-primary-focus);
-}
-
-input:is([type="checkbox"].checkbox, [type="radio"].radio):checked:active,
-input[type="checkbox"].checkbox:indeterminate:active {
-    --overlay: var(--overlay-surface-primary-active);
+    --color-overlay: var(--color-main);
+    color: rgb(var(--color-main));
 }
 
 input:is([type="checkbox"].checkbox, [type="radio"].radio):disabled {
-    color: rgba(var(--tcolor-on-surface), 38%);
+    color: rgba(var(--color-on-surface), var(--opacity-disabled));
     box-shadow: none;
 
     cursor: initial;
@@ -130,25 +110,21 @@ input[type="checkbox"].switch {
     border-radius: 7px;
     margin: 13px;
 
-    background-color: rgba(var(--tcolor-on-surface), 0.38);
+    background-color: rgba(var(--color-on-surface), var(--opacity-disabled));
 
     cursor: pointer;
 
     appearance: none;
     border: none;
     outline: none;
-
-    transition: background-color;
-    transition-duration: 200ms;
-    transition-timing-function: ease-in-out;
 }
 
 input[type="checkbox"].switch:checked {
-    background-color: rgba(var(--tcolor-primary), 0.38);
+    background-color: rgba(var(--color-main), var(--opacity-disabled));
 }
 
 input[type="checkbox"].switch:disabled {
-    opacity: 38%;
+    opacity: var(--opacity-disabled);
 
     cursor: initial;
 }
@@ -161,10 +137,6 @@ input[type="checkbox"].switch::after {
     position: absolute;
 
     border-radius: 50%;
-
-    transition: left, box-shadow, background-color;
-    transition-duration: 200ms;
-    transition-timing-function: ease-in-out;
 }
 
 input[type="checkbox"].switch::before {
@@ -176,8 +148,7 @@ input[type="checkbox"].switch::before {
 
     background-color: transparent;
 
-    --overlay: var(--overlay-surface);
-    box-shadow: var(--overlay);
+    --color-overlay: var(--color-on-surface);
 }
 
 input[type="checkbox"].switch::after {
@@ -187,43 +158,33 @@ input[type="checkbox"].switch::after {
     top: -3px;
     left: -3px;
 
-    background-color: var(--color-surface);
+    background-color: rgb(var(--color-surface));
 
-    box-shadow: var(--elevation-2);
+    --elevation: var(--elevation-2);
 }
 
 input[type="checkbox"].switch:checked::before {
     left: 5px;
+
+    --color-overlay: var(--color-main);
 }
 
 input[type="checkbox"].switch:checked::after {
     left: 15px;
 
-    background-color: var(--color-primary);
+    background-color: rgb(var(--color-main));
 }
 
 input[type="checkbox"].switch:hover::before {
-    --overlay: var(--overlay-surface-hover);
+    --opacity-overlay: var(--opacity-hover);
 }
 
 input[type="checkbox"].switch:focus::before {
-    --overlay: var(--overlay-surface-focus);
+    --opacity-overlay: var(--opacity-focus);
 }
 
 input[type="checkbox"].switch:active::before {
-    --overlay: var(--overlay-surface-active);
-}
-
-input[type="checkbox"].switch:checked:hover::before {
-    --overlay: var(--overlay-surface-primary-hover);
-}
-
-input[type="checkbox"].switch:checked:focus::before {
-    --overlay: var(--overlay-surface-primary-focus);
-}
-
-input[type="checkbox"].switch:checked:active::before {
-    --overlay: var(--overlay-surface-primary-active);
+    --opacity-overlay: var(--opacity-active);
 }
 
 input[type="checkbox"].switch:disabled::before {

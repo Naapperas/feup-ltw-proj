@@ -2,6 +2,7 @@
     position: relative;
 
     justify-self: stretch;
+    width: 100%;
 
     font-size: 1rem;
 }
@@ -57,7 +58,7 @@ but that is impossible outside chromium
 }
 
 :is(.textfield input, .select select):focus ~ label {
-    color: var(--color-primary);
+    color: rgb(var(--color-main));
 }
 
 :is(.textfield input, .select select) {
@@ -65,9 +66,9 @@ but that is impossible outside chromium
 
     height: 48px;
     padding: 20px 16px 4px 16px;
-    min-width: 280px;
+    width: 100%;
 
-    border-color: var(--color-on-surface);
+    border-color: rgb(var(--color-on-surface));
     border-style: none;
     border-bottom-style: solid;
     border-width: 1px;
@@ -75,9 +76,9 @@ but that is impossible outside chromium
 
     outline: none;
 
-    background-color: rgba(var(--tcolor-on-surface), 8%);
+    background-color: rgba(var(--color-on-surface), 8%);
 
-    caret-color: var(--color-primary);
+    caret-color: rgb(var(--color-main));
 
     transition: border-width, border-color, background-color;
     transition-duration: 200ms;
@@ -100,7 +101,7 @@ but that is impossible outside chromium
 }
 
 :is(.textfield input, .select select):focus {
-    border-color: var(--color-primary);
+    border-color: rgb(var(--color-main));
     border-width: 2px;
 }
 
@@ -109,22 +110,14 @@ but that is impossible outside chromium
 }
 
 :is(.textfield input, .select select):hover {
-    background-color: rgba(var(--tcolor-on-surface), 12%);
+    background-color: rgba(var(--color-on-surface), 12%);
 }
 
 :is(.textfield input, .select select):disabled {
-    opacity: 38%;
-    background-color: rgba(var(--tcolor-on-surface), 8%);
+    opacity: var(--opacity-disabled);
+    background-color: rgba(var(--color-on-surface), 8%);
 }
 
 :is(.textfield input, .select select):disabled ~ label {
-    opacity: 38%;
-}
-
-:is(.textfield, .textfield input) {
-    width: 100%;
-}
-
-#textfields {
-    flex-direction: column;
+    opacity: var(--opacity-disabled);
 }

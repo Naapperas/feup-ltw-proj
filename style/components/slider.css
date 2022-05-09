@@ -10,27 +10,28 @@ input[type="range"].slider {
     background: transparent;
     outline: none;
 
-    --color-thumb: var(--color-primary);
-    --overlay-alpha: 0;
+    --color-thumb: rgb(var(--color-main));
+
+    box-shadow: none;
 }
 
 input[type="range"].slider:hover {
-    --overlay-alpha: 0.04;
+    --opacity-overlay: var(--opacity-hover);
 }
 
 input[type="range"].slider:focus {
-    --overlay-alpha: 0.12;
+    --opacity-overlay: var(--opacity-focus);
 }
 
 input[type="range"].slider:active {
-    --overlay-alpha: 0.16;
+    --opacity-overlay: var(--opacity-active);
 }
 
 input[type="range"].slider:disabled {
-    opacity: 0.38;
+    opacity: var(--opacity-disabled);
 
-    --overlay-alpha: 0;
-    --color-thumb: var(--color-on-surface);
+    --opacity-overlay: 0;
+    --color-thumb: rgb(var(--color-on-surface));
 
     cursor: initial;
 }
@@ -43,7 +44,7 @@ input[type="range"].slider::-webkit-slider-thumb {
     border-radius: 50%;
     border: none;
 
-    outline: solid rgba(var(--tcolor-primary), var(--overlay-alpha)) 24px;
+    outline: solid rgba(var(--color-main), var(--opacity-overlay)) 24px;
     outline-offset: -10px;
     background: var(--color-thumb);
     box-shadow: var(--elevation-2);
@@ -63,7 +64,7 @@ input[type="range"].slider::-moz-range-thumb {
     border-radius: 50%;
     border: none;
 
-    outline: solid rgba(var(--tcolor-primary), var(--overlay-alpha)) 24px;
+    outline: solid rgba(var(--color-main), var(--overlay-alpha)) 24px;
     outline-offset: -10px;
     background: var(--color-thumb);
     box-shadow: var(--elevation-2);

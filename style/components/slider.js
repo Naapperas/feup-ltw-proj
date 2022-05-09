@@ -45,7 +45,7 @@ const getSliderCSS = async (slider) => {
         slider.offsetWidth,
         slider.value / slider.max,
         getComputedStyle(slider).getPropertyValue(
-            slider.disabled ? "--tcolor-on-surface" : "--tcolor-primary"
+            slider.disabled ? "--color-on-surface" : "--color-main"
         ),
         slider.step / slider.max
     );

@@ -1,3 +1,15 @@
+:root {
+    --color-appbar: var(--color-main);
+    --color-on-appbar: var(--color-on-main);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-appbar: var(--color-surface);
+        --color-on-appbar: var(--color-on-surface);
+    }
+}
+
 .appbar {
     display: grid;
     grid-template: "start title" auto / min-content auto;
@@ -13,20 +25,22 @@
     padding-inline: 16px;
     gap: 24px;
 
-    background-color: var(--color-primary);
-    color: var(--color-on-primary);
+    background-color: rgb(var(--color-appbar));
+    color: rgb(var(--color-on-appbar));
+
+    --color-button: var(--color-on-appbar);
+    --color-on-button: var(--color-appbar);
+}
+
+.appbar.elevated {
+    --elevation: var(--elevation-4);
 }
 
 .appbar > :nth-child(2) {
     margin-left: 8px;
 }
 
-/* TODO: Move button color to variable */
-.appbar > .button {
-    color: inherit;
-    --overlay: --overlay-primary;
-}
-
+/* Account for margin in icon buttons */
 .appbar > .button.icon {
-    margin: -4px;
+    margin: -8px;
 }
