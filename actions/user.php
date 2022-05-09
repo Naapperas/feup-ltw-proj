@@ -10,12 +10,8 @@
         ), true);
     }
 
-    function createUser(PDO $db, string $username, string $password, string $email, string $address, string $phone_number): bool {
+    function createUser(string $username, string $password, string $email, string $address, string $phone_number): array {
 
-        return User::create(array($username, hashPassword($password)));
-
-        $query = 'INSERT INTO users VALUES(?, ?, ?, ?, ?)';
-
-        return executeQuery($db, $query, array($username, $email, hashPassword($password), $address, $phone_number))[0];
+        return User::create(array($username, $email, hashPassword($password), $address, $phone_number, 0, 1, 0));
     }
 ?>
