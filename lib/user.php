@@ -1,7 +1,7 @@
 <?php
 
     include_once("../database/models/user.php");
-    include_once("../lib/password.php");
+    include_once("password.php");
 
     function userExists(string $username, string $password): bool {
         return !!User::get(array(

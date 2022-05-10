@@ -21,17 +21,15 @@
     require_once('../lib/user.php');
 
     if (!userExists($_POST['username'], $_POST['password'])) {
-        $_SESSION['user'] = User::create(array(
+        $_SESSION['user'] = createUser(
             $_POST['username'],
-            $_POST['email'],
             $_POST['password'],
+            $_POST['email'],
             $_POST['address'],
-            $_POST['phone'],
-            0,
-            0));
+            $_POST['phone']);
     }
 
     print_r($_SESSION);
 
-    header('Location: ' . $_POST['referer']);
+    // header('Location: ' . $_POST['referer']);
 ?>
