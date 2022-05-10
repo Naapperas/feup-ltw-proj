@@ -14,8 +14,10 @@
         
             $creationResults = executeQuery(User::getDb(), $createQuery, $data);
 
+            list($name,, $password, $address, $phone,,) = $data;
+
             if ($creationResults[0])
-                return getQueryResults(User::getDb(), $retrieveQuery, false, $data);
+                return getQueryResults(User::getDb(), $retrieveQuery, false, array($name, $password, $address, $phone));
 
             return array();
         }
