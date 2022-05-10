@@ -11,7 +11,7 @@
     }
 
     function createUser(string $username, string $password, string $email, string $address, string $phone_number): array {
-        return User::create(array($username, $email, hashPassword($password), $address, $phone_number, 0, 1, 0));
+        return User::create(array($username, $email, hashPassword($password), $address, $phone_number, 0, 0));
     }
 
     function toggleOwner(int $user_id): array {
@@ -20,12 +20,11 @@
 
         return User::update($user_id, array(
             $user["name"],
-            $user["email"],
             $user["password"],
+            $user["email"],
             $user["address"],
             $user["phone_number"],
             !$user["is_owner"],
-            $user["is_client"],
             $user["is_driver"],
         ));
     }
@@ -36,12 +35,11 @@
 
         return User::update($user_id, array(
             $user["name"],
-            $user["email"],
             $user["password"],
+            $user["email"],
             $user["address"],
             $user["phone_number"],
             $user["is_owner"],
-            $user["is_client"],
             !$user["is_driver"],
         ));
     }

@@ -16,7 +16,7 @@
     require_once('../lib/user.php');
 
     if (userExists($_POST['username'], $_POST['password']))
-        $_SESSION['username'] = User::get(array("name" => $_POST['username']), true);
+        $_SESSION['user'] = User::get(array("name" => $_POST['username']), true);
 
     header('Location: ' . $_POST['referer']);
 ?>

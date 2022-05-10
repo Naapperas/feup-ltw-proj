@@ -84,7 +84,6 @@ CREATE TABLE "User" (
     "address" TEXT NOT NULL,
     "phone_number" TEXT NOT NULL,
     "is_owner" BOOLEAN NOT NULL,
-    "is_client" BOOLEAN NOT NULL,
     "is_driver" BOOLEAN NOT NULL,
     PRIMARY KEY("id"),
     CONSTRAINT "unique_username" UNIQUE("name"),

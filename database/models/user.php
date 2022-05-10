@@ -24,7 +24,7 @@
 
             if (count($newData) !== 7) throw new Exception("Should pass 7 parameters when updating User entries.");
 
-            static $updateQuery = "UPDATE User SET name = ?, password = ?. address = ?, phone_number = ?, is_owner = ?, is_client = ?, is_driver = ? WHERE id = ?;";
+            static $updateQuery = "UPDATE User SET name = ?, password = ?, email = ?, address = ?, phone_number = ?, is_owner = ?, is_driver = ? WHERE id = ?;";
             static $retrieveQuery = "SELECT * FROM User WHERE id = ?;";
         
             $newData[] = $id;
