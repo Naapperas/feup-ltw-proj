@@ -8,6 +8,7 @@
 
         <link rel="stylesheet" href="../style/index.css" />
         <script src="../scripts/components/form.js" defer></script>
+        <script src="../scripts/components/textfield.js" defer></script>
     </head>
     <body class="centered small-spacing small single column layout">
         <h1 class="h3 color logo"></h1>
@@ -29,6 +30,7 @@
                         required
                     />
                     <label for="email">Email</label>
+                    <span class="error-text">Error: Invalid email</span>
                 </div>
 
                 <div class="textfield">
@@ -54,6 +56,12 @@
                         minlength="8"
                     />
                     <label for="password">Password</label>
+                    <button
+                        type="button"
+                        class="toggle-visible icon button"
+                    ></button>
+                    <span class="character-counter"></span>
+                    <span class="error-text">Error: at least 8 characters</span>
                 </div>
 
                 <button class="button contained" type="button" next>
@@ -109,6 +117,7 @@
                         pattern="\d{9}"
                     />
                     <label for="phone">Phone number</label>
+                    <span class="error-text">Error: invalid phone number</span>
                 </div>
 
                 <button class="button outlined" type="button" back>
@@ -120,7 +129,7 @@
 
         <span>
             Already have an account?
-            <a href="../login/index.html">Login</a>
+            <a href="../login/">Login</a>
         </span>
     </body>
 </html>

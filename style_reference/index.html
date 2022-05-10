@@ -295,17 +295,22 @@
                     placeholder=" "
                 />
                 <label for="password">Password</label>
+                <span class="helper-text">I have helper text!</span>
             </div>
 
             <div class="textfield">
                 <input
+                    class="error"
                     type="password"
-                    name="password"
-                    id="password"
+                    name="password-empowered"
+                    id="password-empowered"
+                    minlength="8"
                     placeholder=" "
                 />
-                <label for="password">Password</label>
-                <button class="toggle-visible icon button" />
+                <label for="password-empowered">Password</label>
+                <button class="toggle-visible icon button"></button>
+                <span class="error-text">This is an error!</span>
+                <span class="character-counter"></span>
             </div>
 
             <div class="textfield">

@@ -1,8 +1,13 @@
 :is(.textfield, .select) {
+    display: grid;
+    grid-template:
+        "input input" 48px
+        "assistive-text character-counter" auto / auto auto;
+
     position: relative;
 
     justify-self: stretch;
-    height: 48px;
+    height: min-content;
     width: 100%;
 
     font-size: 1rem;
@@ -42,7 +47,7 @@ but that is impossible outside chromium
 :is(.textfield, .select) label {
     position: absolute;
     left: 16px;
-    top: 50%;
+    top: 24px;
     transform: translateY(-50%);
     pointer-events: none;
 
@@ -64,6 +69,7 @@ but that is impossible outside chromium
 
 :is(.textfield input, .select select) {
     appearance: none;
+    grid-area: input;
 
     height: 48px;
     padding: 20px 16px 4px 16px;
@@ -149,4 +155,43 @@ but that is impossible outside chromium
 
 .textfield input[type="password"] ~ .toggle-visible::before {
     content: "visibility";
+}
+
+.textfield :is(.character-counter, .error-text, .helper-text) {
+    display: inline-block;
+    padding-top: 4px;
+    height: calc(1em + 8px);
+
+    overflow: hidden;
+
+    font-size: 0.75rem;
+    letter-spacing: 0.0333333333em;
+    color: rgba(var(--color-on-surface), var(--opacity-medium-emphasis));
+}
+
+.textfield :is(.error-text, .helper-text) {
+    grid-area: assistive-text;
+    justify-self: start;
+    text-align: start;
+    margin-left: 16px;
+}
+
+.textfield .character-counter {
+    grid-area: character-counter;
+    justify-self: end;
+    margin-right: 16px;
+}
+
+.textfield .error-text {
+    color: rgb(var(--color-error));
+}
+
+.textfield input:not(.error) ~ .error-text {
+    opacity: 0%;
+    height: 0px;
+}
+
+.textfield input.error ~ .error-text ~ .helper-text {
+    opacity: 0%;
+    height: 0px;
 }

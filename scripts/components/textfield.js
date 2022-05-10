@@ -17,12 +17,29 @@ const empowerTextField = (textfield) => {
     const toggleVisibilityButton = textfield.querySelector(
         "button.toggle-visible"
     );
+    /** @type HTMLElement */
+    const characterCounter = textfield.querySelector(".character-counter");
 
     if (toggleVisibilityButton)
         toggleVisibilityButton.addEventListener(
             "click",
             () => (input.type = input.type === "password" ? "text" : "password")
         );
+
+    if (characterCounter) {
+        if (input.maxLength !== -1 || input.minLength !== -1) {
+            const counterValue =
+                input.maxLength === -1 ? input.minLength : input.maxLength;
+
+            const eventListener = () =>
+                (characterCounter.innerText = `${input.value.length}/${counterValue}`);
+
+            input.addEventListener("input", eventListener);
+            eventListener();
+        } else {
+            characterCounter.remove();
+        }
+    }
 };
 
 /** @type NodeListOf<HTMLElement> */
