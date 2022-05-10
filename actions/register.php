@@ -26,7 +26,8 @@
             $_POST['password'],
             $_POST['email'],
             $_POST['address'],
-            $_POST['phone']);
+            $_POST['phone'],
+            sprintf("%s %s", $_POST["fname"], $_POST["lname"]));
     }
 
     print_r($_SESSION);

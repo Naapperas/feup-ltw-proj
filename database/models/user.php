@@ -7,14 +7,14 @@
 
         static function create(array $data): array {
 
-            if (count($data) !== 7) throw new Exception("Should pass 7 parameters when creating User entries.");
+            if (count($data) !== 8) throw new Exception("Should pass 8 parameters when creating User entries.");
 
-            static $createQuery = "INSERT INTO User VALUES (NULL, ?, ?, ?, ?, ?, ?, ?);";
+            static $createQuery = "INSERT INTO User VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?);";
             static $retrieveQuery = "SELECT * FROM User WHERE name = ? AND password = ? AND address = ? AND phone_number = ?;";
         
             $creationResults = executeQuery(User::getDb(), $createQuery, $data);
 
-            list($name,, $password, $address, $phone,,) = $data;
+            list($name,, $password, $address, $phone,,,) = $data;
 
             if ($creationResults[0])
                 return getQueryResults(User::getDb(), $retrieveQuery, false, array($name, $password, $address, $phone));
@@ -24,9 +24,9 @@
 
         static function update(int $id, array $newData): array {
 
-            if (count($newData) !== 7) throw new Exception("Should pass 7 parameters when updating User entries.");
+            if (count($newData) !== 8) throw new Exception("Should pass 8 parameters when updating User entries.");
 
-            static $updateQuery = "UPDATE User SET name = ?, password = ?, email = ?, address = ?, phone_number = ?, is_owner = ?, is_driver = ? WHERE id = ?;";
+            static $updateQuery = "UPDATE User SET name = ?, password = ?, email = ?, address = ?, phone_number = ?, full_name = ?, is_owner = ?, is_driver = ? WHERE id = ?;";
             static $retrieveQuery = "SELECT * FROM User WHERE id = ?;";
         
             $newData[] = $id;

@@ -10,8 +10,8 @@
         ), true);
     }
 
-    function createUser(string $username, string $password, string $email, string $address, string $phone_number): array {
-        return User::create(array($username, $email, hashPassword($password), $address, $phone_number, 0, 0));
+    function createUser(string $username, string $password, string $email, string $address, string $phone_number, string $full_name): array {
+        return User::create(array($username, $email, hashPassword($password), $address, $phone_number, $full_name, 0, 0));
     }
 
     function toggleOwner(int $user_id): array {
