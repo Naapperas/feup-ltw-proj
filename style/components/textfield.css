@@ -189,9 +189,11 @@ but that is impossible outside chromium
 .textfield input:not(.error) ~ .error-text {
     opacity: 0%;
     height: 0px;
+    padding-top: 0;
 }
 
 .textfield input.error ~ .error-text ~ .helper-text {
     opacity: 0%;
     height: 0px;
+    padding-top: 0;
 }

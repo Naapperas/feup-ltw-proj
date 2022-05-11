@@ -4,11 +4,13 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Xau Fome - Register</title>
+        <title>Register - Xau Fome</title>
 
         <link rel="stylesheet" href="../style/index.css" />
         <script src="../scripts/components/form.js" defer></script>
         <script src="../scripts/components/textfield.js" defer></script>
+
+        <meta name="description" content="Register page for XauFome" />
     </head>
     <body class="centered small-spacing small single column layout">
         <h1 class="h3 color logo"></h1>
@@ -59,6 +61,7 @@
                     <button
                         type="button"
                         class="toggle-visible icon button"
+                        aria-label="Toggle password visibility"
                     ></button>
                     <span class="character-counter"></span>
                     <span class="error-text">Error: at least 8 characters</span>
@@ -91,7 +94,7 @@
                         autocomplete="family-name"
                         required
                     />
-                    <label for="last_name">Last name</label>
+                    <label for="lname">Last name</label>
                 </div>
 
                 <div class="textfield">
