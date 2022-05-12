@@ -1,7 +1,8 @@
 <?php
     session_start();
 
-    session_unset();
+    if (isset($_SESSION["user"]))
+        session_unset();
 
     header('Location: ' . $_SERVER['HTTP_REFERER']);
 ?>
