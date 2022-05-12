@@ -1,7 +1,7 @@
 <?php
 
     if (strcmp($_SERVER['REQUEST_METHOD'], "POST") !== 0) {
-        header("Location: /index.php");
+        header("Location: /mainpage/");
         die;
     }
 

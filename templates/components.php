@@ -98,3 +98,21 @@ enum ButtonType: string {
         <?php } ?>
     </div>
 <?php } ?>
+
+<?php function createUserButtons() {
+            
+    session_start();
+
+    if (isset($_SESSION['user'])) {?>
+
+    <button type="button" class="button contained">Cart</button>
+    <a type="button" class="button contained" href="../profile/">Profile</a>
+    <a type="button" class="button contained" href="../actions/logout.php">Log out</a>
+
+    <?php } else { ?>
+    
+    <a type="button" class="button contained" href="../login/">Login</a>
+    <a type="button" class="button contained" href="../register/">Register</a>
+
+    <?php } ?>
+<?php } ?>
