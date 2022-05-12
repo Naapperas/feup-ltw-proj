@@ -10,7 +10,7 @@ require_once("../templates/components.php");
         scripts: ["components/form.js", "components/textfield.js"]
     ); ?>
     <body class="centered small-spacing small single column layout">
-        <h1 class="h3 color logo"></h1>
+        <a href="/mainpage/" class="homepage-link"><h1 class="h3 color logo"></h1></a>
 
         <form action="../actions/login.php" method="post" class="form" empower>
             <?php 
@@ -24,6 +24,7 @@ require_once("../templates/components.php");
             );
             createButton(text: "Login", submit: true);
             ?>
+            <input type="hidden" name="referer" value="<?=$_SERVER["HTTP_REFERER"]?>">
         </form>
 
         <span>

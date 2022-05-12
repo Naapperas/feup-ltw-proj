@@ -126,3 +126,8 @@ hr.divider.vertical {
     width: 1px;
     height: 100%;
 }
+
+a.homepage-link {
+    text-decoration: none;
+    color: inherit;
+}

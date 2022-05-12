@@ -41,7 +41,7 @@ enum ButtonType: string {
     <<?= $component ?> 
         class="button <?= $type->value ?> <?= $class ?>" 
         type="<?= $submit ? "submit" : "button" ?>"
-        <?php if ($next) echo "next "; if ($back) echo "back "; ?>
+        <?php if ($next && !$back) echo "next "; if ($back && !$next) echo "back "; ?>
     >
         <?php if ($icon) createIcon($icon) ?>
         <?= $text ?>

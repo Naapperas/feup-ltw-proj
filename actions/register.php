@@ -13,7 +13,8 @@
         !isset($_POST['fname']) ||
         !isset($_POST['lname']) ||
         !isset($_POST['address']) ||
-        !isset($_POST['phone'])) {
+        !isset($_POST['phone']) ||
+        !isset($_POST['referer'])) {
         die("Error: some form data isn't set");
     }
 
@@ -30,7 +31,5 @@
             sprintf("%s %s", $_POST["fname"], $_POST["lname"]));
     }
 
-    print_r($_SESSION);
-
-    // header('Location: ' . $_POST['referer']);
+    header('Location: ' . $_POST['referer']);
 ?>
