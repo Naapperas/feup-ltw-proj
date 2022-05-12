@@ -1,7 +1,7 @@
 <?php 
 declare(strict_types=1);
 
-require_once("../templates/components.php");
+require_once("./templates/components.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">

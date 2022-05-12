@@ -25,14 +25,14 @@ enum ButtonType: string {
             <?php } ?>
         </title>
 
-        <link rel="stylesheet" href="../style/index.css" />
+        <link rel="stylesheet" href="/style/index.css" />
 
         <?php foreach ($styles as $style) { ?>
-            <link rel="stylesheet" src="../style/<?= $style ?>" />
+            <link rel="stylesheet" src="/style/<?= $style ?>" />
         <?php } ?>
 
         <?php foreach ($scripts as $script) { ?>
-            <script src="../scripts/<?= $script ?>" defer></script>
+            <script src="/scripts/<?= $script ?>" defer></script>
         <?php } ?>
 
         <meta name="description" content="<?= $description ?>" />
@@ -112,13 +112,13 @@ enum ButtonType: string {
     if (isset($_SESSION['user'])) {?>
 
     <button type="button" class="button contained">Cart</button>
-    <a type="button" class="button contained" href="../profile/">Profile</a>
-    <a type="button" class="button contained" href="../actions/logout.php">Log out</a>
+    <a type="button" class="button contained" href="/profile/">Profile</a>
+    <a type="button" class="button contained" href="/actions/logout.php">Log out</a>
 
     <?php } else { ?>
     
-    <a type="button" class="button contained" href="../login/">Login</a>
-    <a type="button" class="button contained" href="../register/">Register</a>
+    <a type="button" class="button contained" href="/login/">Login</a>
+    <a type="button" class="button contained" href="/register/">Register</a>
 
     <?php } ?>
 <?php } ?>
