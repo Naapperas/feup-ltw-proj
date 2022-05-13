@@ -72,6 +72,204 @@ require_once("./templates/components.php");
                     <button class="button text">Action 2</button>
                 </section>
             </article>
+            <article class="card elevated">
+                <header>
+                    <img src="https://picsum.photos/40" alt="" class="avatar" />
+                    <h3 class="h6">Title goes here</h3>
+                    <span class="subtitle2 secondary">Secondary text</span>
+                </header>
+                <img
+                    src="https://picsum.photos/316/194"
+                    width="316"
+                    height="194"
+                    alt=""
+                    class="full media"
+                />
+                <span class="body2 secondary">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                    sed do eiusmod tempor
+                </span>
+                <section class="actions">
+                    <button class="button text">Action 1</button>
+                    <button class="button text">Action 2</button>
+                </section>
+            </article>
+            <article class="card elevated">
+                <header>
+                    <img src="https://picsum.photos/40" alt="" class="avatar" />
+                    <h3 class="h6">Title goes here</h3>
+                    <span class="subtitle2 secondary">Secondary text</span>
+                </header>
+                <img
+                    src="https://picsum.photos/316/194"
+                    width="316"
+                    height="194"
+                    alt=""
+                    class="full media"
+                />
+                <span class="body2 secondary">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                    sed do eiusmod tempor
+                </span>
+                <section class="actions">
+                    <button class="button text">Action 1</button>
+                    <button class="button text">Action 2</button>
+                </section>
+            </article>
+            <article class="card elevated">
+                <header>
+                    <img src="https://picsum.photos/40" alt="" class="avatar" />
+                    <h3 class="h6">Title goes here</h3>
+                    <span class="subtitle2 secondary">Secondary text</span>
+                </header>
+                <img
+                    src="https://picsum.photos/316/194"
+                    width="316"
+                    height="194"
+                    alt=""
+                    class="full media"
+                />
+                <span class="body2 secondary">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                    sed do eiusmod tempor
+                </span>
+                <section class="actions">
+                    <button class="button text">Action 1</button>
+                    <button class="button text">Action 2</button>
+                </section>
+            </article>
+            <article class="card elevated">
+                <header>
+                    <img src="https://picsum.photos/40" alt="" class="avatar" />
+                    <h3 class="h6">Title goes here</h3>
+                    <span class="subtitle2 secondary">Secondary text</span>
+                </header>
+                <img
+                    src="https://picsum.photos/316/194"
+                    width="316"
+                    height="194"
+                    alt=""
+                    class="full media"
+                />
+                <span class="body2 secondary">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                    sed do eiusmod tempor
+                </span>
+                <section class="actions">
+                    <button class="button text">Action 1</button>
+                    <button class="button text">Action 2</button>
+                </section>
+            </article>
+            <article class="card elevated">
+                <header>
+                    <img src="https://picsum.photos/40" alt="" class="avatar" />
+                    <h3 class="h6">Title goes here</h3>
+                    <span class="subtitle2 secondary">Secondary text</span>
+                </header>
+                <img
+                    src="https://picsum.photos/316/194"
+                    width="316"
+                    height="194"
+                    alt=""
+                    class="full media"
+                />
+                <span class="body2 secondary">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                    sed do eiusmod tempor
+                </span>
+                <section class="actions">
+                    <button class="button text">Action 1</button>
+                    <button class="button text">Action 2</button>
+                </section>
+            </article>
+            <article class="card elevated">
+                <header>
+                    <img src="https://picsum.photos/40" alt="" class="avatar" />
+                    <h3 class="h6">Title goes here</h3>
+                    <span class="subtitle2 secondary">Secondary text</span>
+                </header>
+                <img
+                    src="https://picsum.photos/316/194"
+                    width="316"
+                    height="194"
+                    alt=""
+                    class="full media"
+                />
+                <span class="body2 secondary">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                    sed do eiusmod tempor
+                </span>
+                <section class="actions">
+                    <button class="button text">Action 1</button>
+                    <button class="button text">Action 2</button>
+                </section>
+            </article>
+            <article class="card elevated">
+                <header>
+                    <img src="https://picsum.photos/40" alt="" class="avatar" />
+                    <h3 class="h6">Title goes here</h3>
+                    <span class="subtitle2 secondary">Secondary text</span>
+                </header>
+                <img
+                    src="https://picsum.photos/316/194"
+                    width="316"
+                    height="194"
+                    alt=""
+                    class="full media"
+                />
+                <span class="body2 secondary">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                    sed do eiusmod tempor
+                </span>
+                <section class="actions">
+                    <button class="button text">Action 1</button>
+                    <button class="button text">Action 2</button>
+                </section>
+            </article>
+            <article class="card elevated">
+                <header>
+                    <img src="https://picsum.photos/40" alt="" class="avatar" />
+                    <h3 class="h6">Title goes here</h3>
+                    <span class="subtitle2 secondary">Secondary text</span>
+                </header>
+                <img
+                    src="https://picsum.photos/316/194"
+                    width="316"
+                    height="194"
+                    alt=""
+                    class="full media"
+                />
+                <span class="body2 secondary">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                    sed do eiusmod tempor
+                </span>
+                <section class="actions">
+                    <button class="button text">Action 1</button>
+                    <button class="button text">Action 2</button>
+                </section>
+            </article>
+            <article class="card elevated">
+                <header>
+                    <img src="https://picsum.photos/40" alt="" class="avatar" />
+                    <h3 class="h6">Title goes here</h3>
+                    <span class="subtitle2 secondary">Secondary text</span>
+                </header>
+                <img
+                    src="https://picsum.photos/316/194"
+                    width="316"
+                    height="194"
+                    alt=""
+                    class="full media"
+                />
+                <span class="body2 secondary">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                    sed do eiusmod tempor
+                </span>
+                <section class="actions">
+                    <button class="button text">Action 1</button>
+                    <button class="button text">Action 2</button>
+                </section>
+            </article>
         </section>
     </body>
 </html>
