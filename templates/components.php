@@ -122,3 +122,29 @@ enum ButtonType: string {
 
     <?php } ?>
 <?php } ?>
+
+<?php function createMainPageCard(
+    string $title = "Title goes here", string $secondary_text = "Secondary text",
+    string $main_text = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor",
+    bool $is_elevated = false, int $restaurant_id = -1 // unused for now
+) { ?>
+    <article class="card <?php if ($is_elevated) { echo "elevated"; } ?>">
+        <header>
+            <img src="https://picsum.photos/40" alt="" class="avatar" />
+            <h3 class="h6"><?=$title?></h3>
+            <span class="subtitle2 secondary"><?=$secondary_text?></span>
+        </header>
+        <img
+            src="https://picsum.photos/316/194"
+            width="316"
+            height="194"
+            alt=""
+            class="full media"
+        />
+        <span class="body2 secondary"><?=$main_text?></span>
+        <section class="actions">
+            <button class="button text">Action 1</button>
+            <button class="button text">Action 2</button>
+        </section>
+    </article>
+<?php } ?>
