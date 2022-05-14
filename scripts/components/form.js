@@ -2,6 +2,18 @@
 
 "use strict";
 
+const defaultErrorMessages = Object.freeze({
+    badInput: "Error: invalid input",
+    patternMismatch: "Error: invalid input",
+    rangeOverflow: "Error: value too high",
+    rangeUnderflow: "Error: value too low",
+    stepMismatch: "Error: invalid value",
+    tooLong: "Error: too many characters",
+    tooShort: "Error: too little characters",
+    typeMismatch: "Error: invalid input",
+    valueMissing: "Error: field is required",
+});
+
 /**
  * "Empowers" an html form element using javascript
  *
@@ -68,10 +80,13 @@ const empowerForm = (form) => {
 
                 sections[i + 1].classList.remove("hidden");
                 sections[i + 1].ariaHidden = "false";
-                sections[i + 1]
-                    .querySelectorAll("input, select, textarea, button")
-                    // @ts-ignore
-                    .forEach((i) => (i.tabIndex = 0));
+
+                /** @type NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | HTMLButtonElement> */
+                const fields = sections[i + 1].querySelectorAll(
+                    "input, select, textarea, button"
+                );
+                fields.forEach((i) => (i.tabIndex = 0));
+                fields[0].focus();
             });
         }
     });
@@ -82,14 +97,31 @@ const empowerForm = (form) => {
     /** @type NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> */
     const inputs = form.querySelectorAll("input, select, textarea");
 
+    inputs[0].focus();
+
     inputs.forEach((e) => {
+        const errorText = document.querySelector(
+            `#${e.getAttribute("error-text")}`
+        );
+
         const resetValidity = () => {
+            if (errorText) errorText.textContent = "";
+
             e.classList.remove("error");
             e.removeEventListener("input", resetValidity);
         };
 
-        e.addEventListener("change", () => {
+        e.addEventListener("blur", () => {
             if (!e.checkValidity()) {
+                if (errorText)
+                    for (let p in e.validity)
+                        if (e.validity[p]) {
+                            errorText.textContent =
+                                errorText.getAttribute(`error:${p}`) ||
+                                defaultErrorMessages[p];
+                            break;
+                        }
+
                 e.classList.add("error");
                 e.addEventListener("input", resetValidity);
             }

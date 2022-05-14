@@ -18,7 +18,7 @@ require_once("../templates/components.php");
                 createTextField(
                     name: "email", label: "Email", 
                     type: "email", autocomplete: "email",
-                    errorText: "Error: invalid email address"
+                    errors: ["typeMismatch" => "Error: invalid email address"]
                 );
                 createTextField(
                     name: "username", label: "Username", autocomplete: "username"
@@ -27,7 +27,7 @@ require_once("../templates/components.php");
                     name: "password", label: "Password", 
                     type: "password", autocomplete: "current-password",
                     minlength: 8, toggleVisibility: true, characterCounter: true,
-                    errorText: "Error: at least 8 characters"
+                    errors: ["tooShort" => "Error: at least 8 characters"]
                 );
                 createButton(text: "Next", next: true);
                 ?>
@@ -47,9 +47,9 @@ require_once("../templates/components.php");
                 createTextField(
                     name: "phone", label: "Phone number", 
                     type: "tel", autocomplete: "tel", pattern: "\\d{9}",
-                    errorText: "Error: invalid phone number"
+                    errors: ["patternMismatch" => "Error: invalid phone number"]
                 );
-                createButton(text: "Back", back: true);
+                createButton(text: "Back", back: true, type: ButtonType::OUTLINED);
                 createButton(text: "Register", submit: true) 
                 ?>
             </fieldset>

@@ -60,11 +60,18 @@ enum ButtonType: string {
 
 <?php function createTextField(
     string $name, string $label, 
-    string $helperText = "", string $errorText = "",
+    string $helperText = "",
     string $type = "text", string $autocomplete = "", string $pattern = "",
     int $maxlength = -1, int $minlength = -1,
-    bool $optional = false,  bool $toggleVisibility = false, bool $characterCounter = false
-) { ?>
+    bool $optional = false,  bool $toggleVisibility = false,
+    bool $characterCounter = false, bool $errorText = true,
+    array $errors = []
+) { 
+    $describedby = [];
+    if ($helperText !== "") $describedby[] = "$name-helper-text";
+    if ($errors !== [] || $errorText) $describedby[] = "$name-error-text";
+    $describedby = implode(" ", $describedby);
+    ?>
     <div class="textfield">
         <input
             type="<?= $type ?>"
@@ -83,7 +90,16 @@ enum ButtonType: string {
             <?php if ($maxlength !== -1) { ?>
             maxlength="<?= $maxlength ?>"
             <?php } ?>
-            <?php if (!$optional) echo "required" ?>
+            <?php 
+            if (!$optional)
+                echo "required";
+
+            if ($describedby !== "") 
+                echo "aria-describedby=\"$describedby\"";
+                
+            if ($errors !== [] || $errorText) 
+                echo "error-text=\"$name-error-text\"";
+            ?>
         />
         <label for="<?= $name ?>"><?= $label ?></label>
         <?php if ($toggleVisibility) { ?>
@@ -94,13 +110,24 @@ enum ButtonType: string {
         ></button>
         <?php } ?>
         <?php if ($helperText !== "") { ?>
-        <span class="error-text"><?= $helperText ?></span>
+        <span 
+            class="error-text" 
+            id="<?= $name ?>-helper-text"
+        ><?= $helperText ?></span>
         <?php } ?>
-        <?php if ($errorText !== "") { ?>
-        <span class="error-text"><?= $errorText ?></span>
+        <?php if ($errors !== [] || $errorText) { ?>
+        <span 
+            class="error-text"
+            aria-live="true"
+            id="<?= $name ?>-error-text"
+            <?php 
+            foreach ($errors as $key => $value)
+                echo "error:$key=\"$value\""
+            ?>
+        ></span>
         <?php } ?>
         <?php if ($characterCounter) { ?>
-        <span class="character-counter"></span>
+        <span class="character-counter" aria-hidden="true"></span>
         <?php } ?>
     </div>
 <?php } ?>

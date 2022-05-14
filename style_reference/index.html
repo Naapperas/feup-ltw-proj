@@ -293,9 +293,12 @@
                     name="password"
                     id="password"
                     placeholder=" "
+                    aria-describedby="password-helper-text"
                 />
                 <label for="password">Password</label>
-                <span class="helper-text">I have helper text!</span>
+                <span class="helper-text" id="password-helper-text"
+                    >I have helper text!</span
+                >
             </div>
 
             <div class="textfield">
@@ -306,11 +309,14 @@
                     id="password-empowered"
                     minlength="8"
                     placeholder=" "
+                    aria-describedby="password-error-text"
                 />
                 <label for="password-empowered">Password</label>
                 <button class="toggle-visible icon button"></button>
-                <span class="error-text">This is an error!</span>
-                <span class="character-counter"></span>
+                <span class="error-text" id="password-error-text"
+                    >This is an error!</span
+                >
+                <span class="character-counter" aria-hidden="true"></span>
             </div>
 
             <div class="textfield">
