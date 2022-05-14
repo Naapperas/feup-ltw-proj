@@ -92,13 +92,13 @@ enum ButtonType: string {
             <?php } ?>
             <?php 
             if (!$optional)
-                echo "required";
+                echo "required\n";
 
             if ($describedby !== "") 
-                echo "aria-describedby=\"$describedby\"";
+                echo "aria-describedby=\"$describedby\"\n";
                 
             if ($errors !== [] || $errorText) 
-                echo "error-text=\"$name-error-text\"";
+                echo "error-text=\"$name-error-text\"\n";
             ?>
         />
         <label for="<?= $name ?>"><?= $label ?></label>
@@ -118,7 +118,7 @@ enum ButtonType: string {
         <?php if ($errors !== [] || $errorText) { ?>
         <span 
             class="error-text"
-            aria-live="true"
+            aria-live="assertive"
             id="<?= $name ?>-error-text"
             <?php 
             foreach ($errors as $key => $value)
