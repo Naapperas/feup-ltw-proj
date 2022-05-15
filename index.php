@@ -12,20 +12,14 @@ require_once("./templates/components.php");
     <body>
         <?php createAppBar(); ?>
 
-        <section class="card centered medium medium-spacing single column layout">
-            <h2 class="h6">Your favorites</h2>
-
-            <?php createMainPageCard(); ?>
-            <?php createMainPageCard(is_elevated: true); ?>
-            <?php createMainPageCard(is_elevated: true); ?>
-            <?php createMainPageCard(is_elevated: true); ?>
-            <?php createMainPageCard(is_elevated: true); ?>
-            <?php createMainPageCard(is_elevated: true); ?>
-            <?php createMainPageCard(is_elevated: true); ?>
-            <?php createMainPageCard(is_elevated: true); ?>
-            <?php createMainPageCard(is_elevated: true); ?>
-            <?php createMainPageCard(is_elevated: true); ?>
-            <?php createMainPageCard(is_elevated: true); ?>
-        </section>
+        <main class="centered medium medium-spacing single column layout">
+            <section class="card centered medium medium-spacing single column layout">
+                <header class="header">
+                    <h2 class="h6">Your favorites</h2>
+                </header>
+    
+                <?php for ($i = 0; $i < 10; ++$i) createMainPageCard(); ?>
+            </section>
+        </main>
     </body>
 </html>

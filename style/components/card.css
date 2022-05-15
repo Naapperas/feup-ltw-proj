@@ -66,14 +66,3 @@
     margin: -8px;
     gap: 8px;
 }
-
-.card > :is(h1, h2, h3, h4, h5, h6) {
-    width: 100%;
-}
-
-article.card {
-    /* width: calc(100%/3.1113); */
-    min-width: 30%;
-    max-width: 50%;
-    flex: 1;
-}

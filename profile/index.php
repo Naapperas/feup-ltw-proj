@@ -10,11 +10,12 @@ require_once('../templates/components.php');
         styles: ["/profile/profile.css"]
     );
     ?>
-    <body class="centered medium medium-spacing single column layout">
+    <body>
         <?php createAppBar(); ?>
 
-        <div>
-            <span class="title">Profile</span>
+        <main class="centered medium medium-spacing single column layout">
+            <h2 class="h4">Profile</h2>
+
             <div class="user-profile-data">
                 <section class="profile-pic">
                     <span>
@@ -29,7 +30,7 @@ require_once('../templates/components.php');
                     <span class="user-data">phone number</span>
                 </section>
             </div>
-        </div>
+        </main>
 
     </body>
 </html>

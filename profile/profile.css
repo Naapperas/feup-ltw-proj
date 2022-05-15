@@ -1,14 +1,9 @@
-:root {
-    --color-button: var(--color-main);
-    --color-on-button: var(--color-on-main);
-}
-
 span.user-data {
     display: flex;
     margin: 1em;
     padding: 1em;
     width: auto;
-    
+
     border-radius: 500000px;
 
     color: black;
@@ -36,11 +31,4 @@ span.user-data {
 .profile-pic span {
     grid-column-start: 1;
     grid-column-end: 1;
-}
-
-.title {
-    display: flex;
-    font-size: xx-large;
-    padding-left: 35px;
-    margin-bottom: 1em;
 }
