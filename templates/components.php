@@ -28,7 +28,7 @@ enum ButtonType: string {
         <link rel="stylesheet" href="/style/index.css" />
 
         <?php foreach ($styles as $style) { ?>
-            <link rel="stylesheet" src="/style/<?= $style ?>" />
+            <link rel="stylesheet" href="<?= $style ?>" />
         <?php } ?>
 
         <?php foreach ($scripts as $script) { ?>
