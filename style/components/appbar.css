@@ -11,10 +11,10 @@
 }
 
 .appbar {
-    display: grid;
-    grid-template: "start title" auto / min-content auto;
-    grid-auto-flow: column;
-    grid-auto-columns: min-content;
+    position: relative;
+
+    display: flex;
+    flex-direction: row;
 
     align-items: center;
     text-align: start;
@@ -23,7 +23,7 @@
     height: 56px;
 
     padding-inline: 16px;
-    gap: 24px;
+    /* gap: 24px; */
 
     background-color: rgb(var(--color-appbar));
     color: rgb(var(--color-on-appbar));
@@ -36,11 +36,33 @@
     --elevation: var(--elevation-4);
 }
 
-.appbar > :nth-child(2) {
-    margin-left: 8px;
+.appbar > * {
+    order: 3;
+    flex-shrink: 0;
+    margin-left: 24px;
+}
+
+.appbar > .title {
+    order: 2;
+    margin-right: auto;
+    margin-left: 0;
+}
+
+.appbar > .start {
+    order: 1;
+    margin-left: 0;
+}
+
+.appbar > .start ~ .title {
+    margin-left: 32px;
 }
 
 /* Account for margin in icon buttons */
 .appbar > .button.icon {
-    margin: -8px;
+    margin-right: -8px;
+    margin-left: 16px;
+}
+
+.appbar > .start.button.icon {
+    margin-left: -8px;
 }

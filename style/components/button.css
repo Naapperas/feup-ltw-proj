@@ -23,6 +23,7 @@
     font-weight: 500;
     letter-spacing: 0.08928571428em;
     user-select: none;
+    white-space: nowrap;
 }
 
 .button:is(.text, .outlined, .contained) .icon {

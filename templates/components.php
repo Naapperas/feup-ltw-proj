@@ -42,12 +42,17 @@ enum ButtonType: string {
 <?php function createButton(
     ButtonType $type = ButtonType::CONTAINED, string $text = "",
     string $icon = "", string $component = "button", string $class = "",
+    string $href = "",
     bool $submit = false, bool $next = false, bool $back = false
 ) { ?>
-    <<?= $component ?> 
-        class="button <?= $type->value ?> <?= $class ?>" 
-        type="<?= $submit ? "submit" : "button" ?>"
-        <?php if ($next && !$back) echo "next "; if ($back && !$next) echo "back "; ?>
+    <<?= $component ?>
+        class="button <?= $type->value ?> <?= $class ?>"
+        <?php if ($component === "button") { ?>
+            type="<?= $submit ? "submit" : "button" ?>"
+            <?php if ($next && !$back) echo "next "; if ($back && !$next) echo "back "; ?>
+        <?php } elseif ($component === "a") { ?>
+            href="<?= $href ?>"
+        <?php } ?>
     >
         <?php if ($icon) createIcon($icon) ?>
         <?= $text ?>
@@ -133,22 +138,19 @@ enum ButtonType: string {
 <?php } ?>
 
 <?php function createUserButtons() {
-            
     session_start();
 
-    if (isset($_SESSION['user'])) {?>
-
-    <button type="button" class="button contained">Cart</button>
-    <a type="button" class="button contained" href="/profile/">Profile</a>
-    <a type="button" class="button contained" href="/actions/logout.php">Log out</a>
-
-    <?php } else { ?>
-    
-    <a type="button" class="button contained" href="/login/">Login</a>
-    <a type="button" class="button contained" href="/register/">Register</a>
-
-    <?php } ?>
-<?php } ?>
+    if (isset($_SESSION['user'])) {    
+        createButton(type: ButtonType::ICON, text: "shopping_cart");
+        createButton(type: ButtonType::ICON, text: "account_circle",
+                     component: "a", href: "/profile/");
+        createButton(type: ButtonType::ICON, text: "logout",
+                     component: "a", href: "/actions/logout.php");
+    } else {
+        createButton(type: ButtonType::ICON, text: "login",
+                     component: "a", href: "/register/");
+    }
+} ?>
 
 <?php function createMainPageCard(
     string $title = "Title goes here", string $secondary_text = "Secondary text",
@@ -178,16 +180,19 @@ enum ButtonType: string {
 
 
 <?php function createAppBar() { ?>
-    <header class="appbar">
-        <a href="." class="homepage-link"><h1 class="h6 color logo"></h1></a>
-        <div class="button">
-            <input class="textfield"
-                type="text"
-                placeholder="Restaurants, dishes, review score..."
+    <header class="appbar elevated">
+        <a href="." class="title homepage-link"><h1 class="h6 color logo"></h1></a>
+
+        <form class="search" action="search/" method="GET">
+            <input
+                type="search"
+                placeholder="Search"
                 id="search"
-                name="search"
+                name="q"
             />
-        </div>
+            <label for="search">search</label>
+            <button class="button icon" type="submit">search</button>
+        </form>
 
         <?php createUserButtons(); ?>
 

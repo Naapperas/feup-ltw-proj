@@ -9,10 +9,10 @@ require_once("./templates/components.php");
         description: "Home page for XauFome.", 
         scripts: ["components/form.js"],
     ); ?>
-    <body class="centered medium medium-spacing single column layout">
+    <body>
         <?php createAppBar(); ?>
 
-        <section class="card" id="cards">
+        <section class="card centered medium medium-spacing single column layout">
             <h2 class="h6">Your favorites</h2>
 
             <?php createMainPageCard(); ?>

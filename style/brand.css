@@ -1,3 +1,13 @@
+:root {
+    --color-logo: var(--color-main);
+}
+
+@media (prefers-color-scheme: light) {
+    .appbar {
+        --color-logo: var(--color-on-appbar);
+    }
+}
+
 .logo::before {
     content: "Xau";
     font-weight: 500;
@@ -9,5 +19,5 @@
 }
 
 .logo.color::after {
-    color: rgb(var(--color-main));
+    color: rgb(var(--color-logo));
 }

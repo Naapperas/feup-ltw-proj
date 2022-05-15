@@ -1,7 +1,7 @@
 :is(.textfield, .select) {
     display: grid;
     grid-template:
-        "input input" 48px
+        "input input" auto
         "assistive-text character-counter" auto / auto auto;
 
     position: relative;
