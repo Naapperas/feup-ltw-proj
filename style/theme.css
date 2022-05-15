@@ -1,4 +1,5 @@
 :root {
+    color-scheme: light;
     background-color: rgb(var(--color-surface));
     color: rgba(var(--color-on-surface), var(--opacity-high-emphasis));
 
@@ -96,6 +97,8 @@
 }
 
 :root[color-scheme="dark"] {
+    color-scheme: dark;
+
     /* Colors for use in rgba */
     --color-main: 187, 134, 252;
     --color-on-main: 0, 0, 0;

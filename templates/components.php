@@ -182,7 +182,7 @@ enum ButtonType: string {
 
 
 <?php function createAppBar() { ?>
-    <header class="appbar elevated">
+    <header class="appbar elevated fixed">
         <a href="/" class="title homepage-link"><h1 class="h6 color logo"></h1></a>
 
         <form class="search" action="search/" method="GET">

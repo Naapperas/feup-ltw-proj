@@ -37,3 +37,14 @@
 .form.sectioned > * {
     grid-area: 1 / 1;
 }
+
+.form-support {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding-left: 32px;
+    padding-right: 20px;
+
+    --color-button: var(--color-on-surface);
+}

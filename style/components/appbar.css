@@ -34,6 +34,11 @@
     --elevation: var(--elevation-4);
 }
 
+.appbar.fixed {
+    position: sticky;
+    inset: 0;
+}
+
 .appbar > * {
     order: 3;
     flex-shrink: 0;

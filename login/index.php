@@ -27,9 +27,12 @@ require_once("../templates/components.php");
             <input type="hidden" name="referer" value="<?=$_SERVER["HTTP_REFERER"]?>">
         </form>
 
-        <span>
-            Don't have an account?
-            <a href="/register/">Register</a>
-        </span>
+        <div class="form-support">
+            <span>
+                Don't have an account?
+                <a href="/register/">Register</a>
+            </span>
+            <?php createButton(type: ButtonType::ICON, class: "color-scheme-toggle") ?>
+        </div>
     </body>
 </html>

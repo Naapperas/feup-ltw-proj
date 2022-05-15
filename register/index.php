@@ -36,10 +36,7 @@ require_once("../templates/components.php");
             <fieldset class="section" section>
                 <?php
                 createTextField(
-                    name: "fname", label: "First name", autocomplete: "fname"
-                );
-                createTextField(
-                    name: "lname", label: "Last name", autocomplete: "lname"
+                    name: "name", label: "Full name", autocomplete: "name"
                 );
                 createTextField(
                     name: "address", label: "Address", autocomplete: "street-address"
@@ -56,9 +53,12 @@ require_once("../templates/components.php");
             <input type="hidden" name="referer" value="<?=$_SERVER["HTTP_REFERER"]?>"> <!-- This is kept out of the fieldsets due to being hidden -->
         </form>
 
-        <span>
-            Already have an account?
-            <a href="../login/">Login</a>
-        </span>
+        <div class="form-support">
+            <span>
+                Already have an account?
+                <a href="../login/">Login</a>
+            </span>
+            <?php createButton(type: ButtonType::ICON, class: "color-scheme-toggle") ?>
+        </div>
     </body>
 </html>

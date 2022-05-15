@@ -10,8 +10,7 @@
     if (!isset($_POST['email']) ||
         !isset($_POST['username']) ||
         !isset($_POST['password']) ||
-        !isset($_POST['fname']) ||
-        !isset($_POST['lname']) ||
+        !isset($_POST['name']) ||
         !isset($_POST['address']) ||
         !isset($_POST['phone']) ||
         !isset($_POST['referer'])) {
@@ -28,7 +27,7 @@
             $_POST['email'],
             $_POST['address'],
             $_POST['phone'],
-            sprintf("%s %s", $_POST["fname"], $_POST["lname"]));
+            $_POST["name"]);
     }
 
     header('Location: ' . $_POST['referer']);
