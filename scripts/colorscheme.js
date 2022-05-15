@@ -30,6 +30,16 @@ const _colorSchemeToggleEventListener = (e) => {
     _updateColorScheme();
 };
 
+window.addEventListener("storage", (e) => {
+    if (
+        e.key == "color-scheme" &&
+        (e.newValue === "dark" || e.newValue === "light")
+    ) {
+        _colorSchemeLocalValue = e.newValue;
+        _updateColorScheme();
+    }
+});
+
 /**
  * "Empowers" an html color scheme toggle using javascript.
  *
