@@ -1,0 +1,15 @@
+.color-scheme-toggle::before {
+    content: "Go dark";
+}
+
+[color-scheme="dark"] .color-scheme-toggle::before {
+    content: "Go light";
+}
+
+.color-scheme-toggle.icon::before {
+    content: "dark_mode";
+}
+
+[color-scheme="dark"] .color-scheme-toggle.icon::before {
+    content: "light_mode";
+}

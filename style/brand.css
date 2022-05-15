@@ -2,10 +2,8 @@
     --color-logo: var(--color-main);
 }
 
-@media (prefers-color-scheme: light) {
-    .appbar {
-        --color-logo: var(--color-on-appbar);
-    }
+[color-scheme="light"] .appbar {
+    --color-logo: var(--color-on-appbar);
 }
 
 .logo::before {

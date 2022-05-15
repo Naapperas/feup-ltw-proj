@@ -26,6 +26,8 @@ enum ButtonType: string {
         </title>
 
         <link rel="stylesheet" href="/style/index.css" />
+        
+        <script src="/scripts/colorscheme.js" async></script>
 
         <?php foreach ($styles as $style) { ?>
             <link rel="stylesheet" href="<?= $style ?>" />
@@ -194,7 +196,10 @@ enum ButtonType: string {
             <button class="button icon" type="submit">search</button>
         </form>
 
-        <?php createUserButtons(); ?>
+        <?php
+        createButton(type: ButtonType::ICON, class: "color-scheme-toggle");
+        createUserButtons();
+        ?>
 
     </header>
 <?php } ?>

@@ -5,8 +5,8 @@
 /**
  * "Empowers" an html textfield element using javascript.
  *
- *  Enables toggling visibility on password fields that have a toggle visibility
- *  button.
+ * Enables toggling visibility on password fields that have a toggle visibility
+ * button.
  *
  * @param {HTMLElement} textfield
  */

@@ -3,11 +3,9 @@
     --color-on-appbar: var(--color-on-main);
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --color-appbar: var(--color-surface);
-        --color-on-appbar: var(--color-on-surface);
-    }
+:root[color-scheme="dark"] {
+    --color-appbar: var(--color-surface);
+    --color-on-appbar: var(--color-on-surface);
 }
 
 .appbar {
