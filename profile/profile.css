@@ -15,10 +15,6 @@ span.user-data {
     display: grid;
 }
 
-.profile-pic {
-    display: inherit;
-}
-
 .section {
     grid-column-start: 2;
 }
@@ -28,7 +24,7 @@ span.user-data {
     grid-column-end: 2;
 }
 
-.profile-pic span {
+.profile-pic {
     grid-column-start: 1;
     grid-column-end: 1;
 }

@@ -10,7 +10,7 @@ require_once("../templates/components.php");
         scripts: ["components/form.js", "components/textfield.js"]
     ); ?>
     <body class="centered small-spacing small single column layout">
-        <a href="/mainpage/" class="homepage-link"><h1 class="h3 color logo"></h1></a>
+        <a href="/" class="homepage-link"><h1 class="h3 color logo"></h1></a>
 
         <form action="../actions/register.php" method="post" class="form sectioned" empower>
             <fieldset class="section" section>

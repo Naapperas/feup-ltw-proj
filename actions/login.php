@@ -15,7 +15,7 @@
     require_once('../lib/user.php');
 
     if (userExists($_POST['username'], $_POST['password'])) {
-        $_SESSION['user'] = User::get(array("name" => $_POST['username']), true);
+        $_SESSION['user'] = User::get(array("name" => $_POST['username']), true)[0]; // need to put [0] because we are doing a "named" query
         header('Location: ' . $_POST['referer']);
     } else {
         header('Location: /login/');
