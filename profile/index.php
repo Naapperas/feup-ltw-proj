@@ -11,20 +11,7 @@ require_once('../templates/components.php');
     );
     ?>
     <body class="centered medium medium-spacing single column layout">
-        <header class="appbar">
-            <a href="." class="homepage-link"><h1 class="h6 color logo"></h1></a>
-            <div class="button">
-                <input class="textfield"
-                    type="text"
-                    placeholder="Restaurants, dishes, review score..."
-                    id="search"
-                    name="search"
-                />
-            </div>
-
-            <?php createUserButtons(); ?>
-
-            </header>
+        <?php createAppBar(); ?>
 
         <div>
             <span class="title">Profile</span>

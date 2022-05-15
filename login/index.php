@@ -10,9 +10,9 @@ require_once("../templates/components.php");
         scripts: ["components/form.js", "components/textfield.js"]
     ); ?>
     <body class="centered small-spacing small single column layout">
-        <a href="/mainpage/" class="homepage-link"><h1 class="h3 color logo"></h1></a>
+        <a href="/" class="homepage-link"><h1 class="h3 color logo"></h1></a>
 
-        <form action="../actions/login.php" method="post" class="form" empower>
+        <form action="/actions/login.php" method="post" class="form" empower>
             <?php 
             createTextField(
                 name: "username", label: "Username", autocomplete: "username"
@@ -29,7 +29,7 @@ require_once("../templates/components.php");
 
         <span>
             Don't have an account?
-            <a href="../register/">Register</a>
+            <a href="/register/">Register</a>
         </span>
     </body>
 </html>
