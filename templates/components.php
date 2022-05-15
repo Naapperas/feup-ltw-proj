@@ -203,3 +203,11 @@ enum ButtonType: string {
 
     </header>
 <?php } ?>
+
+<?php function createRestaurantCategories(array $categories) { ?>
+    <section class="restaurant-categs">
+        <?php foreach($categories as $category) { ?>
+            <span class="restaurant-categ"><?= $category?></span>
+        <?php } ?>
+    </section>
+<?php } ?>
