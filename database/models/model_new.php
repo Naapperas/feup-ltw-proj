@@ -24,11 +24,11 @@ abstract class ModelNew {
     }
 
     static function create(array $values): ?static {
-        $props = array_keys($values);
+
+        unset($values['id']);
+        $props = array_filter(array_keys($values), function ($prop) { return strcmp($prop, "id"); }, ARRAY_FILTER_USE_KEY);
         $prop_names = implode(', ', $props);
-        $prop_values = implode(', ', array_map(function ($s) {
-            return ":$s";
-        }, $props));
+        $prop_values = implode(', ', array_map(function ($s) { return ":$s"; }, $props));
 
         $table = static::getTableName();
         $query = "INSERT INTO $table ($prop_names) VALUES ($prop_values);";
@@ -40,15 +40,75 @@ abstract class ModelNew {
         return static::get(intval(static::getDB()->lastInsertId($table)));
     }
 
-    static function get(int $id): ?static {
+    static function get(int|array $data = null, int $limit = null): array|static|null {
         $table = static::getTableName();
-        $query = "SELECT * FROM $table WHERE id = ?;";
-        $results = getQueryResults(static::getDB(), $query, false, [$id]);
+        $query = "SELECT * FROM $table";
 
-        if ($results === false)
-            return null;
+        if ($data === null) {
 
-        return static::fromArray($results);
+            if ($limit !== null)
+                $query .= " LIMIT $limit";
+
+            $query .= ';';
+
+            $queryResults = getQueryResults(static::getDb(), $query, true);
+
+            if ($queryResults === false)
+                return [];
+
+            $results = array();
+            foreach ($queryResults as $result) {
+                $results[] = static::fromArray($result);
+            }
+
+            return $results;
+        }
+
+        $query .= ' WHERE ';
+
+        if (!strcmp(gettype($data), 'integer')) {
+            $id = $data;
+
+            $query .= 'id = ?;';
+
+            // LIMIT does not make sense in this case since we are only getting one single Model instance
+
+            $results = getQueryResults(static::getDB(), $query, false, [$id]);
+    
+            if ($results === false)
+                return null;
+    
+            return static::fromArray($results);
+        } else {
+                    
+            $attrs = array();
+            $values = array();
+
+            foreach($data as $attribute=>$value) {
+                $attrs[] = sprintf("%s = ?", $attribute);
+                $values[] = $value;
+            }
+
+            $query .= implode(" AND ", $attrs);
+
+            if ($limit !== null) {
+                $query .= " LIMIT $limit";
+            }
+
+            $query .= ";";
+
+            $queryResults = getQueryResults(static::getDb(), $query, true, $values);
+
+            if ($queryResults === false)
+                return [];
+
+            $results = array();
+            foreach ($queryResults as $result) {
+                $results[] = static::fromArray($result);
+            }
+
+            return $results;
+        }
     }
 
     function delete(): bool {
@@ -66,7 +126,7 @@ abstract class ModelNew {
         unset($props["id"]);
 
         foreach ($props as $prop => $_)
-            if ($prop !== 'id')
+            if ($prop !== 'id' && strcmp(gettype($prop), "array") /* In case any child model has arrays (many-to-many) */)
                 $subquery[] = "$prop = :$prop";
         
         $subquery = implode(', ', $subquery);
@@ -88,6 +148,28 @@ class UserNew extends ModelNew {
     protected static function getTableName(): string {
         return "User";
     }
+
+    function update(): bool { // in here we could update other 'inter-model' related attributes
+        return parent::update();
+    }
 }
+
+// print_r(UserNew::get());
+// print_r(UserNew::get(limit: 2));
+// print_r(UserNew::get(1));
+// print_r(UserNew::get(array('address' => 'addr')));
+// print_r(UserNew::get(array('address' => 'addr'), limit: 2));
+
+// $user = UserNew::get(1);
+// 
+// print_r($user);
+// 
+// if ($user !== null) {
+// 
+//     $user->name = 'fabio';
+//     $user->update();
+// 
+//     print_r(UserNew::get(1));
+// }
 
 ?>
