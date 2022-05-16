@@ -24,10 +24,10 @@ enum ButtonType: string {
                 Xau Fome
             <?php } ?>
         </title>
+        
+        <script src="/scripts/colorscheme.js"></script>
 
         <link rel="stylesheet" href="/style/index.css" />
-        
-        <script src="/scripts/colorscheme.js" async></script>
 
         <?php foreach ($styles as $style) { ?>
             <link rel="stylesheet" href="<?= $style ?>" />

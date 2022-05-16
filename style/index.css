@@ -1,8 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap");
-@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons&display=block");
 
 @import url("./brand.css");
 @import url("./common.css");
 @import url("./theme.css");
-@import url("./components/index.css");
 @import url("./layout.css");
+
+@import url("./components/appbar.css");
+@import url("./components/button.css");
+@import url("./components/card.css");
+@import url("./components/chip.css");
+@import url("./components/colorschemetoggle.css");
+@import url("./components/form.css");
+@import url("./components/searchbar.css");
+@import url("./components/selection.css");
+@import url("./components/slider.css");
+@import url("./components/textfield.css");

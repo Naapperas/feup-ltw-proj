@@ -21,6 +21,8 @@ input:is([type="checkbox"].checkbox, [type="radio"].radio) {
     cursor: pointer;
 
     --color-overlay: var(--color-on-surface);
+
+    transition-property: box-shadow, color;
 }
 
 input:is([type="checkbox"].checkbox, [type="radio"].radio)::before,
@@ -47,9 +49,7 @@ input[type="radio"].radio::before {
 input:is([type="checkbox"].checkbox, [type="radio"].radio)::after {
     clip-path: circle(0%);
 
-    transition: clip-path;
-    transition-duration: 300ms;
-    transition-timing-function: ease-in-out;
+    transition-property: clip-path;
 }
 
 input[type="checkbox"].checkbox::after {
@@ -117,6 +117,8 @@ input[type="checkbox"].switch {
     appearance: none;
     border: none;
     outline: none;
+
+    transition-property: background;
 }
 
 input[type="checkbox"].switch:checked {
@@ -137,6 +139,8 @@ input[type="checkbox"].switch::after {
     position: absolute;
 
     border-radius: 50%;
+
+    transition-property: background, inset, box-shadow;
 }
 
 input[type="checkbox"].switch::before {

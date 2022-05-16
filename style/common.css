@@ -16,6 +16,21 @@
     font-size: inherit;
 }
 
+*,
+*::after,
+*::before {
+    --opacity-overlay: 0%;
+    --elevation: var(--elevation-0);
+    --color-overlay: var(--color-on-surface);
+    box-shadow: var(--overlay-common)
+            rgba(var(--color-overlay), var(--opacity-overlay)),
+        var(--elevation);
+
+    transition-property: box-shadow;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out;
+}
+
 .h1 {
     font-size: 6rem;
     line-height: 6rem;

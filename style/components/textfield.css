@@ -89,6 +89,8 @@ but that is impossible outside chromium
     --color-overlay: var(--color-on-surface);
 
     caret-color: rgb(var(--color-main));
+
+    transition-property: box-shadow, color, border, background;
 }
 
 .textfield input::placeholder {
@@ -167,6 +169,8 @@ but that is impossible outside chromium
     font-size: 0.75rem;
     letter-spacing: 0.0333333333em;
     color: rgba(var(--color-on-surface), var(--opacity-medium-emphasis));
+
+    transition-property: opacity, color, height, padding;
 }
 
 .textfield :is(.error-text, .helper-text) {

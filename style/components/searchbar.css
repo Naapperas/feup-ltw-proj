@@ -7,6 +7,8 @@
     position: relative;
 
     --color-button: var(--color-on-surface);
+
+    /* transition-property: width, flex; */
 }
 
 .search input {
@@ -31,6 +33,8 @@
     --color-overlay: var(--color-on-surface);
 
     caret-color: rgb(var(--color-main));
+
+    transition-property: box-shadow, background, color, border, width;
 }
 
 .search input:hover {
@@ -77,6 +81,8 @@
     background-color: transparent;
 
     --color-overlay: var(--color-button);
+
+    transition-property: box-shadow, color;
 }
 
 input[type="search"]::-webkit-search-decoration,
@@ -92,6 +98,10 @@ input[type="search"]::-webkit-search-results-decoration {
         margin-right: -8px;
 
         --color-button: inherit;
+    }
+
+    .search ~ :nth-child(n) {
+        transition-property: all;
     }
 
     .search:focus-within ~ :nth-child(n) {

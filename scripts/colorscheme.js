@@ -54,9 +54,13 @@ const empowerColorSchemeToggle = (colorSchemeToggle) =>
         _colorSchemeToggleEventListener
     );
 
-/** @type NodeListOf<HTMLElement> */
-const _colorSchemeToggles = document.querySelectorAll(".color-scheme-toggle");
-_colorSchemeToggles.forEach(empowerColorSchemeToggle);
+window.addEventListener("load", () => {
+    /** @type NodeListOf<HTMLElement> */
+    const _colorSchemeToggles = document.querySelectorAll(
+        ".color-scheme-toggle"
+    );
+    _colorSchemeToggles.forEach(empowerColorSchemeToggle);
+});
 
 _colorSchemeMatch.addEventListener("change", _updateColorScheme);
 _updateColorScheme();

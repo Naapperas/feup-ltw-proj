@@ -24,6 +24,8 @@
     letter-spacing: 0.08928571428em;
     user-select: none;
     white-space: nowrap;
+
+    transition-property: box-shadow, color, background;
 }
 
 .button:is(.text, .outlined, .contained) .icon {

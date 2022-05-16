@@ -3,6 +3,8 @@
     background-color: rgb(var(--color-surface));
     color: rgba(var(--color-on-surface), var(--opacity-high-emphasis));
 
+    transition-property: color, background;
+
     /* Colors (must be used in rgb()/rgba()) */
     --color-main: 98, 0, 238;
     --color-on-main: 255, 255, 255;
@@ -204,17 +206,4 @@
         0px 24px 38px 3px rgba(0, 0, 0, 0.14),
         0px 9px 46px 8px rgba(0, 0, 0, 0.12),
         var(--overlay-common) rgba(255, 255, 255, 0.16);
-}
-
-*,
-*::after,
-*::before {
-    --opacity-overlay: 0%;
-    --elevation: var(--elevation-0);
-    --color-overlay: var(--color-on-surface);
-    box-shadow: var(--overlay-common)
-            rgba(var(--color-overlay), var(--opacity-overlay)),
-        var(--elevation);
-
-    transition: all 200ms ease-in-out;
 }

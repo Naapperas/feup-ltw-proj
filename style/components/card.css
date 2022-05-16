@@ -14,6 +14,8 @@
 
     text-align: start;
     overflow: hidden;
+
+    transition-property: box-shadow, border, background;
 }
 
 .card.elevated {
@@ -30,6 +32,8 @@
 
 .secondary {
     color: rgba(var(--color-on-surface), var(--opacity-medium-emphasis));
+
+    transition-property: color;
 }
 
 .card > header {
