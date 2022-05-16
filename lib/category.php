@@ -3,14 +3,11 @@
 
     require_once("../database/models/restaurant.php");
 
-
     function getCategories(int $id) : array {
         $retrieveQuery = "SELECT category FROM Restaurant_category WHERE restaurant = ?";
 
-        if (gettype($id) == 'integer') {     
-            $object = getQueryResults(Restaurant::getDb(), $retrieveQuery, true, array($id));
-        }
-        
+        $object = getQueryResults(Restaurant::getDb(), $retrieveQuery, true, array($id));
+
         foreach($object as $category) {
             $query = "SELECT name FROM Category WHERE id = ?";
             $categories[] = getQueryResults(Restaurant::getDb(), $query, true, array($category));

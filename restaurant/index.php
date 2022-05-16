@@ -16,8 +16,10 @@ if(isset($_GET['id'])) {
     $restaurant = Restaurant::get(intval($_GET['id']));
     $categories = getCategories(intval($_GET['id']));
     print_r($categories);
+    $categories = array();
 } else {
     $restaurant = array("name" => "teste");
+    $categories = array();
 }
 
 ?>
@@ -50,7 +52,9 @@ if(isset($_GET['id'])) {
                 </header>
     
                 <?php for ($i = 0; $i < 3; ++$i) createMainPageCard(); ?>
-
+            </section>
+            
+            <section class="card centered medium medium-spacing single column layout">
                 <header class="header">
                     <h2 class="h6">Dishes</h2>
                 </header>
