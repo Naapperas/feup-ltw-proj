@@ -30,7 +30,7 @@ if(isset($_GET['id'])) {
         styles: ["restaurant/restaurant.css"]
     );
     ?>
-    <body>
+    <body class="top-app-bar layout">
         <?php createAppBar(); ?>
 
         <main class="centered medium medium-spacing single column layout">
@@ -51,7 +51,7 @@ if(isset($_GET['id'])) {
                     <h2 class="h6">Menus</h2>
                 </header>
     
-                <?php for ($i = 0; $i < 3; ++$i) createMainPageCard(); ?>
+                <?php // for ($i = 0; $i < 3; ++$i) createMainPageCard(); ?>
             </section>
             
             <section class="card centered medium medium-spacing single column layout">
@@ -59,7 +59,7 @@ if(isset($_GET['id'])) {
                     <h2 class="h6">Dishes</h2>
                 </header>
     
-                <?php for ($i = 0; $i < 3; ++$i) createMainPageCard(); ?>
+                <?php // for ($i = 0; $i < 3; ++$i) createMainPageCard(); ?>
             </section>
         </main>
     </body>

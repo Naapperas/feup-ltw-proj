@@ -41,3 +41,16 @@
 .single.column.layout {
     grid-template-columns: 1fr;
 }
+
+.top-app-bar.layout {
+    display: grid;
+    grid-template:
+        "appbar" auto
+        "content" 1fr
+        / auto;
+    min-height: 100%;
+}
+
+.top-app-bar.layout > .appbar {
+    grid-area: appbar;
+}

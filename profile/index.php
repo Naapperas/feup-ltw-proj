@@ -33,14 +33,15 @@
         description: "{$profile['name']}'s profile page on XauFome",
         styles: ["/profile/profile.css"]
     ); ?>
-    <body>
+    <body class="top-app-bar layout">
         <?php createAppBar(); ?>
 
         <main class="centered medium medium-spacing single column layout">
             <header>
                 <img
+                    class="avatar big"
                     src="https://picsum.photos/240"
-                    alt="{$profile['name']}'s profile picture"
+                    alt="<?= $profile['name'] ?>'s profile picture"
                     width="240px"
                     height="240px"
                 />
