@@ -212,7 +212,7 @@ enum ButtonType: string {
     <header class="appbar elevated fixed">
         <a href="/" class="title homepage-link"><h1 class="h6 color logo"></h1></a>
 
-        <form class="search" action="search/" method="GET">
+        <form class="search" action="/search/" method="GET">
             <input
                 type="search"
                 placeholder="Search"
