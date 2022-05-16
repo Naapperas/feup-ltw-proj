@@ -17,38 +17,43 @@
     } else if (isset($_SESSION['user'])) {
         $profile = $_SESSION['user'];
     } else {
-        // error
+        header("Location: /");
+        die();
     }
 
     if (count($profile) === 0) {
-        header('Location: /profile/no_such_profile.php');
+        require("./no_such_profile.php");
+        die();
     }
 ?>
 <!DOCTYPE html>
 <html lang="en">
     <?php createHead(
-        title: "Profile", description: "The user's profile page",
+        title: "{$profile['name']}'s profile",
+        description: "{$profile['name']}'s profile page on XauFome",
         styles: ["/profile/profile.css"]
-    );
-    ?>
+    ); ?>
     <body>
         <?php createAppBar(); ?>
 
         <main class="centered medium medium-spacing single column layout">
-            <h2 class="h4">Profile</h2>
+            <header>
+                <img
+                    src="https://picsum.photos/240"
+                    alt="{$profile['name']}'s profile picture"
+                    width="240px"
+                    height="240px"
+                />
+                <h2 class="h4"><?=$profile['name']?>'s profile</h2>
+            </header>
 
-            <div class="user-profile-data">
-                <section class="profile-pic">
-                    <img src="https://picsum.photos/300" alt="Profile picture for user with id=<?=$profile['id']?>" />
-                </section>
-                <section class="section">
-                    <span class="user-data"><?=$profile['email']?></span>
-                    <!-- <span class="user-data">password</span> -->
-                    <span class="user-data"><?=$profile['name']?></span>
-                    <span class="user-data"><?=$profile['full_name']?></span>
-                    <span class="user-data"><?=$profile['phone_number']?></span>
-                </section>
-            </div>
+            <section>
+                <h3 class="h5">Personal information</h3>
+
+                <p><span>Email: </span><span><?=$profile['email']?></span></p>
+                <p><span>Full name: </span><span><?=$profile['full_name']?></span></p>
+                <p><span>Phone number: </span><span><?=$profile['phone_number']?></span></p>
+            </section>
         </main>
 
     </body>

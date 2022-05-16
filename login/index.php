@@ -32,7 +32,7 @@ require_once("../templates/components.php");
                 Don't have an account?
                 <a href="/register/">Register</a>
             </span>
-            <?php createButton(type: ButtonType::ICON, class: "color-scheme-toggle") ?>
+            <?php createColorSchemeToggle() ?>
         </div>
     </body>
 </html>

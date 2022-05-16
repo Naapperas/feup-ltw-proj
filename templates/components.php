@@ -55,9 +55,16 @@ enum ButtonType: string {
         <?php } elseif ($component === "a") { ?>
             href="<?= $href ?>"
         <?php } ?>
+        <?php if ($type == ButtonType::ICON && $text) { ?>
+            aria-label="<?= $text ?>"
+        <?php } ?>
     >
-        <?php if ($icon) createIcon($icon) ?>
-        <?= $text ?>
+        <?php if ($type == ButtonType::ICON) { ?>
+            <?= $icon ?>
+        <?php } else { ?>
+            <?php if ($icon) createIcon($icon) ?>
+            <?= $text ?>
+        <?php } ?>
     </<?= $component ?>>
 <?php } ?>
 
@@ -109,13 +116,13 @@ enum ButtonType: string {
             ?>
         />
         <label for="<?= $name ?>"><?= $label ?></label>
-        <?php if ($toggleVisibility) { ?>
-        <button
-            type="button"
-            class="toggle-visible icon button"
-            aria-label="Toggle <?= $name ?> visibility"
-        ></button>
-        <?php } ?>
+        <?php if ($toggleVisibility) {
+            createButton(
+                type: ButtonType::ICON,
+                text: "Toggle $name visibility",
+                class: "toggle-visible"
+            ); 
+        } ?>
         <?php if ($helperText !== "") { ?>
         <span 
             class="error-text" 
@@ -143,15 +150,35 @@ enum ButtonType: string {
     session_start();
 
     if (isset($_SESSION['user'])) {    
-        createButton(type: ButtonType::ICON, text: "shopping_cart");
-        createButton(type: ButtonType::ICON, text: "account_circle",
-                     component: "a", href: "/profile/");
-        createButton(type: ButtonType::ICON, text: "logout",
-                     component: "a", href: "/actions/logout.php");
+        createButton(
+            type: ButtonType::ICON,
+            text: "Shopping cart",
+            icon: "shopping_cart");
+        createButton(
+            type: ButtonType::ICON, 
+            text: "Profile",
+            icon: "account_circle",
+            component: "a", href: "/profile/");
+        createButton(
+            type: ButtonType::ICON,
+            text: "Logout",
+            icon: "logout",
+            component: "a", href: "/actions/logout.php");
     } else {
-        createButton(type: ButtonType::ICON, text: "login",
-                     component: "a", href: "/register/");
+        createButton(
+            type: ButtonType::ICON,
+            text: "Register",
+            icon: "login",
+            component: "a", href: "/register/");
     }
+} ?>
+
+<?php function createColorSchemeToggle() {
+    createButton(
+        type: ButtonType::ICON, 
+        text: "Toggle color scheme", 
+        class: "color-scheme-toggle"
+    );
 } ?>
 
 <?php function createMainPageCard(
@@ -193,11 +220,16 @@ enum ButtonType: string {
                 name="q"
             />
             <label for="search">search</label>
-            <button class="button icon" type="submit">search</button>
+            <?php createButton(
+                type: ButtonType::ICON,
+                icon: "search",
+                text: "Search",
+                submit: true
+            ) ?>
         </form>
 
         <?php
-        createButton(type: ButtonType::ICON, class: "color-scheme-toggle");
+        createColorSchemeToggle();
         createUserButtons();
         ?>
 

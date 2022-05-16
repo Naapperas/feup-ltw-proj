@@ -58,7 +58,7 @@ require_once("../templates/components.php");
                 Already have an account?
                 <a href="../login/">Login</a>
             </span>
-            <?php createButton(type: ButtonType::ICON, class: "color-scheme-toggle") ?>
+            <?php createColorSchemeToggle() ?>
         </div>
     </body>
 </html>
