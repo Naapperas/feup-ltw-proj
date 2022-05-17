@@ -146,3 +146,8 @@ a {
     text-decoration: none;
     color: inherit;
 }
+
+.link {
+    color: rgb(var(--color-main));
+    text-decoration: underline;
+}

@@ -53,4 +53,5 @@
 
 .top-app-bar.layout > .appbar {
     grid-area: appbar;
+    z-index: 5;
 }

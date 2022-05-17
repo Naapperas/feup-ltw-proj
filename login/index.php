@@ -30,7 +30,7 @@ require_once("../templates/components.php");
         <div class="form-support">
             <span>
                 Don't have an account?
-                <a href="/register/">Register</a>
+                <a class="link" href="/register/">Register</a>
             </span>
             <?php createColorSchemeToggle() ?>
         </div>
