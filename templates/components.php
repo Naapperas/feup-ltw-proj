@@ -7,6 +7,9 @@ enum ButtonType: string {
     case TEXT = "text";
     case ICON = "icon";
 }
+
+include_once(dirname(__DIR__)."/database/models/user.php");
+
 ?>
 
 <?php function createHead(
@@ -193,9 +196,7 @@ enum ButtonType: string {
             />
             <header class="header">
                 <h3 class="title h6"><?= $restaurant->name ?></h3>
-                <?php 
-                if (($avgScore = $restaurant->getReviewScore()) !== null) {
-                ?>
+                <?php if (($avgScore = $restaurant->getReviewScore()) !== null) { ?>
                 <span class="chip right"><?php createIcon(icon: "star") ?><?= $avgScore ?></span>
                 <?php } ?>
             </header>
@@ -203,14 +204,17 @@ enum ButtonType: string {
             
             session_start();
 
-            $currentUser = User::get($_SESSION['user']);
+            if (isset($_SESSION['user'])) {
 
-            $icon = ($currentUser !== null && $restaurant->isLikedBy($currentUser)) ? "favorite" : "favorite_border";
-
-            createButton(
-                type: ButtonType::ICON, icon: $icon,
-                text: "Favorite", class: "top-right"
-            ) ?>
+                $currentUser = User::get($_SESSION['user']);
+    
+                $icon = ($currentUser !== null && $restaurant->isLikedBy($currentUser)) ? "favorite" : "favorite_border";
+    
+                createButton(
+                    type: ButtonType::ICON, icon: $icon,
+                    text: "Favorite", class: "top-right"
+                );
+            } ?>
         </article>
     </a>
 <?php } ?>
