@@ -1,31 +1,7 @@
 PRAGMA FOREIGN_KEYS = ON;
 
-DROP TRIGGER IF EXISTS "User_is_owner";
-DROP TRIGGER IF EXISTS "Client_favorite_restaurant";
-DROP TRIGGER IF EXISTS "User_is_driver";
-DROP TRIGGER IF EXISTS "Client_favorite_dish";
-DROP TRIGGER IF EXISTS "Client_review";
 DROP TRIGGER IF EXISTS "Menu_add_dish";
 DROP TRIGGER IF EXISTS "Menu_dish_same_restaurant";
-DROP TRIGGER IF EXISTS "Dont_deliver_to_yourself";
-
--- Verify a user is an owner
-
-CREATE TRIGGER IF NOT EXISTS "User_is_owner"
-BEFORE INSERT ON "Restaurant"
-WHEN NOT EXISTS (SELECT * FROM "User" WHERE "id" = "New"."owner" AND "is_owner" = 1)
-BEGIN
-    SELECT raise(ABORT, "Can't insert restaurant with non-owner user");
-END;
-
--- Only drivers can deliver orders
-
-CREATE TRIGGER IF NOT EXISTS "User_is_driver"
-BEFORE INSERT ON "Order"
-WHEN NOT EXISTS (SELECT * FROM "User" WHERE "id" = "New"."driver" AND "is_driver" = 1)
-BEGIN
-    SELECT raise(ABORT, "Only drivers can deliver orders");
-END;
 
 -- Dishes of a menu must belong to the menu's restaurant
 
@@ -42,13 +18,4 @@ CREATE TRIGGER IF NOT EXISTS "Menu_add_dish"
 AFTER INSERT ON "Dish_menu"
 BEGIN
     UPDATE "Menu" SET "price" = "price" + (SELECT "price" FROM "Dish" WHERE "id" = "New"."dish") WHERE "id" = "New"."menu";
-END;
-
--- A driver cannot deliver an order to himself
-
-CREATE TRIGGER IF NOT EXISTS "Dont_deliver_to_yourself"
-BEFORE INSERT ON "Order"
-WHEN "New"."user_to_deliver" == "New"."driver"
-BEGIN
-    SELECT raise(ABORT, "Driver can't deliver an order to himself");
 END;

@@ -5,16 +5,16 @@
 
 -- tests for trigger #1
 
-INSERT INTO "User" VALUES (1, "nome1", "email1", "pass", "addr", "1", "oi", 1, 1); -- owner
-INSERT INTO "User" VALUES (2, "nome2", "email2", "pass", "addr", "12", "oi", 0, 1); -- not owner
+INSERT INTO "User" VALUES (1, "nome1", "email1", "pass", "addr", "1", "oi"); -- owner
+INSERT INTO "User" VALUES (2, "nome2", "email2", "pass", "addr", "12", "oi"); -- not owner
 
 INSERT INTO "Restaurant" VALUES (1, "nomeres", "address", 1);
 INSERT INTO "Restaurant" VALUES (2, "nomeres2", "address2", 2);
 
 -- tests for trigger #2
 
-INSERT INTO "User" VALUES (3, "nome3", "email3", "pass", "addr", "123", "oi", 1, 1); -- client
-INSERT INTO "User" VALUES (4, "nome4", "email4", "pass", "addr", "1234", "oi", 1, 1); -- not client
+INSERT INTO "User" VALUES (3, "nome3", "email3", "pass", "addr", "123", "oi"); -- client
+INSERT INTO "User" VALUES (4, "nome4", "email4", "pass", "addr", "1234", "oi"); -- not client
 
 INSERT INTO "Restaurant" VALUES (3, "nomeres3", "address3", 1);
 
@@ -23,16 +23,16 @@ INSERT INTO "Favorite_restaurant" VALUES (4, 3); -- should fail
 
 -- tests for trigger #3
 
-INSERT INTO "User" VALUES (5, "nome5", "email5", "pass", "addr", "12345", "oi", 1, 1); -- driver
-INSERT INTO "User" VALUES (6, "nome6", "email6", "pass", "addr", "123456", "oi", 1, 0); -- not driver
+INSERT INTO "User" VALUES (5, "nome5", "email5", "pass", "addr", "12345", "oi"); -- driver
+INSERT INTO "User" VALUES (6, "nome6", "email6", "pass", "addr", "123456", "oi"); -- not driver
 
 INSERT INTO "Order" VALUES (1, "state1", 0, 6, 5); -- should pass
 INSERT INTO "Order" VALUES (2, "state2", 0, 6, 6); -- should fail
 
 -- tests for trigger #4
 
-INSERT INTO "User" VALUES (7, "nome7", "email7", "pass", "addr", "1234567", "oi", 1, 1); -- client
-INSERT INTO "User" VALUES (8, "nome8", "email8", "pass", "addr", "12345678", "oi", 1, 1); -- not client
+INSERT INTO "User" VALUES (7, "nome7", "email7", "pass", "addr", "1234567", "oi"); -- client
+INSERT INTO "User" VALUES (8, "nome8", "email8", "pass", "addr", "12345678", "oi"); -- not client
 
 INSERT INTO "Restaurant" VALUES (4, "nomeres4", "address4", 7);
 
@@ -43,8 +43,8 @@ INSERT INTO "Favorite_dish" VALUES (8, 1); -- should fail
 
 -- tests for trigger #5
 
-INSERT INTO "User" VALUES (9, "nome9", "email9", "pass", "addr", "12340", "oi", 1, 1); -- client
-INSERT INTO "User" VALUES (10, "nome10", "email10", "pass", "addr", "01234", "oi", 1, 1); -- not client
+INSERT INTO "User" VALUES (9, "nome9", "email9", "pass", "addr", "12340", "oi"); -- client
+INSERT INTO "User" VALUES (10, "nome10", "email10", "pass", "addr", "01234", "oi"); -- not client
 
 INSERT INTO "Restaurant" VALUES (5, "nomerees5", "adrress5", 9);
 

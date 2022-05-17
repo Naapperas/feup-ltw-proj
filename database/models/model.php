@@ -16,9 +16,9 @@
             $class = get_called_class();
             $object = new $class();
             $props = get_class_vars($class);
-    
-            foreach ($props as $prop => $_) 
-                $object->{$prop} = $values[$prop];
+
+            foreach ($props as $prop => $value)
+                $object->{$prop} = strcmp(gettype($value), "array") ? $values[$prop] : array();
     
             return $object;
         }
