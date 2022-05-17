@@ -43,7 +43,7 @@ INSERT INTO "Favorite_dish" VALUES (8, 1); -- should fail
 
 -- tests for trigger #5
 
-INSERT INTO "User" VALUES (9, "nome9", "email9", "pass", "addr", "12340", 1, "oi", 1); -- client
+INSERT INTO "User" VALUES (9, "nome9", "email9", "pass", "addr", "12340", "oi", 1, 1); -- client
 INSERT INTO "User" VALUES (10, "nome10", "email10", "pass", "addr", "01234", "oi", 1, 1); -- not client
 
 INSERT INTO "Restaurant" VALUES (5, "nomerees5", "adrress5", 9);

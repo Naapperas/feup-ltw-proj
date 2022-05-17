@@ -3,49 +3,138 @@
 
     include(dirname(__DIR__).'/connection.php');
 
-    /**
-     * An abstract model representing a collection of similar data. 
-     */
     abstract class Model {
-
-         static function getDb(): PDO { return getDBConnection(dirname(__DIR__).'/main.db'); }
-
-        /**
-         * Creates an entry of this model using the specified data and returns it.
-         * 
-         * @param array $data the data to use to create the entry
-         * 
-         * @return array the newly created entry as an associative array
-         */
-        abstract static function create(array $data): array;
-
-        /**
-         * Updates the entry with the given id and returns it.
-         * 
-         * @param int $id the id of the entry to delete
-         * @param array $data the data to use to update the entry
-         * 
-         * @return array the updated entry as an associative array
-         */
-        abstract static function update(int $id, array $newData): array;
-
-        /**
-         * Deletes the entry with the given id and returns it.
-         * 
-         * @param int $id the id of the entry to delete
-         * 
-         * @return array the deleted entry as an associative array
-         */
-        abstract static function delete(int $id): array;
-
-        /**
-         * Gets one entry/many entries based on its/their ids.
-         * 
-         * @param int|array|null id the id or ids to retrieve from the database. If null, retrieve everything
-         * @param bool named weather the array given as input should be named (representing model attributes) or not (representing a collection of ids)
-         * 
-         * @return array the entry/entries to return
-         */
-        abstract static function get(int|array|null $id = null, bool $named = false): array;
+        public readonly int $id;
+    
+        protected static function getDB(): PDO {
+            return getDBConnection(dirname(__DIR__).'/main.db');
+        }
+    
+        protected abstract static function getTableName(): string;
+    
+        protected static function fromArray(array $values): static {
+            $class = get_called_class();
+            $object = new $class();
+            $props = get_class_vars($class);
+    
+            foreach ($props as $prop => $_) 
+                $object->{$prop} = $values[$prop];
+    
+            return $object;
+        }
+    
+        static function create(array $values): ?static {
+    
+            unset($values['id']);
+            $props = array_filter(array_keys($values), function ($prop) { return strcmp($prop, "id"); }, ARRAY_FILTER_USE_KEY);
+            $prop_names = implode(', ', $props);
+            $prop_values = implode(', ', array_map(function ($s) { return ":$s"; }, $props));
+    
+            $table = static::getTableName();
+            $query = "INSERT INTO $table ($prop_names) VALUES ($prop_values);";
+            $results = executeQuery(static::getDB(), $query, $values);
+    
+            if ($results[0] === false)
+                return null;
+    
+            return static::get(intval(static::getDB()->lastInsertId($table)));
+        }
+    
+        static function get(int|array $data = null, int $limit = null): array|static|null {
+            $table = static::getTableName();
+            $query = "SELECT * FROM $table";
+    
+            if ($data === null) {
+    
+                if ($limit !== null)
+                    $query .= " LIMIT $limit";
+    
+                $query .= ';';
+    
+                $queryResults = getQueryResults(static::getDb(), $query, true);
+    
+                if ($queryResults === false)
+                    return [];
+    
+                $results = array();
+                foreach ($queryResults as $result) {
+                    $results[] = static::fromArray($result);
+                }
+    
+                return $results;
+            }
+    
+            $query .= ' WHERE ';
+    
+            if (!strcmp(gettype($data), 'integer')) {
+                $id = $data;
+    
+                $query .= 'id = ?;';
+    
+                // LIMIT does not make sense in this case since we are only getting one single Model instance
+    
+                $results = getQueryResults(static::getDB(), $query, false, [$id]);
+        
+                if ($results === false)
+                    return null;
+        
+                return static::fromArray($results);
+            } else {
+                        
+                $attrs = array();
+                $values = array();
+    
+                foreach($data as $attribute=>$value) {
+                    $attrs[] = sprintf("%s = ?", $attribute);
+                    $values[] = $value;
+                }
+    
+                $query .= implode(" AND ", $attrs);
+    
+                if ($limit !== null) {
+                    $query .= " LIMIT $limit";
+                }
+    
+                $query .= ";";
+    
+                $queryResults = getQueryResults(static::getDb(), $query, true, $values);
+    
+                if ($queryResults === false)
+                    return [];
+    
+                $results = array();
+                foreach ($queryResults as $result) {
+                    $results[] = static::fromArray($result);
+                }
+    
+                return $results;
+            }
+        }
+    
+        function delete(): bool {
+            $table = static::getTableName();
+            $query = "DELETE FROM $table WHERE id = ?;";
+    
+            $results = executeQuery(static::getDB(), $query, [$this->id]);
+            return $results[0];
+        }
+    
+        function update(): bool {
+            $table = static::getTableName();
+    
+            $props = get_object_vars($this);
+            unset($props["id"]);
+    
+            foreach ($props as $prop => $_)
+                if ($prop !== 'id' && strcmp(gettype($prop), "array") /* In case any child model has arrays (many-to-many) */)
+                    $subquery[] = "$prop = :$prop";
+            
+            $subquery = implode(', ', $subquery);
+    
+            $query = "UPDATE $table SET $subquery WHERE id = :id;";
+    
+            $results = executeQuery(static::getDB(), $query, [...$props, 'id' => $this->id]);
+            return $results[0];
+        }
     }
 ?>
