@@ -18,5 +18,27 @@
         public function getOwner(): ?User {
             return User::get($this->owner);
         }
+
+        public function getReviewScore(): ?float {
+
+            $query = "SELECT avg(score) AS average FROM Review WHERE restaurant = ?;";
+
+            $queryResults = getQueryResults(static::getDB(), $query, false, [$this->id]);
+        
+            if ($queryResults === false) return 0;
+
+            return $queryResults['average']; // returns null if restaurant has no reviews
+        }
+
+        public function isLikedBy(User $currentUser): bool {
+
+            $query = "SELECT * FROM Favorite_restaurant WHERE restaurant = ? AND client = ?;";
+
+            $queryResults = getQueryResults(static::getDB(), $query, false, [$this->id, $currentUser->id]);
+        
+            if ($queryResults === false) return false;
+
+            return count($queryResults) > 0; // returns null if restaurant has no reviews
+        }
     }
 ?>

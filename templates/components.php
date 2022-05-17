@@ -188,15 +188,27 @@ enum ButtonType: string {
                 src="https://picsum.photos/316/194"
                 width="320"
                 height="180"
-                alt=""
+                alt="Profile picture for <?= $restaurant->name ?>"
                 class="full media"
             />
             <header class="header">
-                <h3 class="title h6">Restaurant name</h3>
-                <span class="chip right"><?php createIcon(icon: "star") ?>4.7</span>
+                <h3 class="title h6"><?= $restaurant->name ?></h3>
+                <?php 
+                if (($avgScore = $restaurant->getReviewScore()) !== null) {
+                ?>
+                <span class="chip right"><?php createIcon(icon: "star") ?><?= $avgScore ?></span>
+                <?php } ?>
             </header>
-            <?php createButton(
-                type: ButtonType::ICON, icon: "favorite_border",
+            <?php 
+            
+            session_start();
+
+            $currentUser = User::get($_SESSION['user']);
+
+            $icon = ($currentUser !== null && $restaurant->isLikedBy($currentUser)) ? "favorite" : "favorite_border";
+
+            createButton(
+                type: ButtonType::ICON, icon: $icon,
                 text: "Favorite", class: "top-right"
             ) ?>
         </article>

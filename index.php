@@ -27,7 +27,7 @@ require_once("./database/models/restaurant.php");
     
                 <?php 
                 for ($i = 0; $i < 9; ++$i) 
-                    createRestaurantCard(new Restaurant()); 
+                    createRestaurantCard(Restaurant::get(5)); 
                 ?>
             </section>
 
@@ -45,7 +45,7 @@ require_once("./database/models/restaurant.php");
     
                 <?php
                 for ($i = 0; $i < 20; ++$i)
-                    createRestaurantCard(new Restaurant());
+                    createRestaurantCard(Restaurant::get(3));
                 ?>
             </section>
         </main>

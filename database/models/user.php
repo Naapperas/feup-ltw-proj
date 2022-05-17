@@ -2,6 +2,7 @@
     declare(strict_types=1);
 
     include_once('model.php');
+    include_once('restaurant.php');
     include(dirname(__DIR__, 2).'/lib/password.php');
 
     class User extends Model {
@@ -15,10 +16,6 @@
         protected static function getTableName(): string {
             return "User";
         }
-    
-        function update(): bool { // in here we could update other 'inter-model' related attributes
-            return parent::update();
-        }
 
         function validatePassword(string $passwordCandidate): bool {
             
@@ -29,6 +26,22 @@
             if ($userData === false) return false;
 
             return !strcmp(hashPassword($passwordCandidate), $userData['password']);
+        }
+
+        function getOwnedRestaurants(): array {
+            
+            $query = "SELECT * FROM Restaurant WHERE owner = ?;";
+
+            $queryResults = getQueryResults(static::getDB(), $query, true, [$this->id]);
+        
+            if ($queryResults === false) return [];
+
+            $results = [];
+            foreach ($queryResults as $result) {
+                $results[] = Restaurant::get($result['id']);
+            }
+
+            return $results;
         }
     }
 ?>
