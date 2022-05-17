@@ -14,7 +14,7 @@ require_once("./database/models/restaurant.php");
     <body class="top-app-bar layout">
         <?php createAppBar(); ?>
 
-        <main class="centered medium medium-spacing single column layout">
+        <main class="centered large medium-spacing single column layout">
             <section class="restaurant-list">
                 <header class="header">
                     <h2 class="title h6">Your favorites</h2>

@@ -28,6 +28,8 @@
 
     --color-button: var(--color-on-appbar);
     --color-on-button: var(--color-appbar);
+
+    transition-property: background, color, box-shadow;
 }
 
 .appbar.elevated {
