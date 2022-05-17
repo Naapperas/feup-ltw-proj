@@ -235,7 +235,7 @@ enum ButtonType: string {
 <?php function createRestaurantCategories(array $categories) { ?>
     <section class="restaurant-categs">
         <?php foreach($categories as $category) { ?>
-            <span class="restaurant-categ"><?= $category?></span>
+            <span class="rest-categ"><?= $category?></span>
         <?php } ?>
     </section>
 <?php } ?>

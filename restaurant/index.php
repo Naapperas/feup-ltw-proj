@@ -19,7 +19,7 @@ if(isset($_GET['id'])) {
     $categories = array();
 } else {
     $restaurant = array("name" => "teste");
-    $categories = array();
+    $categories = array("cat1" => "cat1", "cat2" => "cat2", "cat3" => "cat3");
 }
 
 ?>
@@ -27,7 +27,7 @@ if(isset($_GET['id'])) {
 <html lang="en">
     <?php createHead(
         title: "Restaurant Name", description: "Page for restaurants to present their products",
-        styles: ["restaurant/restaurant.css"]
+        styles: ["style/pages/restaurant.css"]
     );
     ?>
     <body class="top-app-bar layout">
