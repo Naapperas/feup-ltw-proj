@@ -3,44 +3,19 @@
     include_once("../database/models/user.php");
     include_once("password.php");
 
-    function userExists(string $username, string $password): bool {
-        return !!User::get(array(
-            "name" => $username,
-            "password" => hashPassword($password)
-        ), true);
+    function userExists(string $username): bool {
+        return !!User::get(array("name" => $username));
     }
 
-    function createUser(string $username, string $password, string $email, string $address, string $phone_number, string $full_name): array {
-        return User::create(array($username, $email, hashPassword($password), $address, $phone_number, $full_name, 0, 0));
-    }
-
-    function toggleOwner(int $user_id): array {
-
-        $user = User::get($user_id);
-
-        return User::update($user_id, array(
-            $user["name"],
-            $user["password"],
-            $user["email"],
-            $user["address"],
-            $user["phone_number"],
-            !$user["is_owner"],
-            $user["is_driver"],
-        ));
-    }
-
-    function toggleDriver(int $user_id): array {
-
-        $user = User::get($user_id);
-
-        return User::update($user_id, array(
-            $user["name"],
-            $user["password"],
-            $user["email"],
-            $user["address"],
-            $user["phone_number"],
-            $user["is_owner"],
-            !$user["is_driver"],
-        ));
+    function createUser(string $username, string $password, string $email, string $address, string $phone_number, string $full_name): ?User {
+        return User::create(array(
+            'name' => $username, 
+            'email' => $email, 
+            'password' => hashPassword($password), 
+            'address' => $address, 
+            'phone_number' => $phone_number, 
+            'full_name' => $full_name, 
+            'is_owner' => 0, 
+            'is_driver' => 0));
     }
 ?>

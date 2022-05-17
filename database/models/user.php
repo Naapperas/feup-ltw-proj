@@ -2,7 +2,7 @@
     declare(strict_types=1);
 
     include_once('model.php');
-    include_once('../../lib/password.php');
+    include(dirname(__DIR__, 2).'/lib/password.php');
 
     class User extends Model {
 

@@ -15,13 +15,13 @@
 
         $profile = User::get(intval($_GET['id']));
     } else if (isset($_SESSION['user'])) {
-        $profile = $_SESSION['user'];
+        $profile = User::get($_SESSION['user']);
     } else {
         header("Location: /");
         die();
     }
 
-    if (count($profile) === 0) {
+    if ($profile === null) {
         require("./no_such_profile.php");
         die();
     }
@@ -29,8 +29,8 @@
 <!DOCTYPE html>
 <html lang="en">
     <?php createHead(
-        title: "{$profile['name']}'s profile",
-        description: "{$profile['name']}'s profile page on XauFome",
+        title: "{$profile->name}'s profile",
+        description: "{$profile->name}'s profile page on XauFome",
         styles: ["/profile/profile.css"]
     ); ?>
     <body class="top-app-bar layout">
@@ -41,19 +41,19 @@
                 <img
                     class="avatar big"
                     src="https://picsum.photos/240"
-                    alt="<?= $profile['name'] ?>'s profile picture"
+                    alt="<?= $profile->name ?>'s profile picture"
                     width="240px"
                     height="240px"
                 />
-                <h2 class="h4"><?=$profile['name']?>'s profile</h2>
+                <h2 class="h4"><?=$profile->name?>'s profile</h2>
             </header>
 
             <section>
                 <h3 class="h5">Personal information</h3>
 
-                <p><span>Email: </span><span><?=$profile['email']?></span></p>
-                <p><span>Full name: </span><span><?=$profile['full_name']?></span></p>
-                <p><span>Phone number: </span><span><?=$profile['phone_number']?></span></p>
+                <p><span>Email: </span><span><?=$profile->email?></span></p>
+                <p><span>Full name: </span><span><?=$profile->full_name?></span></p>
+                <p><span>Phone number: </span><span><?=$profile->phone_number?></span></p>
             </section>
         </main>
 

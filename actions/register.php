@@ -20,14 +20,14 @@
     require_once('../database/models/user.php');
     require_once('../lib/user.php');
 
-    if (!userExists($_POST['username'], $_POST['password'])) {
+    if (!userExists($_POST['username'])) {
         $_SESSION['user'] = createUser(
             $_POST['username'],
             $_POST['password'],
             $_POST['email'],
             $_POST['address'],
             $_POST['phone'],
-            $_POST["name"]);
+            $_POST["name"])->id;
     }
 
     header('Location: ' . $_POST['referer']);

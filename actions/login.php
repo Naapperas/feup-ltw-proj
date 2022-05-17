@@ -14,8 +14,13 @@
     require_once('../database/models/user.php');
     require_once('../lib/user.php');
 
-    if (userExists($_POST['username'], $_POST['password'])) {
-        $_SESSION['user'] = User::get(array("name" => $_POST['username']), true)[0]; // need to put [0] because we are doing a "named" query
+    if (userExists($_POST['username'])) {
+
+        $userCandidate = User::get(array("name" => $_POST['username']))[0];
+
+        if ($userCandidate->validatePassword($_POST['password']))
+            $_SESSION['user'] = $userCandidate->id;
+
         header('Location: ' . $_POST['referer']);
     } else {
         header('Location: /login/');
