@@ -8,7 +8,7 @@ require_once("./database/models/restaurant.php");
 <html lang="en">
     <?php createHead(
         description: "Home page for XauFome.", 
-        scripts: ["components/form.js"],
+        scripts: ["components/form.js", "api/restaurant.js"],
         styles: ["/style/pages/main.css"]
     ); ?>
     <body class="top-app-bar layout">

@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 require_once("../templates/components.php");
 require_once("../database/models/restaurant.php");
-require_once("../lib/category.php");
 
 session_start();
 
@@ -14,9 +13,10 @@ if(isset($_GET['id'])) {
     }
 
     $restaurant = Restaurant::get(intval($_GET['id']));
-    $categories = getCategories(intval($_GET['id']));
-    print_r($categories);
-    $categories = array();
+
+    if ($restaurant === null) die;
+
+    $categories = $restaurant->getCategories();
 } else {
     $restaurant = array("name" => "teste");
     $categories = array("cat1" => "cat1", "cat2" => "cat2", "cat3" => "cat3");
@@ -27,14 +27,14 @@ if(isset($_GET['id'])) {
 <html lang="en">
     <?php createHead(
         title: "Restaurant Name", description: "Page for restaurants to present their products",
-        styles: ["style/pages/restaurant.css"]
+        styles: ["/style/pages/restaurant.css"]
     );
     ?>
     <body class="top-app-bar layout">
         <?php createAppBar(); ?>
 
         <main class="centered medium medium-spacing single column layout">
-            <h2 class="h4"><?= $restaurant['name']?></h2>
+            <h2 class="h4"><?= $restaurant->name ?></h2>
 
             <div class="restaurant-data">
                 <section class="restaurant-pics">
@@ -42,7 +42,7 @@ if(isset($_GET['id'])) {
                 </section>
                 <?php createRestaurantCategories($categories); ?>
                 <section class="restaurant-addr">
-                    <span><?= $restaurant['address']?></span>
+                    <span><?= $restaurant->address ?></span>
                 </section>
             </div>
 

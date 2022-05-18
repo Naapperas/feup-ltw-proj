@@ -48,7 +48,8 @@ include_once(dirname(__DIR__)."/database/models/user.php");
     ButtonType $type = ButtonType::CONTAINED, string $text = "",
     string $icon = "", string $component = "button", string $class = "",
     string $href = "",
-    bool $submit = false, bool $next = false, bool $back = false
+    bool $submit = false, bool $next = false, bool $back = false,
+    string $onClickHandler = null
 ) { ?>
     <<?= $component ?>
         class="button <?= $type->value ?> <?= $class ?>"
@@ -61,6 +62,9 @@ include_once(dirname(__DIR__)."/database/models/user.php");
         <?php if ($type == ButtonType::ICON && $text) { ?>
             aria-label="<?= $text ?>"
         <?php } ?>
+        <?php if ($onClickHandler !== null) { ?>
+            onclick="<?= $onClickHandler ?>(event)"
+        <?php }?>
     >
         <?php if ($type == ButtonType::ICON) { ?>
             <?= $icon ?>
@@ -185,7 +189,7 @@ include_once(dirname(__DIR__)."/database/models/user.php");
 } ?>
 
 <?php function createRestaurantCard(Restaurant $restaurant) { ?>
-    <a href="/restaurant/?id=?">
+    <a href="/restaurant/?id=<?= $restaurant->id ?>" data-card-type="restaurant" data-restaurant-id="<?= $restaurant->id ?>">
         <article class="card responsive interactive">
             <img
                 src="https://picsum.photos/316/194"
@@ -212,7 +216,8 @@ include_once(dirname(__DIR__)."/database/models/user.php");
     
                 createButton(
                     type: ButtonType::ICON, icon: $icon,
-                    text: "Favorite", class: "top-right"
+                    text: "Favorite", class: "top-right",
+                    onClickHandler:"addRestaurantToFavorites"
                 );
             } ?>
         </article>

@@ -40,5 +40,27 @@
 
             return count($queryResults) > 0; // returns null if restaurant has no reviews
         }
+
+        public function getCategories(): array {
+
+            $query = "SELECT category FROM Restaurant_category WHERE restaurant = ?;";
+
+            $categories = getQueryResults(static::getDB(), $query, true, [$this->id]);
+        
+            if ($categories === false) return [];
+
+            $result = [];
+            foreach ($categories as $categoryId) {
+                $query = "SELECT name FROM Category WHERE id = ?;";
+
+                $name = getQueryResults(static::getDB(), $query, false, [$categoryId]);
+
+                if ($name !== false) {
+                    $result[] = $name['name'];
+                }
+            }
+
+            return $result;
+        }
     }
 ?>
