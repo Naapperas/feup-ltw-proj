@@ -235,7 +235,6 @@ include_once(dirname(__DIR__)."/database/models/user.php");
     </a>
 <?php } ?>
 
-
 <?php function createAppBar() { ?>
     <header class="appbar elevated fixed">
         <a href="/" class="title homepage-link"><h1 class="h6 color logo"></h1></a>

@@ -1,9 +1,8 @@
 <?php 
 declare(strict_types=1);
 
-session_start();
-
 require_once("../templates/components.php");
+require_once("../templates/auth.php");
 require_once("../templates/metadata.php");
 ?>
 <!DOCTYPE html>
@@ -26,6 +25,7 @@ require_once("../templates/metadata.php");
                 toggleVisibility: true
             );
             createButton(text: "Login", submit: true);
+            processAuthErrors();
             ?>
             <input type="hidden" name="referer" value="<?=$_SERVER["HTTP_REFERER"]?>">
         </form>

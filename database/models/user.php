@@ -25,7 +25,7 @@
 
             if ($userData === false) return false;
 
-            return !strcmp(hashPassword($passwordCandidate), $userData['password']);
+            return comparePassword($passwordCandidate, $userData['password']);
         }
 
         function getOwnedRestaurants(): array {
@@ -36,12 +36,7 @@
         
             if ($queryResults === false) return [];
 
-            $results = [];
-            foreach ($queryResults as $result) {
-                $results[] = Restaurant::get($result['id']);
-            }
-
-            return $results;
+            return array_map(fn($id) => Restaurant::get($id), $queryResults);
         }
     }
 ?>

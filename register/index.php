@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once("../templates/components.php");
+require_once("../templates/auth.php");
 require_once("../templates/metadata.php");
 ?>
 <!DOCTYPE html>
@@ -48,7 +49,8 @@ require_once("../templates/metadata.php");
                     errors: ["patternMismatch" => "Error: invalid phone number"]
                 );
                 createButton(text: "Back", back: true, type: ButtonType::OUTLINED);
-                createButton(text: "Register", submit: true) 
+                createButton(text: "Register", submit: true);
+                processAuthErrors();
                 ?>
             </fieldset>
             <input type="hidden" name="referer" value="<?=$_SERVER["HTTP_REFERER"]?>"> <!-- This is kept out of the fieldsets due to being hidden -->

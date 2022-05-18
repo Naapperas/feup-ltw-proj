@@ -17,9 +17,12 @@
 
     require_once('../database/models/user.php');
 
-    $user = User::get(array("name" => $params['username']))[0];
+    $candidateUser = User::get(array("name" => $params['username']));
 
-    if ($user === null || !$user->validatePassword($params['password'])){
+    $user = (count($candidateUser) > 0) ? $candidateUser[0] : null;
+
+    if ($user === null || !$user->validatePassword($params['password'])) {
+        $_SESSION['auth-error'] = 'Incorrect username or password!'; // to be handled by the login page
         header('Location: /login/');
         die();
     }
