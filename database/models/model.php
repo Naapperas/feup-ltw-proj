@@ -65,7 +65,7 @@
     
             $query .= ' WHERE ';
     
-            if (!strcmp(gettype($data), 'integer')) {
+            if (is_int($data)) {
                 $id = $data;
     
                 $query .= 'id = ?;';

@@ -44,3 +44,16 @@
     margin-left: -8px;
     margin-right: 8px;
 }
+
+.chip-list {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: proximity;
+    gap: 16px;
+}
+
+.chip-list.wrap {
+    flex-wrap: wrap;
+}

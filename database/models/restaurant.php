@@ -3,6 +3,7 @@
 
     include_once('model.php');
     include_once('user.php');
+    include_once('category.php');
 
     class Restaurant extends Model {
 
@@ -49,16 +50,7 @@
         
             if ($categories === false) return [];
 
-            $result = [];
-            foreach ($categories as $categoryId) {
-                $query = "SELECT name FROM Category WHERE id = ?;";
-
-                $name = getQueryResults(static::getDB(), $query, false, [$categoryId]);
-
-                if ($name !== false) {
-                    $result[] = $name['name'];
-                }
-            }
+            $result = array_map(fn($id) => Category::get($id), $categories);
 
             return $result;
         }

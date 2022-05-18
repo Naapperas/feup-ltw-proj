@@ -185,7 +185,11 @@ include_once(dirname(__DIR__)."/database/models/user.php");
 } ?>
 
 <?php function createRestaurantCard(Restaurant $restaurant) { ?>
-    <a href="/restaurant/?id=<?= $restaurant->id ?>" data-card-type="restaurant" data-restaurant-id="<?= $restaurant->id ?>">
+    <a 
+        href="/restaurant/?id=<?= $restaurant->id ?>" 
+        data-card-type="restaurant" 
+        data-restaurant-id="<?= $restaurant->id ?>"
+    >
         <article class="card responsive interactive">
             <img
                 src="https://picsum.photos/316/194"
@@ -196,11 +200,16 @@ include_once(dirname(__DIR__)."/database/models/user.php");
             />
             <header class="header">
                 <h3 class="title h6"><?= $restaurant->name ?></h3>
+                <span class="subtitle subtitle2 secondary"><?= $restaurant->address ?></span>
                 <?php if (($avgScore = $restaurant->getReviewScore()) !== null) { ?>
                 <span class="chip right"><?php createIcon(icon: "star") ?><?= $avgScore ?></span>
                 <?php } ?>
             </header>
-            <?php 
+            <?php
+            if (($categories = $restaurant->getCategories()) !== []){
+                echo '<hr class="divider" />';
+                createRestaurantCategories($categories, 'h4');
+            }
             
             session_start();
 
@@ -208,11 +217,17 @@ include_once(dirname(__DIR__)."/database/models/user.php");
 
                 $currentUser = User::get($_SESSION['user']);
     
-                $icon = ($currentUser !== null && $restaurant->isLikedBy($currentUser)) ? "favorite" : "favorite_border";
+                if ($currentUser !== null && $restaurant->isLikedBy($currentUser)) {
+                    $icon = "favorite";
+                    $text = "Unfavorite";
+                } else {
+                    $icon = "favorite_border";
+                    $text = "Favorite";
+                }
     
                 createButton(
                     type: ButtonType::ICON, icon: $icon,
-                    text: "Favorite", class: "top-right",
+                    text: $text, class: "top-right",
                     onClickHandler:"addRestaurantToFavorites"
                 );
             } ?>
@@ -249,10 +264,11 @@ include_once(dirname(__DIR__)."/database/models/user.php");
     </header>
 <?php } ?>
 
-<?php function createRestaurantCategories(array $categories) { ?>
-    <section class="restaurant-categs">
+<?php function createRestaurantCategories(array $categories, string $h) { ?>
+    <section class="chip-list wrap">
+        <<?= $h ?> class="subtitle2" >Categories</<?= $h ?>>
         <?php foreach($categories as $category) { ?>
-            <span class="rest-categ"><?= $category?></span>
+            <span class="chip"><?= $category->name ?></span>
         <?php } ?>
     </section>
 <?php } ?>
