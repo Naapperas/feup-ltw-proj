@@ -13,20 +13,11 @@ include_once(dirname(__DIR__)."/database/models/user.php");
 ?>
 
 <?php function createHead(
-    string $title = "", string $description = "",
+    callable $metadata,
     array $styles = [], array $scripts = []
 ) { ?>
     <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>
-            <?php if (strcmp($title, "")) { ?>
-            <?= $title ?> - Xau Fome
-            <?php } else { ?>
-                Xau Fome
-            <?php } ?>
-        </title>
+        <?php $metadata() ?>
         
         <script src="/scripts/colorscheme.js"></script>
 
@@ -39,23 +30,28 @@ include_once(dirname(__DIR__)."/database/models/user.php");
         <?php foreach ($scripts as $script) { ?>
             <script src="/scripts/<?= $script ?>" defer></script>
         <?php } ?>
-
-        <meta name="description" content="<?= $description ?>" />
     </head>
 <?php } ?>
 
 <?php function createButton(
     ButtonType $type = ButtonType::CONTAINED, string $text = "",
-    string $icon = "", string $component = "button", string $class = "",
-    string $href = "",
+    string $icon = "", string $class = "", string $href = "",
     bool $submit = false, bool $next = false, bool $back = false,
     string $onClickHandler = null
-) { ?>
+) {
+    $component = $href === '' ? 'button' : 'a';
+    ?>
+
     <<?= $component ?>
         class="button <?= $type->value ?> <?= $class ?>"
         <?php if ($component === "button") { ?>
             type="<?= $submit ? "submit" : "button" ?>"
-            <?php if ($next && !$back) echo "next "; if ($back && !$next) echo "back "; ?>
+            <?php 
+            if ($next && !$back)
+                echo "next ";
+            if ($back && !$next)
+                echo "back ";
+            ?>
         <?php } elseif ($component === "a") { ?>
             href="<?= $href ?>"
         <?php } ?>
@@ -165,18 +161,18 @@ include_once(dirname(__DIR__)."/database/models/user.php");
             type: ButtonType::ICON, 
             text: "Profile",
             icon: "account_circle",
-            component: "a", href: "/profile/");
+            href: "/profile/");
         createButton(
             type: ButtonType::ICON,
             text: "Logout",
             icon: "logout",
-            component: "a", href: "/actions/logout.php");
+            href: "/actions/logout.php");
     } else {
         createButton(
             type: ButtonType::ICON,
             text: "Register",
             icon: "login",
-            component: "a", href: "/register/");
+            href: "/register/");
     }
 } ?>
 

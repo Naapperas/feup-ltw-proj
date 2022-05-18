@@ -2,33 +2,42 @@
 
     if (strcmp($_SERVER['REQUEST_METHOD'], "POST") !== 0) {
         header("Location: /index.php");
-        die;
+        die();
     }
 
     session_start();
 
-    if (!isset($_POST['email']) ||
-        !isset($_POST['username']) ||
-        !isset($_POST['password']) ||
-        !isset($_POST['name']) ||
-        !isset($_POST['address']) ||
-        !isset($_POST['phone']) ||
-        !isset($_POST['referer'])) {
-        die("Error: some form data isn't set");
-    }
+    require_once('../lib/params.php');
+
+    $params = parseParams(post_params: [
+        'email' => new StringParam(
+            pattern: '/^[a-zA-Z0-9.!#$%&\'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/',
+            min_len: 1
+        ),
+        'username' => new StringParam(min_len: 1),
+        'password' => new StringParam(min_len: 8),
+        'name' => new StringParam(min_len: 1),
+        'address' => new StringParam(min_len: 1),
+        'phone' => new StringParam(pattern: '/^\d{9}$/'),
+        'referer'
+    ]);
 
     require_once('../database/models/user.php');
-    require_once('../lib/user.php');
+    require_once('../lib/password.php');
 
-    if (!userExists($_POST['username'])) {
-        $_SESSION['user'] = createUser(
-            $_POST['username'],
-            $_POST['password'],
-            $_POST['email'],
-            $_POST['address'],
-            $_POST['phone'],
-            $_POST["name"])->id;
+    $user = User::create([
+        'name' => $params['username'],
+        'password' => hashPassword($params['password']),
+        'email' => $params['email'],
+        'address' => $params['address'],
+        'phone_number' => $params['phone'],
+        'full_name' => $params["name"]
+    ]);
+
+    if ($user === null) {
+        header('Location: /register/');
+        die();
     }
-
-    header('Location: ' . $_POST['referer']);
+    
+    header('Location: '.$params['referer']);
 ?>

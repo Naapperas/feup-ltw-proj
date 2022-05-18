@@ -3,30 +3,37 @@
 declare(strict_types = 1);
 
 require_once("../templates/components.php");
+require_once("../templates/metadata.php");
 require_once("../database/models/restaurant.php");
+    
+require_once('../lib/params.php');
 
 session_start();
 
-if(isset($_GET['id'])) {
-    if (htmlspecialchars($_GET['id'])) { // sanitize id
-        // error
-    }
+list('id' => $id) = parseParams(get_params: [
+    'id' => new IntParam(
+        optional: true
+    ),
+]);
 
-    $restaurant = Restaurant::get(intval($_GET['id']));
+if (!isset($id)) {
+    header("Location: /");
+    die();
+}
 
-    if ($restaurant === null) die;
+$restaurant = Restaurant::get($id);
 
-    $categories = $restaurant->getCategories();
-} else {
-    $restaurant = array("name" => "teste");
-    $categories = array("cat1" => "cat1", "cat2" => "cat2", "cat3" => "cat3");
+if ($restaurant === null) {
+    http_response_code(404);
+    require("../error.php");
+    die();
 }
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
     <?php createHead(
-        title: "Restaurant Name", description: "Page for restaurants to present their products",
+        metadata: restaurantMetadata($restaurant),
         styles: ["/style/pages/restaurant.css"]
     );
     ?>
@@ -40,7 +47,7 @@ if(isset($_GET['id'])) {
                 <section class="restaurant-pics">
                     <span>Restaurant Pictures</span>
                 </section>
-                <?php createRestaurantCategories($categories); ?>
+                <?php //createRestaurantCategories($categories); ?>
                 <section class="restaurant-addr">
                     <span><?= $restaurant->address ?></span>
                 </section>

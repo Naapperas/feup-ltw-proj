@@ -4,11 +4,12 @@ declare(strict_types=1);
 session_start();
 
 require_once("../templates/components.php");
+require_once("../templates/metadata.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">
     <?php createHead(
-        title: "Login", description: "Login page for XauFome.", 
+        metadata: baseMetadata(title: "Login", description: "Login page for XauFome."),
         scripts: ["components/form.js", "components/textfield.js"]
     ); ?>
     <body class="centered small-spacing small single column layout">

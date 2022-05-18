@@ -2,12 +2,13 @@
 declare(strict_types=1);
 
 require_once("./templates/components.php");
+require_once("./templates/metadata.php");
 require_once("./database/models/restaurant.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">
     <?php createHead(
-        description: "Home page for XauFome.", 
+        metadata: baseMetadata(description: "Home page for XauFome."),
         scripts: ["components/form.js", "api/restaurant.js"],
         styles: ["/style/pages/main.css"]
     ); ?>
@@ -21,7 +22,7 @@ require_once("./database/models/restaurant.php");
                     <?php createButton(
                         type: ButtonType::TEXT, text: "See all",
                         class: "right",
-                        component: "a", href: "/restaurants/"
+                        href: "/restaurants/"
                     ) ?>
                 </header>
     
@@ -39,7 +40,7 @@ require_once("./database/models/restaurant.php");
                     <?php createButton(
                         type: ButtonType::TEXT, text: "See all",
                         class: "right",
-                        component: "a", href: "/restaurants/"
+                        href: "/restaurants/"
                     ) ?>
                 </header>
     

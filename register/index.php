@@ -2,11 +2,12 @@
 declare(strict_types=1);
 
 require_once("../templates/components.php");
+require_once("../templates/metadata.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">
     <?php createHead(
-        title: "Register", description: "Register page for XauFome.", 
+        metadata: baseMetadata(title: "Register", description: "Register page for XauFome."),
         scripts: ["components/form.js", "components/textfield.js"]
     ); ?>
     <body class="centered small-spacing small single column layout">
