@@ -39,5 +39,7 @@
         die();
     }
     
+    $_SESSION['user'] = $user->id;
+
     header('Location: '.$params['referer']);
 ?>
