@@ -30,7 +30,9 @@ class StringParam extends Param {
         public ?string $pattern = null,
         public ?int $min_len = null,
         public ?int $max_len = null,
-    ) {}
+    ) {
+        parent::__construct($default, $optional);
+    }
 
     function parse(?string $val) {
         $r = $val ?? $this->default;
@@ -59,7 +61,9 @@ class IntParam extends Param {
         public bool $optional = false,
         public ?int $min = null,
         public ?int $max = null,
-    ) {}
+    ) {
+        parent::__construct($default, $optional);
+    }
 
     function parse(?string $val) {
         $r = $val ?? $this->default;
