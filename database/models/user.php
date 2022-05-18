@@ -38,5 +38,23 @@
 
             return array_map(fn($id) => Restaurant::get($id), $queryResults);
         }
+
+        function addLikedRestaurant(int $restaurantId): bool {
+
+            $query = 'INSERT INTO Favorite_restaurant VALUES (?, ?);';
+
+            list($success,) = executeQuery(static::getDB(), $query, [$this->id, $restaurantId]);
+
+            return $success;
+        }
+
+        function removeLikedRestaurant(int $restaurantId): bool {
+
+            $query = 'DELETE FROM Favorite_restaurant WHERE client = ? AND restaurant = ?;';
+
+            list($success,) = executeQuery(static::getDB(), $query, [$this->id, $restaurantId]);
+
+            return $success;
+        }
     }
 ?>

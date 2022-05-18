@@ -49,7 +49,7 @@ class StringParam extends Param {
         if (isset($this->max_len) && strlen($r) > $this->max_len)
             return $this->error();
 
-        return $r;
+        return htmlentities($r);
     }
 }
 

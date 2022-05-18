@@ -228,7 +228,7 @@ include_once(dirname(__DIR__)."/database/models/user.php");
                 createButton(
                     type: ButtonType::ICON, icon: $icon,
                     text: $text, class: "top-right",
-                    onClickHandler:"addRestaurantToFavorites"
+                    onClickHandler:"toggleRestaurantLikedStatus"
                 );
             } ?>
         </article>
