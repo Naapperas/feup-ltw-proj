@@ -36,7 +36,18 @@
         
             if ($queryResults === false) return [];
 
-            return array_map(fn($id) => Restaurant::get($id), $queryResults);
+            return array_map(fn(array $id) => Restaurant::get($id)[0], $queryResults);
+        }
+
+        function getFavoriteRestaurants(): array {
+
+            $query = "SELECT restaurant AS id FROM Favorite_restaurant WHERE client = ?;";
+
+            $queryResults = getQueryResults(static::getDB(), $query, true, [$this->id]);
+        
+            if ($queryResults === false) return [];
+
+            return array_map(fn(array $id) => Restaurant::get($id)[0], $queryResults);
         }
 
         function addLikedRestaurant(int $restaurantId): bool {

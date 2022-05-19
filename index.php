@@ -31,10 +31,7 @@ session_start();
                     ) ?>
                 </header>
     
-                <?php 
-                for ($i = 0; $i < 9; ++$i) 
-                    createRestaurantCard(Restaurant::get(5)); 
-                ?>
+                <?php createFavoriteRestaurantCards(User::get($_SESSION['user'])); ?>
             </section>
 
             <hr class="divider">

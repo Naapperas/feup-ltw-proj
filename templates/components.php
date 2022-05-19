@@ -9,6 +9,7 @@ enum ButtonType: string {
 }
 
 include_once(dirname(__DIR__)."/database/models/user.php");
+include_once(dirname(__DIR__)."/database/models/restaurant.php");
 
 ?>
 
@@ -271,3 +272,10 @@ include_once(dirname(__DIR__)."/database/models/user.php");
         <?php } ?>
     </section>
 <?php } ?>
+
+<?php function createFavoriteRestaurantCards(User $user) { 
+    foreach($user->getFavoriteRestaurants() as $restaurant) {
+        createRestaurantCard($restaurant);
+    }
+} 
+?>
