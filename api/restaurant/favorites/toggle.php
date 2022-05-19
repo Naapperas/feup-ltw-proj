@@ -2,7 +2,8 @@
     declare(strict_types=1);
 
     if (strcmp($_SERVER['REQUEST_METHOD'], "POST") !== 0) {
-        header("Location: /");
+        http_response_code(405);
+        include_once("../../../error.php");
         die;
     }
 
@@ -15,6 +16,7 @@
     // prevents requests from un-authenticated sources
     if (!isset($_SESSION['user'])) {
         http_response_code(401);
+        include_once("../../../error.php");
         die;
     }
 
@@ -27,6 +29,7 @@
 
     if ($restaurant === null) {
         http_response_code(404);
+        include_once("../../../error.php");
         die;
     }
 
@@ -37,6 +40,7 @@
 
     if (!$success) {
         http_response_code(500);
+        include_once("../../../error.php");
         die;
     }
 

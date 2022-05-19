@@ -8,6 +8,7 @@ $response_code = http_response_code();
 
 $emoticon = [
     400 => "(>_<)",
+    401 => "",
     403 => "ヽ(ｏ`皿′ｏ)ﾉ",
     404 => "¯\_(ツ)_/¯",
     405 => "(°_°)ゞ",
@@ -15,6 +16,7 @@ $emoticon = [
 
 $description = [
     400 => "Bad request",
+    401 => "Unauthorized",
     403 => "Forbidden",
     404 => "Page not found",
     405 => "Method not allowed",
