@@ -2,47 +2,64 @@
 
 "use strict";
 
-const toggleStyles = {
-    "favorite": "favorite_border",
-    "favorite_border": "favorite"
-};
-
 const toggleText = {
-    "favorite": "Favorite",
-    "favorite_border": "Unfavorite"
+    off: "Favorite",
+    on: "Unfavorite",
 };
 
-const toggleLikeButtonStyle = (element) => {
+/**
+ * "Empowers" a restaurant card using javascript.
+ *
+ * @param {HTMLElement} restaurantCard
+ */
+const empowerRestaurantCard = (restaurantCard) => {
+    const { restaurantId } = restaurantCard.dataset;
 
-    const oldIcon = element.innerHTML.trim();
+    /**
+     * @param {MouseEvent} event
+     * @returns {Promise<void>}
+     */
+    const toggleLikedStatus = async (event) => {
+        event?.preventDefault();
 
-    element.innerHTML = toggleStyles[oldIcon];
-    element.ariaLabel = toggleText[oldIcon];
-};
+        const data = new FormData(); // POSTing to PHP requires FormData
+        data.append("restaurantId", restaurantId);
 
-const toggleRestaurantLikedStatus = async (event) => {
-    event?.preventDefault();
+        try {
+            const response = await fetch(
+                "/api/restaurant/favorites/toggle.php",
+                {
+                    method: "POST",
+                    body: data,
+                }
+            );
 
-    const restaurantId = event.target.parentNode.parentNode.dataset.restaurantId;
+            if (!response.ok) return;
 
-    const data = new FormData(); // POSTing to PHP requires FormData
-    data.append("restaurantId", restaurantId);
+            const { favorite } = await response.json();
 
-    const options = {
-        method: 'POST',
-        body: data,
+            /** @type NodeListOf<HTMLButtonElement> */
+            const favoriteButtons = document.querySelectorAll(
+                `[data-card-type="restaurant"][data-restaurant-id="${restaurantId}"] button[data-favorite-button]`
+            );
+
+            favoriteButtons.forEach(
+                (b) => (b.dataset.toggleState = favorite ? "on" : "off")
+            );
+        } catch {
+            return;
+        }
     };
-    const url = "../../api/restaurant/favorites/toggle.php";
 
-    const response = await fetch(url, options).catch(() => null);
+    /** @type HTMLButtonElement */
+    const favoriteButton = restaurantCard.querySelector(
+        "button[data-favorite-button]"
+    );
+    favoriteButton.addEventListener("click", toggleLikedStatus);
+};
 
-    if (response === null || !response.ok) return;
-
-    const success = await response.json();
-
-    if (success === false) return;
-
-    const restaurantCards = document.querySelectorAll(`[data-card-type="restaurant"][data-restaurant-id="${restaurantId}"]>article>button`);
-
-    restaurantCards.forEach(element => toggleLikeButtonStyle(element));
-}
+/** @type NodeListOf<HTMLElement> */
+const _restaurantCards = document.querySelectorAll(
+    "[data-card-type=restaurant]"
+);
+_restaurantCards.forEach(empowerRestaurantCard);

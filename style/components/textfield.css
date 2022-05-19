@@ -141,6 +141,8 @@ but that is impossible outside chromium
 }
 
 .textfield .toggle-visible {
+    display: grid;
+
     position: absolute;
     top: 4px;
     right: 12px;
@@ -152,11 +154,25 @@ but that is impossible outside chromium
 }
 
 .textfield .toggle-visible::before {
+    grid-area: 1/1;
     content: "visibility_off";
+    transition-property: clip-path;
+    clip-path: polygon(0% 0%, 0% 200%, 200% 0%);
+}
+
+.textfield .toggle-visible::after {
+    grid-area: 1/1;
+    content: "visibility";
+    transition-property: clip-path;
+    clip-path: polygon(100% 100%, 100% 100%, 100% 100%);
 }
 
 .textfield input[type="password"] ~ .toggle-visible::before {
-    content: "visibility";
+    clip-path: polygon(0% 0%, 0% 0%, 0% 0%);
+}
+
+.textfield input[type="password"] ~ .toggle-visible::after {
+    clip-path: polygon(100% 100%, 100% -100%, -100% 100%);
 }
 
 .textfield :is(.character-counter, .error-text, .helper-text) {

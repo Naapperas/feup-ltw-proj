@@ -1,0 +1,19 @@
+.button.icon.toggle {
+    display: grid;
+}
+
+.button.icon.toggle::before {
+    grid-area: 1/1;
+    content: attr(data-off-icon);
+}
+
+.button.icon.toggle::after {
+    grid-area: 1/1;
+    content: attr(data-on-icon);
+    transform: scale(0%);
+    transition-property: transform;
+}
+
+.button.icon.toggle[data-toggle-state="on"]::after {
+    transform: scale(100%);
+}

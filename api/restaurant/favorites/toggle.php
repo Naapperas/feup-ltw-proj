@@ -12,7 +12,11 @@
 
     session_start();
 
-    if (!isset($_SESSION['user'])) { echo json_encode(false); return; } // prevents requests from un-authenticated sources
+    // prevents requests from un-authenticated sources
+    if (!isset($_SESSION['user'])) {
+        http_response_code(401);
+        die;
+    }
 
     $params = parseParams(post_params: [
         'restaurantId' => new IntParam(),
@@ -21,11 +25,22 @@
     $user = User::get($_SESSION['user']);
     $restaurant = Restaurant::get($params['restaurantId']);
 
-    if ($restaurant === null) { echo json_encode(false); return; }
+    if ($restaurant === null) {
+        http_response_code(404);
+        die;
+    }
 
-    $action = $restaurant->isLikedBy($user) ? 'removeLikedRestaurant' : 'addLikedRestaurant';
+    $isFavorite = $restaurant->isLikedBy($user);
 
+    $action = $isFavorite ? 'removeLikedRestaurant' : 'addLikedRestaurant';
     $success = $user->$action($restaurant->id);
 
-    echo json_encode($success)
+    if (!$success) {
+        http_response_code(500);
+        die;
+    }
+
+    echo json_encode([
+        "favorite" => !$isFavorite
+    ]);
 ?>

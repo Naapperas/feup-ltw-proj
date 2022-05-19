@@ -38,13 +38,14 @@ include_once(dirname(__DIR__)."/database/models/restaurant.php");
     ButtonType $type = ButtonType::CONTAINED, string $text = "",
     string $icon = "", string $class = "", string $href = "",
     bool $submit = false, bool $next = false, bool $back = false,
-    string $onClickHandler = null
+    string $attributes = ""
 ) {
     $component = $href === '' ? 'button' : 'a';
     ?>
 
     <<?= $component ?>
         class="button <?= $type->value ?> <?= $class ?>"
+        <?= $attributes ?>
         <?php if ($component === "button") { ?>
             type="<?= $submit ? "submit" : "button" ?>"
             <?php 
@@ -59,9 +60,6 @@ include_once(dirname(__DIR__)."/database/models/restaurant.php");
         <?php if ($type == ButtonType::ICON && $text) { ?>
             aria-label="<?= $text ?>"
         <?php } ?>
-        <?php if ($onClickHandler !== null) { ?>
-            onclick="<?= $onClickHandler ?>(event)"
-        <?php }?>
     >
         <?php if ($type == ButtonType::ICON) { ?>
             <?= $icon ?>
@@ -219,17 +217,20 @@ include_once(dirname(__DIR__)."/database/models/restaurant.php");
                 $currentUser = User::get($_SESSION['user']);
     
                 if ($currentUser !== null && $restaurant->isLikedBy($currentUser)) {
-                    $icon = "favorite";
+                    $state = "on";
                     $text = "Unfavorite";
                 } else {
-                    $icon = "favorite_border";
+                    $state = "off";
                     $text = "Favorite";
                 }
     
                 createButton(
-                    type: ButtonType::ICON, icon: $icon,
-                    text: $text, class: "top-right",
-                    onClickHandler:"toggleRestaurantLikedStatus"
+                    type: ButtonType::ICON, text: $text, class: "top-right toggle",
+                    attributes: 
+                        "data-on-icon=\"favorite\"\n".
+                        "data-off-icon=\"favorite_border\"\n".
+                        "data-toggle-state=\"$state\"\n".
+                        "data-favorite-button"
                 );
             } ?>
         </article>

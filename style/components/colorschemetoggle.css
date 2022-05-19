@@ -6,10 +6,28 @@
     content: "Go light";
 }
 
+.color-scheme-toggle.icon {
+    display: grid;
+}
+
 .color-scheme-toggle.icon::before {
+    grid-area: 1/1;
     content: "dark_mode";
+    transition-property: transform;
+    transform: scale(100%);
+}
+
+.color-scheme-toggle.icon::after {
+    grid-area: 1/1;
+    content: "light_mode";
+    transition-property: transform;
+    transform: scale(0%);
 }
 
 [color-scheme="dark"] .color-scheme-toggle.icon::before {
-    content: "light_mode";
+    transform: scale(0%);
+}
+
+[color-scheme="dark"] .color-scheme-toggle.icon::after {
+    transform: scale(100%);
 }
