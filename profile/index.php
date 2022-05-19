@@ -45,6 +45,13 @@
                     width="240px"
                     height="240px"
                 />
+                <?php 
+                    createButton(
+                        type: ButtonType::ICON,
+                        text: "Edit",
+                        icon: "edit",
+                        href: "/profile/edit.php?id=$user->id");
+                ?>
                 <h2 class="h4"><?=$user->name?>'s profile</h2>
             </header>
 
