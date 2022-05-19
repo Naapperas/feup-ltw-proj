@@ -4,6 +4,9 @@ declare(strict_types=1);
 require_once("./templates/components.php");
 require_once("./templates/metadata.php");
 require_once("./database/models/restaurant.php");
+
+session_start();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,6 +19,8 @@ require_once("./database/models/restaurant.php");
         <?php createAppBar(); ?>
 
         <main class="centered large medium-spacing single column layout">
+
+            <?php if (isset($_SESSION['user'])) { ?>
             <section class="restaurant-list">
                 <header class="header">
                     <h2 class="title h6">Your favorites</h2>
@@ -33,6 +38,7 @@ require_once("./database/models/restaurant.php");
             </section>
 
             <hr class="divider">
+            <?php } ?>
 
             <section class="restaurant-list">
                 <header class="header">
