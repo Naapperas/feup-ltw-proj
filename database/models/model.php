@@ -25,7 +25,7 @@
     
         static function create(array $values): ?static {
             unset($values['id']);
-            $props = array_filter(array_keys($values), fn($prop) => strcmp($prop, "id"), ARRAY_FILTER_USE_KEY);
+            $props = array_filter(array_keys($values), fn(string $prop) => strcmp($prop, "id"), ARRAY_FILTER_USE_KEY);
             $prop_names = implode(', ', $props);
             $prop_values = implode(', ', array_map(fn($s) => ":$s", $props));
     
@@ -55,12 +55,7 @@
                 if ($queryResults === false)
                     return [];
     
-                $results = array();
-                foreach ($queryResults as $result) {
-                    $results[] = static::fromArray($result);
-                }
-    
-                return $results;
+                return array_map(fn(array $result) => static::fromArray($result), $queryResults);
             }
     
             $query .= ' WHERE ';
@@ -100,13 +95,8 @@
     
                 if ($queryResults === false)
                     return [];
-    
-                $results = array();
-                foreach ($queryResults as $result) {
-                    $results[] = static::fromArray($result);
-                }
-    
-                return $results;
+
+                return array_map(fn(array $result) => static::fromArray($result), $queryResults);
             }
         }
     
