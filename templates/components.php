@@ -29,7 +29,7 @@ include_once(dirname(__DIR__)."/database/models/restaurant.php");
         <?php } ?>
 
         <?php foreach ($scripts as $script) { ?>
-            <script src="/scripts/<?= $script ?>" defer></script>
+            <script src="/scripts/<?= $script ?>" defer type="module"></script>
         <?php } ?>
     </head>
 <?php } ?>

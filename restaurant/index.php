@@ -43,6 +43,17 @@ if ($restaurant === null) {
         <main class="centered medium medium-spacing single column layout">
             <h2 class="h4"><?= $restaurant->name ?></h2>
 
+            <?php 
+                createButton(
+                    type: ButtonType::ICON, text: "Favorite", class: "toggle",
+                    attributes: 
+                        "data-on-icon=\"favorite\"\n".
+                        "data-off-icon=\"favorite_border\"\n".
+                        "data-toggle-state=\"$state\"\n".
+                        "data-favorite-button"
+                );
+            ?>
+
             <div class="restaurant-data">
                 <section class="restaurant-pics">
                     <span>Restaurant Pictures</span>
