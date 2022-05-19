@@ -5,13 +5,19 @@
 const toggleStyles = {
     "favorite": "favorite_border",
     "favorite_border": "favorite"
-}
+};
+
+const toggleText = {
+    "favorite": "Favorite",
+    "favorite_border": "Unfavorite"
+};
 
 const toggleLikeButtonStyle = (element) => {
 
     const oldIcon = element.innerHTML.trim();
 
     element.innerHTML = toggleStyles[oldIcon];
+    element.ariaLabel = toggleText[oldIcon];
 };
 
 const toggleRestaurantLikedStatus = async (event) => {
