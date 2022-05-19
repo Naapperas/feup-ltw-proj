@@ -101,9 +101,7 @@ const empowerForm = (form) => {
 
     inputs.forEach((e) => {
         /** @type HTMLElement */
-        const errorText = document.querySelector(
-            `#${e.getAttribute("data-error-text")}`
-        );
+        const errorText = document.querySelector(`#${e.dataset.errorText}`);
 
         const resetValidity = () => {
             if (errorText) errorText.textContent = "";
