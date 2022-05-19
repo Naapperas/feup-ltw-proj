@@ -34,7 +34,8 @@ if ($restaurant === null) {
 <html lang="en">
     <?php createHead(
         metadata: restaurantMetadata($restaurant),
-        styles: ["/style/pages/restaurant.css"]
+        styles: ["/style/pages/restaurant.css"],
+        scripts: ["pages/restaurant.js"]
     );
     ?>
     <body class="top-app-bar layout">
@@ -43,15 +44,31 @@ if ($restaurant === null) {
         <main class="centered medium medium-spacing single column layout">
             <h2 class="h4"><?= $restaurant->name ?></h2>
 
-            <?php 
-                createButton(
-                    type: ButtonType::ICON, text: "Favorite", class: "toggle",
-                    attributes: 
-                        "data-on-icon=\"favorite\"\n".
-                        "data-off-icon=\"favorite_border\"\n".
-                        "data-toggle-state=\"$state\"\n".
-                        "data-favorite-button"
-                );
+            <?php
+                session_start();
+
+                if (isset($_SESSION['user'])) {
+
+                    $currentUser = User::get($_SESSION['user']);
+        
+                    if ($currentUser !== null && $restaurant->isLikedBy($currentUser)) {
+                        $state = "on";
+                        $text = "Unfavorite";
+                    } else {
+                        $state = "off";
+                        $text = "Favorite";
+                    }
+        
+                    createButton(
+                        type: ButtonType::ICON, text: $text, class: "toggle",
+                        attributes: 
+                            "data-on-icon=\"favorite\"\n".
+                            "data-off-icon=\"favorite_border\"\n".
+                            "data-toggle-state=\"$state\"\n".
+                            "data-restaurant-id=\"$restaurant->id\"".
+                            "data-favorite-button"
+                    );
+                }
             ?>
 
             <div class="restaurant-data">

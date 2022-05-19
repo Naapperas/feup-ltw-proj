@@ -205,7 +205,7 @@ include_once(dirname(__DIR__)."/database/models/restaurant.php");
                 <?php } ?>
             </header>
             <?php
-            if (($categories = $restaurant->getCategories()) !== []){
+            if (($categories = $restaurant->getCategories()) !== []) {
                 echo '<hr class="divider" />';
                 createRestaurantCategories($categories, 'h4');
             }

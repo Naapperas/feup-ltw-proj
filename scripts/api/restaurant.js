@@ -7,19 +7,17 @@ export const toggleRestaurantLikedStatus = async (id) => {
     const data = new FormData(); // POSTing to PHP requires FormData
     data.append("restaurantId", id);
 
-    try {
-        const response = await fetch(
-            "/api/restaurant/favorites/toggle.php",
-            {
-                method: "POST",
-                body: data,
-            }
-        );
+    const response = await fetch(
+        "/api/restaurant/favorites/toggle.php",
+        {
+            method: "POST",
+            body: data,
+        }
+    );
 
-        if (!response.ok) return;
+    if (!response.ok) return;
 
-        const { favorite } = await response.json();
+    const { favorite } = await response.json();
 
-        return favorite;
-    } catch (e) { throw e; }
+    return favorite;
 };
