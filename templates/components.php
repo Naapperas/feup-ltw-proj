@@ -274,9 +274,25 @@ include_once(dirname(__DIR__)."/database/models/restaurant.php");
     </section>
 <?php } ?>
 
-<?php function createFavoriteRestaurantCards(User $user) { 
-    foreach($user->getFavoriteRestaurants() as $restaurant) {
-        createRestaurantCard($restaurant);
-    }
-} 
-?>
+<?php function createFavoriteRestaurants(User $user) {
+    $favorites = $user->getFavoriteRestaurants();
+
+    ?>
+    <section class="restaurant-list">
+        <header class="header">
+            <h2 class="title h6">Your favorites</h2>
+            <?php createButton(
+                type: ButtonType::TEXT, text: "See all",
+                class: "right",
+                href: "/restaurants/"
+            ) ?>
+        </header>
+
+        <?php 
+        foreach($favorites as $restaurant) {
+            createRestaurantCard($restaurant);
+        }
+        ?>
+    </section>
+    <hr class="divider">
+<?php } ?>

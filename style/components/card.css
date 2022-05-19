@@ -61,7 +61,7 @@
     display: grid;
     grid-template:
         "avatar title right" min-content
-        "avatar subtitle right" minmax(0, min-content)
+        "avatar subtitle right" min-content
         / min-content 1fr min-content;
     text-align: start;
     width: 100%;
@@ -111,10 +111,6 @@
     position: absolute;
     top: 8px;
     right: 8px;
-}
-
-.card > .media.full ~ .top-right {
-    --color-button: var(--color-on-main);
 }
 
 @media screen and (max-width: 480px) {
