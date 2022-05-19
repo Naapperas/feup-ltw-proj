@@ -23,14 +23,14 @@ const empowerForm = (form) => {
     form.noValidate = true;
 
     /** @type NodeListOf<HTMLFieldSetElement> */
-    const sections = form.querySelectorAll("fieldset[section]");
+    const sections = form.querySelectorAll("fieldset[data-section]");
 
     sections.forEach((section, i) => {
         /** @type HTMLButtonElement */
-        const backButton = section.querySelector("button[back]");
+        const backButton = section.querySelector("button[data-back]");
 
         /** @type HTMLButtonElement */
-        const nextButton = section.querySelector("button[next]");
+        const nextButton = section.querySelector("button[data-next]");
 
         /** @type NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> */
         const inputs = section.querySelectorAll("input, select, textarea");
@@ -100,8 +100,9 @@ const empowerForm = (form) => {
     inputs[0].focus();
 
     inputs.forEach((e) => {
+        /** @type HTMLElement */
         const errorText = document.querySelector(
-            `#${e.getAttribute("error-text")}`
+            `#${e.getAttribute("data-error-text")}`
         );
 
         const resetValidity = () => {
@@ -117,8 +118,7 @@ const empowerForm = (form) => {
                     for (let p in e.validity)
                         if (e.validity[p]) {
                             errorText.textContent =
-                                errorText.getAttribute(`error:${p}`) ||
-                                defaultErrorMessages[p];
+                                errorText.dataset[p] || defaultErrorMessages[p];
                             break;
                         }
 
@@ -135,5 +135,5 @@ const empowerForm = (form) => {
 };
 
 /** @type NodeListOf<HTMLFormElement> */
-const _forms = document.querySelectorAll("form[empower]");
+const _forms = document.querySelectorAll("form[data-empower]");
 _forms.forEach(empowerForm);

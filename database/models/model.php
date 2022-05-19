@@ -25,9 +25,9 @@
     
         static function create(array $values): ?static {
             unset($values['id']);
-            $props = array_filter(array_keys($values), function (string $prop) { return strcmp($prop, "id"); }, ARRAY_FILTER_USE_KEY);
+            $props = array_filter(array_keys($values), fn($prop) => strcmp($prop, "id"), ARRAY_FILTER_USE_KEY);
             $prop_names = implode(', ', $props);
-            $prop_values = implode(', ', array_map(function ($s) { return ":$s"; }, $props));
+            $prop_values = implode(', ', array_map(fn($s) => ":$s", $props));
     
             $table = static::getTableName();
             $query = "INSERT INTO $table ($prop_names) VALUES ($prop_values);";

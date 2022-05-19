@@ -48,9 +48,9 @@ include_once(dirname(__DIR__)."/database/models/user.php");
             type="<?= $submit ? "submit" : "button" ?>"
             <?php 
             if ($next && !$back)
-                echo "next ";
+                echo "data-next ";
             if ($back && !$next)
-                echo "back ";
+                echo "data-back ";
             ?>
         <?php } elseif ($component === "a") { ?>
             href="<?= $href ?>"
@@ -115,7 +115,7 @@ include_once(dirname(__DIR__)."/database/models/user.php");
                 echo "aria-describedby=\"$describedby\"\n";
                 
             if ($errors !== [] || $errorText) 
-                echo "error-text=\"$name-error-text\"\n";
+                echo "data-error-text=\"$name-error-text\"\n";
             ?>
         />
         <label for="<?= $name ?>"><?= $label ?></label>
@@ -139,7 +139,7 @@ include_once(dirname(__DIR__)."/database/models/user.php");
             id="<?= $name ?>-error-text"
             <?php 
             foreach ($errors as $key => $value)
-                echo "error:$key=\"$value\""
+                echo "data-$key=\"$value\""
             ?>
         ></span>
         <?php } ?>
