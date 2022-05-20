@@ -81,7 +81,7 @@ include_once(dirname(__DIR__)."/database/models/restaurant.php");
     int $maxlength = -1, int $minlength = -1,
     bool $optional = false,  bool $toggleVisibility = false,
     bool $characterCounter = false, bool $errorText = true,
-    array $errors = []
+    array $errors = [], string $value = ""
 ) { 
     $describedby = [];
     if ($helperText !== "") $describedby[] = "$name-helper-text";
@@ -106,6 +106,9 @@ include_once(dirname(__DIR__)."/database/models/restaurant.php");
             <?php if ($maxlength !== -1) { ?>
             maxlength="<?= $maxlength ?>"
             <?php } ?>
+            <?php if ($value !== "") { ?>
+            value="<?= $value ?>"    
+            <?php } ?> 
             <?php 
             if (!$optional)
                 echo "required\n";
