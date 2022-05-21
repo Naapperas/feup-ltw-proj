@@ -4,32 +4,41 @@
     require_once('../templates/components.php');
     require_once('../templates/metadata.php');
     
-    require_once('../database/models/user.php');
-    require_once('../database/models/restaurant.php');
-    
-    require_once('../lib/params.php');
-
     session_start();
+    
+    if (!isset($_SESSION['user'])) {
+        header("Location: /profile/");
+        die;
+    }
 
     list('id' => $id) = parseParams(get_params: [
         'id' => new IntParam(
-            default: $_SESSION['user'], 
             optional: true
         ),
     ]);
-
+    
     if (!isset($id)) {
         header("Location: /");
         die();
     }
-
-    $user = User::get($id);
+    
+    require_once('../database/models/user.php');
+    require_once('../database/models/restaurant.php');
+    
+    $user = User::get($_SESSION['user']);
 
     if ($user === null) {
-        http_response_code(404);
-        require("../error.php");
+        header("Location: /profile/");
+        die;
+    }
+
+    $restaurant = Restaurant::get($id);
+
+    if($restaurant->owner !== $user) {
+        header("Location: /restaurant?id=$id");
         die();
     }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,7 +47,7 @@
         <?php createAppBar(); ?>
         <main>
             <form
-                action="../actions/register.php"
+                action="../actions/edit_restaurant.php"
                 method="post"
                 class="form sectioned"
                 data-empower
@@ -47,7 +56,6 @@
                     <?php
                     createTextField(
                         name: "name", label: "Name", 
-                        autocomplete: "restaurant name"
                     );
                     createTextField(
                         name: "address", label: "Address"
