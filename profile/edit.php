@@ -4,16 +4,7 @@
     require_once('../templates/components.php');
     require_once('../templates/metadata.php');
     
-    require_once('../lib/params.php');
-    
     session_start();
-
-    list('id' => $id) = parseParams(get_params: [
-        'id' => new IntParam(
-            default: $_SESSION['user'], 
-            optional: true
-        ),
-    ]);
     
     if (!isset($_SESSION['user'])) {
         header("Location: /profile/");
@@ -40,6 +31,7 @@
                 action="../actions/edit_profile.php"
                 method="post"
                 class="form sectioned"
+                enctype="multipart/form-data"
                 data-empower
             >
                 <fieldset class="section" data-section>
@@ -62,8 +54,9 @@
                         errors: ["pattern-mismatch" => "Error: invalid phone number"],
                         value: $user->phone_number
                     );
-                    createButton(text: "Edit", submit: true);
                     ?>
+                    <input type="file" name="profile_picture">
+                    <?php createButton(text: "Edit", submit: true); ?>
                 </fieldset>
                 <input type="hidden" name="id" value="<?=$user->id?>"> <!-- This is kept out of the fieldset due to being hidden -->
             </form>

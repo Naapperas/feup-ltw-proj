@@ -3,6 +3,9 @@
     include_once("../lib/params.php");
     include_once("../database/models/user.php");
 
+    print_r($_FILES);
+    die;
+
     $params = parseParams(post_params: [
         'id' => new IntParam(),
         'email' => new StringParam(

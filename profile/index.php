@@ -29,6 +29,12 @@
         require("../error.php");
         die();
     }
+
+    $profilePicSrc = "../assets/pictures/profile/$user->id.jpg";
+    
+    if (!file_exists($profilePicSrc)) {
+        $profilePicSrc = "../assets/pictures/profile/default.webp";
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,7 +46,7 @@
             <header>
                 <img
                     class="avatar big"
-                    src="https://picsum.photos/240"
+                    src="<?= $profilePicSrc ?>"
                     alt="<?= $user->name ?>'s profile picture"
                     width="240px"
                     height="240px"
