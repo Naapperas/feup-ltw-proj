@@ -1,0 +1,4 @@
+# ignore every photo uploaded
+*
+!.gitignore
+!default.webp
