@@ -40,7 +40,7 @@
             <form
                 action="../actions/register.php"
                 method="post"
-                class=" sectioned"
+                class="form sectioned"
                 data-empower
             >
                 <fieldset class="section" data-section>

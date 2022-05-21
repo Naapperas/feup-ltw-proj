@@ -7,6 +7,13 @@
     require_once('../lib/params.php');
     
     session_start();
+
+    list('id' => $id) = parseParams(get_params: [
+        'id' => new IntParam(
+            default: $_SESSION['user'], 
+            optional: true
+        ),
+    ]);
     
     if (!isset($_SESSION['user'])) {
         header("Location: /profile/");
@@ -30,9 +37,9 @@
         <?php createAppBar(); ?>
         <main>
             <form
-                action="../actions/register.php"
+                action="../actions/edit_profile.php"
                 method="post"
-                class=" sectioned"
+                class="form sectioned"
                 data-empower
             >
                 <fieldset class="section" data-section>
@@ -42,9 +49,6 @@
                         type: "email", autocomplete: "email",
                         errors: ["type-mismatch" => "Error: invalid email address"],
                         value: $user->email
-                    );
-                    createTextField(
-                        name: "username", label: "Username", autocomplete: "username", value: $user->name
                     );
                     createTextField(
                         name: "name", label: "Full name", autocomplete: "name", value: $user->full_name
@@ -58,10 +62,10 @@
                         errors: ["pattern-mismatch" => "Error: invalid phone number"],
                         value: $user->phone_number
                     );
-                    createButton(text: "Register", submit: true);
+                    createButton(text: "Edit", submit: true);
                     ?>
                 </fieldset>
-                <input type="hidden" name="referer" value="<?=$_SERVER["HTTP_REFERER"]?>"> <!-- This is kept out of the fieldsets due to being hidden -->
+                <input type="hidden" name="id" value="<?=$user->id?>"> <!-- This is kept out of the fieldset due to being hidden -->
             </form>
         </main>
     </body>
