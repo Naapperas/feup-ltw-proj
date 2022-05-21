@@ -58,6 +58,13 @@ if ($restaurant === null) {
                         $state = "off";
                         $text = "Favorite";
                     }
+                    if($restaurant->$owner === $currentUser->$id) {
+                        createButton(
+                            type: ButtonType::ICON,
+                            text: "Edit",
+                            icon: "edit",
+                            href: "/restaurant/edit.php");
+                    }
         
                     createButton(
                         type: ButtonType::ICON, text: $text, class: "toggle",
