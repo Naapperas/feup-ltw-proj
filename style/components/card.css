@@ -31,7 +31,6 @@
 
 .card.interactive:hover {
     --elevation: var(--elevation-4);
-    border-width: 0px;
 }
 
 .avatar {

@@ -63,7 +63,7 @@
 }
 
 /* Account for margin in icon buttons */
-.appbar > .button.icon {
+.appbar > .button:is(.icon, .text) {
     margin-right: -8px;
     margin-left: 16px;
 }

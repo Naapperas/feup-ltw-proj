@@ -92,10 +92,11 @@ input[type="search"]::-webkit-search-results-decoration {
     display: none;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 720px) {
     .search:not(:focus-within) {
         flex: unset;
         margin-right: -8px;
+        margin-left: 16px;
 
         --color-button: inherit;
     }

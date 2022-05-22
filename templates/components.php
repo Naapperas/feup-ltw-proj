@@ -171,9 +171,12 @@ include_once(dirname(__DIR__)."/database/models/restaurant.php");
             href: "/actions/logout.php");
     } else {
         createButton(
-            type: ButtonType::ICON,
+            type: ButtonType::TEXT,
+            text: "Login",
+            href: "/login/");
+        createButton(
+            type: ButtonType::TEXT,
             text: "Register",
-            icon: "login",
             href: "/register/");
     }
 } ?>
