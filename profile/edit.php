@@ -55,7 +55,7 @@
                         value: $user->phone_number
                     );
                     ?>
-                    <input type="file" name="profile_picture">
+                    <input type="file" name="profile_picture" accept="image/jpeg">
                     <?php createButton(text: "Edit", submit: true); ?>
                 </fieldset>
                 <input type="hidden" name="id" value="<?=$user->id?>"> <!-- This is kept out of the fieldset due to being hidden -->

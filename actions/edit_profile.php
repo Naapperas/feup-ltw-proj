@@ -1,10 +1,13 @@
 <?php 
 
-    include_once("../lib/params.php");
-    include_once("../database/models/user.php");
+    if (strcmp($_SERVER['REQUEST_METHOD'], "POST") !== 0) {
+        header("Location: /profile/edit.php");
+        die;
+    }
 
-    print_r($_FILES);
-    die;
+    include_once("../lib/params.php");
+    include_once("../lib/files.php");
+    include_once("../database/models/user.php");
 
     $params = parseParams(post_params: [
         'id' => new IntParam(),
@@ -36,6 +39,17 @@
     $user->address = $params['address'];
 
     $user->update();
+
+    $uploadedPhoto = $_FILES['profile_picture'];
+
+    if ($uploadedPhoto['error'] !== 0 || 
+        $uploadedPhoto['size'] > 5*1024*1024 /* 5 MB */) {
+        $_SESSION['profile-edit-error'] = "Error uploading profile picture";
+        header('Location: /profile/');
+        die;
+    }
+
+    uploadProfilePicture($uploadedPhoto, $user->id);
 
     header('Location: /profile/');
 ?>
