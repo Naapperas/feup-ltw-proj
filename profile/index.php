@@ -30,7 +30,7 @@
         die();
     }
 
-    $profilePicSrc = "../assets/pictures/profile/$user->id.jpg";
+    $profilePicSrc = "../assets/pictures/profile/$user->id.webp";
     
     if (!file_exists($profilePicSrc)) {
         $profilePicSrc = "../assets/pictures/profile/default.webp";
