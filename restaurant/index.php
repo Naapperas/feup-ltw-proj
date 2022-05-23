@@ -28,7 +28,6 @@
         require("../error.php");
         die();
     }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,7 +41,12 @@
         <?php createAppBar(); ?>
 
         <main class="centered medium medium-spacing single column layout">
-            <h2 class="h4"><?= $restaurant->name ?></h2>
+            <section>
+                <h2 class="h4"><?= $restaurant->name ?></h2>
+                <?php if (($avgScore = $restaurant->getReviewScore()) !== null) { ?>
+                <span class="chip right"><?php createIcon(icon: "star") ?><?= $avgScore ?></span>
+                <?php } ?>
+            </section>
 
             <?php
                 session_start();
@@ -82,7 +86,11 @@
                 <section class="restaurant-pics">
                     <span>Restaurant Pictures</span>
                 </section>
-                <?php //createRestaurantCategories($categories); ?>
+                <?php 
+                
+                if (($categories = $restaurant->getCategories()) !== [])
+                    createRestaurantCategories($categories, 'h2');
+                ?>
                 <section class="restaurant-addr">
                     <span><?= $restaurant->address ?></span>
                 </section>
@@ -91,6 +99,13 @@
             <section class="card centered medium medium-spacing single column layout">
                 <header class="header">
                     <h2 class="h6">Menus</h2>
+                    <?php 
+                        createButton(
+                            type: ButtonType::ICON,
+                            text: "Add",
+                            icon: "add",
+                        );
+                    ?>
                 </header>
     
                 <?php // for ($i = 0; $i < 3; ++$i) createMainPageCard(); ?>
@@ -99,6 +114,13 @@
             <section class="card centered medium medium-spacing single column layout">
                 <header class="header">
                     <h2 class="h6">Dishes</h2>
+                    <?php 
+                        createButton(
+                            type: ButtonType::ICON,
+                            text: "Add",
+                            icon: "add",
+                        );
+                    ?>
                 </header>
     
                 <?php // for ($i = 0; $i < 3; ++$i) createMainPageCard(); ?>
