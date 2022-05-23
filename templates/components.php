@@ -10,6 +10,7 @@ enum ButtonType: string {
 
 include_once(dirname(__DIR__)."/database/models/user.php");
 include_once(dirname(__DIR__)."/database/models/restaurant.php");
+include_once(dirname(__DIR__)."/database/models/dish.php");
 
 ?>
 
@@ -301,4 +302,97 @@ include_once(dirname(__DIR__)."/database/models/restaurant.php");
         ?>
     </section>
     <hr class="divider">
+<?php } ?>
+
+<?php function createProfileOwnedRestaurants(User $user) {
+    $owned = $user->getOwnedRestaurants();
+
+    ?>
+    <hr class="divider">
+    <section class="restaurant-list">
+        <header class="header">
+            <h2 class="title h6">Owned Restaurants</h2>
+        </header>
+
+        <?php 
+        foreach($owned as $restaurant) {
+            createRestaurantCard($restaurant);
+        }
+        ?>
+    </section>
+<?php } ?>
+
+<?php function createProfileFavoriteRestaurants(User $user) {
+    $favorites = $user->getFavoriteRestaurants();
+
+    ?>
+    <hr class="divider">
+    <section class="restaurant-list">
+        <header class="header">
+            <h2 class="title h6">Favorite Restaurants</h2>
+        </header>
+
+        <?php 
+        foreach($favorites as $restaurant) {
+            createRestaurantCard($restaurant);
+        }
+        ?>
+    </section>
+<?php } ?>
+
+<?php function createDishCard(Dish $dish) { 
+
+    $restaurant = $dish->getRestaurant();
+
+    if ($restaurant === null) return;
+?>
+    <a 
+        href="/dish/?id=<?= $dish->id ?>" 
+        data-card-type="dish" 
+        data-dish-id="<?= $dish->id ?>"
+    >
+        <article class="card responsive interactive">
+            <img
+                src="https://picsum.photos/316/194"
+                width="320"
+                height="180"
+                alt="Dish picture for <?= $dish->name ?>"
+                class="full media"
+            />
+            <header class="header">
+                <h3 class="title h6"><?= $dish->name ?></h3>
+                <span class="subtitle subtitle2 secondary"><?= $restaurant->name ?></span>
+                <span class="chip right"><?php createIcon(icon: "euro") ?><?= $dish->price ?></span>
+            </header>
+            <?php
+            if (($categories = $dish->getCategories()) !== []) {
+                echo '<hr class="divider" />';
+                // createDishCategories($categories, 'h4');
+            }
+            
+            session_start();
+
+            if (isset($_SESSION['user'])) {
+
+                $currentUser = User::get($_SESSION['user']);
+    
+                if ($currentUser !== null && $dish->isLikedBy($currentUser)) {
+                    $state = "on";
+                    $text = "Unfavorite";
+                } else {
+                    $state = "off";
+                    $text = "Favorite";
+                }
+    
+                createButton(
+                    type: ButtonType::ICON, text: $text, class: "top-right toggle",
+                    attributes: 
+                        "data-on-icon=\"favorite\"\n".
+                        "data-off-icon=\"favorite_border\"\n".
+                        "data-toggle-state=\"$state\"\n".
+                        "data-favorite-button" // TODO: change to different kind of button
+                );
+            } ?>
+        </article>
+    </a>
 <?php } ?>

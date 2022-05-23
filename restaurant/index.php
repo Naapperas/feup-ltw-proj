@@ -1,33 +1,33 @@
 <?php
 
-declare(strict_types = 1);
+    declare(strict_types = 1);
 
-require_once("../templates/components.php");
-require_once("../templates/metadata.php");
-require_once("../database/models/restaurant.php");
-    
-require_once('../lib/params.php');
+    require_once("../templates/components.php");
+    require_once("../templates/metadata.php");
+    require_once("../database/models/restaurant.php");
+        
+    require_once('../lib/params.php');
 
-session_start();
+    session_start();
 
-list('id' => $id) = parseParams(get_params: [
-    'id' => new IntParam(
-        optional: true
-    ),
-]);
+    list('id' => $id) = parseParams(get_params: [
+        'id' => new IntParam(
+            optional: true
+        ),
+    ]);
 
-if (!isset($id)) {
-    header("Location: /");
-    die();
-}
+    if (!isset($id)) {
+        header("Location: /");
+        die();
+    }
 
-$restaurant = Restaurant::get($id);
+    $restaurant = Restaurant::get($id);
 
-if ($restaurant === null) {
-    http_response_code(404);
-    require("../error.php");
-    die();
-}
+    if ($restaurant === null) {
+        http_response_code(404);
+        require("../error.php");
+        die();
+    }
 
 ?>
 <!DOCTYPE html>
@@ -63,7 +63,7 @@ if ($restaurant === null) {
                             type: ButtonType::ICON,
                             text: "Edit",
                             icon: "edit",
-                            href: "/restaurant/edit.php");
+                            href: "/restaurant/edit.php?id=$restaurant->id");
                     }
         
                     createButton(

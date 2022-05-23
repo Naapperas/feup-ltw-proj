@@ -38,7 +38,10 @@
 ?>
 <!DOCTYPE html>
 <html lang="en">
-    <?php createHead(metadata: userMetadata($user)); ?>
+    <?php createHead(metadata: userMetadata($user),
+        scripts: ["components/card.js"],
+        styles: ["/style/pages/profile.css"]
+    ); ?>
     <body class="top-app-bar layout">
         <?php createAppBar(); ?>
 
@@ -70,6 +73,9 @@
                 <p><span>Full name: </span><span><?=$user->full_name?></span></p>
                 <p><span>Phone number: </span><span><?=$user->phone_number?></span></p>
             </section>
+
+            <?php createProfileOwnedRestaurants($user); ?>
+            <?php createProfileFavoriteRestaurants($user); ?>
         </main>
 
     </body>

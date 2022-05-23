@@ -39,7 +39,7 @@
         
             if ($queryResults === false) return false;
 
-            return count($queryResults) > 0; // returns null if restaurant has no reviews
+            return count($queryResults) > 0;
         }
 
         public function getCategories(): array {

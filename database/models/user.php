@@ -67,5 +67,16 @@
 
             return $success;
         }
+
+        function getFavoriteDishes(): array {
+
+            $query = "SELECT dish AS id FROM Favorite_dish WHERE client = ?;";
+
+            $queryResults = getQueryResults(static::getDB(), $query, true, [$this->id]);
+        
+            if ($queryResults === false) return [];
+
+            return array_map(fn(array $id) => Dish::get($id)[0], $queryResults);
+        }
     }
 ?>
