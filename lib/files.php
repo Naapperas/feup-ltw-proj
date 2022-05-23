@@ -5,7 +5,7 @@
 
         unlink($imagePath); // no biggie if it fails
 
-        $image = imagecreatefromjpeg($file['tmp_name']);
+        $image = imagecreatefromstring(file_get_contents($file['tmp_name']));
 
         if ($image === false) return false;
 

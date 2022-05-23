@@ -30,6 +30,7 @@ class StringParam extends Param {
         public ?string $pattern = null,
         public ?int $min_len = null,
         public ?int $max_len = null,
+        public bool $case_insensitive = false
     ) {
         parent::__construct($default, $optional);
     }
@@ -50,6 +51,9 @@ class StringParam extends Param {
 
         if (isset($this->max_len) && strlen($r) > $this->max_len)
             return $this->error();
+
+        if ($this->case_insensitive)
+            $r = strtolower($r);
 
         return htmlentities($r);
     }

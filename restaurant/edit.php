@@ -3,13 +3,13 @@
     
     require_once('../templates/components.php');
     require_once('../templates/metadata.php');
+
+    require_once('../lib/params.php');
+    
+    require_once('../database/models/user.php');
+    require_once('../database/models/restaurant.php');
     
     session_start();
-    
-    if (!isset($_SESSION['user'])) {
-        header("Location: /profile/");
-        die;
-    }
 
     list('id' => $id) = parseParams(get_params: [
         'id' => new IntParam(
@@ -17,28 +17,15 @@
         ),
     ]);
     
-    if (!isset($id)) {
+    if (!isset($id) || ($restaurant = Restaurant::get($id)) === null) {
         header("Location: /");
         die();
     }
     
-    require_once('../database/models/user.php');
-    require_once('../database/models/restaurant.php');
-    
-    $user = User::get($_SESSION['user']);
-
-    if ($user === null) {
-        header("Location: /profile/");
+    if ($restaurant->owner !== $_SESSION['user']) {
+        header("Location: /restaurant/?id=$id");
         die;
     }
-
-    $restaurant = Restaurant::get($id);
-
-    if($restaurant->owner !== $user) {
-        header("Location: /restaurant?id=$id");
-        die();
-    }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,20 +36,18 @@
             <form
                 action="../actions/edit_restaurant.php"
                 method="post"
-                class="form sectioned"
+                class="form"
                 data-empower
             >
-                <fieldset class="section" data-section>
-                    <?php
-                    createTextField(
-                        name: "name", label: "Name", 
-                    );
-                    createTextField(
-                        name: "address", label: "Address"
-                    );
-                    createButton(text: "Apply", submit: true);
-                    ?>
-                </fieldset>
+                <?php
+                createTextField(
+                    name: "name", label: "Name", 
+                );
+                createTextField(
+                    name: "address", label: "Address"
+                );
+                createButton(text: "Apply", submit: true);
+                ?>
                 <input type="hidden" name="referer" value="<?=$_SERVER["HTTP_REFERER"]?>"> <!-- This is kept out of the fieldsets due to being hidden -->
             </form>
         </main>

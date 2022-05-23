@@ -13,7 +13,8 @@
         'id' => new IntParam(),
         'email' => new StringParam(
             pattern: '/^[a-zA-Z0-9.!#$%&\'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/',
-            min_len: 1
+            min_len: 1,
+            case_insensitive: true
         ),
         'name' => new StringParam(),
         'address' => new StringParam(),
@@ -42,8 +43,7 @@
 
     $uploadedPhoto = $_FILES['profile_picture'];
 
-    if ($uploadedPhoto['error'] !== 0 || 
-        $uploadedPhoto['size'] > 5*1024*1024 /* 5 MB */) {
+    if ($uploadedPhoto['error'] !== 0) {
         $_SESSION['profile-edit-error'] = "Error uploading profile picture";
         header('Location: /profile/');
         die;

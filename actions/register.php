@@ -18,7 +18,8 @@
     $params = parseParams(post_params: [
         'email' => new StringParam(
             pattern: '/^[a-zA-Z0-9.!#$%&\'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/',
-            min_len: 1
+            min_len: 1,
+            case_insensitive: true
         ),
         'username' => new StringParam(min_len: 1),
         'password' => new StringParam(min_len: 8),

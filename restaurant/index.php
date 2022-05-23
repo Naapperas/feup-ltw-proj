@@ -5,7 +5,7 @@
     require_once("../templates/components.php");
     require_once("../templates/metadata.php");
     require_once("../database/models/restaurant.php");
-        
+
     require_once('../lib/params.php');
 
     session_start();
@@ -62,7 +62,7 @@
                         $state = "off";
                         $text = "Favorite";
                     }
-                    if($restaurant->$owner === $currentUser->$id) {
+                    if($restaurant->owner === $currentUser->$id) {
                         createButton(
                             type: ButtonType::ICON,
                             text: "Edit",
