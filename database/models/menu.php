@@ -3,6 +3,7 @@
 
     include_once('model.php');
     include_once('restaurant.php');
+    include_once('dish.php');
 
     class Menu extends Model {
 
@@ -17,6 +18,21 @@
 
         public function getRestaurant(): ?Restaurant {
             return Restaurant::get($this->restaurant);
+        }
+
+        public function addDish(Dish $dish): bool {
+
+            $query = 'INSERT INTO Dish_menu VALUES (?, ?);';
+
+            list($success,) = executeQuery(static::getDB(), $query, [$dish->id, $this->id]);
+
+            if ($success) {
+
+                $this->price += $dish->price;
+                while(!$this->update()); // yikes
+
+                return true;
+            } else return false;
         }
     }
 ?>

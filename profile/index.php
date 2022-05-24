@@ -76,7 +76,7 @@
 
             <?php createProfileOwnedRestaurants($user); ?>
             <?php createProfileFavoriteRestaurants($user); ?>
+            <?php createProfileFavoriteDishes($user); ?>
         </main>
-
     </body>
 </html>

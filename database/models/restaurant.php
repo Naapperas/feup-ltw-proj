@@ -4,6 +4,8 @@
     include_once('model.php');
     include_once('user.php');
     include_once('category.php');
+    include_once('dish.php');
+    include_once('menu.php');
 
     class Restaurant extends Model {
 
@@ -53,6 +55,28 @@
             $result = array_map(fn($id) => Category::get($id), $categories);
 
             return $result;
+        }
+
+        function getOwnedDishes(): array {
+
+            $query = "SELECT * FROM Dish WHERE restaurant = ?;";
+
+            $queryResults = getQueryResults(static::getDB(), $query, true, [$this->id]);
+        
+            if ($queryResults === false) return [];
+
+            return array_map(fn(array $id) => Dish::get($id)[0], $queryResults);
+        }
+
+        function getOwnedMenus(): array {
+
+            $query = "SELECT * FROM Menu WHERE restaurant = ?;";
+
+            $queryResults = getQueryResults(static::getDB(), $query, true, [$this->id]);
+        
+            if ($queryResults === false) return [];
+
+            return array_map(fn(array $id) => Menu::get($id)[0], $queryResults);
         }
     }
 ?>

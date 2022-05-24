@@ -11,6 +11,7 @@ enum ButtonType: string {
 include_once(dirname(__DIR__)."/database/models/user.php");
 include_once(dirname(__DIR__)."/database/models/restaurant.php");
 include_once(dirname(__DIR__)."/database/models/dish.php");
+include_once(dirname(__DIR__)."/database/models/menu.php");
 
 ?>
 
@@ -395,4 +396,86 @@ include_once(dirname(__DIR__)."/database/models/dish.php");
             } ?>
         </article>
     </a>
+<?php } ?>
+
+<?php function createProfileFavoriteDishes(User $user) {
+    $favorites = $user->getFavoriteDishes();
+
+    ?>
+    <hr class="divider">
+    <section class="dish-list">
+        <header class="header">
+            <h2 class="title h6">Favorite Dishes</h2>
+        </header>
+
+        <?php 
+        foreach($favorites as $dish) {
+            createDishCard($dish);
+        }
+        ?>
+    </section>
+<?php } ?>
+
+<?php function createRestaurantOwnedDishes(Restaurant $restaurant) {
+    $owned = $restaurant->getOwnedDishes();
+
+    ?>
+    <hr class="divider">
+    <section class="dish-list">
+        <header class="header">
+            <h2 class="title h6">Available Dishes</h2>
+        </header>
+
+        <?php 
+        foreach($owned as $dish) {
+            createDishCard($dish);
+        }
+        ?>
+    </section>
+<?php } ?>
+
+<?php function createMenuCard(Menu $menu) { 
+
+    $restaurant = $menu->getRestaurant();
+
+    if ($restaurant === null) return;
+?>
+    <a 
+        href="/menu/?id=<?= $menu->id ?>" 
+        data-card-type="dish" 
+        data-dish-id="<?= $menu->id ?>"
+    >
+        <article class="card responsive interactive">
+            <img
+                src="https://picsum.photos/316/194"
+                width="320"
+                height="180"
+                alt="Menu picture for <?= $menu->name ?>"
+                class="full media"
+            />
+            <header class="header">
+                <h3 class="title h6"><?= $menu->name ?></h3>
+                <span class="subtitle subtitle2 secondary"><?= $restaurant->name ?></span>
+                <span class="chip right"><?php createIcon(icon: "euro") ?><?= $menu->price ?></span>
+            </header>
+        </article>
+    </a>
+<?php } ?>
+
+<?php function createRestaurantOwnedMenus(Restaurant $restaurant) {
+    $owned = $restaurant->getOwnedMenus();
+
+    ?>
+    <hr class="divider">
+    <section class="menu-list">
+        <header class="header">
+            <h2 class="title h6">Available Menus</h2>
+        </header>
+
+        <?php 
+        foreach($owned as $dish) {
+            createMenuCard($dish);
+        }
+        ?>
+    </section>
 <?php } ?>

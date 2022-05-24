@@ -96,35 +96,8 @@
                 </section>
             </div>
 
-            <section class="card centered medium medium-spacing single column layout">
-                <header class="header">
-                    <h2 class="h6">Menus</h2>
-                    <?php 
-                        createButton(
-                            type: ButtonType::ICON,
-                            text: "Add",
-                            icon: "add",
-                        );
-                    ?>
-                </header>
-    
-                <?php // for ($i = 0; $i < 3; ++$i) createMainPageCard(); ?>
-            </section>
-            
-            <section class="card centered medium medium-spacing single column layout">
-                <header class="header">
-                    <h2 class="h6">Dishes</h2>
-                    <?php 
-                        createButton(
-                            type: ButtonType::ICON,
-                            text: "Add",
-                            icon: "add",
-                        );
-                    ?>
-                </header>
-    
-                <?php // for ($i = 0; $i < 3; ++$i) createMainPageCard(); ?>
-            </section>
+            <?php createRestaurantOwnedDishes($restaurant); ?>
+            <?php createRestaurantOwnedMenus($restaurant); ?>
         </main>
     </body>
 
