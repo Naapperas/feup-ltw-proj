@@ -18,7 +18,8 @@
         ),
         'name' => new StringParam(),
         'address' => new StringParam(),
-        'phone' => new StringParam(pattern: '/^\d{9}$/')
+        'phone' => new StringParam(pattern: '/^\d{9}$/'),
+        'username' => new StringParam()
     ]);
 
     session_start();
@@ -38,6 +39,7 @@
     $user->full_name = $params['name'];
     $user->phone_number = $params['phone'];
     $user->address = $params['address'];
+    $user->name = $params['username'];
 
     $user->update();
 
