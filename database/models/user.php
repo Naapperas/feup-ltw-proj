@@ -78,5 +78,23 @@
 
             return array_map(fn(array $id) => Dish::get($id)[0], $queryResults);
         }
+
+        function addLikedDish(int $dishId): bool {
+
+            $query = 'INSERT INTO Favorite_dish VALUES (?, ?);';
+
+            list($success,) = executeQuery(static::getDB(), $query, [$this->id, $dishId]);
+
+            return $success;
+        }
+
+        function removeLikedDish(int $dishId): bool {
+
+            $query = 'DELETE FROM Favorite_dish WHERE client = ? AND dish = ?;';
+
+            list($success,) = executeQuery(static::getDB(), $query, [$this->id, $dishId]);
+
+            return $success;
+        }
     }
 ?>

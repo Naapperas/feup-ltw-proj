@@ -391,6 +391,7 @@ include_once(dirname(__DIR__)."/database/models/menu.php");
                         "data-on-icon=\"favorite\"\n".
                         "data-off-icon=\"favorite_border\"\n".
                         "data-toggle-state=\"$state\"\n".
+                        "data-dish-id=\"$dish->id\"".
                         "data-favorite-button" // TODO: change to different kind of button
                 );
             } ?>
