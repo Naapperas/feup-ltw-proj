@@ -6,7 +6,7 @@
     }
 
     function registrationError(string $errorMsg): void {
-        $_SESSION['auth-error'] = $errorMsg;
+        $_SESSION['register-error'] = $errorMsg;
         header('Location: /register/');
         die;
     }

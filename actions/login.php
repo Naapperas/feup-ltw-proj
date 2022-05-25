@@ -22,7 +22,7 @@
     $user = (count($candidateUser) > 0) ? $candidateUser[0] : null;
 
     if ($user === null || !$user->validatePassword($params['password'])) {
-        $_SESSION['auth-error'] = 'Incorrect username or password!'; // to be handled by the login page
+        $_SESSION['login-error'] = 'Incorrect username or password!'; // to be handled by the login page
         header('Location: /login/');
         die();
     }

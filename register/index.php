@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 require_once("../templates/components.php");
-require_once("../templates/auth.php");
 require_once("../templates/metadata.php");
 ?>
 <!DOCTYPE html>
@@ -14,14 +13,12 @@ require_once("../templates/metadata.php");
     <body class="centered small-spacing small single column layout">
         <a href="/" class="homepage-link"><h1 class="h3 color logo"></h1></a>
 
-        <form
-            action="../actions/register.php"
-            method="post"
-            class="form sectioned"
-            data-empower
-        >
-            <fieldset class="section" data-section>
-                <?php
+        <?php createForm(
+            'POST', 'register', '/actions/register.php',
+            function() { ?>
+                <input type="hidden" name="referer" value="<?=$_SERVER["HTTP_REFERER"]?>">
+            <?php },
+            function() {
                 createTextField(
                     name: "email", label: "Email", 
                     type: "email", autocomplete: "email",
@@ -37,11 +34,8 @@ require_once("../templates/metadata.php");
                     errors: ["too-short" => "Error: at least 8 characters"]
                 );
                 createButton(text: "Next", next: true);
-                ?>
-            </fieldset>
-            
-            <fieldset class="section" data-section>
-                <?php
+            },
+            function() {
                 createTextField(
                     name: "name", label: "Full name", autocomplete: "name"
                 );
@@ -55,11 +49,8 @@ require_once("../templates/metadata.php");
                 );
                 createButton(text: "Back", back: true, type: ButtonType::OUTLINED);
                 createButton(text: "Register", submit: true);
-                processAuthErrors();
-                ?>
-            </fieldset>
-            <input type="hidden" name="referer" value="<?=$_SERVER["HTTP_REFERER"]?>"> <!-- This is kept out of the fieldsets due to being hidden -->
-        </form>
+            }
+        ) ?>
 
         <div class="form-support">
             <span>

@@ -18,8 +18,22 @@
     flex: 1;
 }
 
+.form.sectioned {
+    display: grid;
+    grid-template:
+        "section" auto
+        "error" auto / 1fr;
+    overflow-x: visible;
+}
+
 .form.sectioned > .section {
     border: none;
+    grid-area: section;
+}
+
+.form.sectioned > .form-error {
+    grid-area: error;
+    margin: 16px;
 }
 
 .form.sectioned > .section.hidden {
@@ -28,14 +42,39 @@
     opacity: 0%;
 }
 
-.form.sectioned {
+.form-error {
     display: grid;
-    grid-template: auto / 1fr;
-    overflow-x: visible;
+    grid-template: auto / auto auto;
+
+    width: 100%;
+    padding: 4px;
+    gap: 4px;
+    border-radius: 10000px;
+
+    text-align: start;
+    align-items: center;
+    justify-content: start;
+
+    background-color: rgb(var(--color-error));
+    color: rgb(var(--color-on-error));
+
+    transition-property: color, background;
 }
 
-.form.sectioned > * {
-    grid-area: 1 / 1;
+.form-error::before {
+    content: "error";
+
+    display: inline-block;
+
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
+    font-family: "Material Icons";
+    line-height: 1;
+    letter-spacing: initial;
+
+    text-transform: none;
+    user-select: none;
 }
 
 .form-support {

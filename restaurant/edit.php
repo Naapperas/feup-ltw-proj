@@ -29,34 +29,30 @@
 ?>
 <!DOCTYPE html>
 <html lang="en">
-    <?php createHead(metadata: baseMetadata()); ?>
+    <?php createHead(metadata: baseMetadata(title: "Edit $restaurant->name")); ?>
     <body class="top-app-bar layout">
         <?php createAppBar(); ?>
-        <main>
-            <form
-                action="../actions/edit_restaurant.php"
-                method="post"
-                class="form"
-                data-empower
-            >
-                <?php
-                createTextField(
-                    name: "name", label: "Name", 
-                );
-                createTextField(
-                    name: "address", label: "Address"
-                );
-                createCheckBoxList(array_map(fn($category) => [
-                    'label' => $category->name,
-                    'value' => $category->id,
-                    'name' => 'categories[]',
-                    'checked' => false
-                ], Category::get()));
-                
-                createButton(text: "Apply", submit: true);
-                ?>
-                <input type="hidden" name="referer" value="<?=$_SERVER["HTTP_REFERER"]?>"> <!-- This is kept out of the fieldsets due to being hidden -->
-            </form>
+        <main class="centered small single column layout">
+            <?php createForm(
+                'POST', 'restaurant', '/actions/edit_restaurant.php',
+                function() {
+                    createTextField(
+                        name: "name", label: "Name", 
+                    );
+                    createTextField(
+                        name: "address", label: "Address"
+                    );
+                    createCheckBoxList(array_map(fn($category) => [
+                        'label' => $category->name,
+                        'value' => $category->id,
+                        'name' => 'categories[]',
+                        'checked' => false
+                    ], Category::get()));
+                    
+                    createButton(text: "Apply", submit: true);
+                    ?><input type="hidden" name="referer" value="<?=$_SERVER["HTTP_REFERER"]?>"><?php
+                }
+            ) ?>
         </main>
     </body>
 </html>

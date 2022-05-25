@@ -153,6 +153,36 @@ include_once(dirname(__DIR__)."/database/models/menu.php");
     </div>
 <?php } ?>
 
+<?php function createForm(
+    string $method, string $name, string $action,
+    callable ...$sections
+) { ?>
+    <form
+        action="<?= $action ?>"
+        method="<?= $method ?>"
+        enctype="multipart/form-data"
+        class="form<?php if (count($sections) > 1) echo ' sectioned' ?>"
+        data-empower
+    >
+        <?php foreach (array_slice($sections, 1) as $section) { ?>
+        <fieldset class="section" data-section>
+            <?php $section() ?>
+        </fieldset>
+        <?php }
+
+        $sections[0]();
+        
+        session_start();
+
+        $error = $_SESSION["$name-error"];
+        unset($_SESSION["$name-error"]);
+
+        if (isset($error)) { ?>
+        <span class="form-error"><?= $error ?></span>
+        <?php } ?>
+    </form>
+<?php } ?>
+
 <?php function createUserButtons() {
     session_start();
 
