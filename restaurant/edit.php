@@ -46,6 +46,13 @@
                 createTextField(
                     name: "address", label: "Address"
                 );
+                createCheckBoxList(array_map(fn($category) => [
+                    'label' => $category->name,
+                    'value' => $category->id,
+                    'name' => 'categories[]',
+                    'checked' => false
+                ], Category::get()));
+                
                 createButton(text: "Apply", submit: true);
                 ?>
                 <input type="hidden" name="referer" value="<?=$_SERVER["HTTP_REFERER"]?>"> <!-- This is kept out of the fieldsets due to being hidden -->

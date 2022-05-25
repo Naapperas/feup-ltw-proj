@@ -480,3 +480,35 @@ include_once(dirname(__DIR__)."/database/models/menu.php");
         ?>
     </section>
 <?php } ?>
+
+<?php function createCheckBox(
+    string $label, string $name, int $value, bool $checked
+    ) { ?>
+
+    <label>
+        <input 
+            type="checkbox"
+            name="<?= $name ?>"
+            value="<?= $value ?>" 
+            class="checkbox" 
+            <?php if($checked) echo "checked"; ?>
+        >
+        <?= $label ?>
+    </label>
+
+<?php } ?>
+
+<?php function createCheckBoxList(array $values) {?>
+
+    <div class="checkbox">
+        <?php foreach($values as $key) {
+            createCheckBox(
+                $key['label'],
+                $key['name'],
+                $key['value'],
+                $key['checked']
+            );
+        } ?>
+    </div>
+
+<?php } ?>
