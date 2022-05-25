@@ -50,9 +50,10 @@
                     ], Category::get()));
                     
                     createButton(text: "Apply", submit: true);
-                    ?><input type="hidden" name="referer" value="<?=$_SERVER["HTTP_REFERER"]?>"><?php
-                }
-            ) ?>
+                    ?>
+                    <input type="hidden" name="referer" value="<?= $_SERVER["HTTP_REFERER"] ?>">
+                    <input type="hidden" name="id" value="<?= $restaurant->id ?>">
+                <?php }); ?>
         </main>
     </body>
 </html>
