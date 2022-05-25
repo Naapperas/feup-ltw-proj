@@ -7,6 +7,7 @@
 
     include_once("../lib/params.php");
     include_once("../database/models/user.php");
+    include_once("../database/models/restaurant.php");
 
     $params = parseParams(post_params: [
         'id' => new IntParam(),
@@ -36,6 +37,8 @@
 
     $restaurant->name = $params['name'];
     $restaurant->address = $params['address'];
+
+    $restaurant->setCategories($_POST['categories']);
 
     $restaurant->update();
 

@@ -79,11 +79,21 @@
             return array_map(fn(array $id) => Menu::get($id)[0], $queryResults);
         }
 
-        function addCategory(int $categoryID) : bool {
+        function setCategories(array $categories) : bool {
 
-            $query = "INSERT INTO Restaurant_category VALUES (?, ?);";
+            $deleteQuery = "DELETE * FROM Restaurant_category WHERE restaurant = ?;";
 
-            list($success,) = executeQuery(static::getDB(), $query, [$this->id, $categoryID]);
+            executeQuery(static::getDB(), $deleteQuery, [$this->id]);
+
+            $query = sprintf("INSERT INTO Restaurant_category VALUES (%d, ?)", $this->id);
+
+            for($i = 0; $i < sizeof($categories); $i++) {
+                $query.= sprintf(", (%d, ?)", $this->id);
+            }
+
+            $query .= ";";
+
+            list($success,) = executeQuery(static::getDB(), $query, $categories);
         
             return $success;
         }
