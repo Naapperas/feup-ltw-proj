@@ -1,5 +1,10 @@
 <?php 
 
+    if (strcmp($_SERVER['REQUEST_METHOD'], "POST") !== 0) {
+        header("Location: /");
+        die;
+    }
+
     include_once("../lib/params.php");
     include_once("../database/models/user.php");
 
@@ -7,19 +12,25 @@
         'id' => new IntParam(),
         'name' => new StringParam(),
         'address' => new StringParam(),
+        'referer'
     ]);
 
     session_start();
 
-    if (!isset($_SESSION['user'])) {
-        header("Location: /restaurant?id=$id");
+    if (!isset($_SESSION['user'])) { // prevents edits from unauthenticated users
+        header("Location: /restaurant?id=".$params['id']);
         die;
     }
 
     $restaurant = Restaurant::get($params['id']);
 
-    if($_SESSION['user'] !== 'id') {
-        header("Location: /restaurant?id=$id");
+    if ($restaurant === null) { // error fetching restaurant model
+        header("Location: /restaurant?id=".$params['id']);
+        die;
+    }
+
+    if($_SESSION['user'] !== $restaurant->owner) { // prevents edits from everyone other than the restaurant owner
+        header("Location: /restaurant?id=".$params['id']);
         die();
     }
 
@@ -28,5 +39,5 @@
 
     $restaurant->update();
 
-    header("Location: /restaurant?id=$id");
+    header("Location: /restaurant?id=".$params['id']);
 ?>
