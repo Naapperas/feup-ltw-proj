@@ -18,7 +18,7 @@ session_start();
     <body class="top-app-bar layout">
         <?php createAppBar(); ?>
 
-        <main class="centered large medium-spacing single column layout">
+        <main class="large medium-spacing column layout">
 
             <?php if (isset($_SESSION['user'])) {
                 createFavoriteRestaurants(User::get($_SESSION['user']));

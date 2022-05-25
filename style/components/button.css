@@ -3,7 +3,7 @@
     --color-on-button: var(--color-on-main);
 }
 
-.button:is(.text, .outlined, .contained, .icon) {
+.button:is(.text, .outlined, .contained, .icon, .fab) {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -78,25 +78,49 @@
     --color-overlay: var(--color-button);
 }
 
-.button:is(.text, .outlined, .contained, .icon):hover {
+.button:is(.text, .outlined, .contained, .icon, .fab):hover {
     --opacity-overlay: var(--opacity-hover);
 }
 
-.button:is(.text, .outlined, .contained, .icon):focus {
+.button:is(.text, .outlined, .contained, .icon, .fab):focus {
     --opacity-overlay: var(--opacity-focus);
 }
 
-.button:is(.text, .outlined, .contained, .icon):active {
+.button:is(.text, .outlined, .contained, .icon, .fab):active {
     --opacity-overlay: var(--opacity-active);
 }
 
-.button:is(.text, .outlined, .contained, .icon):disabled {
+.button.fab {
+    width: 56px;
+    height: 56px;
+
+    color: rgba(var(--color-on-button), var(--opacity-high-emphasis));
+    background-color: rgb(var(--color-button));
+
+    --elevation: var(--elevation-6);
+    --color-overlay: var(--color-on-button);
+}
+
+.button.fab.mini {
+    width: 40px;
+    height: 40px;
+}
+
+.button.fab:hover {
+    --elevation: var(--elevation-10);
+}
+
+.button.fab:active {
+    --elevation: var(--elevation-0);
+}
+
+.button:is(.text, .outlined, .contained, .icon, .fab):disabled {
     color: rgb(var(--color-on-surface));
     opacity: var(--opacity-disabled);
     cursor: initial;
     box-shadow: none;
 }
 
-.button.contained:disabled {
+.button:is(.contained, .fab):disabled {
     background-color: rgba(var(--color-on-surface), var(--opacity-disabled));
 }

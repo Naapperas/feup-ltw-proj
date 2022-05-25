@@ -6,6 +6,8 @@ enum ButtonType: string {
     case OUTLINED = "outlined";
     case TEXT = "text";
     case ICON = "icon";
+    case FAB = "icon fab";
+    case MINI_FAB = "icon fab mini";
 }
 
 include_once(dirname(__DIR__)."/database/models/user.php");
@@ -43,6 +45,7 @@ include_once(dirname(__DIR__)."/database/models/menu.php");
     string $attributes = ""
 ) {
     $component = $href === '' ? 'button' : 'a';
+    $is_icon = $type === ButtonType::ICON || $type === ButtonType::FAB || $type === ButtonType::MINI_FAB;
     ?>
 
     <<?= $component ?>
@@ -59,11 +62,11 @@ include_once(dirname(__DIR__)."/database/models/menu.php");
         <?php } elseif ($component === "a") { ?>
             href="<?= $href ?>"
         <?php } ?>
-        <?php if ($type == ButtonType::ICON && $text) { ?>
+        <?php if ($is_icon && $text) { ?>
             aria-label="<?= $text ?>"
         <?php } ?>
     >
-        <?php if ($type == ButtonType::ICON) { ?>
+        <?php if ($is_icon) { ?>
             <?= $icon ?>
         <?php } else { ?>
             <?php if ($icon) createIcon($icon) ?>
@@ -338,11 +341,14 @@ include_once(dirname(__DIR__)."/database/models/menu.php");
 <?php function createProfileOwnedRestaurants(User $user) {
     $owned = $user->getOwnedRestaurants();
 
+    if (!$owned)
+        return;
+
     ?>
     <hr class="divider">
     <section class="restaurant-list">
         <header class="header">
-            <h2 class="title h6">Owned Restaurants</h2>
+            <h3 class="title h6">Owned Restaurants</h3>
         </header>
 
         <?php 
@@ -356,11 +362,14 @@ include_once(dirname(__DIR__)."/database/models/menu.php");
 <?php function createProfileFavoriteRestaurants(User $user) {
     $favorites = $user->getFavoriteRestaurants();
 
+    if (!$favorites)
+        return;
+
     ?>
     <hr class="divider">
     <section class="restaurant-list">
         <header class="header">
-            <h2 class="title h6">Favorite Restaurants</h2>
+            <h3 class="title h6">Favorite Restaurants</h3>
         </header>
 
         <?php 
@@ -432,11 +441,14 @@ include_once(dirname(__DIR__)."/database/models/menu.php");
 <?php function createProfileFavoriteDishes(User $user) {
     $favorites = $user->getFavoriteDishes();
 
+    if (!$favorites)
+        return;
+
     ?>
     <hr class="divider">
     <section class="dish-list">
         <header class="header">
-            <h2 class="title h6">Favorite Dishes</h2>
+            <h3 class="title h6">Favorite Dishes</h3>
         </header>
 
         <?php 
@@ -454,7 +466,7 @@ include_once(dirname(__DIR__)."/database/models/menu.php");
     <hr class="divider">
     <section class="dish-list">
         <header class="header">
-            <h2 class="title h6">Available Dishes</h2>
+            <h3 class="title h6">Available Dishes</h3>
         </header>
 
         <?php 

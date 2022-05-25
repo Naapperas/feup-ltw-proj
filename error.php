@@ -27,7 +27,7 @@ $description = [
     <?php createHead(metadata: baseMetadata(title: "$response_code $description")) ?>
     <body class="top-app-bar layout">
         <?php createAppBar() ?>
-        <main class="centered large-spacing single column layout">
+        <main class="large-spacing column layout">
             <span class="h2" aria-hidden="true"><?= $emoticon ?></span>
             <h2 class="h3"><?= $response_code ?> <?= $description ?></h2>
         </main>

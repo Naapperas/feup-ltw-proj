@@ -32,7 +32,7 @@
     <?php createHead(metadata: baseMetadata(title: "Edit $restaurant->name")); ?>
     <body class="top-app-bar layout">
         <?php createAppBar(); ?>
-        <main class="centered small single column layout">
+        <main class="small column layout">
             <?php createForm(
                 'POST', 'restaurant', '/actions/edit_restaurant.php',
                 function() use ($restaurant) {

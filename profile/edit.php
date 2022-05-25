@@ -20,7 +20,7 @@
     <?php createHead(metadata: baseMetadata()); ?>
     <body class="top-app-bar layout">
         <?php createAppBar(); ?>
-        <main class="centered small single column layout">
+        <main class="small column layout">
             <?php createForm(
                 'POST', 'profile', '/actions/edit_profile.php',
                 function() use ($user) {
@@ -47,7 +47,7 @@
                         value: $user->phone_number
                     );
                     createButton(text: "Edit", submit: true); ?>
-                    ?><input type="hidden" name="id" value="<?=$user->id?>"><?php
+                    <input type="hidden" name="id" value="<?=$user->id?>"><?php
                 }
             ) ?>
         </main>

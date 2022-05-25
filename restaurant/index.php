@@ -40,7 +40,7 @@
     <body class="top-app-bar layout">
         <?php createAppBar(); ?>
 
-        <main class="centered medium medium-spacing single column layout">
+        <main class="medium medium-spacing column layout">
             <section>
                 <h2 class="h4"><?= $restaurant->name ?></h2>
                 <?php if (($avgScore = $restaurant->getReviewScore()) !== null) { ?>

@@ -45,8 +45,8 @@
     <body class="top-app-bar layout">
         <?php createAppBar(); ?>
 
-        <main class="centered medium medium-spacing single column layout">
-            <header>
+        <main class="medium medium-spacing column layout">
+            <header class="profile-header">
                 <img
                     class="avatar big"
                     src="<?= $profilePicSrc ?>"
@@ -57,7 +57,7 @@
                 <?php
                     if ($user->id === $_SESSION['user']) {
                         createButton(
-                            type: ButtonType::ICON,
+                            type: ButtonType::FAB,
                             text: "Edit",
                             icon: "edit",
                             href: "/profile/edit.php");
@@ -66,8 +66,10 @@
                 <h2 class="h4"><?=$user->name?>'s profile</h2>
             </header>
 
-            <section>
-                <h3 class="h5">Personal information</h3>
+            <section class="profile-info">
+                <header class="header">
+                    <h3 class="title h6">Personal information</h3>
+                </header>
 
                 <p><span>Email: </span><span><?=$user->email?></span></p>
                 <p><span>Full name: </span><span><?=$user->full_name?></span></p>

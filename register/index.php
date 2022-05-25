@@ -10,7 +10,7 @@ require_once("../templates/metadata.php");
         metadata: baseMetadata(title: "Register", description: "Register page for XauFome."),
         scripts: ["components/form.js", "components/textfield.js"]
     ); ?>
-    <body class="centered small-spacing small single column layout">
+    <body class="small-spacing small column layout">
         <a href="/" class="homepage-link"><h1 class="h3 color logo"></h1></a>
 
         <?php createForm(
