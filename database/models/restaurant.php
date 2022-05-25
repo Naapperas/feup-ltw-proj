@@ -46,13 +46,13 @@
 
         public function getCategories(): array {
 
-            $query = "SELECT category FROM Restaurant_category WHERE restaurant = ?;";
+            $query = "SELECT category AS id FROM Restaurant_category WHERE restaurant = ?;";
 
             $categories = getQueryResults(static::getDB(), $query, true, [$this->id]);
         
             if ($categories === false) return [];
 
-            $result = array_map(fn($id) => Category::get($id), $categories);
+            $result = array_map(fn($id) => Category::get($id)[0], $categories);
 
             return $result;
         }
@@ -79,11 +79,24 @@
             return array_map(fn(array $id) => Menu::get($id)[0], $queryResults);
         }
 
-        function addCategory(int $categoryID) : array {
+        function addCategory(int $categoryID) : bool {
 
             $query = "INSERT INTO Restaurant_category VALUES (?, ?);";
 
-            return executeQuery(static::getDB(), $query, [$this->$id, $categoryID]);
+            list($success,) = executeQuery(static::getDB(), $query, [$this->id, $categoryID]);
+        
+            return $success;
+        }
+
+        function hasCategory(int $categoryID) : bool {
+
+            $query = "SELECT * FROM Restaurant_category WHERE restaurant = ? AND category = ?;";
+
+            $queryResults = executeQuery(static::getDB(), $query, [$this->id, $categoryID]);
+        
+            if ($queryResults === false) return false;
+
+            return count($queryResults) > 0;
         }
     }
 ?>

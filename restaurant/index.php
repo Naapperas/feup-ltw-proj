@@ -62,7 +62,7 @@
                         $state = "off";
                         $text = "Favorite";
                     }
-                    if($restaurant->owner === $currentUser->$id) {
+                    if($restaurant->owner === $currentUser->id) {
                         createButton(
                             type: ButtonType::ICON,
                             text: "Edit",

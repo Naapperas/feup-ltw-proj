@@ -35,18 +35,18 @@
         <main class="centered small single column layout">
             <?php createForm(
                 'POST', 'restaurant', '/actions/edit_restaurant.php',
-                function() {
+                function() use ($restaurant) {
                     createTextField(
-                        name: "name", label: "Name", 
+                        name: "name", label: "Name", value: $restaurant->name
                     );
                     createTextField(
-                        name: "address", label: "Address"
+                        name: "address", label: "Address", value: $restaurant->address
                     );
-                    createCheckBoxList(array_map(fn($category) => [
+                    createCheckBoxList(array_map(fn(Category $category) => [
                         'label' => $category->name,
                         'value' => $category->id,
                         'name' => 'categories[]',
-                        'checked' => false
+                        'checked' => $restaurant->hasCategory($category->id)
                     ], Category::get()));
                     
                     createButton(text: "Apply", submit: true);
