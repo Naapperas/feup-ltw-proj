@@ -13,6 +13,9 @@
         'id' => new IntParam(),
         'name' => new StringParam(),
         'address' => new StringParam(),
+        'categories' => new ArrayParam(
+            optional: true,
+        ),
         'referer'
     ]);
 
@@ -38,7 +41,7 @@
     $restaurant->name = $params['name'];
     $restaurant->address = $params['address'];
 
-    $restaurant->setCategories($_POST['categories']);
+    $restaurant->setCategories($params['categories'] ?? []);
 
     $restaurant->update();
 

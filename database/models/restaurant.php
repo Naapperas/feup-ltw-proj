@@ -81,13 +81,18 @@
 
         function setCategories(array $categories) : bool {
 
-            $deleteQuery = "DELETE * FROM Restaurant_category WHERE restaurant = ?;";
+            $deleteQuery = "DELETE FROM Restaurant_category WHERE restaurant = ?;";
 
-            executeQuery(static::getDB(), $deleteQuery, [$this->id]);
+            list($success,) = executeQuery(static::getDB(), $deleteQuery, [$this->id]);
 
-            $query = sprintf("INSERT INTO Restaurant_category VALUES (%d, ?)", $this->id);
+            if (count($categories) === 0) return $success;
 
-            for($i = 0; $i < sizeof($categories); $i++) {
+            // using this query format we avoid making multiple queries to the DB,
+            // with the downside of 'having' to hardcode the restaurant id into the query itself, 
+            // but since that id comes from the restaurant model itself, there should be no problem (unless the DB is breached)
+            $query = sprintf("INSERT INTO Restaurant_category VALUES (%d, ?)", $this->id); 
+
+            for($i = 1; $i < sizeof($categories); $i++) {
                 $query.= sprintf(", (%d, ?)", $this->id);
             }
 
@@ -102,7 +107,7 @@
 
             $query = "SELECT * FROM Restaurant_category WHERE restaurant = ? AND category = ?;";
 
-            $queryResults = executeQuery(static::getDB(), $query, [$this->id, $categoryID]);
+            $queryResults = getQueryResults(static::getDB(), $query, true, [$this->id, $categoryID]);
         
             if ($queryResults === false) return false;
 

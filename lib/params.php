@@ -13,7 +13,7 @@ abstract class Param {
         public bool $optional = false
     ) {}
 
-    abstract function parse(?string $val);
+    abstract function parse(string|array|null $val);
 
     protected function error() {
         if ($this->optional)
@@ -35,7 +35,11 @@ class StringParam extends Param {
         parent::__construct($default, $optional);
     }
 
-    function parse(?string $val) {
+    function parse(string|array|null $val) {
+
+        if (is_array($val))
+            return $this->error();
+
         $r = $val ?? $this->default;
 
         if (!$this->optional && !isset($r))
@@ -69,7 +73,11 @@ class IntParam extends Param {
         parent::__construct($default, $optional);
     }
 
-    function parse(?string $val) {
+    function parse(string|array|null $val) {
+
+        if (is_array($val))
+            return $this->error();
+
         $r = $val ?? $this->default;
 
         if (!$this->optional && !isset($r))
@@ -81,6 +89,36 @@ class IntParam extends Param {
             return $this->error();
 
         if (isset($this->max) && $r > $this->max)
+            return $this->error();
+
+        return $r;
+    }
+}
+
+class ArrayParam extends Param {
+    function __construct(
+        public mixed $default = null,
+        public bool $optional = false,
+        public ?int $minLen = null,
+        public ?int $maxLen = null,
+    ) {
+        parent::__construct($default, $optional);
+    }
+
+    function parse(string|array|null $val) {
+
+        if (!is_array($val))
+            return $this->error();
+
+        $r = $val ?? $this->default;
+
+        if (!$this->optional && !isset($r))
+            return $this->error();
+
+        if (isset($this->min) && count($r) < $this->minLen)
+            return $this->error();
+
+        if (isset($this->max) && count($r) > $this->maxLen)
             return $this->error();
 
         return $r;
