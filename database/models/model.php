@@ -39,7 +39,7 @@
             return static::get(intval(static::getDB()->lastInsertId($table)));
         }
     
-        static function get(int|array $data = null, int $limit = null): array|static|null {
+        static function get(int|array $data = null, int $limit = null, bool $exact = true): array|static|null {
             $table = static::getTableName();
             $query = "SELECT * FROM $table";
     
@@ -79,7 +79,8 @@
                 $values = array();
     
                 foreach($data as $attribute=>$value) {
-                    $attrs[] = sprintf("%s = ?", $attribute);
+
+                    $attrs[] = sprintf(sprintf("%%s %s ?", $exact ? "=" : "LIKE"), $attribute);
                     $values[] = $value;
                 }
     
@@ -91,6 +92,10 @@
     
                 $query .= ";";
     
+                if (!$exact) {
+                    $values = array_map(fn ($value) => "%$value%", $values);
+                }
+
                 $queryResults = getQueryResults(static::getDb(), $query, true, $values);
     
                 if ($queryResults === false)
