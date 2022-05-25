@@ -54,34 +54,55 @@
 
 /* PROFILE */
 
-.profile-header {
+.profile.layout {
     display: grid;
     grid-template:
-        "avatar" auto
-        "name" auto / auto;
-    place-items: center;
-    gap: 8px;
+        "avatar info" auto
+        / 1fr 1fr;
 }
 
-.profile-header > .avatar {
-    grid-area: avatar;
+@media screen and (max-width: 720px) {
+    .profile.layout {
+        grid-template:
+            "avatar" auto
+            "info" auto
+            / 1fr;
+    }
+
+    .profile.layout > .profile-info > .header {
+        text-align: center;
+    }
 }
 
-.profile-header > .button.fab {
+.profile.layout > * {
+    grid-column: 1 / -1;
+}
+
+.profile.layout > .avatar {
     grid-area: avatar;
+    place-self: center;
+}
+
+.profile.layout > .button.fab {
+    grid-area: avatar;
+    place-self: center;
     transform: translate(calc(0.70710678 * 140px), calc(0.70710678 * 140px));
 }
 
-.profile-header > .title {
-    grid-area: name;
+.profile.layout > .profile-info {
+    display: grid;
+    grid-area: info;
+    grid-template-columns: min-content auto;
+
+    justify-items: start;
+    align-items: center;
+    text-align: start;
+    align-content: center;
+    gap: 4px;
 }
 
-.profile-info {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    text-align: start;
-    gap: 8px;
+.profile.layout > .profile-info > .header {
+    margin-bottom: 8px;
 }
 
 /* COMMON */

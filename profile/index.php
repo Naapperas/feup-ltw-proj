@@ -45,35 +45,32 @@
     <body class="top-app-bar layout">
         <?php createAppBar(); ?>
 
-        <main class="medium medium-spacing column layout">
-            <header class="profile-header">
-                <img
-                    class="avatar big"
-                    src="<?= $profilePicSrc ?>"
-                    alt="<?= $user->name ?>'s profile picture"
-                    width="240px"
-                    height="240px"
-                />
-                <?php
-                    if ($user->id === $_SESSION['user']) {
-                        createButton(
-                            type: ButtonType::FAB,
-                            text: "Edit",
-                            icon: "edit",
-                            href: "/profile/edit.php");
-                    }
-                ?>
-                <h2 class="h4"><?=$user->name?>'s profile</h2>
-            </header>
+        <main class="profile medium medium-spacing column layout">
+            <img
+                class="avatar big"
+                src="<?= $profilePicSrc ?>"
+                alt="<?= $user->name ?>'s profile picture"
+                width="240px"
+                height="240px"
+            />
+            <?php
+                if ($user->id === $_SESSION['user']) {
+                    createButton(
+                        type: ButtonType::FAB,
+                        text: "Edit",
+                        icon: "edit",
+                        href: "/profile/edit.php");
+                }
+            ?>
 
             <section class="profile-info">
                 <header class="header">
-                    <h3 class="title h6">Personal information</h3>
+                    <h2 class="title h4"><?=$user->name?>'s profile</h2>
                 </header>
 
-                <p><span>Email: </span><span><?=$user->email?></span></p>
-                <p><span>Full name: </span><span><?=$user->full_name?></span></p>
-                <p><span>Phone number: </span><span><?=$user->phone_number?></span></p>
+                <?php createIcon('email') ?><span><?=$user->email?></span>
+                <?php createIcon('badge') ?><span><?=$user->full_name?></span>
+                <?php createIcon('phone') ?><span><?=$user->phone_number?></span>
             </section>
 
             <?php createProfileOwnedRestaurants($user); ?>
