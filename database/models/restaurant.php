@@ -78,5 +78,12 @@
 
             return array_map(fn(array $id) => Menu::get($id)[0], $queryResults);
         }
+
+        function addCategory(int $categoryID) : array {
+
+            $query = "INSERT INTO Restaurant_category VALUES (?, ?);";
+
+            return executeQuery(static::getDB(), $query, [$this->$id, $categoryID]);
+        }
     }
 ?>
