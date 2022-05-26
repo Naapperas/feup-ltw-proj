@@ -56,18 +56,19 @@ but that is impossible outside chromium
     transition-timing-function: ease-in-out;
 }
 
-:is(.textfield input, .select select):is(:not(:placeholder-shown), :focus)
+:is(.textfield :is(input, textarea), .select
+        select):is(:not(:placeholder-shown), :focus)
     ~ label {
     top: 22px;
     font-size: 0.75rem;
     transform: translateY(-100%);
 }
 
-:is(.textfield input, .select select):focus ~ label {
+:is(.textfield :is(input, textarea), .select select):focus ~ label {
     color: rgb(var(--color-main));
 }
 
-:is(.textfield input, .select select) {
+:is(.textfield :is(input, textarea), .select select) {
     appearance: none;
     grid-area: input;
 
@@ -93,7 +94,12 @@ but that is impossible outside chromium
     transition-property: box-shadow, color, border, background;
 }
 
-.textfield input::placeholder {
+.textfield textarea {
+    min-height: 48px;
+    resize: vertical;
+}
+
+.textfield :is(input, textarea)::placeholder {
     opacity: 0;
 
     transition-property: opacity;
@@ -107,36 +113,36 @@ but that is impossible outside chromium
     margin-top: -8px;
 }
 
-:is(.textfield input, .select select):focus {
+:is(.textfield :is(input, textarea), .select select):focus {
     border-color: rgb(var(--color-main));
     border-width: 2px;
 }
 
-.textfield input:focus::placeholder {
+.textfield :is(input, textarea):focus::placeholder {
     opacity: initial;
 }
 
-:is(.textfield input, .select select).error {
+:is(.textfield :is(input, textarea), .select select).error {
     border-width: 2px;
     border-color: rgb(var(--color-error));
     caret-color: rgb(var(--color-error));
 }
 
-:is(.textfield input, .select select).error ~ label {
+:is(.textfield :is(input, textarea), .select select).error ~ label {
     color: rgb(var(--color-error));
 }
 
-:is(.textfield input, .select select):hover {
+:is(.textfield :is(input, textarea), .select select):hover {
     --opacity-overlay: calc(8% + var(--opacity-hover));
 }
 
-:is(.textfield input, .select select):disabled {
+:is(.textfield :is(input, textarea), .select select):disabled {
     opacity: var(--opacity-disabled);
     --opacity-overlay: 8%;
     background-color: rgba(var(--color-on-surface), 8%);
 }
 
-:is(.textfield input, .select select):disabled ~ label {
+:is(.textfield :is(input, textarea), .select select):disabled ~ label {
     opacity: var(--opacity-disabled);
 }
 
@@ -206,13 +212,13 @@ but that is impossible outside chromium
     color: rgb(var(--color-error));
 }
 
-.textfield input:not(.error) ~ .error-text {
+.textfield :is(input, textarea):not(.error) ~ .error-text {
     opacity: 0%;
     height: 0px;
     padding-top: 0;
 }
 
-.textfield input.error ~ .error-text ~ .helper-text {
+.textfield :is(input, textarea).error ~ .error-text ~ .helper-text {
     opacity: 0%;
     height: 0px;
     padding-top: 0;

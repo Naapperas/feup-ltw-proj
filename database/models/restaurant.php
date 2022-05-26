@@ -11,6 +11,10 @@
 
         public string $name;
         public string $address;
+        public string $phone_number;
+        public string $website;
+        public string $opening_time;
+        public string $closing_time;
 
         public int $owner;
 

@@ -94,8 +94,8 @@ include_once(dirname(__DIR__)."/database/models/menu.php");
     $describedby = implode(" ", $describedby);
     ?>
     <div class="textfield">
-        <input
-            type="<?= $type ?>"
+        <<?php if ($type === 'multiline') { ?>textarea<?php } else { ?>input
+            type="<?= $type ?>" <?php } ?>
             placeholder=" "
             id="<?= $name ?>"
             name="<?= $name ?>"
@@ -124,7 +124,7 @@ include_once(dirname(__DIR__)."/database/models/menu.php");
             if ($errors !== [] || $errorText) 
                 echo "data-error-text=\"$name-error-text\"\n";
             ?>
-        />
+        /><?php if ($type === 'multiline') { ?></textarea><?php } ?>
         <label for="<?= $name ?>"><?= $label ?></label>
         <?php if ($toggleVisibility) {
             createButton(
@@ -247,8 +247,7 @@ include_once(dirname(__DIR__)."/database/models/menu.php");
             </header>
             <?php
             if (($categories = $restaurant->getCategories()) !== []) {
-                echo '<hr class="divider" />';
-                createRestaurantCategories($categories, 'h4');
+                createRestaurantCategories($categories);
             }
             
             session_start();
@@ -306,9 +305,8 @@ include_once(dirname(__DIR__)."/database/models/menu.php");
     </header>
 <?php } ?>
 
-<?php function createRestaurantCategories(array $categories, string $h) { ?>
+<?php function createRestaurantCategories(array $categories) { ?>
     <section class="chip-list wrap">
-        <<?= $h ?> class="subtitle2" >Categories</<?= $h ?>>
         <?php foreach($categories as $category) { ?>
             <span class="chip"><?= $category->name ?></span>
         <?php } ?>
@@ -380,11 +378,8 @@ include_once(dirname(__DIR__)."/database/models/menu.php");
     </section>
 <?php } ?>
 
-<?php function createDishCard(Dish $dish) { 
-
-    $restaurant = $dish->getRestaurant();
-
-    if ($restaurant === null) return;
+<?php function createDishCard(Dish $dish, bool $show_restaurant = false) { 
+    if ($show_restaurant && ($restaurant = $dish->getRestaurant()) === null) return;
 ?>
     <a 
         href="/dish/?id=<?= $dish->id ?>" 
@@ -401,8 +396,9 @@ include_once(dirname(__DIR__)."/database/models/menu.php");
             />
             <header class="header">
                 <h3 class="title h6"><?= $dish->name ?></h3>
-                <span class="subtitle subtitle2 secondary"><?= $restaurant->name ?></span>
-                <span class="chip right"><?php createIcon(icon: "euro") ?><?= $dish->price ?></span>
+                <span class="subtitle subtitle2 secondary">
+                    <?= $show_restaurant ? $restaurant->name : sprintf('%.2f€', $dish->price) ?>
+                </span>
             </header>
             <?php
             if (($categories = $dish->getCategories()) !== []) {
@@ -430,7 +426,7 @@ include_once(dirname(__DIR__)."/database/models/menu.php");
                         "data-on-icon=\"favorite\"\n".
                         "data-off-icon=\"favorite_border\"\n".
                         "data-toggle-state=\"$state\"\n".
-                        "data-dish-id=\"$dish->id\"".
+                        "data-dish-id=\"$dish->id\"\n".
                         "data-favorite-button" // TODO: change to different kind of button
                 );
             } ?>
@@ -453,7 +449,7 @@ include_once(dirname(__DIR__)."/database/models/menu.php");
 
         <?php 
         foreach($favorites as $dish) {
-            createDishCard($dish);
+            createDishCard($dish, true);
         }
         ?>
     </section>
@@ -463,10 +459,9 @@ include_once(dirname(__DIR__)."/database/models/menu.php");
     $owned = $restaurant->getOwnedDishes();
 
     ?>
-    <hr class="divider">
     <section class="dish-list">
         <header class="header">
-            <h3 class="title h6">Available Dishes</h3>
+            <h3 class="title h4">Dishes</h3>
         </header>
 
         <?php 
@@ -477,11 +472,8 @@ include_once(dirname(__DIR__)."/database/models/menu.php");
     </section>
 <?php } ?>
 
-<?php function createMenuCard(Menu $menu) { 
-
-    $restaurant = $menu->getRestaurant();
-
-    if ($restaurant === null) return;
+<?php function createMenuCard(Menu $menu, bool $show_restaurant = false) { 
+    if ($show_restaurant && ($restaurant = $menu->getRestaurant()) === null) return;
 ?>
     <a 
         href="/menu/?id=<?= $menu->id ?>" 
@@ -498,8 +490,9 @@ include_once(dirname(__DIR__)."/database/models/menu.php");
             />
             <header class="header">
                 <h3 class="title h6"><?= $menu->name ?></h3>
-                <span class="subtitle subtitle2 secondary"><?= $restaurant->name ?></span>
-                <span class="chip right"><?php createIcon(icon: "euro") ?><?= $menu->price ?></span>
+                <span class="subtitle subtitle2 secondary">
+                    <?= $show_restaurant ? $restaurant->name : sprintf('%.2f€', $menu->price) ?>
+                </span>
             </header>
         </article>
     </a>
@@ -509,10 +502,9 @@ include_once(dirname(__DIR__)."/database/models/menu.php");
     $owned = $restaurant->getOwnedMenus();
 
     ?>
-    <hr class="divider">
     <section class="menu-list">
         <header class="header">
-            <h2 class="title h6">Available Menus</h2>
+            <h2 class="title h4">Menus</h2>
         </header>
 
         <?php 

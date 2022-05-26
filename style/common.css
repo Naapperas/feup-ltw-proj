@@ -131,7 +131,6 @@
 
 hr.divider {
     height: 1px;
-    width: 100%;
 
     border: none;
     background-color: rgba(var(--color-on-surface), 12%);
@@ -139,7 +138,6 @@ hr.divider {
 
 hr.divider.vertical {
     width: 1px;
-    height: 100%;
 }
 
 a {

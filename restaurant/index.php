@@ -37,68 +37,88 @@
         scripts: ["pages/restaurant.js", "components/card.js"],
     );
     ?>
-    <body class="top-app-bar layout">
+    <body class="top-app-bar restaurant layout">
         <?php createAppBar(); ?>
 
-        <main class="medium medium-spacing column layout">
-            <section>
-                <h2 class="h4"><?= $restaurant->name ?></h2>
-                <?php if (($avgScore = $restaurant->getReviewScore()) !== null) { ?>
-                <span class="chip right"><?php createIcon(icon: "star") ?><?= $avgScore ?></span>
-                <?php } ?>
-            </section>
+        <main class="restaurant-main">
+            <header class="restaurant-header">
+                <div class="carousel">
+                    <img src="http://picsum.photos/1920/1080" alt="">
+                </div>
+                <h2 class="title"><?= $restaurant->name ?></h2>
+            </header>
 
+            <?php createRestaurantOwnedDishes($restaurant); ?>
+            <?php createRestaurantOwnedMenus($restaurant); ?>
+        </main>
+
+        <aside class="restaurant-sidebar">
+            <div class="restaurant-info">
+                <header class="header">
+                    <h3 class="title h4">About <?= $restaurant->name ?></h3>
+                </header>
+
+                <span class="icon">place</span>
+                <span><?= $restaurant->address ?></span>
+                <span class="icon">schedule</span>
+                <span><?= $restaurant->opening_time ?> to <?= $restaurant->closing_time ?></span>
+                <span class="icon">phone</span>
+                <span><?= $restaurant->phone_number ?></span>
+                <span class="icon">public</span>
+                <span><?= $restaurant->website ?></span>
+                <span class="icon">star</span>
+                <span><?= $restaurant->getReviewScore() ?></span>
+
+                <?php createRestaurantCategories($restaurant->getCategories()) ?>
+            </div>
+
+            <?php createForm(
+                'POST', 'review', '/actions/create_review.php',
+                function() {
+                    ?><header class="header">
+                        <h3 class="title h4">Leave a review</h3>
+                    </header><?php
+                    createTextField(name: 'content', label: 'Details', type: 'multiline');
+                    createButton(text: 'Post', submit: true);
+                }
+            ) ?>
+                
             <?php
                 session_start();
 
                 if (isset($_SESSION['user'])) {
 
                     $currentUser = User::get($_SESSION['user']);
-        
-                    if ($currentUser !== null && $restaurant->isLikedBy($currentUser)) {
-                        $state = "on";
-                        $text = "Unfavorite";
-                    } else {
-                        $state = "off";
-                        $text = "Favorite";
-                    }
+                    
                     if($restaurant->owner === $currentUser->id) {
                         createButton(
-                            type: ButtonType::ICON,
+                            type: ButtonType::FAB,
                             text: "Edit",
                             icon: "edit",
                             href: "/restaurant/edit.php?id=$restaurant->id");
+                    } else {
+                        if ($currentUser !== null && $restaurant->isLikedBy($currentUser)) {
+                            $state = "on";
+                            $text = "Unfavorite";
+                        } else {
+                            $state = "off";
+                            $text = "Favorite";
+                        }
+
+                        createButton(
+                            type: ButtonType::FAB, text: $text, class: "toggle",
+                            attributes: 
+                                "data-on-icon=\"favorite\"\n".
+                                "data-off-icon=\"favorite_border\"\n".
+                                "data-toggle-state=\"$state\"\n".
+                                "data-restaurant-id=\"$restaurant->id\"".
+                                "data-favorite-button"
+                        );
                     }
-        
-                    createButton(
-                        type: ButtonType::ICON, text: $text, class: "toggle",
-                        attributes: 
-                            "data-on-icon=\"favorite\"\n".
-                            "data-off-icon=\"favorite_border\"\n".
-                            "data-toggle-state=\"$state\"\n".
-                            "data-restaurant-id=\"$restaurant->id\"".
-                            "data-favorite-button"
-                    );
                 }
             ?>
+        </aside>
 
-            <div class="restaurant-data">
-                <section class="restaurant-pics">
-                    <span>Restaurant Pictures</span>
-                </section>
-                <?php 
-                
-                if (($categories = $restaurant->getCategories()) !== [])
-                    createRestaurantCategories($categories, 'h2');
-                ?>
-                <section class="restaurant-addr">
-                    <span><?= $restaurant->address ?></span>
-                </section>
-            </div>
-
-            <?php createRestaurantOwnedDishes($restaurant); ?>
-            <?php createRestaurantOwnedMenus($restaurant); ?>
-        </main>
     </body>
 
 </html>

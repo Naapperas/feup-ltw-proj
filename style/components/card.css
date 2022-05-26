@@ -79,6 +79,7 @@
 
 .header > .subtitle {
     grid-area: subtitle;
+    margin-top: 8px;
 }
 
 .header > .right {
