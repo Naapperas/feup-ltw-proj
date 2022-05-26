@@ -485,8 +485,8 @@ include_once(dirname(__DIR__)."/database/models/menu.php");
 ?>
     <a 
         href="/menu/?id=<?= $menu->id ?>" 
-        data-card-type="dish" 
-        data-dish-id="<?= $menu->id ?>"
+        data-card-type="menu" 
+        data-menu-id="<?= $menu->id ?>"
     >
         <article class="card responsive interactive">
             <img
