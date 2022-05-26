@@ -4,5 +4,5 @@
     if (isset($_SESSION["user"]))
         unset($_SESSION["user"]);
 
-    header('Location: ' . $_SERVER['HTTP_REFERER']);
+    header('Location: /');
 ?>

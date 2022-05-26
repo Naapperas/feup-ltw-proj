@@ -1,14 +1,8 @@
 <?php
 
     if (strcmp($_SERVER['REQUEST_METHOD'], "POST") !== 0) {
-        header("Location: /index.php");
+        header("Location: /");
         die();
-    }
-
-    function registrationError(string $errorMsg): void {
-        $_SESSION['register-error'] = $errorMsg;
-        header('Location: /register/');
-        die;
     }
 
     session_start();
@@ -29,6 +23,13 @@
         'referer'
     ]);
 
+    $registrationError = function(string $errorMsg) use ($params): void {
+        $_SESSION['register-error'] = $errorMsg;
+        $_SESSION['referer'] = $params['referer'];
+        header('Location: /register/');
+        die;
+    };
+
     require_once('../database/models/user.php');
     require_once('../lib/password.php');
 
@@ -37,11 +38,11 @@
     $userPhoneExists = count(User::get(['phone_number' => $params['phone']])) > 0;
 
     if ($userNameExists) {
-        registrationError('User with the same name already registered.');
+        $registrationError('User with the same name already registered.');
     } else if ($userEmailExists) {
-        registrationError('User with the same email already registered.');
+        $registrationError('User with the same email already registered.');
     } else if ($userPhoneExists) {
-        registrationError('User with the same phone number already registered.');
+        $registrationError('User with the same phone number already registered.');
     }
 
     $user = User::create([
@@ -54,9 +55,10 @@
     ]);
 
     if ($user === null) {
-        registrationError('Error registering user');
+        $registrationError('Error registering user');
     }
     
+    unset($_SESSION['referer']);
     $_SESSION['user'] = $user->id;
     header('Location: '.$params['referer']);
 ?>

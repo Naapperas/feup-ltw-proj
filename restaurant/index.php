@@ -65,9 +65,10 @@
                 <span class="icon">phone</span>
                 <span><?= $restaurant->phone_number ?></span>
                 <span class="icon">public</span>
-                <span><?= $restaurant->website ?></span>
+                <a href="<?= $restaurant->website ?>" target="_blank"><?= $restaurant->website ?></a>
+                <?php if (($score = $restaurant->getReviewScore()) != null) {?>
                 <span class="icon">star</span>
-                <span><?= $restaurant->getReviewScore() ?></span>
+                <?php } ?>
 
                 <?php createRestaurantCategories($restaurant->getCategories()) ?>
             </div>
@@ -89,7 +90,7 @@
                 if (isset($_SESSION['user'])) {
 
                     $currentUser = User::get($_SESSION['user']);
-                    
+
                     if($restaurant->owner === $currentUser->id) {
                         createButton(
                             type: ButtonType::FAB,

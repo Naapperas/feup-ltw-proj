@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 require_once("../templates/components.php");
 require_once("../templates/metadata.php");
+
+session_start();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +19,7 @@ require_once("../templates/metadata.php");
         <?php createForm(
             'POST', 'register', '/actions/register.php',
             function() { ?>
-                <input type="hidden" name="referer" value="<?=$_SERVER["HTTP_REFERER"]?>">
+                <input type="hidden" name="referer" value="<?= $_SESSION['referer'] ?? $_SERVER["HTTP_REFERER"]?>">
             <?php },
             function() {
                 createTextField(
@@ -55,7 +58,7 @@ require_once("../templates/metadata.php");
         <div class="form-support">
             <span>
                 Already have an account?
-                <a class="link" href="../login/">Login</a>
+                <a class="link" href="/login/">Login</a>
             </span>
             <?php createColorSchemeToggle() ?>
         </div>

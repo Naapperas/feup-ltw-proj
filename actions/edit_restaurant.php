@@ -16,7 +16,6 @@
         'categories' => new ArrayParam(
             optional: true,
         ),
-        'referer'
     ]);
 
     session_start();

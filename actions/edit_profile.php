@@ -9,8 +9,17 @@
     include_once("../lib/files.php");
     include_once("../database/models/user.php");
 
+    session_start();
+
+    if (!isset($_SESSION['user'])) { // user has to be authenticated
+        header("Location: /");
+        die;
+    }
+
     $params = parseParams(post_params: [
-        'id' => new IntParam(),
+        'id' => new IntParam(
+            default: $_SESSION['user'] // default to current user
+        ),
         'email' => new StringParam(
             pattern: '/^[a-zA-Z0-9.!#$%&\'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/',
             min_len: 1,
@@ -22,15 +31,14 @@
         'username' => new StringParam()
     ]);
 
-    session_start();
-    if ($_SESSION['user'] !== $params['id']) {
-        header("Location: /profile/");
+    if ($_SESSION['user'] !== $params['id']) { // trying to edit another user's profile
+        header("Location: /profile/"); // since we already verify that we are authenticated, redirecting to the profile page should give no errors
         die;
     }
 
     $user = User::get($params['id']);
 
-    if ($user === null) {
+    if ($user === null) { // in case there was an error fetching the current user object from the DB
         header("Location: /profile/");
         die;
     }
@@ -45,13 +53,8 @@
 
     $uploadedPhoto = $_FILES['profile_picture'];
 
-    if ($uploadedPhoto['error'] !== 0) {
-        $_SESSION['profile-edit-error'] = "Error uploading profile picture";
-        header('Location: /profile/');
-        die;
-    }
-
-    uploadProfilePicture($uploadedPhoto, $user->id);
+    if ($uploadedPhoto['error'] === 0)
+        uploadProfilePicture($uploadedPhoto, $user->id);
 
     header('Location: /profile/');
 ?>

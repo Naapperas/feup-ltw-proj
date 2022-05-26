@@ -23,10 +23,12 @@
 
     if ($user === null || !$user->validatePassword($params['password'])) {
         $_SESSION['login-error'] = 'Incorrect username or password!'; // to be handled by the login page
+        $_SESSION['referer'] = $params['referer'];
         header('Location: /login/');
         die();
     }
 
+    unset($_SESSION['referer']);
     $_SESSION['user'] = $user->id;
     header('Location: ' . $params['referer']); 
 ?>

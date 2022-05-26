@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 require_once("../templates/components.php");
 require_once("../templates/metadata.php");
+
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,8 +26,8 @@ require_once("../templates/metadata.php");
                     type: "password", autocomplete: "current-password",
                     toggleVisibility: true
                 );
-                createButton(text: "Login", submit: true);
-                ?><input type="hidden" name="referer" value="<?=$_SERVER["HTTP_REFERER"]?>"><?php
+                createButton(text: "Login", submit: true); ?>
+                <input type="hidden" name="referer" value="<?=$_SESSION['referer'] ?? $_SERVER["HTTP_REFERER"]?>"><?php
             }
         ) ?>
 
