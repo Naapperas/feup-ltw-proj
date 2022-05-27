@@ -34,11 +34,16 @@
     require_once('../database/models/restaurant.php');
     require_once('../database/models/user.php');
 
-    if (Restaurant::get($params['restaurantId']) === null || User::get($params['userId']) === null) {
+    if (($restaurant = Restaurant::get($params['restaurantId'])) === null || User::get($params['userId']) === null) {
         header("Location: /");
         die;
     }
     
+    if ($restaurant->owner === $params['userId']) { // owner cant post reviews
+        header("Location: /restaurant?id=".$params['restaurantId']);
+        die;
+    }
+
     require_once('../database/models/review.php');
 
     Review::create([
