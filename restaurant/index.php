@@ -57,13 +57,21 @@
                 </header>
 
                 <span class="icon">place</span>
-                <a href="https://www.google.pt/maps/place/<?= rawurlencode(html_entity_decode($restaurant->address)) ?>" target="_blank"><span><?= $restaurant->address ?></span></a>
+                <a href="https://www.google.pt/maps/place/<?= rawurlencode(html_entity_decode($restaurant->address)) ?>" target="_blank">
+                    <?= $restaurant->address ?>
+                </a>
                 <span class="icon">schedule</span>
-                <span><?= $restaurant->opening_time ?> to <?= $restaurant->closing_time ?></span>
+                <span>
+                    <time datetime="<?= $restaurant->opening_time ?>"><?= preg_replace('/^0/', '', $restaurant->opening_time, 1) ?></time>
+                    to
+                    <time datetime="<?= $restaurant->opening_time ?>"><?= preg_replace('/^0/', '', $restaurant->closing_time, 1) ?></time>
+                </span>
                 <span class="icon">phone</span>
                 <a href="tel:<?= $restaurant->phone_number ?>"><span><?= $restaurant->phone_number ?></span></a>
                 <span class="icon">public</span>
-                <a href="<?= $restaurant->website ?>" target="_blank"><?= $restaurant->website ?></a>
+                <a href="<?= $restaurant->website ?>" target="_blank">
+                    <?= preg_replace('/^www\./', '', parse_url($restaurant->website, PHP_URL_HOST), 1) ?>
+                </a>
                 <?php if (($score = $restaurant->getReviewScore()) != null) {
                 createIcon("star");?><span><?= round($score, 1) ?></span>
                 <?php } ?>
