@@ -51,6 +51,14 @@
     height: 280px;
 }
 
+.thumbnail {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    overflow: hidden;
+}
+
 .secondary {
     color: rgba(var(--color-on-surface), var(--opacity-medium-emphasis));
 

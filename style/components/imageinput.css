@@ -5,6 +5,11 @@
     cursor: pointer;
 }
 
+.image-input.rounded {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
 .image-input > * {
     grid-area: 1 / 1;
 }

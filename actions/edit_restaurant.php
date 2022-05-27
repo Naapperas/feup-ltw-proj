@@ -11,8 +11,19 @@
 
     $params = parseParams(post_params: [
         'id' => new IntParam(),
-        'name' => new StringParam(),
-        'address' => new StringParam(),
+        'name' => new StringParam(min_len: 1),
+        'address' => new StringParam(min_len: 1),
+        'phone' => new StringParam(pattern: '/^\d{9}$/'),
+        'website' => new StringParam(
+            pattern: '/^https?:\/\/.+\..+$/',
+            case_insensitive: true
+        ),
+        'opening_time' => new StringParam(
+            pattern: '/^([01]\d|2[0-3]):[0-5]\d$/'
+        ),
+        'closing_time' => new StringParam(
+            pattern: '/^([01]\d|2[0-3]):[0-5]\d$/'
+        ),
         'categories' => new ArrayParam(
             optional: true,
         ),
@@ -39,6 +50,10 @@
 
     $restaurant->name = $params['name'];
     $restaurant->address = $params['address'];
+    $restaurant->phone_number = $params['phone'];
+    $restaurant->website = $params['website'];
+    $restaurant->opening_time = $params['opening_time'];
+    $restaurant->closing_time = $params['closing_time'];
 
     $restaurant->setCategories($params['categories'] ?? []);
 

@@ -87,3 +87,17 @@
 
     --color-button: var(--color-on-surface);
 }
+
+fieldset.selection-list {
+    border: none;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: start;
+
+    width: 100%;
+}
+
+fieldset.selection-list > legend {
+    margin-bottom: 8px;
+}

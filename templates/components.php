@@ -533,9 +533,11 @@ require_once(dirname(__DIR__)."/database/models/review.php");
 
 <?php } ?>
 
-<?php function createCheckBoxList(array $values) {?>
+<?php function createCheckBoxList(array $values, string $title) {?>
 
-    <div class="checkbox">
+    <fieldset class="selection-list">
+        <legend class="h6"><?= $title ?></legend>
+
         <?php foreach($values as $key) {
             createCheckBox(
                 $key['label'],
@@ -544,7 +546,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                 $key['checked']
             );
         } ?>
-    </div>
+    </fieldset>
 
 <?php } ?>
 

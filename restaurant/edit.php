@@ -29,25 +29,63 @@
 ?>
 <!DOCTYPE html>
 <html lang="en">
-    <?php createHead(metadata: baseMetadata(title: "Edit $restaurant->name")); ?>
+    <?php createHead(
+        metadata: baseMetadata(title: "Edit $restaurant->name"),
+        scripts: [
+            'components/form.js',
+            'components/textfield.js',
+            'components/imageinput.js'
+        ]
+    ); ?>
     <body class="top-app-bar layout">
         <?php createAppBar(); ?>
         <main class="small column layout">
             <?php createForm(
                 'POST', 'restaurant', '/actions/edit_restaurant.php',
-                function() use ($restaurant) {
+                function() use ($restaurant) { ?>
+                    <!-- TODO: Styles -->
+                    <label class="image-input thumbnail rounded">
+                        <img class="thumbnail" src="" alt="">
+                        <input
+                            class="visually-hidden"
+                            type="file"
+                            name="thumbnail"
+                            accept="image/*"
+                        >
+                    </label>
+                    <?php
                     createTextField(
                         name: "name", label: "Name", value: $restaurant->name
                     );
                     createTextField(
                         name: "address", label: "Address", value: $restaurant->address
                     );
+                    createTextField(
+                        name: "phone", label: "Phone number", 
+                        type: "tel", pattern: "\\d{9}",
+                        errors: ["pattern-mismatch" => "Error: invalid phone number"],
+                        value: $restaurant->phone_number
+                    );
+                    createTextField(
+                        name: "website", label: "Website", type: 'url',
+                        pattern: '^https?://.+',
+                        errors: ["type-mismatch" => "Error: invalid website"],
+                        value: $restaurant->website
+                    );
+                    createTextField(
+                        name: "opening_time", label: "Opening time",
+                        type: 'time', value: $restaurant->opening_time
+                    );
+                    createTextField(
+                        name: "closing_time", label: "Closing time",
+                        type: 'time', value: $restaurant->closing_time
+                    );
                     createCheckBoxList(array_map(fn(Category $category) => [
                         'label' => $category->name,
                         'value' => $category->id,
                         'name' => 'categories[]',
                         'checked' => $restaurant->hasCategory($category->id)
-                    ], Category::get()));
+                    ], Category::get()), 'Categories');
                     
                     createButton(text: "Apply", submit: true);
                     ?>

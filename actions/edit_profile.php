@@ -25,10 +25,10 @@
             min_len: 1,
             case_insensitive: true
         ),
-        'name' => new StringParam(),
-        'address' => new StringParam(),
+        'name' => new StringParam(min_len: 1),
+        'address' => new StringParam(min_len: 1),
         'phone' => new StringParam(pattern: '/^\d{9}$/'),
-        'username' => new StringParam()
+        'username' => new StringParam(min_len: 1)
     ]);
 
     if ($_SESSION['user'] !== $params['id']) { // trying to edit another user's profile
