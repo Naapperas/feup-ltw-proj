@@ -1,9 +1,9 @@
 <?php
     declare(strict_types=1);
 
-    include_once('model.php');
-    include_once('user.php');
-    include_once('restaurant.php');
+    require_once('model.php');
+    require_once('user.php');
+    require_once('restaurant.php');
 
     class Review extends Model {
 

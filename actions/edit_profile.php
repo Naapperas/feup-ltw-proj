@@ -5,9 +5,9 @@
         die;
     }
 
-    include_once("../lib/params.php");
-    include_once("../lib/files.php");
-    include_once("../database/models/user.php");
+    require_once("../lib/params.php");
+    require_once("../lib/files.php");
+    require_once("../database/models/user.php");
 
     session_start();
 

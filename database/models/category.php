@@ -1,8 +1,8 @@
 <?php
     declare(strict_types=1);
 
-    include_once('model.php');
-    include_once('user.php');
+    require_once('model.php');
+    require_once('user.php');
 
     class Category extends Model {
         public string $name;

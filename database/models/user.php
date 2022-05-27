@@ -1,8 +1,8 @@
 <?php
     declare(strict_types=1);
 
-    include_once('model.php');
-    include_once('restaurant.php');
+    require_once('model.php');
+    require_once('restaurant.php');
     include(dirname(__DIR__, 2).'/lib/password.php');
 
     class User extends Model {

@@ -1,9 +1,9 @@
 <?php
     declare(strict_types=1);
 
-    include_once('model.php');
-    include_once('restaurant.php');
-    include_once('dish.php');
+    require_once('model.php');
+    require_once('restaurant.php');
+    require_once('dish.php');
 
     class Menu extends Model {
 

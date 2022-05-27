@@ -1,12 +1,12 @@
 <?php
     declare(strict_types=1);
 
-    include_once('model.php');
-    include_once('user.php');
-    include_once('category.php');
-    include_once('dish.php');
-    include_once('menu.php');
-    include_once('review.php');
+    require_once('model.php');
+    require_once('user.php');
+    require_once('category.php');
+    require_once('dish.php');
+    require_once('menu.php');
+    require_once('review.php');
 
     class Restaurant extends Model {
 

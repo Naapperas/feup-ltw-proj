@@ -5,9 +5,9 @@
         die;
     }
 
-    include_once("../lib/params.php");
-    include_once("../database/models/user.php");
-    include_once("../database/models/restaurant.php");
+    require_once("../lib/params.php");
+    require_once("../database/models/user.php");
+    require_once("../database/models/restaurant.php");
 
     $params = parseParams(post_params: [
         'id' => new IntParam(),

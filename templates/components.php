@@ -10,11 +10,11 @@ enum ButtonType: string {
     case MINI_FAB = "icon fab mini";
 }
 
-include_once(dirname(__DIR__)."/database/models/user.php");
-include_once(dirname(__DIR__)."/database/models/restaurant.php");
-include_once(dirname(__DIR__)."/database/models/dish.php");
-include_once(dirname(__DIR__)."/database/models/menu.php");
-include_once(dirname(__DIR__)."/database/models/review.php");
+require_once(dirname(__DIR__)."/database/models/user.php");
+require_once(dirname(__DIR__)."/database/models/restaurant.php");
+require_once(dirname(__DIR__)."/database/models/dish.php");
+require_once(dirname(__DIR__)."/database/models/menu.php");
+require_once(dirname(__DIR__)."/database/models/review.php");
 
 ?>
 
