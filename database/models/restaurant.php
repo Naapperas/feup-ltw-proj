@@ -131,5 +131,15 @@
 
             return count($queryResults) > 0;
         }
+
+        function getThumbnail(): string {
+            $src = "../assets/pictures/restaurant/$this->id.webp";
+            
+            if (!file_exists($src)) {
+                $src = "../assets/pictures/restaurant/default.webp";
+            }
+
+            return $src;
+        }
     }
 ?>

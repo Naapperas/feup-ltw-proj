@@ -184,8 +184,12 @@
     letter-spacing: -0.015625em;
 }
 
-.restaurant-header > .carousel {
+.restaurant-header > img {
     grid-area: 1 / 1;
+
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .restaurant-sidebar > .button.fab {
@@ -219,15 +223,6 @@
     grid-column: 1 / -1;
 }
 
-.carousel {
-}
-
-.carousel > img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
 @media screen and (max-width: 960px) {
     .restaurant.layout {
         grid-template:
@@ -259,6 +254,10 @@
 
     .restaurant-sidebar {
         display: contents;
+    }
+
+    .restaurant-header {
+        aspect-ratio: 16/9;
     }
 
     .restaurant-header > .title {

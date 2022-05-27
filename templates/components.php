@@ -233,11 +233,11 @@ require_once(dirname(__DIR__)."/database/models/review.php");
     >
         <article class="card responsive interactive">
             <img
-                src="https://picsum.photos/316/194"
+                src="<?= $restaurant->getThumbnail() ?>"
                 width="320"
                 height="180"
                 alt="Profile picture for <?= $restaurant->name ?>"
-                class="full media"
+                class="full media thumbnail"
             />
             <header class="header">
                 <h3 class="title h6"><?= $restaurant->name ?></h3>

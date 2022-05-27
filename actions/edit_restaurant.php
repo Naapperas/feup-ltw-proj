@@ -6,6 +6,7 @@
     }
 
     require_once("../lib/params.php");
+    require_once("../lib/files.php");
     require_once("../database/models/user.php");
     require_once("../database/models/restaurant.php");
 
@@ -58,6 +59,8 @@
     $restaurant->setCategories($params['categories'] ?? []);
 
     $restaurant->update();
+
+    uploadImage($_FILES['thumbnail'], 'restaurant', $restaurant->id, 1920);
 
     header("Location: /restaurant?id=".$params['id']);
 ?>

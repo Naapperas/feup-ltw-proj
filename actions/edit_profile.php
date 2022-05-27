@@ -51,10 +51,7 @@
 
     $user->update();
 
-    $uploadedPhoto = $_FILES['profile_picture'];
-
-    if ($uploadedPhoto['error'] === 0)
-        uploadProfilePicture($uploadedPhoto, $user->id);
+    uploadImage($_FILES['profile_picture'], 'profile', $user->id, 512, 1);
 
     header('Location: /profile/');
 ?>

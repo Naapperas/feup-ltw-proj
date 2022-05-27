@@ -42,9 +42,7 @@
 
         <main class="restaurant-main">
             <header class="restaurant-header">
-                <div class="carousel">
-                    <img src="http://picsum.photos/1920/1080" alt="">
-                </div>
+                <img src="<?= $restaurant->getThumbnail() ?>" alt="">
                 <h2 class="title"><?= $restaurant->name ?></h2>
             </header>
 
