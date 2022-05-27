@@ -7,6 +7,8 @@ import { toggleRestaurantLikedStatus } from '../api/restaurant.js';
  */
 const empowerRestaurantLikeButton = (button) => {
 
+    if (!button) return;
+
     const restaurantId = button.dataset.restaurantId;
 
     const toggleLikedStatus = async (event) => {

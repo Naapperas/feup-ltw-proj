@@ -59,62 +59,88 @@
                 </header>
 
                 <span class="icon">place</span>
-                <span><?= $restaurant->address ?></span>
+                <a href="https://www.google.pt/maps/place/<?= rawurlencode(html_entity_decode($restaurant->address)) ?>" target="_blank"><span><?= $restaurant->address ?></span></a>
                 <span class="icon">schedule</span>
                 <span><?= $restaurant->opening_time ?> to <?= $restaurant->closing_time ?></span>
                 <span class="icon">phone</span>
-                <span><?= $restaurant->phone_number ?></span>
+                <a href="tel:<?= $restaurant->phone_number ?>"><span><?= $restaurant->phone_number ?></span></a>
                 <span class="icon">public</span>
                 <a href="<?= $restaurant->website ?>" target="_blank"><?= $restaurant->website ?></a>
-                <?php if (($score = $restaurant->getReviewScore()) != null) {?>
-                <span class="icon">star</span>
+                <?php if (($score = $restaurant->getReviewScore()) != null) {
+                createIcon("star");?><span><?= round($score, 1) ?></span>
                 <?php } ?>
 
                 <?php createRestaurantCategories($restaurant->getCategories()) ?>
             </div>
 
-            <?php createForm(
-                'POST', 'review', '/actions/create_review.php',
-                function() {
-                    ?><header class="header">
-                        <h3 class="title h4">Leave a review</h3>
-                    </header><?php
-                    createTextField(name: 'content', label: 'Details', type: 'multiline');
-                    createButton(text: 'Post', submit: true);
-                }
-            ) ?>
-                
             <?php
+
+                createRestaurantReviewList($restaurant);
+
                 session_start();
 
                 if (isset($_SESSION['user'])) {
 
                     $currentUser = User::get($_SESSION['user']);
 
-                    if($restaurant->owner === $currentUser->id) {
-                        createButton(
-                            type: ButtonType::FAB,
-                            text: "Edit",
-                            icon: "edit",
-                            href: "/restaurant/edit.php?id=$restaurant->id");
-                    } else {
-                        if ($currentUser !== null && $restaurant->isLikedBy($currentUser)) {
-                            $state = "on";
-                            $text = "Unfavorite";
+                    if ($currentUser !== null) {
+                        if($restaurant->owner === $currentUser->id) {
+                            createButton(
+                                type: ButtonType::FAB,
+                                text: "Edit",
+                                icon: "edit",
+                                href: "/restaurant/edit.php?id=$restaurant->id");
                         } else {
-                            $state = "off";
-                            $text = "Favorite";
-                        }
+                            createForm(
+                                'POST', 'review', '/actions/create_review.php',
+                                function() use ($restaurant, $currentUser) {
+                                    ?><header class="header">
+                                        <h3 class="title h4">Leave a review</h3>
+                                    </header>
+                                    <style>
+                                        .score:checked, .score:checked ~ .score {
+                                            background-color: rgb(var(--color-main));
+                                        }
+                                        .score {
+                                            background-color: rgb(var(--color-on-surface));
+                                            appearance: none;
+                                            width: 24px;
+                                            height: 24px;
+                                            }
+                                    </style>
+                                    <div style="width: 100%; display: flex;justify-content: center;gap: 8px;flex-flow: row-reverse;">
+                                        <input class="score" type="radio" name="score" value="5">
+                                        <input class="score" type="radio" name="score" value="4">
+                                        <input class="score" type="radio" name="score" value="3">
+                                        <input class="score" type="radio" name="score" value="2">
+                                        <input class="score" type="radio" name="score" value="1">
+                                        <input class="score" type="radio" name="score" value="0" checked>
+                                    </div>
+                                    <input type="hidden" name="restaurantId" value="<?= $restaurant->id ?>">
+                                    <input type="hidden" name="userId" value="<?= $currentUser->id ?>"><?php
+                                    createTextField(name: 'content', label: 'Details', type: 'multiline');
+                                    createButton(text: 'Post', submit: true);
+                                }
+                            );
 
-                        createButton(
-                            type: ButtonType::FAB, text: $text, class: "toggle",
-                            attributes: 
-                                "data-on-icon=\"favorite\"\n".
-                                "data-off-icon=\"favorite_border\"\n".
-                                "data-toggle-state=\"$state\"\n".
-                                "data-restaurant-id=\"$restaurant->id\"".
-                                "data-favorite-button"
-                        );
+                            if ($restaurant->isLikedBy($currentUser)) {
+                                $state = "on";
+                                $text = "Unfavorite";
+                            } else {
+                                $state = "off";
+                                $text = "Favorite";
+                            }
+    
+                            createButton(
+                                type: ButtonType::FAB, text: $text, class: "toggle",
+                                attributes: 
+                                    "data-on-icon=\"favorite\"\n".
+                                    "data-off-icon=\"favorite_border\"\n".
+                                    "data-toggle-state=\"$state\"\n".
+                                    "data-restaurant-id=\"$restaurant->id\"".
+                                    "data-favorite-button"
+                            );
+                        }
                     }
                 }
             ?>

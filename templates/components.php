@@ -14,6 +14,7 @@ include_once(dirname(__DIR__)."/database/models/user.php");
 include_once(dirname(__DIR__)."/database/models/restaurant.php");
 include_once(dirname(__DIR__)."/database/models/dish.php");
 include_once(dirname(__DIR__)."/database/models/menu.php");
+include_once(dirname(__DIR__)."/database/models/review.php");
 
 ?>
 
@@ -242,7 +243,7 @@ include_once(dirname(__DIR__)."/database/models/menu.php");
                 <h3 class="title h6"><?= $restaurant->name ?></h3>
                 <span class="subtitle subtitle2 secondary"><?= $restaurant->address ?></span>
                 <?php if (($avgScore = $restaurant->getReviewScore()) !== null) { ?>
-                <span class="chip right"><?php createIcon(icon: "star") ?><?= $avgScore ?></span>
+                <span class="chip right"><?php createIcon(icon: "star") ?><?= round($avgScore, 1) ?></span>
                 <?php } ?>
             </header>
             <?php
@@ -545,4 +546,43 @@ include_once(dirname(__DIR__)."/database/models/menu.php");
         } ?>
     </div>
 
+<?php } ?>
+
+<?php function printReview(Review $review) { 
+
+    $user = User::get($review->client);
+
+    if ($user == null) return;
+?>
+    <article class="review">
+        <header class="review-user-info">
+            <a href="/profile/?id=<?= $user->id ?>"><img src="" alt="Review profile image for user <?=$user->id?>"></a>
+            <span><?= $user->name ?></span>
+            <?php createIcon("star"); ?><span><?= round($review->score, 1) ?></span>
+        </header>
+        <span class="review-content"><?= $review->text ?></span>
+    </article>
+<?php } ?>
+
+<?php function createRestaurantReviewList(Restaurant $restaurant) { 
+
+    $reviews = $restaurant->getReviews(7);
+?>
+    <section class="review-list">
+        <header class="header">
+            <h4 class="title h4">Reviews</h4>
+            <div class="select">
+                <select name="options" id="options"> <!-- to be dealt with in JavaScript + AJAX -->
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                </select>
+                <label for="options">Sort</label>
+            </div>
+        </header>
+        <div>
+        <?php foreach($reviews as $review) {
+            printReview($review);
+        } ?>
+        </div>
+    </section>
 <?php } ?>

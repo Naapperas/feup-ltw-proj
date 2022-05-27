@@ -6,6 +6,7 @@
     include_once('category.php');
     include_once('dish.php');
     include_once('menu.php');
+    include_once('review.php');
 
     class Restaurant extends Model {
 
@@ -37,6 +38,19 @@
             return $queryResults['average']; // returns null if restaurant has no reviews
         }
 
+        public function getReviews(int $limit): array {
+
+            $query = "SELECT * FROM Review WHERE restaurant = ? LIMIT ?";
+
+            $reviews = getQueryResults(static::getDB(), $query, true, [$this->id, $limit]);
+        
+            if ($reviews === false) return 0;
+
+            $result = array_map(fn($id) => Review::get($id)[0], $reviews);
+
+            return $result; 
+        }
+
         public function isLikedBy(User $currentUser): bool {
 
             $query = "SELECT * FROM Favorite_restaurant WHERE restaurant = ? AND client = ?;";
@@ -61,7 +75,7 @@
             return $result;
         }
 
-        function getOwnedDishes(): array {
+        public function getOwnedDishes(): array {
 
             $query = "SELECT * FROM Dish WHERE restaurant = ?;";
 
@@ -72,7 +86,7 @@
             return array_map(fn(array $id) => Dish::get($id)[0], $queryResults);
         }
 
-        function getOwnedMenus(): array {
+        public function getOwnedMenus(): array {
 
             $query = "SELECT * FROM Menu WHERE restaurant = ?;";
 
@@ -83,7 +97,7 @@
             return array_map(fn(array $id) => Menu::get($id)[0], $queryResults);
         }
 
-        function setCategories(array $categories) : bool {
+        public function setCategories(array $categories) : bool {
 
             $deleteQuery = "DELETE FROM Restaurant_category WHERE restaurant = ?;";
 
@@ -107,7 +121,7 @@
             return $success;
         }
 
-        function hasCategory(int $categoryID) : bool {
+        public function hasCategory(int $categoryID) : bool {
 
             $query = "SELECT * FROM Restaurant_category WHERE restaurant = ? AND category = ?;";
 
