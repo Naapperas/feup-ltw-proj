@@ -96,5 +96,15 @@
 
             return $success;
         }
+
+        function getProfilePic(): string {
+            $src = "../assets/pictures/profile/$this->id.webp";
+            
+            if (!file_exists($src)) {
+                $src = "../assets/pictures/profile/default.webp";
+            }
+
+            return $src;
+        }
     }
 ?>

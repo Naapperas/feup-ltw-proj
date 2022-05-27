@@ -1,0 +1,49 @@
+.image-input {
+    display: grid;
+    grid-template: 1fr / 1fr;
+
+    cursor: pointer;
+}
+
+.image-input > * {
+    grid-area: 1 / 1;
+}
+
+.image-input::after {
+    content: "add_a_photo";
+    grid-area: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 96px;
+    font-family: "Material Icons";
+    line-height: 1;
+    letter-spacing: initial;
+
+    text-transform: none;
+    user-select: none;
+
+    color: rgb(var(--color-on-image-surface), var(--opacity-text));
+
+    --color-overlay: var(--color-image-surface);
+    --opacity-overlay: 0%;
+    --opacity-text: 0%;
+
+    transition-property: color, box-shadow;
+}
+
+.image-input:hover::after {
+    --opacity-overlay: var(--opacity-hover);
+    --opacity-text: 100%;
+}
+
+.image-input:active::after {
+    --opacity-overlay: var(--opacity-active);
+    --opacity-text: 100%;
+}
+
+.image-input:focus-within::after {
+    --opacity-overlay: var(--opacity-focus);
+    --opacity-text: 100%;
+}

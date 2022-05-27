@@ -13,18 +13,39 @@
         header("Location: /profile/");
         die;
     }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
-    <?php createHead(metadata: baseMetadata()); ?>
+    <?php createHead(
+        metadata: baseMetadata(),
+        scripts: [
+            'components/form.js',
+            'components/textfield.js',
+            'components/imageinput.js'
+        ]
+    ); ?>
     <body class="top-app-bar layout">
         <?php createAppBar(); ?>
         <main class="small column layout">
             <?php createForm(
                 'POST', 'profile', '/actions/edit_profile.php',
-                function() use ($user) {
-                    ?><input type="file" name="profile_picture" accept="image/*"><?php
+                function() use ($user) { ?>
+                    <label class="image-input avatar big">
+                        <img 
+                            class="avatar big"
+                            src="<?= $user->getProfilePic() ?>"
+                            alt=""
+                            width="280"
+                            height="280"
+                        >
+                        <input
+                            class="visually-hidden"
+                            type="file"
+                            name="profile_picture"
+                            accept="image/*"
+                        >
+                    </label>
+                    <?php
                     createTextField(
                         name: "username", label: "Username", autocomplete: "username", value: $user->name
                     );

@@ -10,6 +10,8 @@
     --color-on-main: 255, 255, 255;
     --color-surface: 255, 255, 255;
     --color-on-surface: 0, 0, 0;
+    --color-image-surface: 0, 0, 0;
+    --color-on-image-surface: 255, 255, 255;
     --color-error: 176, 0, 32;
     --color-on-error: 255, 255, 255;
 

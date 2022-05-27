@@ -29,12 +29,6 @@
         require("../error.php");
         die();
     }
-
-    $profilePicSrc = "../assets/pictures/profile/$user->id.webp";
-    
-    if (!file_exists($profilePicSrc)) {
-        $profilePicSrc = "../assets/pictures/profile/default.webp";
-    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,10 +42,10 @@
         <main class="profile medium medium-spacing column layout">
             <img
                 class="avatar big"
-                src="<?= $profilePicSrc ?>"
+                src="<?= $user->getProfilePic() ?>"
                 alt="<?= $user->name ?>'s profile picture"
-                width="240px"
-                height="240px"
+                width="280"
+                height="280"
             />
             <?php
                 if ($user->id === $_SESSION['user']) {
