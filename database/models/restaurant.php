@@ -133,10 +133,10 @@
         }
 
         function getThumbnail(): string {
-            $src = "../assets/pictures/restaurant/$this->id.webp";
+            $src = "/assets/pictures/restaurant/$this->id.webp";
             
-            if (!file_exists($src)) {
-                $src = "../assets/pictures/restaurant/default.webp";
+            if (!file_exists(dirname(dirname(__DIR__))."/assets/pictures/restaurant/$this->id.webp")) {
+                $src = "/assets/pictures/restaurant/default.webp";
             }
 
             return $src;

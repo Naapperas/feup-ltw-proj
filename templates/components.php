@@ -234,8 +234,8 @@ require_once(dirname(__DIR__)."/database/models/review.php");
         <article class="card responsive interactive">
             <img
                 src="<?= $restaurant->getThumbnail() ?>"
-                width="320"
-                height="180"
+                width="1920"
+                height="1080"
                 alt="Profile picture for <?= $restaurant->name ?>"
                 class="full media thumbnail"
             />

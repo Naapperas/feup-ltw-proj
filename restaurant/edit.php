@@ -43,9 +43,12 @@
             <?php createForm(
                 'POST', 'restaurant', '/actions/edit_restaurant.php',
                 function() use ($restaurant) { ?>
-                    <!-- TODO: Styles -->
                     <label class="image-input thumbnail rounded">
-                        <img class="thumbnail" src="" alt="">
+                        <img
+                            class="thumbnail"
+                            src="<?= $restaurant->getThumbnail() ?>"
+                            alt=""
+                        >
                         <input
                             class="visually-hidden"
                             type="file"

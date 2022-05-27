@@ -17,7 +17,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <?php createHead(
-        metadata: baseMetadata(),
+        metadata: baseMetadata(title: "Edit profile"),
         scripts: [
             'components/form.js',
             'components/textfield.js',
