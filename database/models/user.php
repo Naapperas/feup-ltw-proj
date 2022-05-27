@@ -98,10 +98,10 @@
         }
 
         function getProfilePic(): string {
-            $src = "../assets/pictures/profile/$this->id.webp";
+            $src = "/assets/pictures/profile/$this->id.webp";
             
-            if (!file_exists($src)) {
-                $src = "../assets/pictures/profile/default.webp";
+            if (!file_exists(dirname(dirname(__DIR__)).$src)) {
+                $src = "/assets/pictures/profile/default.webp";
             }
 
             return $src;

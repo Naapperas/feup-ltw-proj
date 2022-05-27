@@ -558,8 +558,11 @@ require_once(dirname(__DIR__)."/database/models/review.php");
 ?>
     <article class="review">
         <header class="review-user-info">
-            <a href="/profile/?id=<?= $user->id ?>"><img src="" alt="Review profile image for user <?=$user->id?>"></a>
-            <span><?= $user->name ?></span>
+            <a href="/profile/?id=<?= $user->id ?>">
+                <img src="" alt="Review profile image for user <?=$user->id?>">
+                <span><?= $user->name ?></span>
+            </a>
+            <span><?= $user->address ?></span> <!-- com menos destaque -->
             <?php createIcon("star"); ?><span><?= round($review->score, 1) ?></span>
         </header>
         <span class="review-content"><?= $review->text ?></span>
@@ -575,8 +578,10 @@ require_once(dirname(__DIR__)."/database/models/review.php");
             <h4 class="title h4">Reviews</h4>
             <div class="select">
                 <select name="options" id="options"> <!-- to be dealt with in JavaScript + AJAX -->
-                    <option value="asc">Ascending</option>
-                    <option value="desc">Descending</option>
+                    <option value="score-asc">Score - Ascending</option>
+                    <option value="score-desc">Score - Descending</option>
+                    <option value="date-asc">Date - Ascending</option>
+                    <option value="date-desc">Date - Descending</option>
                 </select>
                 <label for="options">Sort</label>
             </div>
