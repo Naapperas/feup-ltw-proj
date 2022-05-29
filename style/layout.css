@@ -127,7 +127,6 @@
         / 100%;
 
     gap: 16px;
-    padding-bottom: 16px;
 }
 
 .restaurant-main > * {
@@ -223,6 +222,22 @@
     grid-column: 1 / -1;
 }
 
+.restaurant-reviews {
+    grid-area: reviews;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    padding-top: 16px;
+    border-top: solid 1px rgba(var(--color-on-surface), 12%);
+}
+
+.review {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
 @media screen and (max-width: 960px) {
     .restaurant.layout {
         grid-template:
@@ -247,7 +262,7 @@
         border-top: solid 1px rgba(var(--color-on-surface), 12%);
     }
 
-    .restaurant-sidebar > .restaurant-info {
+    .restaurant-sidebar > :is(.restaurant-info, .restaurant-reviews) {
         padding-block: 16px;
         margin-inline: 16px;
     }

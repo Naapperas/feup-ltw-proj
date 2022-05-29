@@ -1,6 +1,5 @@
 .button.icon.toggle {
     display: grid;
-    --color-button: var(--color-on-surface);
 }
 
 .button.icon.toggle[data-toggle-state="on"] {

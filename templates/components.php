@@ -226,64 +226,69 @@ require_once(dirname(__DIR__)."/database/models/review.php");
 } ?>
 
 <?php function createRestaurantCard(Restaurant $restaurant) { ?>
-    <a 
-        href="/restaurant/?id=<?= $restaurant->id ?>" 
-        data-card-type="restaurant" 
+    <article
+        class="card responsive interactive"
+        data-card-type="restaurant"
         data-restaurant-id="<?= $restaurant->id ?>"
-    > <!-- TODO: change this layout to the one in the article sent to the group chat to simulate nested links -->
-        <article class="card responsive interactive">
-            <img
-                src="<?= $restaurant->getThumbnail() ?>"
-                width="1920"
-                height="1080"
-                alt="Profile picture for <?= $restaurant->name ?>"
-                class="full media thumbnail"
-            />
-            <header class="header">
-                <h3 class="title h6"><?= $restaurant->name ?></h3>
-                <span class="subtitle subtitle2 secondary"><?= $restaurant->address ?></span>
-                <?php if (($avgScore = $restaurant->getReviewScore()) !== null) { ?>
-                <span class="chip right"><?php createIcon(icon: "star") ?><?= round($avgScore, 1) ?></span>
-                <?php } ?>
-            </header>
-            <?php
-            if (($categories = $restaurant->getCategories()) !== []) {
-                createRestaurantCategories($categories);
-            }
-            
-            session_start();
-
-            if (isset($_SESSION['user'])) {
-                if ($restaurant->owner === ($_SESSION['user'] * 0)) { // FIXME: change this once we figure out "nested" links
-                    createButton(
-                        type: ButtonType::ICON,
-                        text: "Edit",
-                        icon: "edit",
-                        class: "top-right",
-                        href: "/restaurant/edit.php?id=$restaurant->id");
-                } else {
-                    $currentUser = User::get($_SESSION['user']);
-
-                    if ($currentUser !== null && $restaurant->isLikedBy($currentUser)) {
-                        $state = "on";
-                        $text = "Unfavorite";
-                    } else {
-                        $state = "off";
-                        $text = "Favorite";
-                    }
+    >
+        <img
+            src="<?= $restaurant->getThumbnail() ?>"
+            width="1920"
+            height="1080"
+            alt="Profile picture for <?= $restaurant->name ?>"
+            class="full media thumbnail"
+        />
+        <header class="header">
+            <h3 class="title h6">
+                <a
+                    href="/restaurant/?id=<?= $restaurant->id ?>"
+                    class="card-link"
+                >
+                    <?= $restaurant->name ?>
+                </a>
+            </h3>
+            <span class="subtitle subtitle2 secondary"><?= $restaurant->address ?></span>
+            <?php if (($avgScore = $restaurant->getReviewScore()) !== null) { ?>
+            <span class="chip right"><?php createIcon(icon: "star") ?><?= round($avgScore, 1) ?></span>
+            <?php } ?>
+        </header>
+        <?php
+        if (($categories = $restaurant->getCategories()) !== []) {
+            createRestaurantCategories($categories);
+        }
         
-                    createButton(
-                        type: ButtonType::ICON, text: $text, class: "top-right toggle",
-                        attributes: 
-                            "data-on-icon=\"favorite\"\n".
-                            "data-off-icon=\"favorite_border\"\n".
-                            "data-toggle-state=\"$state\"\n".
-                            "data-favorite-button"
-                    );
+        session_start();
+
+        if (isset($_SESSION['user'])) {
+            if ($restaurant->owner === $_SESSION['user']) {
+                createButton(
+                    type: ButtonType::ICON,
+                    text: "Edit",
+                    icon: "edit",
+                    class: "top-right",
+                    href: "/restaurant/edit.php?id=$restaurant->id");
+            } else {
+                $currentUser = User::get($_SESSION['user']);
+
+                if ($currentUser !== null && $restaurant->isLikedBy($currentUser)) {
+                    $state = "on";
+                    $text = "Unfavorite";
+                } else {
+                    $state = "off";
+                    $text = "Favorite";
                 }
-            } ?>
-        </article>
-    </a>
+    
+                createButton(
+                    type: ButtonType::ICON, text: $text, class: "top-right toggle",
+                    attributes: 
+                        "data-on-icon=\"favorite\"\n".
+                        "data-off-icon=\"favorite_border\"\n".
+                        "data-toggle-state=\"$state\"\n".
+                        "data-favorite-button"
+                );
+            }
+        } ?>
+    </article>
 <?php } ?>
 
 <?php function createAppBar() { ?>
@@ -390,57 +395,62 @@ require_once(dirname(__DIR__)."/database/models/review.php");
 <?php function createDishCard(Dish $dish, bool $show_restaurant = false) { 
     if ($show_restaurant && ($restaurant = $dish->getRestaurant()) === null) return;
 ?>
-    <a 
-        href="/dish/?id=<?= $dish->id ?>" 
-        data-card-type="dish" 
+    <article
+        class="card responsive interactive"
+        data-card-type="dish"
         data-dish-id="<?= $dish->id ?>"
     >
-        <article class="card responsive interactive">
-            <img
-                src="https://picsum.photos/316/194"
-                width="320"
-                height="180"
-                alt="Dish picture for <?= $dish->name ?>"
-                class="full media"
-            />
-            <header class="header">
-                <h3 class="title h6"><?= $dish->name ?></h3>
-                <span class="subtitle subtitle2 secondary">
-                    <?= $show_restaurant ? $restaurant->name : sprintf('%.2f€', $dish->price) ?>
-                </span>
-            </header>
-            <?php
-            if (($categories = $dish->getCategories()) !== []) {
-                echo '<hr class="divider" />';
-                // createDishCategories($categories, 'h4');
+        <img
+            src="https://picsum.photos/316/194"
+            width="320"
+            height="180"
+            alt="Dish picture for <?= $dish->name ?>"
+            class="full media"
+        />
+        <header class="header">
+            <h3 class="title h6">
+                <a 
+                    href="/dish/?id=<?= $dish->id ?>"
+                    class="card-link"
+                >
+                    <?= $dish->name ?>
+                </a>
+            </h3>
+            <span class="subtitle subtitle2 secondary">
+                <?= $show_restaurant ? $restaurant->name : sprintf('%.2f€', $dish->price) ?>
+            </span>
+        </header>
+        <?php
+        if (($categories = $dish->getCategories()) !== []) {
+            echo '<hr class="divider" />';
+            // createDishCategories($categories, 'h4');
+        }
+        
+        session_start();
+
+        if (isset($_SESSION['user'])) {
+
+            $currentUser = User::get($_SESSION['user']);
+
+            if ($currentUser !== null && $dish->isLikedBy($currentUser)) {
+                $state = "on";
+                $text = "Unfavorite";
+            } else {
+                $state = "off";
+                $text = "Favorite";
             }
-            
-            session_start();
 
-            if (isset($_SESSION['user'])) {
-
-                $currentUser = User::get($_SESSION['user']);
-    
-                if ($currentUser !== null && $dish->isLikedBy($currentUser)) {
-                    $state = "on";
-                    $text = "Unfavorite";
-                } else {
-                    $state = "off";
-                    $text = "Favorite";
-                }
-    
-                createButton(
-                    type: ButtonType::ICON, text: $text, class: "top-right toggle",
-                    attributes: 
-                        "data-on-icon=\"favorite\"\n".
-                        "data-off-icon=\"favorite_border\"\n".
-                        "data-toggle-state=\"$state\"\n".
-                        "data-dish-id=\"$dish->id\"\n".
-                        "data-favorite-button" // TODO: change to different kind of button
-                );
-            } ?>
-        </article>
-    </a>
+            createButton(
+                type: ButtonType::ICON, text: $text, class: "top-right toggle",
+                attributes: 
+                    "data-on-icon=\"favorite\"\n".
+                    "data-off-icon=\"favorite_border\"\n".
+                    "data-toggle-state=\"$state\"\n".
+                    "data-dish-id=\"$dish->id\"\n".
+                    "data-favorite-button" // TODO: change to different kind of button
+            );
+        } ?>
+    </article>
 <?php } ?>
 
 <?php function createProfileFavoriteDishes(User $user) {
@@ -565,26 +575,19 @@ require_once(dirname(__DIR__)."/database/models/review.php");
     if ($user == null) return;
 ?>
     <article class="review">
-        <header class="review-user-info header">
-
-            <!-- TODO: intuito: profile pic nome
-                                                   score
-                                    address -->
-
-            <!-- (nao sei meter isto bem formatado, e não é com uma linha a meio mas era o score ficar a meio dos outros items) -->
-
-            <a href="/profile/?id=<?= $user->id ?>">
+        <a href="/profile/?id=<?= $user->id ?>">
+            <header class="header">
                 <img 
-                src=<?= $user->getProfilePic() ?>
-                alt="Review profile image for user <?=$user->id?>"
-                class="avatar small"
+                    src=<?= $user->getProfilePic() ?>
+                    alt="Review profile image for user <?=$user->id?>"
+                    class="avatar small"
                 >
-                <span><?= $user->name ?></span>
-            </a>
-            <span><?= $user->address ?></span> <!-- com menos destaque -->
-            <?php createIcon("star"); ?><span><?= round($review->score, 1) ?></span>
-        </header>
-        <span class="review-content"><?= $review->text ?></span>
+                <span class="title"><?= $user->name ?></span>
+                <span class="subtitle secondary"><?= $user->address ?></span> <!-- com menos destaque -->
+                <span class="chip right"><?php createIcon("star"); ?><?= round($review->score, 1) ?></span>
+            </header>
+        </a>
+        <p class="review-content"><?= $review->text ?></p>
     </article>
 <?php } ?>
 
@@ -592,23 +595,22 @@ require_once(dirname(__DIR__)."/database/models/review.php");
 
     $reviews = $restaurant->getReviews(7);
 ?>
-    <section class="review-list">
+    <section class="restaurant-reviews">
         <header class="header">
             <h4 class="title h4">Reviews</h4>
-            <div class="select right">
-                <select name="options" id="options"> <!-- to be dealt with in JavaScript + AJAX -->
+            <!-- to be dealt with in JavaScript + AJAX -->
+            <!-- <div class="select right">
+                <select name="options" id="options"> 
                     <option value="score-asc">Score - Ascending</option>
                     <option value="score-desc">Score - Descending</option>
                     <option value="date-asc">Date - Ascending</option>
                     <option value="date-desc">Date - Descending</option>
                 </select>
                 <label for="options">Sort</label>
-            </div>
+            </div> -->
         </header>
-        <div>
         <?php foreach($reviews as $review) {
             printReview($review);
         } ?>
-        </div>
     </section>
 <?php } ?>

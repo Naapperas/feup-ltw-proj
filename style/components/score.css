@@ -1,0 +1,51 @@
+.score {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    border: none;
+}
+
+.score > input[type="radio"].radio[value="0"] {
+    order: -1;
+}
+
+.score > input[type="radio"].radio[value="0"]::before,
+.score > input[type="radio"].radio[value="0"]::after {
+    content: "close";
+}
+
+.score
+    > :not(input[type="radio"].radio:checked
+        ~ input)input[type="radio"].radio[value="0"] {
+    --opacity-overlay: 0;
+}
+
+.score
+    > input[type="radio"].radio:checked
+    ~ input[type="radio"].radio[value="0"]::after {
+    clip-path: circle(50%);
+}
+
+.score > input[type="radio"].radio {
+    --color-overlay: var(--color-main);
+    color: rgb(var(--color-main));
+}
+
+.score > input[type="radio"].radio:checked ~ input[type="radio"].radio,
+.score > input[type="radio"].radio[value="0"] {
+    --color-overlay: var(--color-on-surface);
+    color: rgb(var(--color-on-surface));
+}
+
+.score > input[type="radio"].radio::before {
+    content: "star_outline";
+}
+
+.score > input[type="radio"].radio::after {
+    content: "star";
+    clip-path: circle(50%);
+}
+
+.score > input[type="radio"].radio:checked ~ input[type="radio"].radio::after {
+    clip-path: circle(0%);
+}

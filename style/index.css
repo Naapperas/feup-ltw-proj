@@ -11,8 +11,10 @@
 @import url("./components/card.css");
 @import url("./components/chip.css");
 @import url("./components/colorschemetoggle.css");
+@import url("./components/dialog.css");
 @import url("./components/form.css");
 @import url("./components/imageinput.css");
+@import url("./components/score.css");
 @import url("./components/searchbar.css");
 @import url("./components/selection.css");
 @import url("./components/slider.css");

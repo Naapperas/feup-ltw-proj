@@ -103,25 +103,14 @@
                                     ?><header class="header">
                                         <h3 class="title h4">Leave a review</h3>
                                     </header>
-                                    <style>
-                                        .score:checked, .score:checked ~ .score {
-                                            background-color: rgb(var(--color-main));
-                                        }
-                                        .score {
-                                            background-color: rgb(var(--color-on-surface));
-                                            appearance: none;
-                                            width: 24px;
-                                            height: 24px;
-                                            }
-                                    </style>
-                                    <div style="width: 100%; display: flex;justify-content: center;gap: 8px;flex-flow: row-reverse;">
-                                        <input class="score" type="radio" name="score" value="5">
-                                        <input class="score" type="radio" name="score" value="4">
-                                        <input class="score" type="radio" name="score" value="3">
-                                        <input class="score" type="radio" name="score" value="2">
-                                        <input class="score" type="radio" name="score" value="1">
-                                        <input class="score" type="radio" name="score" value="0" checked>
-                                    </div>
+                                    <fieldset class="score">
+                                        <input class="radio" type="radio" name="score" value="0" checked>
+                                        <input class="radio" type="radio" name="score" value="1">
+                                        <input class="radio" type="radio" name="score" value="2">
+                                        <input class="radio" type="radio" name="score" value="3">
+                                        <input class="radio" type="radio" name="score" value="4">
+                                        <input class="radio" type="radio" name="score" value="5">
+                                    </fieldset>
                                     <input type="hidden" name="restaurantId" value="<?= $restaurant->id ?>">
                                     <input type="hidden" name="userId" value="<?= $currentUser->id ?>"><?php
                                     createTextField(name: 'content', label: 'Details', type: 'multiline');

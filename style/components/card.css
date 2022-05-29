@@ -29,7 +29,7 @@
     border: solid 1px rgba(var(--color-on-surface), 12%);
 }
 
-.card.interactive:hover {
+.card.interactive:is(:hover, :focus-within) {
     --elevation: var(--elevation-4);
 }
 
@@ -84,11 +84,13 @@
 
 .header > .title {
     grid-area: title;
+    align-self: end;
 }
 
 .header > .subtitle {
     grid-area: subtitle;
-    margin-top: 8px;
+    margin-top: 4px;
+    align-self: start;
 }
 
 .header > .right {
@@ -120,6 +122,22 @@
     position: absolute;
     top: 8px;
     right: 8px;
+}
+
+.card > .media:first-child ~ .top-right {
+    --color-button: var(--color-on-image-surface);
+}
+
+.card .card-link {
+    border: none;
+    outline: none;
+}
+
+.card .card-link::after {
+    content: "";
+    position: absolute;
+    display: block;
+    inset: 0;
 }
 
 @media screen and (max-width: 480px) {

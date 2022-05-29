@@ -36,7 +36,7 @@ declare(strict_types=1);
         baseMetadata(
             title: "$user->name's profile",
             description: "$user->name's profile on Xau Fome.",
-            image: "http://picsum.photos/360", // TODO
+            image: $user->getProfilePic(),
             type: "profile"
         )(); ?>
         <meta name="profile:username" content="<?= $user->name ?>" />
@@ -47,6 +47,6 @@ declare(strict_types=1);
         baseMetadata(
             title: $restaurant->name,
             description: "$restaurant->name's page on Xau Fome.",
-            image: "http://picsum.photos/360" // TODO
+            image: $restaurant->getThumbnail()
         )(); ?>
 <?php };} ?>

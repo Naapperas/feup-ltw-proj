@@ -22,9 +22,10 @@
     --opacity-overlay: 0%;
     --elevation: var(--elevation-0);
     --color-overlay: var(--color-on-surface);
+    --shadow: 0 0 0 0 transparent;
     box-shadow: var(--overlay-common)
             rgba(var(--color-overlay), var(--opacity-overlay)),
-        var(--elevation);
+        var(--elevation), var(--shadow);
 
     transition-property: box-shadow;
     transition-duration: 200ms;
