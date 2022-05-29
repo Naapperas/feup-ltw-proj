@@ -25,8 +25,8 @@ abstract class Param {
 
 class StringParam extends Param {
     function __construct(
-        public mixed $default = null,
-        public bool $optional = false,
+        ?string $default = null,
+        bool $optional = false,
         public ?string $pattern = null,
         public ?int $min_len = null,
         public ?int $max_len = null,
@@ -36,11 +36,10 @@ class StringParam extends Param {
     }
 
     function parse(string|array|null $val) {
-
-        if (is_array($val))
-            return $this->error();
-
         $r = $val ?? $this->default;
+
+        if (is_array($r))
+            return $this->error();
 
         if (!$this->optional && !isset($r))
             return $this->error();
@@ -65,8 +64,8 @@ class StringParam extends Param {
 
 class IntParam extends Param {
     function __construct(
-        public mixed $default = null,
-        public bool $optional = false,
+        ?int $default = null,
+        bool $optional = false,
         public ?int $min = null,
         public ?int $max = null,
     ) {
@@ -74,11 +73,10 @@ class IntParam extends Param {
     }
 
     function parse(string|array|null $val) {
-
-        if (is_array($val))
-            return $this->error();
-
         $r = $val ?? $this->default;
+
+        if (is_array($r))
+            return $this->error();
 
         if (!$this->optional && !isset($r))
             return $this->error();
@@ -95,31 +93,92 @@ class IntParam extends Param {
     }
 }
 
-class ArrayParam extends Param {
+class FloatParam extends Param {
     function __construct(
-        public mixed $default = null,
-        public bool $optional = false,
-        public ?int $minLen = null,
-        public ?int $maxLen = null,
+        ?float $default = null,
+        bool $optional = false,
+        public ?float $min = null,
+        public ?float $max = null,
     ) {
         parent::__construct($default, $optional);
     }
 
     function parse(string|array|null $val) {
-
-        if (!is_array($val))
-            return $this->error();
-
         $r = $val ?? $this->default;
+
+        if (is_array($r))
+            return $this->error();
 
         if (!$this->optional && !isset($r))
             return $this->error();
 
-        if (isset($this->min) && count($r) < $this->minLen)
+        $r = floatval($r);
+
+        if (isset($this->min) && $r < $this->min)
             return $this->error();
 
-        if (isset($this->max) && count($r) > $this->maxLen)
+        if (isset($this->max) && $r > $this->max)
             return $this->error();
+
+        return $r;
+    }
+}
+
+class ArrayParam extends Param {
+    function __construct(
+        ?array $default = null,
+        bool $optional = false,
+        public ?Param $param_type = null,
+        public ?int $minLen = null,
+        public ?int $maxLen = null,
+    ) {
+        parent::__construct($default, $optional);
+
+        if (!isset($this->param_type))
+            $this->param_type = new StringParam();
+    }
+
+    function parse(string|array|null $val) {
+        $r = $val ?? $this->default;
+
+        if (!is_array($r))
+            return $this->error();
+
+        if (!$this->optional && !isset($r))
+            return $this->error();
+
+        if (isset($this->minLen) && count($r) < $this->minLen)
+            return $this->error();
+
+        if (isset($this->maxLen) && count($r) > $this->maxLen)
+            return $this->error();
+
+        $r = array_map($this->param_type->parse, $r);
+
+        return $r;
+    }
+}
+
+class ObjectParam extends Param {
+    function __construct(
+        public array $object_schema,
+        ?array $default = null,
+        bool $optional = false,
+    ) {
+        parent::__construct($default, $optional);
+    }
+
+    function parse(string|array|null $val) {
+        $val ??= $this->default;
+
+        if (!is_array($val))
+            return $this->error();
+
+        if (!$this->optional && !isset($val))
+            return $this->error();
+            
+        foreach ($this->object_schema as $key => $value)
+            $r[$key] = $value->parse($val[$key]);
 
         return $r;
     }

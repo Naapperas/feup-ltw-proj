@@ -12,7 +12,7 @@
      * @return true  if it was successful
      */
     function uploadImage(array $file, string $path, int $id, int $size, float|int $aspect_ratio = 0): bool {
-        if ($file['error'])
+        if (!isset($file) || $file['error'])
             return false;
 
         $image_path = dirname(__DIR__)."/assets/pictures/$path/$id.webp";

@@ -26,8 +26,27 @@
             pattern: '/^([01]\d|2[0-3]):[0-5]\d$/'
         ),
         'categories' => new ArrayParam(
-            optional: true,
+            default: [],
+            param_type: new IntParam()
         ),
+        'dishes_to_edit' => new ArrayParam(
+            default: [],
+            param_type: new ObjectParam([
+                'name' => new StringParam(min_len: 1),
+                'price' => new FloatParam(min: 0)
+            ])
+        ),
+        'dishes_to_delete' => new ArrayParam(
+            default: [],
+            param_type: new IntParam()
+        ),
+        'dishes_to_add' => new ArrayParam(
+            default: [],
+            param_type: new ObjectParam([
+                'name' => new StringParam(min_len: 1),
+                'price' => new FloatParam(min: 0)
+            ])
+        )
     ]);
 
     session_start();
@@ -56,7 +75,7 @@
     $restaurant->opening_time = $params['opening_time'];
     $restaurant->closing_time = $params['closing_time'];
 
-    $restaurant->setCategories($params['categories'] ?? []);
+    $restaurant->setCategories($params['categories']);
 
     $restaurant->update();
 
