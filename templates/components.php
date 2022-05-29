@@ -230,7 +230,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
         href="/restaurant/?id=<?= $restaurant->id ?>" 
         data-card-type="restaurant" 
         data-restaurant-id="<?= $restaurant->id ?>"
-    >
+    > <!-- TODO: change this layout to the one in the article sent to the group chat to simulate nested links -->
         <article class="card responsive interactive">
             <img
                 src="<?= $restaurant->getThumbnail() ?>"
@@ -254,25 +254,33 @@ require_once(dirname(__DIR__)."/database/models/review.php");
             session_start();
 
             if (isset($_SESSION['user'])) {
-
-                $currentUser = User::get($_SESSION['user']);
-    
-                if ($currentUser !== null && $restaurant->isLikedBy($currentUser)) {
-                    $state = "on";
-                    $text = "Unfavorite";
+                if ($restaurant->owner === ($_SESSION['user'] * 0)) { // FIXME: change this once we figure out "nested" links
+                    createButton(
+                        type: ButtonType::ICON,
+                        text: "Edit",
+                        icon: "edit",
+                        class: "top-right",
+                        href: "/restaurant/edit.php?id=$restaurant->id");
                 } else {
-                    $state = "off";
-                    $text = "Favorite";
+                    $currentUser = User::get($_SESSION['user']);
+
+                    if ($currentUser !== null && $restaurant->isLikedBy($currentUser)) {
+                        $state = "on";
+                        $text = "Unfavorite";
+                    } else {
+                        $state = "off";
+                        $text = "Favorite";
+                    }
+        
+                    createButton(
+                        type: ButtonType::ICON, text: $text, class: "top-right toggle",
+                        attributes: 
+                            "data-on-icon=\"favorite\"\n".
+                            "data-off-icon=\"favorite_border\"\n".
+                            "data-toggle-state=\"$state\"\n".
+                            "data-favorite-button"
+                    );
                 }
-    
-                createButton(
-                    type: ButtonType::ICON, text: $text, class: "top-right toggle",
-                    attributes: 
-                        "data-on-icon=\"favorite\"\n".
-                        "data-off-icon=\"favorite_border\"\n".
-                        "data-toggle-state=\"$state\"\n".
-                        "data-favorite-button"
-                );
             } ?>
         </article>
     </a>
@@ -557,9 +565,20 @@ require_once(dirname(__DIR__)."/database/models/review.php");
     if ($user == null) return;
 ?>
     <article class="review">
-        <header class="review-user-info">
+        <header class="review-user-info header">
+
+            <!-- TODO: intuito: profile pic nome
+                                                   score
+                                    address -->
+
+            <!-- (nao sei meter isto bem formatado, e não é com uma linha a meio mas era o score ficar a meio dos outros items) -->
+
             <a href="/profile/?id=<?= $user->id ?>">
-                <img src="" alt="Review profile image for user <?=$user->id?>">
+                <img 
+                src=<?= $user->getProfilePic() ?>
+                alt="Review profile image for user <?=$user->id?>"
+                class="avatar small"
+                >
                 <span><?= $user->name ?></span>
             </a>
             <span><?= $user->address ?></span> <!-- com menos destaque -->
@@ -576,7 +595,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
     <section class="review-list">
         <header class="header">
             <h4 class="title h4">Reviews</h4>
-            <div class="select">
+            <div class="select right">
                 <select name="options" id="options"> <!-- to be dealt with in JavaScript + AJAX -->
                     <option value="score-asc">Score - Ascending</option>
                     <option value="score-desc">Score - Descending</option>
