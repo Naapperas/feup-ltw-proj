@@ -301,7 +301,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
     </article>
 <?php } ?>
 
-<?php function createAppBar() { ?>
+<?php function createAppBar(?string $value = null) { ?>
     <header class="appbar elevated fixed">
         <a href="/" class="title homepage-link"><h1 class="h6 color logo"></h1></a>
 
@@ -311,6 +311,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                 placeholder="Search"
                 id="search"
                 name="q"
+                <?php if ($value !== null) { echo "value=\"$value\""; } ?>
             />
             <label for="search">search</label>
             <?php createButton(
@@ -391,7 +392,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
 <?php function createProfileFavoriteRestaurants(User $user) {
     $favorites = $user->getFavoriteRestaurants();
 
-    if (!$favorites)
+    if ($favorites === [])
         return;
 
     ?>
@@ -509,7 +510,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                     "data-off-icon=\"favorite_border\"\n".
                     "data-toggle-state=\"$state\"\n".
                     "data-dish-id=\"$dish->id\"\n".
-                    "data-favorite-button" // TODO: change to different kind of button
+                    "data-favorite-button"
             );
         } ?>
     </article>
@@ -566,27 +567,32 @@ require_once(dirname(__DIR__)."/database/models/review.php");
 <?php function createMenuCard(Menu $menu, bool $show_restaurant = false) { 
     if ($show_restaurant && ($restaurant = $menu->getRestaurant()) === null) return;
 ?>
-    <a 
-        href="/menu/?id=<?= $menu->id ?>" 
+    <article 
+        class="card responsive interactive"
         data-card-type="menu" 
         data-menu-id="<?= $menu->id ?>"
     >
-        <article class="card responsive interactive">
-            <img
-                src="https://picsum.photos/316/194"
-                width="320"
-                height="180"
-                alt="Menu picture for <?= $menu->name ?>"
-                class="full media"
-            />
-            <header class="header">
-                <h3 class="title h6"><?= $menu->name ?></h3>
-                <span class="subtitle subtitle2 secondary">
-                    <?= $show_restaurant ? $restaurant->name : sprintf('%.2f€', $menu->price) ?>
-                </span>
-            </header>
-        </article>
-    </a>
+        <img
+            src="https://picsum.photos/316/194"
+            width="320"
+            height="180"
+            alt="Menu picture for <?= $menu->name ?>"
+            class="full media"
+        />
+        <header class="header">
+            <h3 class="title h6">
+                <a 
+                    href="/menu/?id=<?= $menu->id ?>"
+                    class="card-link"
+                >
+                    <?= $menu->name ?>
+                </a>
+            </h3>
+            <span class="subtitle subtitle2 secondary">
+                <?= $show_restaurant ? $restaurant->name : sprintf('%.2f€', $menu->price) ?>
+            </span>
+        </header>
+    </article>
 <?php } ?>
 
 <?php function createRestaurantOwnedMenus(Restaurant $restaurant) {
@@ -599,8 +605,8 @@ require_once(dirname(__DIR__)."/database/models/review.php");
         </header>
 
         <?php 
-        foreach($owned as $dish) {
-            createMenuCard($dish);
+        foreach($owned as $menu) {
+            createMenuCard($menu);
         }
         ?>
     </section>
@@ -657,7 +663,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                     class="avatar small"
                 >
                 <span class="title"><?= $user->name ?></span>
-                <span class="subtitle secondary"><?= $user->address ?></span> <!-- com menos destaque -->
+                <span class="subtitle secondary"><?= $user->address ?></span>
                 <span class="chip right"><?php createIcon("star"); ?><?= round($review->score, 1) ?></span>
             </header>
         </a>
@@ -686,5 +692,90 @@ require_once(dirname(__DIR__)."/database/models/review.php");
         <?php foreach($reviews as $review) {
             printReview($review);
         } ?>
+    </section>
+<?php } ?>
+
+<?php function createProfileCard(User $user) { ?>
+    <article 
+        class="card responsive interactive"
+        data-card-type="user" 
+        data-user-id="<?= $user->id ?>"
+    >
+        <img
+            src="<?= $user->getProfilePic() ?>"
+            width="320"
+            height="180"
+            alt="Profile picture for <?= $user->name ?>"
+            class="full media"
+        />
+        <header class="header">
+            <h3 class="title h6">
+                <a 
+                    href="/profile/?id=<?= $user->id ?>"
+                    class="card-link"
+                >
+                    <?= $user->name ?>
+                </a>
+            </h3>
+            <span class="subtitle subtitle2 secondary">
+                <?= $user->address ?>
+            </span>
+        </header>
+    </article>
+<?php } ?>
+
+<?php function createSearchUserProfiles(array $users) { ?>
+    <section class="user-list">
+        <header class="header">
+            <h2 class="title h4">Profiles</h2>
+        </header>
+
+        <?php 
+        foreach($users as $user) {
+            createProfileCard($user);
+        }
+        ?>
+    </section>
+<?php } ?>
+
+<?php function createSearchMenus(array $menus) { ?>
+    <section class="menu-list">
+        <header class="header">
+            <h2 class="title h4">Menus</h2>
+        </header>
+
+        <?php 
+        foreach($menus as $menu) {
+            createMenuCard($menu);
+        }
+        ?>
+    </section>
+<?php } ?>
+
+<?php function createSearchRestaurants(array $restaurants) { ?>
+    <section class="restaurant-list">
+        <header class="header">
+            <h3 class="title h4">Restaurants</h3>
+        </header>
+
+        <?php 
+        foreach($restaurants as $restaurant) {
+            createRestaurantCard($restaurant);
+        }
+        ?>
+    </section>
+<?php } ?>
+
+<?php function createSearchDishes(array $dishes) { ?>
+    <section class="dish-list">
+        <header class="header">
+            <h3 class="title h4">Dishes</h3>
+        </header>
+
+        <?php 
+        foreach($dishes as $dish) {
+            createDishCard($dish);
+        }
+        ?>
     </section>
 <?php } ?>

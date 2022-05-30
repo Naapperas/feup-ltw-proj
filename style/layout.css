@@ -236,6 +236,7 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    margin: 2px 0;
 }
 
 @media screen and (max-width: 960px) {
@@ -344,7 +345,7 @@
 
 /* COMMON */
 
-.restaurant-list {
+.restaurant-list, .dish-list, .menu-list, .user-list {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 8px;
@@ -357,6 +358,12 @@
 }
 
 .menu-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 8px;
+}
+
+.user-list {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 8px;

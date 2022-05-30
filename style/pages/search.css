@@ -1,0 +1,4 @@
+section:is(.dish-list, .menu-list, .user-list, .restaurant-list):not(:first-of-type) {
+    padding-top: 15px;
+    border-top: solid 1px rgba(var(--color-on-surface), 12%);
+}
