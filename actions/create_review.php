@@ -34,7 +34,7 @@
     require_once('../database/models/restaurant.php');
     require_once('../database/models/user.php');
 
-    if (($restaurant = Restaurant::get($params['restaurantId'])) === null || User::get($params['userId']) === null) {
+    if (($restaurant = Restaurant::getById($params['restaurantId'])) === null || User::getById($params['userId']) === null) {
         header("Location: /");
         die;
     }

@@ -21,7 +21,7 @@
         die();
     }
 
-    $restaurant = Restaurant::get($id);
+    $restaurant = Restaurant::getById($id);
 
     if ($restaurant === null) {
         http_response_code(404);
@@ -87,7 +87,7 @@
 
                 if (isset($_SESSION['user'])) {
 
-                    $currentUser = User::get($_SESSION['user']);
+                    $currentUser = User::getById($_SESSION['user']);
 
                     if ($currentUser !== null) {
                         if($restaurant->owner === $currentUser->id) {

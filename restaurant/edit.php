@@ -17,7 +17,7 @@
         ),
     ]);
     
-    if (!isset($id) || ($restaurant = Restaurant::get($id)) === null) {
+    if (!isset($id) || ($restaurant = Restaurant::getById($id)) === null) {
         header("Location: /");
         die();
     }
@@ -96,7 +96,7 @@
                             'value' => $category->id,
                             'name' => 'categories[]',
                             'checked' => $restaurant->hasCategory($category->id)
-                        ], Category::get()), '', 'content'); ?>
+                        ], Category::getAll()), '', 'content'); ?>
                         <div class="actions">
                             <button class="button text" type="button" data-close-dialog="#categories">Done</button>
                         </div>

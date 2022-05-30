@@ -24,8 +24,8 @@
         'restaurantId' => new IntParam(),
     ]);
 
-    $user = User::get($_SESSION['user']);
-    $restaurant = Restaurant::get($params['restaurantId']);
+    $user = User::getById($_SESSION['user']);
+    $restaurant = Restaurant::getById($params['restaurantId']);
 
     if ($restaurant === null) {
         http_response_code(404);

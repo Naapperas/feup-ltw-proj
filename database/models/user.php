@@ -36,7 +36,7 @@
         
             if ($queryResults === false) return [];
 
-            return array_map(fn(array $id) => Restaurant::get($id)[0], $queryResults);
+            return array_map(fn(array $data) => Restaurant::getById($data['id']), $queryResults);
         }
 
         function getFavoriteRestaurants(): array {
@@ -47,7 +47,7 @@
         
             if ($queryResults === false) return [];
 
-            return array_map(fn(array $id) => Restaurant::get($id)[0], $queryResults);
+            return array_map(fn(array $data) => Restaurant::getById($data['id']), $queryResults);
         }
 
         function addLikedRestaurant(int $restaurantId): bool {
@@ -76,7 +76,7 @@
         
             if ($queryResults === false) return [];
 
-            return array_map(fn(array $id) => Dish::get($id)[0], $queryResults);
+            return array_map(fn(array $data) => Dish::getById($data['id']), $queryResults);
         }
 
         function addLikedDish(int $dishId): bool {

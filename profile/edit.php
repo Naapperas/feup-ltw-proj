@@ -9,7 +9,7 @@
     session_start();
     
     if (!isset($_SESSION['user']) 
-    || ($user = User::get($_SESSION['user'])) === null) {
+    || ($user = User::getById($_SESSION['user'])) === null) {
         header("Location: /profile/");
         die;
     }

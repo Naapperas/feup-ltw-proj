@@ -278,7 +278,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                     class: "top-right",
                     href: "/restaurant/edit.php?id=$restaurant->id");
             } else {
-                $currentUser = User::get($_SESSION['user']);
+                $currentUser = User::getById($_SESSION['user']);
 
                 if ($currentUser !== null && $restaurant->isLikedBy($currentUser)) {
                     $state = "on";
@@ -493,7 +493,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
 
         if (isset($_SESSION['user'])) {
 
-            $currentUser = User::get($_SESSION['user']);
+            $currentUser = User::getById($_SESSION['user']);
 
             if ($currentUser !== null && $dish->isLikedBy($currentUser)) {
                 $state = "on";
@@ -650,7 +650,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
 
 <?php function printReview(Review $review) { 
 
-    $user = User::get($review->client);
+    $user = User::getById($review->client);
 
     if ($user == null) return;
 ?>

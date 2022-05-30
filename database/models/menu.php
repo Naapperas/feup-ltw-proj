@@ -17,7 +17,7 @@
         }
 
         public function getRestaurant(): ?Restaurant {
-            return Restaurant::get($this->restaurant);
+            return Restaurant::getById($this->restaurant);
         }
 
         public function addDish(Dish $dish): bool {

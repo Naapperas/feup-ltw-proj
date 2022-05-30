@@ -36,7 +36,7 @@
         die;
     }
 
-    $user = User::get($params['id']);
+    $user = User::getById($params['id']);
 
     if ($user === null) { // in case there was an error fetching the current user object from the DB
         header("Location: /profile/");

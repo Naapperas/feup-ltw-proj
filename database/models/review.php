@@ -18,11 +18,11 @@
         }
 
         public function getUser(): ?User {
-            return User::get($this->client);
+            return User::getById($this->client);
         }
 
         public function getRestaurant(): ?Restaurant {
-            return Restaurant::get($this->restaurant);
+            return Restaurant::getById($this->restaurant);
         }
     }
 ?>

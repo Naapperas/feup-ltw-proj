@@ -22,7 +22,7 @@
         die();
     }
 
-    $user = User::get($id);
+    $user = User::getById($id);
 
     if ($user === null) {
         http_response_code(404);

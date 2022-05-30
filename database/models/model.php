@@ -1,7 +1,8 @@
 <?php
     declare(strict_types=1);
 
-    include(dirname(__DIR__).'/connection.php');
+    require_once(dirname(__DIR__).'/connection.php');
+    require_once('filters.php');
 
     abstract class Model {
         public readonly int $id;
@@ -36,10 +37,63 @@
             if ($results[0] === false)
                 return null;
     
-            return static::get(intval(static::getDB()->lastInsertId($table)));
+            return static::getById(intval(static::getDB()->lastInsertId($table)));
         }
     
-        static function get(int|array $data = null, int $limit = null, bool $exact = true): array|static|null {
+        static function getById(int|array $idOrIds): static|array|null {
+            
+            $table = static::getTableName();
+            $query = "SELECT * FROM $table WHERE ";
+
+            if (is_int($idOrIds)) {
+                $id = $idOrIds;
+    
+                $queryBuilder = new Equals('id', $id);
+
+                $query .= $queryBuilder->getQueryString();
+                $query .= ';';
+        
+                $results = getQueryResults(static::getDB(), $query, false, $queryBuilder->getQueryValues());
+        
+                if ($results === false)
+                    return null;
+        
+                return static::fromArray($results);
+            } else {
+
+                $queryBuilder = new In('id', $idOrIds);
+
+                $query .= $queryBuilder->getQueryString();
+                $query .= ';';
+
+                $results = getQueryResults(static::getDB(), $query, true, $queryBuilder->getQueryValues());
+        
+                if ($results === false)
+                    return [];
+        
+                return array_map(fn (array $modelData) => static::fromArray($modelData), $results);
+            }
+        }
+
+        static function getAll(int $limit = null): array {
+
+            $table = static::getTableName();
+            $query = "SELECT * FROM $table";
+
+            if ($limit !== null)
+                $query .= " LIMIT $limit";
+
+            $query .= ';';
+
+            $queryResults = getQueryResults(static::getDb(), $query, true);
+
+            if ($queryResults === false)
+                return [];
+
+            return array_map(fn(array $result) => static::fromArray($result), $queryResults);
+        }
+
+        static function get(int|array $data = null, int $limit = null, bool $exact = true, array $filters = null): array|static|null {
             $table = static::getTableName();
             $query = "SELECT * FROM $table";
     

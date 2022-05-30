@@ -24,8 +24,8 @@
         'dishId' => new IntParam(),
     ]);
 
-    $user = User::get($_SESSION['user']);
-    $dish = Dish::get($params['dishId']);
+    $user = User::getById($_SESSION['user']);
+    $dish = Dish::getById($params['dishId']);
 
     if ($dish === null) {
         http_response_code(404);

@@ -24,7 +24,7 @@
         }
 
         public function getOwner(): ?User {
-            return User::get($this->owner);
+            return User::getById($this->owner);
         }
 
         public function getReviewScore(): ?float {
@@ -46,7 +46,7 @@
         
             if ($reviews === false) return 0;
 
-            $result = array_map(fn($id) => Review::get($id)[0], $reviews);
+            $result = array_map(fn(array $data) => Review::getById($data['id']), $reviews);
 
             return $result; 
         }
@@ -70,7 +70,7 @@
         
             if ($categories === false) return [];
 
-            $result = array_map(fn($id) => Category::get($id)[0], $categories);
+            $result = array_map(fn(array $data) => Category::getById($data['id']), $categories);
 
             return $result;
         }
@@ -83,7 +83,7 @@
         
             if ($queryResults === false) return [];
 
-            return array_map(fn(array $id) => Dish::get($id)[0], $queryResults);
+            return array_map(fn(array $data) => Dish::getById($data['id']), $queryResults);
         }
 
         public function getOwnedMenus(): array {
@@ -94,7 +94,7 @@
         
             if ($queryResults === false) return [];
 
-            return array_map(fn(array $id) => Menu::get($id)[0], $queryResults);
+            return array_map(fn(array $data) => Menu::getById($data['id']), $queryResults);
         }
 
         public function setCategories(array $categories) : bool {

@@ -17,11 +17,11 @@
         }
 
         public function getDriver(): ?User {
-            return User::get($this->driver);
+            return User::getById($this->driver);
         }
         
         public function getUserToDeliver(): ?User {
-            return User::get($this->user_to_deliver);
+            return User::getById($this->user_to_deliver);
         }
     }
 ?>

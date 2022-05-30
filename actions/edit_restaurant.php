@@ -56,7 +56,7 @@
         die;
     }
 
-    $restaurant = Restaurant::get($params['id']);
+    $restaurant = Restaurant::getById($params['id']);
 
     if ($restaurant === null) { // error fetching restaurant model
         header("Location: /restaurant?id=".$params['id']);
@@ -80,7 +80,7 @@
     $restaurant->update();
 
     foreach ($params['dishes_to_edit'] as $id => $value) {
-        $dish = Dish::get($id);
+        $dish = Dish::getById($id);
 
         if ($dish->restaurant != $restaurant->id)
             continue;

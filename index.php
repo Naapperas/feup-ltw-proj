@@ -21,7 +21,7 @@ session_start();
         <main class="large medium-spacing column layout">
 
             <?php if (isset($_SESSION['user'])) {
-                createFavoriteRestaurants(User::get($_SESSION['user']));
+                createFavoriteRestaurants(User::getById($_SESSION['user']));
             } ?>
 
             <section class="restaurant-list">
@@ -35,7 +35,7 @@ session_start();
                 </header>
     
                 <?php
-                foreach (Restaurant::get() as $restaurant)
+                foreach (Restaurant::getAll() as $restaurant)
                     createRestaurantCard($restaurant);
                 ?>
             </section>
