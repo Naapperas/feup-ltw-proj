@@ -30,17 +30,19 @@
     };
 
     require_once('../database/models/user.php');
+    require_once('../database/models/query.php');
     require_once('../lib/password.php');
 
-    $userNameExists = count(User::get(['name' => $params['username']])) > 0;
-    $userEmailExists = count(User::get(['email' => $params['email']])) > 0;
-    $userPhoneExists = count(User::get(['phone_number' => $params['phone']])) > 0;
-
-    if ($userNameExists) {
+    $userNameExists = count(User::getWithFilters([new Equals('name', $params['username'])])) > 0;
+    if ($userNameExists)
         $registrationError('User with the same name already registered.');
-    } else if ($userEmailExists) {
+
+    $userEmailExists = count(User::getWithFilters([new Equals('email', $params['email'])])) > 0;
+    if ($userEmailExists)
         $registrationError('User with the same email already registered.');
-    } else if ($userPhoneExists) {
+        
+    $userPhoneExists = count(User::getWithFilters([new Equals('phone_number', $params['phone'])])) > 0;
+    if ($userPhoneExists) {
         $registrationError('User with the same phone number already registered.');
     }
 

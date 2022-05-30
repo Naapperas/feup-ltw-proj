@@ -13,13 +13,14 @@
     require_once("../database/models/restaurant.php");
     require_once("../database/models/dish.php");
     require_once("../database/models/menu.php");
+    require_once("../database/models/query.php");
 
     $queryData = ['name' => $params['q']];
 
-    $users = User::get($queryData, 10, false);
-    $restaurants = Restaurant::get($queryData, 10, false);
-    $dishes = Dish::get($queryData, 10, false);
-    $menus = Menu::get($queryData, 10, false);
+    $users = User::getWithFilters([new Like('name', $params['q'])], limit: 10);
+    $restaurants = Restaurant::getWithFilters([new Like('name', $params['q'])], limit: 10);
+    $dishes = Dish::getWithFilters([new Like('name', $params['q'])], limit: 10);
+    $menus = Menu::getWithFilters([new Like('name', $params['q'])], limit: 10);
 ?>
 <!DOCTYPE html>
 <html lang="en">

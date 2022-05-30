@@ -62,7 +62,7 @@
                     <h2 class="title h4"><?=$user->name?>'s profile</h2>
                 </header>
 
-                <?php createIcon('email') ?><span><?=$user->email?></span>
+                <?php createIcon('email') ?><a href="mailto:<?=$user->email?>"><?=$user->email?></a>
                 <?php createIcon('badge') ?><span><?=$user->full_name?></span>
                 <?php createIcon('phone') ?><span><?=$user->phone_number?></span>
             </section>

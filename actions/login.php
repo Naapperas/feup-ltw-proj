@@ -16,8 +16,9 @@
     ]);
 
     require_once('../database/models/user.php');
+    require_once('../database/models/query.php');
 
-    $candidateUser = User::get(array("name" => $params['username']));
+    $candidateUser = User::getWithFilters([new Equals('name', $params['username'])]);
 
     $user = (count($candidateUser) > 0) ? $candidateUser[0] : null;
 

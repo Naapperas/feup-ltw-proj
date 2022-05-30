@@ -44,7 +44,7 @@
 
     class LessThan extends QueryFilter {
 
-        public function __construct(string $attribute, int $amount) {
+        public function __construct(string $attribute, int|float $amount) {
             parent::__construct($attribute, $amount);
         }
 
@@ -55,7 +55,7 @@
 
     class LessThanOrEqual extends QueryFilter {
 
-        public function __construct(string $attribute, int $amount) {
+        public function __construct(string $attribute, int|float $amount) {
             parent::__construct($attribute, $amount);
         }
 
@@ -66,7 +66,7 @@
     
     class GreaterThan extends QueryFilter {
 
-        public function __construct(string $attribute, int $amount) {
+        public function __construct(string $attribute, int|float $amount) {
             parent::__construct($attribute, $amount);
         }
 
@@ -77,7 +77,7 @@
 
     class GreaterThanOrEqual extends QueryFilter {
 
-        public function __construct(string $attribute, int $amount) {
+        public function __construct(string $attribute, int|float $amount) {
             parent::__construct($attribute, $amount);
         }
 
@@ -95,6 +95,8 @@
             return 'LIKE';
         }
     }
+
+    // these classes could be further refactored to avoid repetition but that is not the scope of this project (for now)
 
     class In implements QueryToken {
 
@@ -165,7 +167,7 @@
         private array $queryValues;
 
         public function __construct(public QueryToken $clause) {
-            $this->queryString = sprintf("NOT (%s)", $this->clause->getQueryString());
+            $this->queryString = sprintf(" NOT (%s)", $this->clause->getQueryString());
             $this->queryValues = $clause->getQueryValues();
         }
 
@@ -175,6 +177,27 @@
 
         public function getQueryValues(): array {
             return $this->queryValues;
+        }
+    }
+
+    class OrderClause implements QueryToken {
+        
+        private string $queryString;
+
+        public function __construct(array $orderings) {
+
+            for ($i = 0; $i < count($orderings); $i++)
+                $tokens[] = sprintf("%s %s", $orderings[$i][0], ($orderings[$i][1] ?? true) ? 'ASC' : 'DESC');
+
+            $this->queryString = sprintf(' ORDER BY %s', implode(', ', $tokens));
+        }
+
+        public function getQueryString(): string {
+            return $this->queryString;
+        }
+
+        public function getQueryValues(): array {
+            return [];
         }
     }
 ?>
