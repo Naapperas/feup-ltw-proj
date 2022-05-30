@@ -296,6 +296,52 @@
     }
 }
 
+@supports (overflow: overlay) {
+    :is(.restaurant-main, .restaurant-sidebar) {
+        overflow-y: overlay;
+    }
+}
+
+/* EDIT RESTAURANT */
+
+.edit-restaurant > form.form {
+    display: grid;
+    grid-template:
+        "main sidebar" 1fr
+        "main submit" auto / 1fr 480px;
+    gap: 16px;
+}
+
+.edit-restaurant > form.form > button {
+    grid-area: submit;
+}
+
+.edit-restaurant-main {
+    grid-area: main;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.edit-restaurant-sidebar {
+    grid-area: sidebar;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: start;
+    gap: 16px;
+}
+
+@media screen and (max-width: 960px) {
+    .edit-restaurant > form.form {
+        grid-template:
+            "sidebar" auto
+            "main" auto
+            "submit" auto
+            / auto;
+    }
+}
+
 /* COMMON */
 
 .restaurant-list {

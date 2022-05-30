@@ -81,10 +81,11 @@ require_once(dirname(__DIR__)."/database/models/review.php");
 <?php } ?>
 
 <?php function createTextField(
-    string $name, string $label, 
-    string $helperText = "",
+    string $name, string $label, string $helperText = "",
     string $type = "text", string $autocomplete = "", string $pattern = "",
+    string $class = "",
     int $maxlength = -1, int $minlength = -1,
+    ?float $min = null, ?float $max = null, ?float $step = null,
     bool $optional = false,  bool $toggleVisibility = false,
     bool $characterCounter = false, bool $errorText = true,
     array $errors = [], string $value = ""
@@ -94,7 +95,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
     if ($errors !== [] || $errorText) $describedby[] = "$name-error-text";
     $describedby = implode(" ", $describedby);
     ?>
-    <div class="textfield">
+    <div class="textfield <?= $class ?>">
         <<?php if ($type === 'multiline') { ?>textarea<?php } else { ?>input
             type="<?= $type ?>" <?php } ?>
             placeholder=" "
@@ -114,6 +115,15 @@ require_once(dirname(__DIR__)."/database/models/review.php");
             <?php } ?>
             <?php if ($value !== "") { ?>
             value="<?= $value ?>"    
+            <?php } ?> 
+            <?php if ($min !== null) { ?>
+            min="<?= $min ?>"    
+            <?php } ?> 
+            <?php if ($max !== null) { ?>
+            max="<?= $max ?>"    
+            <?php } ?> 
+            <?php if ($step !== null) { ?>
+            step="<?= $step ?>"    
             <?php } ?> 
             <?php 
             if (!$optional)
@@ -319,13 +329,20 @@ require_once(dirname(__DIR__)."/database/models/review.php");
     </header>
 <?php } ?>
 
-<?php function createRestaurantCategories(array $categories) { ?>
-    <section class="chip-list wrap">
-        <?php foreach($categories as $category) { ?>
-            <span class="chip"><?= $category->name ?></span>
-        <?php } ?>
-    </section>
-<?php } ?>
+<?php function createRestaurantCategories(array $categories, bool $edit = false) {
+    if ($edit) { ?>
+    <a class="fullwidth chip-list-edit" href="#" data-open-dialog="#categories">
+        <span>Categories</span>
+    <?php } ?>
+        <ul class="chip-list wrap">
+            <?php foreach($categories as $category) { ?>
+                <li class="chip"><?= $category->name ?></li>
+            <?php } ?>
+        </ul>
+    <?php if ($edit) { ?>
+    </a>
+    <?php }
+} ?>
 
 <?php function createFavoriteRestaurants(User $user) {
     $favorites = $user->getFavoriteRestaurants();
@@ -392,20 +409,65 @@ require_once(dirname(__DIR__)."/database/models/review.php");
     </section>
 <?php } ?>
 
-<?php function createDishCard(Dish $dish, bool $show_restaurant = false) { 
+<?php function createDishCard(Dish $dish, bool $show_restaurant = false, bool $edit = false) { 
     if ($show_restaurant && ($restaurant = $dish->getRestaurant()) === null) return;
-?>
+
+    if ($edit) { ?>
+        <article class="card responsive" >
+            <label class="image-input full media thumbnail">
+                <img
+                    class="thumbnail"
+                    src="<?= $dish->getThumbnail() ?>"
+                    alt=""
+                >
+                <input
+                    class="visually-hidden"
+                    type="file"
+                    name="dishes_to_edit[<?= $dish->id ?>]"
+                    accept="image/*"
+                >
+            </label>
+
+            <?php
+            createTextField(
+                name: "dishes_to_edit[$dish->id][name]",
+                label: 'Name',
+                value: $dish->name
+            );
+            createTextField(
+                name: "dishes_to_edit[$dish->id][price]",
+                label: 'Price',
+                value: sprintf('%.2f', $dish->price),
+                type: 'number',
+                min: 0,
+                step: .01
+            );
+            
+            if (($categories = $dish->getCategories()) !== []) {
+                echo '<hr class="divider" />';
+                // createDishCategories($categories, 'h4');
+            }
+    
+            createButton(
+                type: ButtonType::ICON,
+                text: 'Delete',
+                icon: 'delete',
+                class: "top-right",
+            );
+            ?>
+        </article>
+    <?php } else { ?>
     <article
         class="card responsive interactive"
         data-card-type="dish"
         data-dish-id="<?= $dish->id ?>"
     >
         <img
-            src="https://picsum.photos/316/194"
-            width="320"
-            height="180"
+            src="<?= $dish->getThumbnail() ?>"
+            width="1920"
+            height="1080"
             alt="Dish picture for <?= $dish->name ?>"
-            class="full media"
+            class="full media thumbnail"
         />
         <header class="header">
             <h3 class="title h6">
@@ -451,7 +513,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
             );
         } ?>
     </article>
-<?php } ?>
+<?php } } ?>
 
 <?php function createProfileFavoriteDishes(User $user) {
     $favorites = $user->getFavoriteDishes();
@@ -474,7 +536,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
     </section>
 <?php } ?>
 
-<?php function createRestaurantOwnedDishes(Restaurant $restaurant) {
+<?php function createRestaurantOwnedDishes(Restaurant $restaurant, bool $edit = false) {
     $owned = $restaurant->getOwnedDishes();
 
     ?>
@@ -485,9 +547,19 @@ require_once(dirname(__DIR__)."/database/models/review.php");
 
         <?php 
         foreach($owned as $dish) {
-            createDishCard($dish);
+            createDishCard($dish, edit: $edit);
         }
-        ?>
+
+        if ($edit) { ?>
+            <article class="card">
+                <?php createButton(
+                    type: ButtonType::ICON,
+                    text: "New dish",
+                    icon: "add",
+                    class: "card-link"
+                ) ?>
+            </article>
+        <?php } ?>
     </section>
 <?php } ?>
 
@@ -551,10 +623,12 @@ require_once(dirname(__DIR__)."/database/models/review.php");
 
 <?php } ?>
 
-<?php function createCheckBoxList(array $values, string $title) {?>
+<?php function createCheckBoxList(array $values, string $title, string $class = "") {?>
 
-    <fieldset class="selection-list">
+    <fieldset class="selection-list <?= $class ?>">
+        <?php if ($title) { ?>
         <legend class="h6"><?= $title ?></legend>
+        <?php } ?>
 
         <?php foreach($values as $key) {
             createCheckBox(

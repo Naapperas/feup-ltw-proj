@@ -2,24 +2,26 @@
     /**
      * Saves an image coming from $_FILES
      * 
-     * @param array     $file         The file from $_FILES
+     * @param array     $file         The file (or an array of files) from $_FILES
      * @param string    $path         The folder in /assets/pictures where this image will be saved
      * @param int       $id           The name to give the image
      * @param int       $size         The biggest size the longest side of the resulting image can have
      * @param float|int $aspect_ratio The aspect ratio the resulting image will have
+     * @param ?int      $index        The index in the array of files
      * 
      * @return false if there was an error
      * @return true  if it was successful
      */
-    function uploadImage(array $file, string $path, int $id, int $size, float|int $aspect_ratio = 0): bool {
-        if (!isset($file) || $file['error'])
+    function uploadImage(?array $file, string $path, int $id, int $size, float|int $aspect_ratio = 0, ?int $index = null): bool {
+        if (!isset($file) || ($index == null ? $file['error'] : $file['error'][$index]))
             return false;
 
         $image_path = dirname(__DIR__)."/assets/pictures/$path/$id.webp";
 
         unlink($image_path); // no biggie if it fails
 
-        $image = imagecreatefromstring(file_get_contents($file['tmp_name']));
+        $tmp_name = $index == null ? $file['tmp_name'] : $file['tmp_name'][$index];
+        $image = imagecreatefromstring(file_get_contents($tmp_name));
 
         if ($image === false) return false;
 

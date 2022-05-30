@@ -34,15 +34,16 @@
         scripts: [
             'components/form.js',
             'components/textfield.js',
-            'components/imageinput.js'
+            'components/imageinput.js',
+            'components/dialog.js'
         ]
     ); ?>
-    <body class="top-app-bar layout">
+    <body class="top-app-bar layout edit-restaurant">
         <?php createAppBar(); ?>
-        <main class="small column layout">
-            <?php createForm(
-                'POST', 'restaurant', '/actions/edit_restaurant.php',
-                function() use ($restaurant) { ?>
+        <?php createForm(
+            'POST', 'restaurant', '/actions/edit_restaurant.php',
+            function() use ($restaurant) { ?>
+                <div class="edit-restaurant-sidebar">
                     <label class="image-input thumbnail rounded">
                         <img
                             class="thumbnail"
@@ -77,23 +78,39 @@
                     );
                     createTextField(
                         name: "opening_time", label: "Opening time",
-                        type: 'time', value: $restaurant->opening_time
+                        type: 'time', value: $restaurant->opening_time,
+                        class: "inline"
                     );
                     createTextField(
                         name: "closing_time", label: "Closing time",
-                        type: 'time', value: $restaurant->closing_time
+                        type: 'time', value: $restaurant->closing_time,
+                        class: "inline"
                     );
-                    createCheckBoxList(array_map(fn(Category $category) => [
-                        'label' => $category->name,
-                        'value' => $category->id,
-                        'name' => 'categories[]',
-                        'checked' => $restaurant->hasCategory($category->id)
-                    ], Category::get()), 'Categories');
-                    
-                    createButton(text: "Apply", submit: true);
+
+                    createRestaurantCategories($restaurant->getCategories(), true);
+
+                    ?><dialog class="dialog confirmation" id="categories">
+                        <header><h2 class="h5">Categories</h2></header>
+                        <?php createCheckBoxList(array_map(fn(Category $category) => [
+                            'label' => $category->name,
+                            'value' => $category->id,
+                            'name' => 'categories[]',
+                            'checked' => $restaurant->hasCategory($category->id)
+                        ], Category::get()), '', 'content'); ?>
+                        <div class="actions">
+                            <button class="button text" type="button" data-close-dialog="#categories">Done</button>
+                        </div>
+                    </dialog>
+                </div>
+
+                <div class="edit-restaurant-main">
+                    <?php
+                    createRestaurantOwnedDishes($restaurant, true);
                     ?>
-                    <input type="hidden" name="id" value="<?= $restaurant->id ?>">
-                <?php }); ?>
-        </main>
+                </div>
+                
+                <?php createButton(text: "Apply", submit: true); ?>
+                <input type="hidden" name="id" value="<?= $restaurant->id ?>">
+            <?php }); ?>
     </body>
 </html>

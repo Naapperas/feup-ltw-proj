@@ -79,6 +79,20 @@
 
     $restaurant->update();
 
+    foreach ($params['dishes_to_edit'] as $id => $value) {
+        $dish = Dish::get($id);
+
+        if ($dish->restaurant != $restaurant->id)
+            continue;
+        
+        $dish->name = $value['name'];
+        $dish->price = $value['price'];
+
+        $dish->update();
+
+        uploadImage($_FILES['dishes_to_edit'], 'dish', $id, 1920, index: $id);
+    }
+
     uploadImage($_FILES['thumbnail'], 'restaurant', $restaurant->id, 1920);
 
     header("Location: /restaurant?id=".$params['id']);

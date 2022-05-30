@@ -161,3 +161,26 @@ a {
     white-space: nowrap;
     width: 1px;
 }
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    border: 1px solid transparent;
+}
+::-webkit-scrollbar-thumb {
+    --opacity: var(--opacity-medium-emphasis);
+
+    background: rgb(var(--color-on-surface), var(--opacity));
+    border-radius: 50px;
+}
+::-webkit-scrollbar-track {
+    --opacity: 0%;
+
+    background: rgba(var(--color-on-surface), var(--opacity));
+}
+::-webkit-scrollbar-track:hover {
+    --opacity: var(--opacity-hover);
+}
+::-webkit-scrollbar-track:active {
+    --opacity: var(--opacity-active);
+}

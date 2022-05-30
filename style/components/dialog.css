@@ -9,6 +9,8 @@ dialog.dialog {
     border: none;
     border-radius: 24px;
 
+    animation: dialog-open 200ms ease-in-out forwards;
+
     --shadow: 0 0 0 100vmax rgba(0, 0, 0, 32%);
 }
 
@@ -47,6 +49,10 @@ dialog.dialog.confirmation > .actions {
 
 dialog.dialog::backdrop {
     display: none;
+}
+
+dialog.dialog[data-closing] {
+    animation-name: dialog-close;
 }
 
 dialog.dialog:not([open]) {

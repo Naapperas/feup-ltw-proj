@@ -113,6 +113,18 @@ but that is impossible outside chromium
     margin-top: -8px;
 }
 
+.textfield input::-webkit-calendar-picker-indicator {
+    padding: 0;
+    margin-top: -8px;
+    margin-right: -4px;
+    width: 24px;
+    height: 24px;
+}
+
+.textfield input::-webkit-calendar-picker-indicator::before {
+    content: "time";
+}
+
 :is(.textfield :is(input, textarea), .select select):focus {
     border-color: rgb(var(--color-main));
     border-width: 2px;

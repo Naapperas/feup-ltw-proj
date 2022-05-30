@@ -153,7 +153,7 @@ class ArrayParam extends Param {
         if (isset($this->maxLen) && count($r) > $this->maxLen)
             return $this->error();
 
-        $r = array_map($this->param_type->parse, $r);
+        $r = array_map(fn($x) => $this->param_type->parse($x), $r);
 
         return $r;
     }
