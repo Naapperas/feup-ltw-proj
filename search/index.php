@@ -8,8 +8,26 @@
     require_once("../templates/metadata.php");
 
     require_once("../lib/params.php");
+    require_once("../database/models/query.php");
 
-    $params = parseParams(get_params: ['q']);
+    $params = parseParams(get_params: [
+        'q',
+        'min_score' => new IntParam(
+            min: 0,
+            max: 5,
+            optional: true
+        ),
+        'max_score' => new IntParam(
+            min: 0,
+            max: 5,
+            optional: true
+        )
+    ]);
+
+    $restaurantScoreClause = new AndClause([
+        isset($params['min_score']) ? new GreaterThanOrEqual('score', $params['min_score']) : null,
+        isset($params['max_score']) ? new LessThanOrEqual('score', $params['max_score']) : null
+    ]);
 
     require_once("../database/models/user.php");
     require_once("../database/models/restaurant.php");

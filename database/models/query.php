@@ -119,16 +119,30 @@
         }
     }
 
-    class AndClause implements QueryToken {
+    enum AggregationType: string {
+        case OR = 'OR';
+        case AND = 'AND';
+    }
 
+    abstract class AggregatorClause implements QueryToken {
         private string $queryString;
         private array $queryValues;
 
+        protected static abstract function getAggregationType(): AggregationType;
+
         public function __construct(public array $clauses) {
 
-            $this->queryString = sprintf("(%s)", implode(" AND ", array_map(fn (QueryToken $clause) => $clause->getQueryString(), $this->clauses)));
+            $attrs = [];
+            $this->queryValues = [];
+            foreach ($clauses as $clause) {
 
-            $this->queryValues = array_reduce($clauses, fn (array $values, QueryToken $clause) => array_merge($values, $clause->getQueryValues()), []);
+                if ($clause === null) continue;
+
+                $attrs[] = $clause->getQueryString();
+                $this->queryValues = array_merge($this->queryValues, $clause->getQueryValues());
+            }
+
+            $this->queryString = sprintf("(%s)", implode(sprintf(" %s ", static::getAggregationType()->value), $attrs));
         }
 
         public function getQueryString(): string {
@@ -140,24 +154,15 @@
         }
     }
 
-    class OrClause implements QueryToken {
-
-        private string $queryString;
-        private array $queryValues;
-
-        public function __construct(public array $clauses) {
-
-            $this->queryString = sprintf("(%s)", implode(" OR ", array_map(fn (QueryToken $clause) => $clause->getQueryString(), $this->clauses)));
-            
-            $this->queryValues = array_reduce($clauses, fn (array $values, QueryToken $clause) => array_merge($values, $clause->getQueryValues()), []);
+    class AndClause extends AggregatorClause {
+        protected static function getAggregationType(): AggregationType {
+            return AggregationType::AND;
         }
+    }
 
-        public function getQueryString(): string {
-            return $this->queryString;
-        }
-
-        public function getQueryValues(): array {
-            return $this->queryValues;
+    class OrClause extends AggregatorClause {
+        protected static function getAggregationType(): AggregationType {
+            return AggregationType::OR;
         }
     }
     
