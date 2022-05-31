@@ -253,7 +253,9 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                 type: ButtonType::ICON,
                 icon: "filter_list",
                 text: "Filter",
-                attributes: "data-filter-button"
+                attributes: 
+                    "data-open-dialog=\"#filters\"\n".
+                    "data-filter-button"
             );
             createButton(
                 type: ButtonType::ICON,
@@ -262,6 +264,50 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                 submit: true,
                 attributes: "data-search-button"
             ); ?>
+            <dialog class="dialog confirmation" id="filters">
+                <header><h2 class="h4">Filters</h2></header>
+                <div class="content">
+                    <section>
+                        <h2 class="title h5">Restaurants</h2>
+                        <div class="slider">
+                            <label for="min_score_slider">
+                                Minimum Score: <span id="score">N/A</span>
+                            </label>
+                            <input
+                                class="slider"
+                                type="range"
+                                name="min_score"
+                                id="min_score_slider"
+                                min="0"
+                                max="50"
+                                value="25"
+                                step="1"
+                            />
+                        </div>
+                    </section>
+                    <section>
+                        <h2 class="title h5">Dishes</h2>
+                        <div class="slider">
+                            <label for="min_price_slider">
+                                Minimum price: <span id="price">N/A</span>
+                            </label>
+                            <input
+                                class="slider"
+                                type="range"
+                                name="min_price"
+                                id="min_price_slider"
+                                min="0"
+                                max="20"
+                                value="10"
+                                step="any"
+                            />
+                        </div>
+                    </section>
+                </div>
+                <div class="actions">
+                    <button class="button text" type="button" data-close-dialog="#filters">Done</button>
+                </div>
+            </dialog>
         </form>
 
         <?php

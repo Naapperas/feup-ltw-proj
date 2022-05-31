@@ -33,7 +33,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <?php createHead(metadata: userMetadata($user),
-        scripts: ["components/card.js"],
+        scripts: ["components/card.js", "components/dialog.js", "components/slider.js"],
         styles: ["/style/pages/profile.css"]
     ); ?>
     <body class="top-app-bar layout">

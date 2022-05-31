@@ -34,7 +34,7 @@
     <?php createHead(
         metadata: restaurantMetadata($restaurant),
         styles: ["/style/pages/restaurant.css"],
-        scripts: ["pages/restaurant.js", "components/card.js"],
+        scripts: ["pages/restaurant.js", "components/card.js", "components/dialog.js", "components/slider.js"],
     );
     ?>
     <body class="top-app-bar restaurant layout">

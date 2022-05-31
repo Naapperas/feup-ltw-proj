@@ -12,7 +12,7 @@ session_start();
 <html lang="en">
     <?php createHead(
         metadata: baseMetadata(description: "Home page for XauFome."),
-        scripts: ["components/form.js", "components/card.js"],
+        scripts: ["components/form.js", "components/card.js", "components/dialog.js", "components/slider.js"],
         styles: ["/style/pages/main.css"]
     ); ?>
     <body class="top-app-bar layout">

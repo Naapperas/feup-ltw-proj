@@ -48,17 +48,17 @@
     border-color: rgb(var(--color-on-surface));
 }
 
-.search button {
+.search > button {
     position: absolute;
     right: 0;
     z-index: 1;
 }
 
-.search button[data-filter-button] {
+.search > button[data-filter-button] {
     right: 40px;
 }
 
-.search label {
+.search > label {
     position: absolute;
 
     display: none;
