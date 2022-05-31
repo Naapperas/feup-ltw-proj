@@ -125,12 +125,12 @@
     }
 
     abstract class AggregatorClause implements QueryToken {
-        private string $queryString;
-        private array $queryValues;
+        protected string $queryString;
+        protected array $queryValues;
 
         protected static abstract function getAggregationType(): AggregationType;
 
-        public function __construct(public array $clauses) {
+        public function __construct(array $clauses) {
 
             $attrs = [];
             $this->queryValues = [];

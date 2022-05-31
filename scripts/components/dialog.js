@@ -56,7 +56,7 @@ const empowerMinScoreSlider = (slider) => {
     slider.addEventListener("input", updateMinScore);
 }
 
-const restaurantMinScoreSlider = document.querySelector("input[type=range][name=min_score]");
+const restaurantMinScoreSlider = document.querySelector("input[type=range][name=min_restaurant_score]");
 
 empowerMinScoreSlider(restaurantMinScoreSlider);
 
@@ -71,6 +71,6 @@ const empowerMinPriceSlider = (slider) => {
     slider.addEventListener("input", updateMinScore);
 }
 
-const restaurantMinPriceSlider = document.querySelector("input[type=range][name=min_price]");
+const restaurantMinPriceSlider = document.querySelector("input[type=range][name=min_dish_price]");
 
 empowerMinPriceSlider(restaurantMinPriceSlider);

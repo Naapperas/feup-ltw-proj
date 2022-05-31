@@ -12,21 +12,39 @@
 
     $params = parseParams(get_params: [
         'q',
-        'min_score' => new IntParam(
+        'min_restaurant_score' => new FloatParam(
             min: 0,
-            max: 5,
+            max: 50,
+            optional: true,
+        ),
+        'max_restaurant_score' => new FloatParam(
+            min: 0,
+            max: 50,
             optional: true
         ),
-        'max_score' => new IntParam(
+        'min_dish_price' => new FloatParam(
             min: 0,
-            max: 5,
-            optional: true
+            max: 50,
+            optional: true,
+        ),
+        'max_dish_price' => new FloatParam(
+            min: 0,
+            max: 50,
+            optional: true,
+            default: 50 /* TODO: remove this default once the appropriate input exists */
         )
     ]);
 
-    $restaurantScoreClause = new AndClause([
-        isset($params['min_score']) ? new GreaterThanOrEqual('score', $params['min_score']) : null,
-        isset($params['max_score']) ? new LessThanOrEqual('score', $params['max_score']) : null
+    $nameContainsSearchTermFilter = new Like('name', $params['q']);
+
+    $restaurantScoreFilter = new AndClause([ /* FIXME: this does not work yet because it requires that we store the score on the restaurant model */
+        isset($params['min_restaurant_score']) ? new GreaterThanOrEqual('score', ($params['min_restaurant_score'] / 10)) : null,
+        isset($params['max_restaurant_score']) ? new LessThanOrEqual('score', ($params['max_restaurant_score'] / 10)) : null
+    ]);
+
+    $dishPriceFilter = new AndClause([
+        isset($params['min_dish_price']) ? new GreaterThanOrEqual('price', $params['min_dish_price']) : null,
+        isset($params['max_dish_price']) ? new LessThanOrEqual('price', $params['max_dish_price']) : null
     ]);
 
     require_once("../database/models/user.php");
@@ -35,10 +53,10 @@
     require_once("../database/models/menu.php");
     require_once("../database/models/query.php");
 
-    $users = User::getWithFilters([new Like('name', $params['q'])], limit: 10);
-    $restaurants = Restaurant::getWithFilters([new Like('name', $params['q'])], limit: 10);
-    $dishes = Dish::getWithFilters([new Like('name', $params['q'])], limit: 10);
-    $menus = Menu::getWithFilters([new Like('name', $params['q'])], limit: 10);
+    $users = User::getWithFilters([$nameContainsSearchTermFilter], limit: 10);
+    $restaurants = Restaurant::getWithFilters([$nameContainsSearchTermFilter], limit: 10);
+    $dishes = Dish::getWithFilters([$nameContainsSearchTermFilter, $dishPriceFilter], limit: 10);
+    $menus = Menu::getWithFilters([$nameContainsSearchTermFilter], limit: 10);
 ?>
 <!DOCTYPE html>
 <html lang="en">

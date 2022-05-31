@@ -276,7 +276,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                             <input
                                 class="slider"
                                 type="range"
-                                name="min_score"
+                                name="min_restaurant_score"
                                 id="min_score_slider"
                                 min="0"
                                 max="50"
@@ -294,7 +294,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                             <input
                                 class="slider"
                                 type="range"
-                                name="min_price"
+                                name="min_dish_price"
                                 id="min_price_slider"
                                 min="0"
                                 max="20"
