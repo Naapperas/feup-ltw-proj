@@ -251,10 +251,17 @@ require_once(dirname(__DIR__)."/database/models/review.php");
             <label for="search">search</label>
             <?php createButton(
                 type: ButtonType::ICON,
+                icon: "filter_list",
+                text: "Filter",
+                attributes: "data-filter-button"
+            );
+            createButton(
+                type: ButtonType::ICON,
                 icon: "search",
                 text: "Search",
-                submit: true
-            ) ?>
+                submit: true,
+                attributes: "data-search-button"
+            ); ?>
         </form>
 
         <?php

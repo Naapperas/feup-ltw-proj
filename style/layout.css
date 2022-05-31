@@ -405,3 +405,12 @@
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 8px;
 }
+
+@media screen and (max-width: 400px) {
+    .restaurant-list,
+    .dish-list,
+    .menu-list,
+    .user-list {
+        grid-template-columns: 1fr;
+    }
+}

@@ -54,6 +54,10 @@
     z-index: 1;
 }
 
+.search button[data-filter-button] {
+    right: 40px;
+}
+
 .search label {
     position: absolute;
 
