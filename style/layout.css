@@ -382,10 +382,7 @@
 
 /* COMMON */
 
-.restaurant-list,
-.dish-list,
-.menu-list,
-.user-list {
+.restaurant-list {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 8px;
@@ -405,6 +402,6 @@
 
 .user-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 8px;
 }
