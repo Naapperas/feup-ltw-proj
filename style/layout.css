@@ -305,12 +305,17 @@
 
 /* EDIT RESTAURANT */
 
+.edit-restaurant.layout {
+    max-height: 100%;
+}
+
 .edit-restaurant > form.form {
     display: grid;
     grid-template:
         "main sidebar" 1fr
         "main submit" auto / 1fr 480px;
     gap: 16px;
+    overflow-y: auto;
 }
 
 .edit-restaurant > form.form > button {
@@ -322,6 +327,12 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+
+    overflow-y: auto;
+    margin-inline: -8px;
+    padding-inline: 8px;
+    margin-block: -16px;
+    padding-block: 16px;
 }
 
 .edit-restaurant-sidebar {
@@ -331,21 +342,50 @@
     flex-wrap: wrap;
     align-content: start;
     gap: 16px;
+
+    overflow-y: auto;
+    margin-inline: -8px;
+    padding-inline: 8px;
+    margin-top: -16px;
+    padding-top: 16px;
 }
 
 @media screen and (max-width: 960px) {
+    .edit-restaurant.layout {
+        max-height: unset;
+    }
+
     .edit-restaurant > form.form {
         grid-template:
             "sidebar" auto
             "main" auto
             "submit" auto
             / auto;
+        overflow-y: unset;
+    }
+
+    .edit-restaurant-main,
+    .edit-restaurant-sidebar {
+        margin: 0;
+        padding: 0;
+        overflow-y: unset;
+    }
+}
+
+@supports (overflow-y: overlay) {
+    .edit-restaurant > form.form,
+    .edit-restaurant-main,
+    .edit-restaurant-sidebar {
+        overflow-y: overlay;
     }
 }
 
 /* COMMON */
 
-.restaurant-list, .dish-list, .menu-list, .user-list {
+.restaurant-list,
+.dish-list,
+.menu-list,
+.user-list {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 8px;

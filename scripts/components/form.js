@@ -100,30 +100,33 @@ const empowerForm = (form) => {
     inputs[0].focus();
 
     inputs.forEach((e) => {
-        /** @type HTMLElement */
-        const errorText = document.querySelector(`#${e.dataset.errorText}`);
+        try {
+            /** @type HTMLElement */
+            const errorText = document.querySelector(`#${e.dataset.errorText}`);
 
-        const resetValidity = () => {
-            if (errorText) errorText.textContent = "";
+            const resetValidity = () => {
+                if (errorText) errorText.textContent = "";
 
-            e.classList.remove("error");
-            e.removeEventListener("input", resetValidity);
-        };
+                e.classList.remove("error");
+                e.removeEventListener("input", resetValidity);
+            };
 
-        e.addEventListener("blur", () => {
-            if (!e.checkValidity()) {
-                if (errorText)
-                    for (let p in e.validity)
-                        if (e.validity[p]) {
-                            errorText.textContent =
-                                errorText.dataset[p] || defaultErrorMessages[p];
-                            break;
-                        }
+            e.addEventListener("blur", () => {
+                if (!e.checkValidity()) {
+                    if (errorText)
+                        for (let p in e.validity)
+                            if (e.validity[p]) {
+                                errorText.textContent =
+                                    errorText.dataset[p] ||
+                                    defaultErrorMessages[p];
+                                break;
+                            }
 
-                e.classList.add("error");
-                e.addEventListener("input", resetValidity);
-            }
-        });
+                    e.classList.add("error");
+                    e.addEventListener("input", resetValidity);
+                }
+            });
+        } catch {}
     });
 
     const setButtonState = () =>

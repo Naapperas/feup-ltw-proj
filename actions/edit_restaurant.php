@@ -46,6 +46,24 @@
                 'name' => new StringParam(min_len: 1),
                 'price' => new FloatParam(min: 0)
             ])
+        ),
+        'menus_to_edit' => new ArrayParam(
+            default: [],
+            param_type: new ObjectParam([
+                'name' => new StringParam(min_len: 1),
+                'price' => new FloatParam(min: 0)
+            ])
+        ),
+        'menus_to_delete' => new ArrayParam(
+            default: [],
+            param_type: new IntParam()
+        ),
+        'menus_to_add' => new ArrayParam(
+            default: [],
+            param_type: new ObjectParam([
+                'name' => new StringParam(min_len: 1),
+                'price' => new FloatParam(min: 0)
+            ])
         )
     ]);
 
@@ -82,7 +100,7 @@
     foreach ($params['dishes_to_edit'] as $id => $value) {
         $dish = Dish::getById($id);
 
-        if ($dish->restaurant != $restaurant->id)
+        if ($dish == null || $dish->restaurant != $restaurant->id)
             continue;
         
         $dish->name = $value['name'];
@@ -91,6 +109,50 @@
         $dish->update();
 
         uploadImage($_FILES['dishes_to_edit'], 'dish', $id, 1920, index: $id);
+    }
+
+    foreach ($params['dishes_to_delete'] as $id) {
+        $dish = Dish::getById($id);
+
+        if ($dish == null || $dish->restaurant != $restaurant->id)
+            continue;
+        
+        $dish->delete();
+    }
+
+    foreach ($params['dishes_to_add'] as $i => $arr) {
+        $arr['restaurant'] = $restaurant->id;
+        $dish = Dish::create($arr);
+        uploadImage($_FILES['dishes_to_add'], 'dish', $dish->id, 1920, index: $i);
+    }
+
+    foreach ($params['menus_to_edit'] as $id => $value) {
+        $menu = Menu::getById($id);
+
+        if ($menu == null || $menu->restaurant != $restaurant->id)
+            continue;
+        
+        $menu->name = $value['name'];
+        $menu->price = $value['price'];
+
+        $menu->update();
+
+        uploadImage($_FILES['menus_to_edit'], 'dish', $id, 1920, index: $id);
+    }
+
+    foreach ($params['menus_to_delete'] as $id) {
+        $menu = Menu::getById($id);
+
+        if ($menu == null || $menu->restaurant != $restaurant->id)
+            continue;
+        
+        $menu->delete();
+    }
+
+    foreach ($params['menus_to_add'] as $i => $arr) {
+        $arr['restaurant'] = $restaurant->id;
+        $menu = Menu::create($arr);
+        uploadImage($_FILES['menus_to_add'], 'menu', $menu->id, 1920, index: $i);
     }
 
     uploadImage($_FILES['thumbnail'], 'restaurant', $restaurant->id, 1920);

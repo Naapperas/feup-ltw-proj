@@ -35,7 +35,10 @@
             'components/form.js',
             'components/textfield.js',
             'components/imageinput.js',
-            'components/dialog.js'
+            'components/dialog.js',
+            'components/card.js',
+
+            'pages/editrestaurant.js'
         ]
     ); ?>
     <body class="top-app-bar layout edit-restaurant">
@@ -106,6 +109,7 @@
                 <div class="edit-restaurant-main">
                     <?php
                     createRestaurantOwnedDishes($restaurant, true);
+                    createRestaurantOwnedMenus($restaurant, true);
                     ?>
                 </div>
                 

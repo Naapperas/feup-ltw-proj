@@ -9,7 +9,7 @@
  *
  * @param {HTMLElement} imageInput
  */
-const empowerImageInput = (imageInput) => {
+export const empowerImageInput = (imageInput) => {
     /** @type HTMLInputElement */
     const input = imageInput.querySelector(
         'input[type="file"][accept^="image/"]'
@@ -47,6 +47,34 @@ const empowerImageInput = (imageInput) => {
     input.addEventListener("change", updatePreview);
 };
 
+/**
+ * Creates a new image input.
+ *
+ * @param {string} name
+ * @param {string} src
+ * @param {string[]} wrapperClasses
+ * @param {string[]} previewClasses
+ */
+export const createImageInput = (name, src, wrapperClasses, previewClasses) => {
+    const imageInput = document.createElement("label");
+    imageInput.classList.add("image-input", ...wrapperClasses);
+
+    const imagePreview = document.createElement("img");
+    imagePreview.classList.add(...previewClasses);
+    imagePreview.src = src;
+
+    const input = document.createElement("input");
+    input.classList.add("visually-hidden");
+    input.type = "file";
+    input.accept = "image/*";
+    input.name = name;
+
+    imageInput.appendChild(imagePreview);
+    imageInput.appendChild(input);
+
+    return imageInput;
+};
+
 /** @type NodeListOf<HTMLLabelElement> */
-const _imageInputs = document.querySelectorAll("label.image-input");
-_imageInputs.forEach(empowerImageInput);
+const imageInputs = document.querySelectorAll("label.image-input");
+imageInputs.forEach(empowerImageInput);

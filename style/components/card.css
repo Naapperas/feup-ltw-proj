@@ -46,6 +46,11 @@
     height: 40px;
 }
 
+.avatar.medium {
+    width: 120px;
+    height: 120px;
+}
+
 .avatar.big {
     width: 280px;
     height: 280px;

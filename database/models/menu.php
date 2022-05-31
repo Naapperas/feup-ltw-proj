@@ -34,5 +34,15 @@
                 return true;
             } else return false;
         }
+
+        public function getThumbnail(): string {
+            $src = "/assets/pictures/menu/$this->id.webp";
+            
+            if (!file_exists(dirname(dirname(__DIR__)).$src)) {
+                $src = "/assets/pictures/menu/default.webp";
+            }
+
+            return $src;
+        }
     }
 ?>

@@ -3,6 +3,8 @@
     grid-template: 1fr / 1fr;
 
     cursor: pointer;
+
+    transition-property: opacity;
 }
 
 .image-input.rounded {
@@ -51,4 +53,14 @@
 .image-input:focus-within::after {
     --opacity-overlay: var(--opacity-focus);
     --opacity-text: 100%;
+}
+
+.image-input.disabled {
+    cursor: initial;
+    opacity: var(--opacity-disabled);
+}
+
+.image-input.disabled::after {
+    --opacity-overlay: 0%;
+    --opacity-text: 0%;
 }

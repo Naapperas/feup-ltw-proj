@@ -337,7 +337,9 @@ require_once(dirname(__DIR__)."/database/models/review.php");
     <?php } ?>
         <ul class="chip-list wrap">
             <?php foreach($categories as $category) { ?>
-                <li class="chip"><?= $category->name ?></li>
+                <li class="chip" data-category-id="<?= $category->id ?>">
+                    <?= $category->name ?>
+                </li>
             <?php } ?>
         </ul>
     <?php if ($edit) { ?>
@@ -414,7 +416,11 @@ require_once(dirname(__DIR__)."/database/models/review.php");
     if ($show_restaurant && ($restaurant = $dish->getRestaurant()) === null) return;
 
     if ($edit) { ?>
-        <article class="card responsive" >
+        <article
+            class="card responsive"
+            data-card-type="edit-dish"
+            data-dish-id="<?= $dish->id ?>"
+        >
             <label class="image-input full media thumbnail">
                 <img
                     class="thumbnail"
@@ -454,8 +460,16 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                 text: 'Delete',
                 icon: 'delete',
                 class: "top-right",
+                attributes: "data-delete-button"
             );
             ?>
+
+            <input
+                type="hidden"
+                disabled
+                name="dishes_to_delete[]"
+                value="<?= $dish->id ?>"
+            >
         </article>
     <?php } else { ?>
     <article
@@ -557,16 +571,69 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                     type: ButtonType::ICON,
                     text: "New dish",
                     icon: "add",
-                    class: "card-link"
+                    class: "card-link",
+                    attributes: "data-new-dish-button"
                 ) ?>
             </article>
         <?php } ?>
     </section>
 <?php } ?>
 
-<?php function createMenuCard(Menu $menu, bool $show_restaurant = false) { 
+<?php function createMenuCard(Menu $menu, bool $show_restaurant = false, bool $edit = false) { 
     if ($show_restaurant && ($restaurant = $menu->getRestaurant()) === null) return;
-?>
+
+    if ($edit) { ?>
+        <article
+            class="card responsive"
+            data-card-type="edit-menu"
+            data-menu-id="<?= $menu->id ?>"
+        >
+            <label class="image-input full media thumbnail">
+                <img
+                    class="thumbnail"
+                    src="<?= $menu->getThumbnail() ?>"
+                    alt=""
+                >
+                <input
+                    class="visually-hidden"
+                    type="file"
+                    name="menus_to_edit[<?= $menu->id ?>]"
+                    accept="image/*"
+                >
+            </label>
+
+            <?php
+            createTextField(
+                name: "menus_to_edit[$menu->id][name]",
+                label: 'Name',
+                value: $menu->name
+            );
+            createTextField(
+                name: "menus_to_edit[$menu->id][price]",
+                label: 'Price',
+                value: sprintf('%.2f', $menu->price),
+                type: 'number',
+                min: 0,
+                step: .01
+            );
+    
+            createButton(
+                type: ButtonType::ICON,
+                text: 'Delete',
+                icon: 'delete',
+                class: "top-right",
+                attributes: "data-delete-button"
+            );
+            ?>
+
+            <input
+                type="hidden"
+                disabled
+                name="menus_to_delete[]"
+                value="<?= $menu->id ?>"
+            >
+        </article>
+    <?php } else { ?>
     <article 
         class="card responsive interactive"
         data-card-type="menu" 
@@ -593,9 +660,9 @@ require_once(dirname(__DIR__)."/database/models/review.php");
             </span>
         </header>
     </article>
-<?php } ?>
+<?php } } ?>
 
-<?php function createRestaurantOwnedMenus(Restaurant $restaurant) {
+<?php function createRestaurantOwnedMenus(Restaurant $restaurant, bool $edit = false) {
     $owned = $restaurant->getOwnedMenus();
 
     ?>
@@ -606,9 +673,19 @@ require_once(dirname(__DIR__)."/database/models/review.php");
 
         <?php 
         foreach($owned as $menu) {
-            createMenuCard($menu);
+            createMenuCard($menu, edit: $edit);
         }
-        ?>
+
+        if ($edit) { ?>
+            <article class="card">
+                <?php createButton(
+                    type: ButtonType::ICON,
+                    text: "New menu",
+                    icon: "add",
+                    class: "card-link"
+                ) ?>
+            </article>
+        <?php } ?>
     </section>
 <?php } ?>
 
