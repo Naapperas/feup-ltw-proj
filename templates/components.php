@@ -205,7 +205,8 @@ require_once(dirname(__DIR__)."/database/models/review.php");
         createButton(
             type: ButtonType::ICON,
             text: "Shopping cart",
-            icon: "shopping_cart");
+            icon: "shopping_cart",
+            href: "/cart/");
         createButton(
             type: ButtonType::ICON, 
             text: "Profile",
@@ -612,5 +613,22 @@ require_once(dirname(__DIR__)."/database/models/review.php");
             createDishCard($dish);
         }
         ?>
+    </section>
+<?php } ?>
+
+<?php function createOrderCard() { ?>
+    <?php
+        $dishes = $_SESSION['dishes'];
+        $menus = $_SESSION['menus'];
+    ?>
+    <section class="dish-list">
+        <?php 
+        foreach($dishes as $dish) {
+            createDishCard($dish);
+        } 
+        foreach($menus as $menu) {
+            createMenuCard($menu);
+        } ?>
+
     </section>
 <?php } ?>
