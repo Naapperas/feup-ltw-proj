@@ -12,6 +12,16 @@
         <script src="/scripts/colorscheme.js" async></script>
     </head>
     <body class="medium medium-spacing column layout">
+        <section class="snackbar-container">
+            <output class="snackbar">TEST</output>
+            <output class="snackbar">
+                TEST
+                <button class="button text">ACTION</button>
+            </output>
+            <output class="snackbar">TEST</output>
+            <output class="snackbar">TEST</output>
+        </section>
+
         <h1 class="h3">Components Reference Sheet</h1>
 
         <section class="card" id="appbars">
@@ -29,8 +39,12 @@
                 <button class="start icon button">menu</button>
                 <h3 class="title h6">Elevated</h3>
                 <button class="text button color-scheme-toggle"></button>
-                <button class="icon button">share</button>
-                <button class="icon button">search</button>
+                <button class="icon button badge" data-badge-content>
+                    share
+                </button>
+                <button class="icon button badge" data-badge-content="8">
+                    search
+                </button>
             </div>
         </section>
 

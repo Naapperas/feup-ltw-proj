@@ -1,0 +1,35 @@
+.badge {
+    position: relative;
+}
+
+.badge[data-badge-content]::after {
+    content: attr(data-badge-content);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(calc(-50% + 10px), calc(-50% - 10px));
+
+    border-radius: 8px;
+    min-width: 16px;
+    height: 16px;
+    padding-inline: 4px;
+
+    background-color: rgb(var(--color-main));
+    color: rgb(var(--color-on-main));
+
+    font-family: Roboto, sans-serif;
+    font-size: 0.625rem;
+    line-height: 0.625rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+}
+
+.badge[data-badge-content=""]::after {
+    min-width: 8px;
+    height: 8px;
+}

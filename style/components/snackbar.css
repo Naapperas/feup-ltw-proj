@@ -1,0 +1,54 @@
+.snackbar-container {
+    position: fixed;
+    inset: 0;
+    padding: 24px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: start;
+    gap: 16px;
+    pointer-events: none;
+
+    z-index: 10;
+}
+
+.snackbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+
+    width: 100%;
+    max-width: 344px;
+    min-height: 48px;
+    padding: 16px;
+    border-radius: 24px;
+
+    background-color: rgb(var(--color-contrast-surface));
+    color: rgb(var(--color-on-contrast-surface));
+    --color-button: var(--color-contrast-main);
+    --color-on-button: var(--color-on-contrast-main);
+
+    --elevation: var(--elevation-6);
+
+    pointer-events: initial;
+    text-align: start;
+
+    transition-property: background, color, box-shadow;
+}
+
+.snackbar > .button:is(.text, .icon) {
+    margin: -8px;
+}
+
+@media screen and (max-width: 480px) {
+    .snackbar-container {
+        padding: 8px;
+    }
+
+    .snackbar {
+        max-width: unset;
+    }
+}

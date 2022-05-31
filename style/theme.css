@@ -10,6 +10,10 @@
     --color-on-main: 255, 255, 255;
     --color-surface: 255, 255, 255;
     --color-on-surface: 0, 0, 0;
+    --color-contrast-surface: 18, 18, 18;
+    --color-on-contrast-surface: 255, 255, 255;
+    --color-contrast-main: 187, 134, 252;
+    --color-on-contrast-main: 0, 0, 0;
     --color-image-surface: 0, 0, 0;
     --color-on-image-surface: 255, 255, 255;
     --color-error: 176, 0, 32;
@@ -108,6 +112,10 @@
     --color-on-main: 0, 0, 0;
     --color-surface: 18, 18, 18;
     --color-on-surface: 255, 255, 255;
+    --color-contrast-surface: 255, 255, 255;
+    --color-on-contrast-surface: 0, 0, 0;
+    --color-contrast-main: 98, 0, 238;
+    --color-on-contrast-main: 255, 255, 255;
     --color-error: 207, 102, 121;
     --color-on-error: 0, 0, 0;
 

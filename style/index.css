@@ -7,6 +7,7 @@
 @import url("./layout.css");
 
 @import url("./components/appbar.css");
+@import url("./components/badge.css");
 @import url("./components/button.css");
 @import url("./components/card.css");
 @import url("./components/chip.css");
@@ -18,5 +19,6 @@
 @import url("./components/searchbar.css");
 @import url("./components/selection.css");
 @import url("./components/slider.css");
+@import url("./components/snackbar.css");
 @import url("./components/textfield.css");
 @import url("./components/toggleiconbutton.css");
