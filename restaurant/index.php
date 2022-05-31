@@ -42,7 +42,7 @@
 
         <main class="restaurant-main">
             <header class="restaurant-header">
-                <img src="<?= $restaurant->getThumbnail() ?>" alt="">
+                <img src="<?= $restaurant->getImagePath() ?>" alt="">
                 <h2 class="title"><?= $restaurant->name ?></h2>
             </header>
 

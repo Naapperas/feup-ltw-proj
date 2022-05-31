@@ -33,7 +33,7 @@
                     <label class="image-input avatar big">
                         <img 
                             class="avatar big"
-                            src="<?= $user->getProfilePic() ?>"
+                            src="<?= $user->getImagePath() ?>"
                             alt=""
                             width="280"
                             height="280"

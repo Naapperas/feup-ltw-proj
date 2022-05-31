@@ -5,7 +5,7 @@
     require_once('restaurant.php');
     require_once('dish.php');
 
-    class Menu extends Model {
+    class Menu extends ModelWithImage {
 
         public string $name;
         public float $price;
@@ -14,6 +14,10 @@
 
         protected static function getTableName(): string {
             return 'Menu';
+        }
+
+        protected static function getImageFolder(): string {
+            return "menu";
         }
 
         public function getRestaurant(): ?Restaurant {
@@ -33,16 +37,6 @@
 
                 return true;
             } else return false;
-        }
-
-        public function getThumbnail(): string {
-            $src = "/assets/pictures/menu/$this->id.webp";
-            
-            if (!file_exists(dirname(dirname(__DIR__)).$src)) {
-                $src = "/assets/pictures/menu/default.webp";
-            }
-
-            return $src;
         }
     }
 ?>

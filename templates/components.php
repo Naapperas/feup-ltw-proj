@@ -242,7 +242,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
         data-restaurant-id="<?= $restaurant->id ?>"
     >
         <img
-            src="<?= $restaurant->getThumbnail() ?>"
+            src="<?= $restaurant->getImagePath() ?>"
             width="1920"
             height="1080"
             alt="Profile picture for <?= $restaurant->name ?>"
@@ -424,7 +424,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
             <label class="image-input full media thumbnail">
                 <img
                     class="thumbnail"
-                    src="<?= $dish->getThumbnail() ?>"
+                    src="<?= $dish->getImagePath() ?>"
                     alt=""
                 >
                 <input
@@ -478,7 +478,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
         data-dish-id="<?= $dish->id ?>"
     >
         <img
-            src="<?= $dish->getThumbnail() ?>"
+            src="<?= $dish->getImagePath() ?>"
             width="1920"
             height="1080"
             alt="Dish picture for <?= $dish->name ?>"
@@ -591,7 +591,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
             <label class="image-input full media thumbnail">
                 <img
                     class="thumbnail"
-                    src="<?= $menu->getThumbnail() ?>"
+                    src="<?= $menu->getImagePath() ?>"
                     alt=""
                 >
                 <input
@@ -735,7 +735,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
         <a href="/profile/?id=<?= $user->id ?>">
             <header class="header">
                 <img 
-                    src=<?= $user->getProfilePic() ?>
+                    src=<?= $user->getImagePath() ?>
                     alt="Review profile image for user <?=$user->id?>"
                     class="avatar small"
                 >
@@ -779,7 +779,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
         data-user-id="<?= $user->id ?>"
     >
         <img
-            src="<?= $user->getProfilePic() ?>"
+            src="<?= $user->getImagePath() ?>"
             width="320"
             height="180"
             alt="Profile picture for <?= $user->name ?>"

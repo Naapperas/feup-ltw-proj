@@ -8,7 +8,7 @@
     require_once('menu.php');
     require_once('review.php');
 
-    class Restaurant extends Model {
+    class Restaurant extends ModelWithImage {
 
         public string $name;
         public string $address;
@@ -21,6 +21,10 @@
 
         protected static function getTableName(): string {
             return "Restaurant";
+        }
+
+        protected static function getImageFolder(): string {
+            return "restaurant";
         }
 
         public function getOwner(): ?User {
@@ -130,16 +134,6 @@
             if ($queryResults === false) return false;
 
             return count($queryResults) > 0;
-        }
-
-        function getThumbnail(): string {
-            $src = "/assets/pictures/restaurant/$this->id.webp";
-            
-            if (!file_exists(dirname(dirname(__DIR__)).$src)) {
-                $src = "/assets/pictures/restaurant/default.webp";
-            }
-
-            return $src;
         }
     }
 ?>

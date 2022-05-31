@@ -72,6 +72,8 @@ export const createImageInput = (name, src, wrapperClasses, previewClasses) => {
     imageInput.appendChild(imagePreview);
     imageInput.appendChild(input);
 
+    empowerImageInput(imageInput);
+
     return imageInput;
 };
 

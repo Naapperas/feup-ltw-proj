@@ -50,7 +50,7 @@
                     <label class="image-input thumbnail rounded">
                         <img
                             class="thumbnail"
-                            src="<?= $restaurant->getThumbnail() ?>"
+                            src="<?= $restaurant->getImagePath() ?>"
                             alt=""
                         >
                         <input

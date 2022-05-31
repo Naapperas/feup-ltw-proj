@@ -42,7 +42,7 @@
         <main class="profile medium medium-spacing column layout">
             <img
                 class="avatar big"
-                src="<?= $user->getProfilePic() ?>"
+                src="<?= $user->getImagePath() ?>"
                 alt="<?= $user->name ?>'s profile picture"
                 width="280"
                 height="280"

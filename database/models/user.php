@@ -5,8 +5,7 @@
     require_once('restaurant.php');
     include(dirname(__DIR__, 2).'/lib/password.php');
 
-    class User extends Model {
-
+    class User extends ModelWithImage {
         public string $name;
         public string $email;
         public string $address;
@@ -15,6 +14,10 @@
     
         protected static function getTableName(): string {
             return "User";
+        }
+
+        protected static function getImageFolder(): string {
+            return "user";
         }
 
         function validatePassword(string $passwordCandidate): bool {
@@ -95,16 +98,6 @@
             list($success,) = executeQuery(static::getDB(), $query, [$this->id, $dishId]);
 
             return $success;
-        }
-
-        function getProfilePic(): string {
-            $src = "/assets/pictures/profile/$this->id.webp";
-            
-            if (!file_exists(dirname(dirname(__DIR__)).$src)) {
-                $src = "/assets/pictures/profile/default.webp";
-            }
-
-            return $src;
         }
     }
 ?>
