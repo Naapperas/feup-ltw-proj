@@ -21,6 +21,10 @@
 
     background-color: rgb(var(--color-main));
     color: rgb(var(--color-on-main));
+    
+    border-color: rgb(var(--color-on-main));
+    border-style: solid;
+    border-width: 0.5px;
 
     font-family: Roboto, sans-serif;
     font-size: 0.625rem;

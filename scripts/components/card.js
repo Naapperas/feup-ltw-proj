@@ -55,8 +55,6 @@ export const empowerRestaurantCard = (restaurantCard) => {
 export const empowerDishCard = (dishCard) => {
     const { dishId } = dishCard.dataset;
 
-    console.log(dishCard);
-
     const toggleLikedStatus = async (event) => {
         event?.stopPropagation();
 
@@ -87,10 +85,10 @@ export const empowerDishCard = (dishCard) => {
             if (dishAdded) {
 
                 /** @type HTMLElement */
-                const cartBadge = document.querySelector('[data-badge-content]');
+                const cartBadge = document.querySelector('[data-cart]');
 
-                cartBadge.dataset.badgeContent = (parseInt(cartBadge.dataset.badgeContent) + 1).toString();
-                console.log((parseInt(cartBadge.dataset.badgeContent)).toString());
+                cartBadge.dataset.badgeContent = ((parseInt(cartBadge.dataset.badgeContent) || 0) + 1).toString();
+                cartBadge.classList.add('badge');
             }
         } catch {
             return;

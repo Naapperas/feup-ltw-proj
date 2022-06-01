@@ -63,7 +63,9 @@ require_once(__DIR__.'/form.php');
             text: "Shopping cart",
             icon: "shopping_cart",
             class: $cartItemCount ? "badge" : '',
-            attributes: $cartItemCount ? "data-badge-content=\"$cartItemCount\"" : '',
+            attributes: 
+                ($cartItemCount ? "data-badge-content=\"$cartItemCount\"" : '').
+                "data-cart",
             href: "/cart/");
         createButton(
             type: ButtonType::ICON, 

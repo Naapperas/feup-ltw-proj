@@ -34,7 +34,7 @@ $recommended_dishes = DIsh::getAll();
         <main class="large medium-spacing column layout">
             <?php
             createRestaurantList($favorite_restaurants, 'h2', title: 'Your favorite restaurants');
-            createDishList($favorite_dishes, 'h2', title: 'Your favorite restaurants', show_restaurant: true);
+            createDishList($favorite_dishes, 'h2', title: 'Your favorite dishes', show_restaurant: true);
             createRestaurantList($recommended_restaurants, 'h2', title: 'Recommended restaurants');
             createDishList($recommended_dishes, 'h2', title: 'Recommended dishes', show_restaurant: true);
             ?>
