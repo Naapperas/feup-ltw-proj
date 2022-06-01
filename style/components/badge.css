@@ -1,3 +1,13 @@
+:root {
+    --color-badge: var(--color-contrast-surface);
+    --color-on-badge: var(--color-on-contrast-surface);
+}
+
+:root[color-scheme="dark"] {
+    --color-badge: var(--color-main);
+    --color-on-badge: var(--color-on-main);
+}
+
 .badge {
     position: relative;
 }
@@ -19,18 +29,16 @@
     height: 16px;
     padding-inline: 4px;
 
-    background-color: rgb(var(--color-main));
-    color: rgb(var(--color-on-main));
-    
-    border-color: rgb(var(--color-on-main));
-    border-style: solid;
-    border-width: 0.5px;
+    background-color: rgb(var(--color-badge));
+    color: rgb(var(--color-on-badge));
 
     font-family: Roboto, sans-serif;
     font-size: 0.625rem;
     line-height: 0.625rem;
     font-weight: 400;
     letter-spacing: 0.15em;
+
+    transition-property: background, color;
 }
 
 .badge[data-badge-content=""]::after {
