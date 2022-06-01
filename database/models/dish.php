@@ -19,6 +19,23 @@
             return "dish";
         }
 
+        public static function getForCategoryIds(array $categoryIds): array {
+
+            $restaurants = [];
+            $query = "SELECT dish AS id FROM Dish_category WHERE category = ?;";
+
+            foreach($categoryIds as $categoryId) {
+
+                $queryResults = getQueryResults(static::getDB(), $query, true, [$categoryId]);
+
+                if ($queryResults === false) $queryResults = [];
+
+                $restaurants = array_merge($restaurants, array_map(fn (array $data) => static::getById($data['id']), $queryResults));
+            }
+
+            return $restaurants;
+        }
+
         public function getRestaurant(): ?Restaurant {
             return Restaurant::getById($this->restaurant);
         }

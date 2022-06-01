@@ -31,7 +31,6 @@
             min: 0,
             max: 50,
             optional: true,
-            default: 50 /* TODO: remove this default once the appropriate input exists */
         )
     ]);
 
@@ -51,11 +50,23 @@
     require_once("../database/models/restaurant.php");
     require_once("../database/models/dish.php");
     require_once("../database/models/menu.php");
+    require_once("../database/models/category.php");
     require_once("../database/models/query.php");
 
+    $categoryIds = array_map(fn (Category $category) => $category->id, Category::getWithFilters([$nameContainsSearchTermFilter]));
+
     $users = User::getWithFilters([$nameContainsSearchTermFilter], limit: 10);
-    $restaurants = Restaurant::getWithFilters([$nameContainsSearchTermFilter], limit: 10);
-    $dishes = Dish::getWithFilters([$nameContainsSearchTermFilter, $dishPriceFilter], limit: 10);
+
+    $restaurants = array_unique(array_merge(
+        Restaurant::getWithFilters([$nameContainsSearchTermFilter], limit: 10),
+        Restaurant::getForCategoryIds($categoryIds)
+    ));
+
+    $dishes = array_unique(array_merge(
+        Dish::getWithFilters([$nameContainsSearchTermFilter, $dishPriceFilter], limit: 10),
+        Dish::getForCategoryIds($categoryIds)
+    ));
+
     $menus = Menu::getWithFilters([$nameContainsSearchTermFilter], limit: 10);
 ?>
 <!DOCTYPE html>
@@ -63,7 +74,7 @@
     <?php createHead(
             baseMetadata(description: "Search Page"),
             styles: ["/style/pages/search.css", "/style/components/slider.css"],
-            scripts: ["components/dialog.js", "components/slider.js"]); ?>
+            scripts: ["components/dialog.js", "components/slider.js", "components/card.js"]); ?>
     <body class="top-app-bar layout">
         <?php createAppBar(value: $params['q']); ?>
 

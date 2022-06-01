@@ -8,6 +8,16 @@ export const addProductToCart = async (id, type) => {
     data.append("productType", type);
 
     const response = await fetch(
-        "../../api/cart/index.php"
-    )
+        "/api/cart/index.php",
+        {
+            method: "POST",
+            body: data,
+        }
+    );
+
+    if (!response.ok) return;
+
+    const { ok } = await response.json();
+
+    return ok;
 }

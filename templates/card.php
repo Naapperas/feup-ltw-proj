@@ -147,14 +147,9 @@ require_once(dirname(__DIR__)."/database/models/user.php");
         />
         <header class="header">
             <h3 class="title h6">
-                <a 
-                    href="/dish/?id=<?= $dish->id ?>"
-                    class="card-link"
-                >
-                    <?= $dish->name ?>
-                </a>
+                <?= $dish->name ?>
             </h3>
-            <span class="subtitle subtitle2 secondary">
+            <span class="subtitle subtitle2 secondary"> <!-- XXX: maybe add the price even when out of the restaurant page -->
                 <?= $show_restaurant ? $restaurant->name : sprintf('%.2f€', $dish->price) ?>
             </span>
         </header>

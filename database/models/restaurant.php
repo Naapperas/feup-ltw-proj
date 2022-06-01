@@ -27,6 +27,23 @@
             return "restaurant";
         }
 
+        public static function getForCategoryIds(array $categoryIds): array {
+
+            $restaurants = [];
+            $query = "SELECT restaurant AS id FROM Restaurant_category WHERE category = ?;";
+
+            foreach($categoryIds as $categoryId) {
+
+                $queryResults = getQueryResults(static::getDB(), $query, true, [$categoryId]);
+
+                if ($queryResults === false) $queryResults = [];
+
+                $restaurants = array_merge($restaurants, array_map(fn (array $data) => static::getById($data['id']), $queryResults));
+            }
+
+            return $restaurants;
+        }
+
         public function getOwner(): ?User {
             return User::getById($this->owner);
         }
@@ -109,6 +126,7 @@
 
             if (count($categories) === 0) return $success;
 
+            // HACK
             // using this query format we avoid making multiple queries to the DB,
             // with the downside of 'having' to hardcode the restaurant id into the query itself, 
             // but since that id comes from the restaurant model itself, there should be no problem (unless the DB is breached)

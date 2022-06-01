@@ -198,14 +198,18 @@ require_once(dirname(__DIR__)."/database/models/review.php");
     </form>
 <?php } ?>
 
-<?php function createUserButtons() {
+<?php function createUserButtons(bool $showCartBadge = true) {
     session_start();
 
-    if (isset($_SESSION['user'])) {    
+    if (isset($_SESSION['user'])) {       
+        $cartItemCount = count($_SESSION['cart']['dishes'] ?? []) + count($_SESSION['cart']['menus'] ?? []);
+
         createButton(
             type: ButtonType::ICON,
             text: "Shopping cart",
             icon: "shopping_cart",
+            class: $showCartBadge ? "badge" : '',
+            attributes: $showCartBadge ? "data-badge-content=\"$cartItemCount\"" : '',
             href: "/cart/");
         createButton(
             type: ButtonType::ICON, 
@@ -229,6 +233,24 @@ require_once(dirname(__DIR__)."/database/models/review.php");
     }
 } ?>
 
+<?php function createSlider(string $name, string $labelText, string $defaultLabelValue, int $min, int $max, $startValue, float|int|string $step = null) { ?>
+    <div class="slider">
+        <label for="<?= $name ?>_slider">
+            <?= $labelText ?> <span id="<?= $name ?>_value"><?= $defaultLabelValue ?></span>
+        </label>
+        <input
+            class="slider"
+            type="range"
+            name="<?= $name ?>"
+            id="<?= $name ?>_slider"
+            min="<?= $min ?>"
+            max="<?= $max ?>"
+            value="<?= $startValue ?>"
+            <?php if ($step !== null) { echo "step=\"$step\""; } ?>
+        />
+    </div>
+<?php } ?>
+
 <?php function createColorSchemeToggle() {
     createButton(
         type: ButtonType::ICON, 
@@ -237,7 +259,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
     );
 } ?>
 
-<?php function createAppBar(?string $value = null) { ?>
+<?php function createAppBar(?string $value = null, bool $showCartBadge = true) { ?>
     <header class="appbar elevated fixed">
         <a href="/" class="title homepage-link"><h1 class="h6 color logo"></h1></a>
 
@@ -266,43 +288,17 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                 attributes: "data-search-button"
             ); ?>
             <dialog class="dialog confirmation" id="filters">
-                <header><h2 class="h4">Filters</h2></header>
+                <header><h2 class="h4">Search Filters</h2></header>
                 <div class="content">
                     <section>
                         <h2 class="title h5">Restaurants</h2>
-                        <div class="slider">
-                            <label for="min_score_slider">
-                                Minimum Score: <span id="score">N/A</span>
-                            </label>
-                            <input
-                                class="slider"
-                                type="range"
-                                name="min_restaurant_score"
-                                id="min_score_slider"
-                                min="0"
-                                max="50"
-                                value="25"
-                                step="1"
-                            />
-                        </div>
+                        <?php createSlider("min_restaurant_score", "Minimum Score:", "20", 0, 5, 2, 0.1); ?>
+                        <?php createSlider("max_restaurant_score", "Maximum Score:", "40", 0, 5, 4, 0.1); ?>
                     </section>
                     <section>
                         <h2 class="title h5">Dishes</h2>
-                        <div class="slider">
-                            <label for="min_price_slider">
-                                Minimum price: <span id="price">N/A</span>
-                            </label>
-                            <input
-                                class="slider"
-                                type="range"
-                                name="min_dish_price"
-                                id="min_price_slider"
-                                min="0"
-                                max="20"
-                                value="10"
-                                step="any"
-                            />
-                        </div>
+                        <?php createSlider("min_dish_price", "Minimum Price:", "0.0€", 0, 20, 0, 0.01); ?>
+                        <?php createSlider("max_dish_price", "Maximum Price:", "20€", 0, 20, 20, 0.01); ?>
                     </section>
                 </div>
                 <div class="actions">
@@ -313,7 +309,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
 
         <?php
         createColorSchemeToggle();
-        createUserButtons();
+        createUserButtons($showCartBadge);
         ?>
 
     </header>
@@ -326,8 +322,10 @@ require_once(dirname(__DIR__)."/database/models/review.php");
     <?php } ?>
         <ul class="chip-list wrap">
             <?php foreach($categories as $category) { ?>
-                <li class="chip" data-category-id="<?= $category->id ?>">
-                    <?= $category->name ?>
+                <li class="chip" data-category-id="<?= $category->id ?>"> <!-- TODO: make it so entire chip is link -->
+                    <a href="/search/?q=<?= rawurlencode($category->name) ?>">
+                        <?= $category->name ?>
+                    </a>
                 </li>
             <?php } ?>
         </ul>
@@ -414,7 +412,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
             <h3 class="title h6">Favorite Dishes</h3>
         </header>
 
-        <?php 
+        <?php
         foreach($favorites as $dish) {
             createDishCard($dish, true);
         }
@@ -618,8 +616,8 @@ require_once(dirname(__DIR__)."/database/models/review.php");
 
 <?php function createOrderCard() { ?>
     <?php
-        $dishes = $_SESSION['dishes'];
-        $menus = $_SESSION['menus'];
+        $dishes = $_SESSION['cart']['dishes'];
+        $menus = $_SESSION['cart']['menus'];
     ?>
     <section class="dish-list">
         <?php 

@@ -47,10 +47,10 @@ _dialogBtns.forEach(empowerDialogButton);
 
 const empowerMinScoreSlider = (slider) => {
 
-    const scoreText = slider.parentElement.querySelector("#score");
+    const scoreText = slider.parentElement.querySelector("#min_restaurant_score_value");
 
     const updateMinScore = (event) => {
-        scoreText.textContent = (Math.round((event.target.value / 10) * 100) / 100).toFixed(1);
+        scoreText.textContent = (Math.round((event.target.value) * 100) / 100).toFixed(1);
     };
 
     slider.addEventListener("input", updateMinScore);
@@ -60,9 +60,24 @@ const restaurantMinScoreSlider = document.querySelector("input[type=range][name=
 
 empowerMinScoreSlider(restaurantMinScoreSlider);
 
+const empowerMaxScoreSlider = (slider) => {
+
+    const scoreText = slider.parentElement.querySelector("#max_restaurant_score_value");
+
+    const updateMaxScore = (event) => {
+        scoreText.textContent = (Math.round((event.target.value) * 100) / 100).toFixed(1);
+    };
+
+    slider.addEventListener("input", updateMaxScore);
+}
+
+const restaurantMaxScoreSlider = document.querySelector("input[type=range][name=max_restaurant_score]");
+
+empowerMaxScoreSlider(restaurantMaxScoreSlider);
+
 const empowerMinPriceSlider = (slider) => {
 
-    const scoreText = slider.parentElement.querySelector("#price");
+    const scoreText = slider.parentElement.querySelector("#min_dish_price_value");
 
     const updateMinScore = (event) => {
         scoreText.textContent = `${(Math.round((event.target.value) * 100) / 100).toFixed(2)}€`;
@@ -74,3 +89,18 @@ const empowerMinPriceSlider = (slider) => {
 const restaurantMinPriceSlider = document.querySelector("input[type=range][name=min_dish_price]");
 
 empowerMinPriceSlider(restaurantMinPriceSlider);
+
+const empowerMaxPriceSlider = (slider) => {
+
+    const scoreText = slider.parentElement.querySelector("#max_dish_price_value");
+
+    const updateMaxScore = (event) => {
+        scoreText.textContent = `${(Math.round((event.target.value) * 100) / 100).toFixed(2)}€`;
+    };
+
+    slider.addEventListener("input", updateMaxScore);
+}
+
+const restaurantMaxPriceSlider = document.querySelector("input[type=range][name=max_dish_price]");
+
+empowerMaxPriceSlider(restaurantMaxPriceSlider);

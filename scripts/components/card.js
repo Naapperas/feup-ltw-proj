@@ -4,6 +4,7 @@
 
 import { toggleRestaurantLikedStatus } from "../api/restaurant.js";
 import { toggleDishLikedStatus } from "../api/dish.js";
+import { addProductToCart } from "../api/cart.js";
 import { createTextField } from "./textfield.js";
 import { createImageInput } from "./imageinput.js";
 
@@ -43,7 +44,7 @@ export const empowerRestaurantCard = (restaurantCard) => {
     const favoriteButton = restaurantCard.querySelector(
         "button[data-favorite-button]"
     );
-    favoriteButton.addEventListener("click", toggleLikedStatus);
+    favoriteButton?.addEventListener("click", toggleLikedStatus);
 };
 
 /**
@@ -54,8 +55,10 @@ export const empowerRestaurantCard = (restaurantCard) => {
 export const empowerDishCard = (dishCard) => {
     const { dishId } = dishCard.dataset;
 
+    console.log(dishCard);
+
     const toggleLikedStatus = async (event) => {
-        event?.preventDefault();
+        event?.stopPropagation();
 
         try {
             const favorite = await toggleDishLikedStatus(dishId);
@@ -73,6 +76,28 @@ export const empowerDishCard = (dishCard) => {
             return;
         }
     };
+
+    const addDishToCart = async (event) => {
+        event?.preventDefault();
+    
+        try {
+
+            const dishAdded = await addProductToCart(dishId, 'dish');
+
+            if (dishAdded) {
+
+                /** @type HTMLElement */
+                const cartBadge = document.querySelector('[data-badge-content]');
+
+                cartBadge.dataset.badgeContent = (parseInt(cartBadge.dataset.badgeContent) + 1).toString();
+                console.log((parseInt(cartBadge.dataset.badgeContent)).toString());
+            }
+        } catch {
+            return;
+        }
+    };
+
+    dishCard.addEventListener("click", addDishToCart);
 
     const favoriteButton = dishCard.querySelector(
         "button[data-favorite-button]"

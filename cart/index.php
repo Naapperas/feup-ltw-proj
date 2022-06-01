@@ -1,41 +1,30 @@
 <?php
-declare(strict_types=1);
+    declare(strict_types=1);
 
-require_once("../templates/components.php");
-require_once("../templates/metadata.php");
-require_once('../lib/params.php');
+    require_once("../templates/components.php");
+    require_once("../templates/metadata.php");
+    require_once('../lib/params.php');
 
-session_start();
+    session_start();
 
-list('id' => $id) = parseParams(get_params: [
-    'id' => new IntParam(
-        default: $_SESSION['user'], 
-        optional: true
-    ),
-]);
+    $user = User::getById($_SESSION['user']);
 
-if (!isset($id)) {
-    header("Location: /");
-    die();
-}
-
-$user = User::getById($id);
-
-if ($user === null) {
-    http_response_code(404);
-    require("../error.php");
-    die();
-}
+    if ($user === null) {
+        http_response_code(404);
+        require("../error.php");
+        die();
+    }
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
     <?php createHead(
         metadata: baseMetadata(description: "Cart for XauFome."),
-        styles: ["/style/pages/main.css"]
+        styles: ["/style/pages/main.css"],
+        scripts: ["/api/cart.js"]
     ); ?>
     <body class="top-app-bar layout">
-        <?php createAppBar(); ?>
+        <?php createAppBar(showCartBadge: false); ?>
 
         <section class="dish-list">
             <header class="header">

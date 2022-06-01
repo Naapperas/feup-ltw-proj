@@ -11,6 +11,16 @@
             return getDBConnection(dirname(__DIR__).'/main.db');
         }
     
+        public function __toString(): string {
+            $class = get_called_class();
+            $props = get_class_vars($class);
+
+            foreach ($props as $prop => $_)
+                $attrs[] = sprintf('%s="%s"', $prop, $this->{$prop});
+
+            return sprintf('%s(%s)', $class, implode(', ', $attrs));
+        }
+
         protected abstract static function getTableName(): string;
     
         protected static function fromArray(array $values): static {
