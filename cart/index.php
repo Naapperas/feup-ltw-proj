@@ -16,6 +16,8 @@
         die();
     }
 
+    $dishes = Dish::getById($_SESSION['cart']['dishes'] ?? []);
+    $menus = Menu::getById($_SESSION['cart']['menus'] ?? []);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,8 +29,8 @@
     <body class="top-app-bar layout">
         <?php
         createAppBar();
-        createDishList($_SESSION['cart']['dishes']);
-        createMenuList($_SESSION['cart']['menus']);
+        createDishList($dishes);
+        createMenuList($menus);
         ?>
     </body>
 </html>

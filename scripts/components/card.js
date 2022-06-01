@@ -77,30 +77,30 @@ export const empowerDishCard = (dishCard) => {
 
     const addDishToCart = async (event) => {
         event?.preventDefault();
-    
-        try {
 
-            const dishAdded = await addProductToCart(dishId, 'dish');
+        try {
+            const dishAdded = await addProductToCart(dishId, "dish");
 
             if (dishAdded) {
-
                 /** @type HTMLElement */
-                const cartBadge = document.querySelector('[data-cart]');
+                const cartBadge = document.querySelector("[data-cart]");
 
-                cartBadge.dataset.badgeContent = ((parseInt(cartBadge.dataset.badgeContent) || 0) + 1).toString();
-                cartBadge.classList.add('badge');
+                cartBadge.dataset.badgeContent = (
+                    parseInt(cartBadge.dataset.badgeContent ?? "0") + 1
+                ).toString();
+                cartBadge.classList.add("badge");
             }
         } catch {
             return;
         }
     };
 
-    dishCard.addEventListener("click", addDishToCart);
+    const cardLink = dishCard.querySelector(".card-link");
+    cardLink.addEventListener("click", addDishToCart);
 
     const favoriteButton = dishCard.querySelector(
         "button[data-favorite-button]"
     );
-
     favoriteButton.addEventListener("click", toggleLikedStatus);
 };
 

@@ -146,7 +146,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
             />
             <header class="header">
                 <h3 class="title h6">
-                    <?= $dish->name ?>
+                    <a href="#" class="card-link"><?= $dish->name ?></a>
                 </h3>
                 <span class="subtitle subtitle2 secondary">
                     <!-- XXX: maybe add the price even when out of the restaurant page -->
@@ -255,12 +255,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
         />
         <header class="header">
             <h3 class="title h6">
-                <a 
-                    href="/menu/?id=<?= $menu->id ?>"
-                    class="card-link"
-                >
-                    <?= $menu->name ?>
-                </a>
+                <a href="#" class="card-link"><?= $menu->name ?></a>
             </h3>
             <span class="subtitle subtitle2 secondary">
                 <?= $show_restaurant ? $restaurant->name : sprintf('%.2f€', $menu->price) ?>
