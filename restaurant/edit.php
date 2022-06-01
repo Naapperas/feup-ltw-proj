@@ -1,7 +1,9 @@
 <?php 
     declare(strict_types = 1);
     
-    require_once('../templates/components.php');
+    require_once('../templates/common.php');
+    require_once('../templates/form.php');
+    require_once('../templates/list.php');
     require_once('../templates/metadata.php');
 
     require_once('../lib/params.php');
@@ -90,7 +92,7 @@
                         class: "inline"
                     );
 
-                    createRestaurantCategories($restaurant->getCategories(), true);
+                    createCategoryList($restaurant->getCategories(), true);
 
                     ?><dialog class="dialog confirmation" id="categories">
                         <header><h2 class="h5">Categories</h2></header>
@@ -108,8 +110,8 @@
 
                 <div class="edit-restaurant-main">
                     <?php
-                    createRestaurantOwnedDishes($restaurant, true);
-                    createRestaurantOwnedMenus($restaurant, true);
+                    createDishList($restaurant->getOwnedDishes(), edit: true);
+                    createMenuList($restaurant->getOwnedMenus(), edit: true);
                     ?>
                 </div>
                 

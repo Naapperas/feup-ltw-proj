@@ -4,7 +4,8 @@
 
     session_start();    
 
-    require_once("../templates/components.php");
+    require_once("../templates/common.php");
+    require_once("../templates/list.php");
     require_once("../templates/metadata.php");
 
     require_once("../lib/params.php");
@@ -73,10 +74,9 @@
 <html lang="en">
     <?php createHead(
             baseMetadata(description: "Search Page"),
-            styles: ["/style/pages/search.css", "/style/components/slider.css"],
             scripts: ["components/dialog.js", "components/slider.js", "components/card.js"]); ?>
     <body class="top-app-bar layout">
-        <?php createAppBar(value: $params['q']); ?>
+        <?php createAppBar(query: $params['q']); ?>
 
         <main class="large medium-spacing column layout">
             <header class="header">
@@ -84,10 +84,10 @@
             </header>
             <?php 
             
-            if ($users !== []) createSearchUserProfiles($users);
-            if ($restaurants !== []) createSearchRestaurants($restaurants);
-            if ($menus !== []) createSearchMenus($menus);
-            if ($dishes !== []) createSearchDishes($dishes);
+            createUserList($users);
+            createRestaurantList($restaurants);
+            createMenuList($menus);
+            createDishList($dishes);
             ?>
         </main>
     </body>

@@ -1,7 +1,8 @@
 <?php
     declare(strict_types=1);
 
-    require_once("../templates/components.php");
+    require_once("../templates/common.php");
+    require_once("../templates/list.php");
     require_once("../templates/metadata.php");
     require_once('../lib/params.php');
 
@@ -24,14 +25,10 @@
         scripts: ["/api/cart.js"]
     ); ?>
     <body class="top-app-bar layout">
-        <?php createAppBar(showCartBadge: false); ?>
-
-        <section class="dish-list">
-            <header class="header">
-                <h3 class="title h4">Cart</h3>
-            </header>
-
-            <?php createOrderCard() ?>
-        </section>
+        <?php
+        createAppBar();
+        createDishList($_SESSION['cart']['dishes']);
+        createMenuList($_SESSION['cart']['menus']);
+        ?>
     </body>
 </html>

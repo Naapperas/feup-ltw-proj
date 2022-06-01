@@ -1,7 +1,8 @@
 <?php 
     declare(strict_types = 1);
     
-    require_once('../templates/components.php');
+    require_once('../templates/common.php');
+    require_once('../templates/list.php');
     require_once('../templates/metadata.php');
     
     require_once('../database/models/user.php');
@@ -29,12 +30,15 @@
         require("../error.php");
         die();
     }
+
+    $owned_restaurants = $user->getOwnedRestaurants();
+    $favorite_restaurants = $user->getFavoriteRestaurants();
+    $favorite_dishes = $user->getFavoriteDishes();
 ?>
 <!DOCTYPE html>
 <html lang="en">
     <?php createHead(metadata: userMetadata($user),
-        scripts: ["components/card.js", "components/dialog.js", "components/slider.js"],
-        styles: ["/style/pages/profile.css"]
+        scripts: ["components/card.js", "components/dialog.js", "components/slider.js"]
     ); ?>
     <body class="top-app-bar layout">
         <?php createAppBar(); ?>
@@ -67,9 +71,11 @@
                 <?php createIcon('phone') ?><span><?=$user->phone_number?></span>
             </section>
 
-            <?php createProfileOwnedRestaurants($user); ?>
-            <?php createProfileFavoriteRestaurants($user); ?>
-            <?php createProfileFavoriteDishes($user); ?>
+            <?php 
+            createRestaurantList($owned_restaurants, vh: 'h5', title: 'Owned restaurants');
+            createRestaurantList($favorite_restaurants, vh: 'h5', title: 'Favorite restaurants');
+            createDishList($favorite_dishes, vh: 'h5', title: 'Favorite dishes');
+            ?>
         </main>
     </body>
 </html>

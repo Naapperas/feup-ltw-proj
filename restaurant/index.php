@@ -2,7 +2,9 @@
 
     declare(strict_types = 1);
 
-    require_once("../templates/components.php");
+    require_once("../templates/common.php");
+    require_once("../templates/form.php");
+    require_once("../templates/list.php");
     require_once("../templates/metadata.php");
     require_once("../database/models/restaurant.php");
 
@@ -46,8 +48,11 @@
                 <h2 class="title"><?= $restaurant->name ?></h2>
             </header>
 
-            <?php createRestaurantOwnedDishes($restaurant); ?>
-            <?php createRestaurantOwnedMenus($restaurant); ?>
+
+            <?php
+            createDishList($restaurant->getOwnedDishes());
+            createMenuList($restaurant->getOwnedMenus());
+            ?>
         </main>
 
         <aside class="restaurant-sidebar">
@@ -76,14 +81,11 @@
                 createIcon("star");?><span><?= round($score, 1) ?></span>
                 <?php } ?>
 
-                <?php createRestaurantCategories($restaurant->getCategories()) ?>
+                <?php createCategoryList($restaurant->getCategories()) ?>
             </div>
 
             <?php
-
-                createRestaurantReviewList($restaurant);
-
-                session_start();
+                createReviewList($restaurant->getReviews(50));
 
                 if (isset($_SESSION['user'])) {
 

@@ -1,7 +1,8 @@
 <?php 
 declare(strict_types=1);
 
-require_once("../templates/components.php");
+require_once("../templates/common.php");
+require_once("../templates/form.php");
 require_once("../templates/metadata.php");
 
 session_start();
