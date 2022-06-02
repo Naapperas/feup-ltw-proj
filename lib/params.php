@@ -4,7 +4,7 @@ declare(strict_types=1);
 require_once(__DIR__.'/util.php');
 
 function _error() {
-    error(400);
+    error(HTTPStatusCode::BAD_REQUEST);
 }
 
 abstract class Param {

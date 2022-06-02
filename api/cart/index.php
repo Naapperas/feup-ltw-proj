@@ -5,13 +5,13 @@
 
     if ($_SERVER['REQUEST_METHOD'] !== 'POST'
      && $_SERVER['REQUEST_METHOD'] !== 'GET')
-        error(405);
+        error(HTTPStatusCode::METHOD_NOT_ALLOWED);
     
     session_start();
 
     // prevents requests from un-authenticated sources
     if (!isset($_SESSION['user']))
-        error(401);
+        error(HTTPStatusCode::UNAUTHORIZED);
 
     $_SESSION['cart']['dishes'] ??= [];
     $_SESSION['cart']['menus'] ??= [];
@@ -38,7 +38,7 @@
                   : Menu::getById($params['productId']);
 
     if ($productToAdd === null || is_array($productToAdd)) {
-        error(404);
+        error(HTTPStatusCode::NOT_FOUND);
     } else {
         $productType = $params['productType'] === 'dish' ? 'dishes' : 'menus';
 

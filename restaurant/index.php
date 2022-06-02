@@ -27,13 +27,12 @@
     $restaurant = Restaurant::getById($id);
 
     if ($restaurant === null)
-        error(404);
+        error(HTTPStatusCode::NOT_FOUND);
 ?>
 <!DOCTYPE html>
 <html lang="en">
     <?php createHead(
         metadata: restaurantMetadata($restaurant),
-        styles: ["/style/pages/restaurant.css"],
         scripts: ["pages/restaurant.js", "components/card.js", "components/dialog.js", "components/slider.js"],
     );
     ?>

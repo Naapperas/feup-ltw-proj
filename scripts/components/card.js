@@ -106,7 +106,7 @@ export const empowerDishCard = (dishCard) => {
     const favoriteButton = dishCard.querySelector(
         "button[data-favorite-button]"
     );
-    favoriteButton.addEventListener("click", toggleLikedStatus);
+    favoriteButton?.addEventListener("click", toggleLikedStatus);
 };
 
 /**

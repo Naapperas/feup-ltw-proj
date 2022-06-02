@@ -4,7 +4,7 @@
     require_once("../../lib/util.php");
 
     if ($_SERVER['REQUEST_METHOD'] !== 'GET')
-        error(405);
+        error(HTTPStatusCode::METHOD_NOT_ALLOWED);
 
     require_once("../../lib/params.php");
 

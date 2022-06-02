@@ -4,7 +4,7 @@
     require_once(dirname(dirname(dirname(__DIR__)))."/lib/util.php");
 
     if (strcmp($_SERVER['REQUEST_METHOD'], "POST") !== 0)
-        error(405);
+        error(HTTPStatusCode::METHOD_NOT_ALLOWED);
 
     require_once(dirname(dirname(dirname(__DIR__))).'/lib/params.php');
     require_once(dirname(dirname(dirname(__DIR__))).'/database/models/user.php');
@@ -14,7 +14,7 @@
 
     // prevents requests from un-authenticated sources
     if (!isset($_SESSION['user']))
-        error(401);
+        error(HTTPStatusCode::UNAUTHORIZED);
 
     $params = parseParams(post_params: [
         'dishId' => new IntParam(),
@@ -24,7 +24,7 @@
     $dish = Dish::getById($params['dishId']);
 
     if ($dish === null)
-        error(404);
+        error(HTTPStatusCode::NOT_FOUND);
 
     $isFavorite = $dish->isLikedBy($user);
 
@@ -32,7 +32,7 @@
     $success = $user->$action($dish->id);
 
     if (!$success)
-        error(500);
+        error(HTTPStatusCode::INTERNAL_SERVER_ERROR);
 
     echo json_encode([
         "favorite" => !$isFavorite

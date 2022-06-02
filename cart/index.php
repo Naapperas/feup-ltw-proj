@@ -12,7 +12,7 @@
     $user = User::getById($_SESSION['user']);
 
     if ($user === null)
-        error(404);
+        error(HTTPStatusCode::NOT_FOUND);
 
     $dishes = Dish::getById($_SESSION['cart']['dishes'] ?? []);
     $menus = Menu::getById($_SESSION['cart']['menus'] ?? []);
