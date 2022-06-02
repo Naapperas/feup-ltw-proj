@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-require(__DIR__.'/util.php');
+require_once(__DIR__.'/util.php');
 
 function _error() {
     error(400);

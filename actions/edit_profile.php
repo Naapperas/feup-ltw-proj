@@ -51,7 +51,7 @@
 
     $user->update();
 
-    uploadImage($_FILES['profile_picture'], 'profile', $user->id, 512, 1);
+    uploadImage($_FILES['profile_picture'], 'user', $user->id, 512, 1);
 
     header('Location: /profile/');
 ?>

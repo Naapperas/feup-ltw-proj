@@ -83,7 +83,7 @@
             </div>
 
             <?php
-                createReviewList($restaurant->getReviews(50));
+                createReviewList($restaurant->getReviews(50), $restaurant->id);
 
                 if (isset($_SESSION['user'])) {
 

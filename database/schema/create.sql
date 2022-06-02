@@ -29,10 +29,12 @@ CREATE TABLE "Restaurant" (
     "website" TEXT NOT NULL,
     "opening_time" TEXT NOT NULL,
     "closing_time" TEXT NOT NULL,
+    "score" FLOAT, -- nullable so frontend can not display the score portion when it does not exist
     "owner" INTEGER NOT NULL,
     PRIMARY KEY("id"),
     FOREIGN KEY("owner") REFERENCES "User",
-    CONSTRAINT "unique_address" UNIQUE ("address")
+    CONSTRAINT "unique_address" UNIQUE ("address"),
+    CONSTRAINT "bounded_score" CHECK ("score" >= 0 AND "score" <= 5)
 );
 
 CREATE TABLE "Menu" (

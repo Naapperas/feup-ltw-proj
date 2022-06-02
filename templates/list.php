@@ -126,28 +126,30 @@ require_once(__DIR__."/item.php");
 <?php } ?>
 
 <?php function createReviewList(
-    ?array $reviews, string $h = 'h3', string $vh = 'h4',
+    ?array $reviews, int $restaurantId, string $h = 'h3', string $vh = 'h4',
     string $title = 'Reviews'
 ) { 
     if (!$reviews) return;
     ?>
-    <section class="restaurant-reviews">
+    <section class="restaurant-reviews" data-restaurant-id="<?= $restaurantId ?>">
         <header class="header">
             <<?= $h ?> class="title <?= $vh ?>"><?= $title ?></<?= $h ?>>
             <!-- to be dealt with in JavaScript + AJAX -->
-            <!-- <div class="select right">
+            <div class="select right">
                 <select name="options" id="options"> 
-                    <option value="score-asc">Score - Ascending</option>
-                    <option value="score-desc">Score - Descending</option>
-                    <option value="date-asc">Date - Ascending</option>
-                    <option value="date-desc">Date - Descending</option>
+                    <option value="score-desc">Score - Desc</option>
+                    <option value="score-asc">Score - Asc</option>
+                    <option value="date-desc">Date - Desc</option>
+                    <option value="date-asc">Date - Asc</option>
                 </select>
-                <label for="options">Sort</label>
-            </div> -->
+                <label for="options">Sort by:</label>
+            </div>
         </header>
+        <div id="review-list">
         <?php foreach($reviews as $review) {
             showReview($review);
         } ?>
+        </div>
     </section>
 <?php } ?>
 
@@ -166,11 +168,11 @@ require_once(__DIR__."/item.php");
     <?php } else if ($categories) { ?>
         <ul class="chip-list wrap">
             <?php foreach($categories as $category) { ?>
-                <a href="/search/?q=<?= rawurlencode($category->name) ?>">
-                    <li class="chip" data-category-id="<?= $category->id ?>">
+                <li class="chip" data-category-id="<?= $category->id ?>">
+                    <a href="/search/?q=<?= rawurlencode($category->name) ?>">
                         <?= $category->name ?>
-                    </li>
-                </a>
+                    </a>
+                </li>
             <?php } ?>
         </ul>
     <?php }

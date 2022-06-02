@@ -13,8 +13,8 @@
     if (!isset($_SESSION['user']))
         error(401);
 
-    $_SESSION['cart']['dishes'] ?? [];
-    $_SESSION['cart']['menus'] ?? [];
+    $_SESSION['cart']['dishes'] ??= [];
+    $_SESSION['cart']['menus'] ??= [];
 
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         echo json_encode($_SESSION['cart']);

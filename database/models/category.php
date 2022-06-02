@@ -21,8 +21,9 @@
 
         public static function getByCategoryIds(array $categoryIds): array {
             $table = static::getTableName();
+            $column = static::getCategoryTableColumn();
             $models = [];
-            $query = "SELECT model AS id FROM {$table}_category WHERE category = ?;";
+            $query = "SELECT $column AS id FROM {$table}_category WHERE category = ?;";
 
             foreach($categoryIds as $categoryId) {
                 $queryResults = getQueryResults(static::getDB(), $query, true, [$categoryId]);

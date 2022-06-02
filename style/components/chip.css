@@ -56,6 +56,10 @@
     gap: 16px;
 }
 
+.chip-list a {
+    z-index: 1;
+}
+
 .chip-list.wrap {
     flex-wrap: wrap;
 }

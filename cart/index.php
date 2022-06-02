@@ -21,8 +21,7 @@
 <html lang="en">
     <?php createHead(
         metadata: baseMetadata(description: "Cart for XauFome."),
-        styles: ["/style/pages/main.css"],
-        scripts: ["/api/cart.js"]
+        scripts: ["components/card.js"]
     ); ?>
     <body class="top-app-bar layout">
         <?php

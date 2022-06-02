@@ -7,6 +7,7 @@
     require_once(__DIR__.'/dish.php');
     require_once(__DIR__.'/menu.php');
     require_once(__DIR__.'/review.php');
+    require_once(__DIR__.'/query.php');
 
     class Restaurant extends Model {
         use HasImage, HasCategories;
@@ -36,7 +37,7 @@
             return User::getById($this->owner);
         }
 
-        public function getReviewScore(): ?float {
+        public function getReviewScore(): ?float { // use this instead of an attribute because of the nullability
 
             $query = "SELECT avg(score) AS average FROM Review WHERE restaurant = ?;";
 
@@ -47,13 +48,16 @@
             return $queryResults['average']; // returns null if restaurant has no reviews
         }
 
-        public function getReviews(int $limit): array {
+        public function getReviews(int $limit, OrderClause $order = new OrderClause([['score', false]])): array {
 
-            $query = "SELECT * FROM Review WHERE restaurant = ? LIMIT ?";
+            $query = "SELECT * FROM Review WHERE restaurant = ?";
+            
+            $query .= $order->getQueryString(); // set default ordering
+            $query .= " LIMIT ?;";
 
             $reviews = getQueryResults(static::getDB(), $query, true, [$this->id, $limit]);
         
-            if ($reviews === false) return 0;
+            if ($reviews === false) return [];
 
             $result = array_map(fn(array $data) => Review::getById($data['id']), $reviews);
 
