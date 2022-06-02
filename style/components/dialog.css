@@ -12,6 +12,8 @@ dialog.dialog {
     animation: dialog-open 200ms ease-in-out forwards;
 
     --shadow: 0 0 0 100vmax rgba(0, 0, 0, 32%);
+    --color-button: var(--color-main);
+    --color-on-button: var(--color-on-main);
 }
 
 dialog.dialog.confirmation {

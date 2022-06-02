@@ -195,6 +195,7 @@
     position: fixed;
     transform: translateX(50%);
     right: 360px;
+    z-index: 5;
 }
 
 .restaurant-sidebar > form.form {
@@ -250,6 +251,7 @@
             "review-form" auto
             "reviews" auto
             / auto;
+        height: auto;
     }
 
     .restaurant-main {

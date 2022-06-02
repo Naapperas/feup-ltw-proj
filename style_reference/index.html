@@ -12,7 +12,7 @@
         <script src="/scripts/colorscheme.js" async></script>
     </head>
     <body class="medium medium-spacing column layout">
-        <section class="snackbar-container">
+        <!-- <section class="snackbar-container">
             <output class="snackbar">TEST</output>
             <output class="snackbar">
                 TEST
@@ -20,7 +20,7 @@
             </output>
             <output class="snackbar">TEST</output>
             <output class="snackbar">TEST</output>
-        </section>
+        </section> -->
 
         <h1 class="h3">Components Reference Sheet</h1>
 
@@ -562,10 +562,9 @@
         <section class="card" id="sliders">
             <h2 class="h4">Sliders</h2>
 
-            <label for="slider">
-                Label
+            <label class="slider">
+                <span>Value: <span data-slider-preview></span></span>
                 <input
-                    class="slider"
                     type="range"
                     name="slider"
                     id="slider"
@@ -574,24 +573,36 @@
                     value="50"
                 />
             </label>
-            <label for="slider-discrete">
-                Label
+
+            <fieldset class="slider">
+                <legend>Value: <span data-slider-preview></span></legend>
                 <input
-                    class="slider"
                     type="range"
-                    name="slider-discrete"
-                    id="slider-discrete"
+                    name="slider-min"
+                    id="slider-min"
                     min="0"
                     max="100"
-                    value="50"
-                    step="10"
+                    value="25"
                 />
-            </label>
-
-            <label for="slider-disabled">
-                Label
                 <input
-                    class="slider"
+                    type="range"
+                    name="slider-max"
+                    id="slider-max"
+                    min="0"
+                    max="100"
+                    value="75"
+                />
+                <label for="slider-min" class="visually-hidden">
+                    Minimum value
+                </label>
+                <label for="slider-max" class="visually-hidden">
+                    Maximum value
+                </label>
+            </fieldset>
+
+            <label class="slider" aria-disabled="true">
+                <span>Value: <span data-slider-preview></span></span>
+                <input
                     type="range"
                     name="slider-disabled"
                     id="slider-disabled"
@@ -601,22 +612,39 @@
                     disabled
                 />
             </label>
-            <label for="slider-discrete-disabled">
-                Label
+
+            <fieldset class="slider" disabled>
+                <legend>Value: <span data-slider-preview></span></legend>
                 <input
-                    class="slider"
                     type="range"
-                    name="slider-discrete-disabled"
-                    id="slider-discrete-disabled"
+                    name="slider-min-disabled"
+                    id="slider-min-disabled"
                     min="0"
                     max="100"
-                    value="50"
-                    step="10"
+                    value="25"
                     disabled
                 />
-            </label>
+                <input
+                    type="range"
+                    name="slider-max-disabled"
+                    id="slider-max-disabled"
+                    min="0"
+                    max="100"
+                    value="75"
+                    disabled
+                />
+                <label for="slider-min" class="visually-hidden">
+                    Minimum value
+                </label>
+                <label for="slider-max" class="visually-hidden">
+                    Maximum value
+                </label>
+            </fieldset>
 
-            <script src="../scripts/components/slider.js" defer></script>
+            <script
+                src="../scripts/components/slider.js"
+                type="module"
+            ></script>
         </section>
     </body>
 </html>

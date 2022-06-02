@@ -155,23 +155,58 @@ declare(strict_types=1);
 
 <?php } ?>
 
-<?php function createSlider(string $name, string $labelText, string $defaultLabelValue, int $min, int $max, $startValue, float|int|string $step = null) { ?>
-    <div class="slider">
-        <label for="<?= $name ?>_slider">
-            <?= $labelText ?> <span id="<?= $name ?>_value"><?= $defaultLabelValue ?></span>
-        </label>
+<?php function createSlider(
+    string $name, string $labelText, float|int $min, float|int $max,
+    float|int|null $startValue = null, float|int|string $step = 'any',
+    ?bool $ranged = false, ?float $startValueB = null
+) { 
+    if ($ranged) { ?>
+    <fieldset class="slider">
+        <legend>
+            <?= $labelText ?>: <span data-slider-preview></span>
+        </legend>
         <input
-            class="slider"
             type="range"
-            name="<?= $name ?>"
-            id="<?= $name ?>_slider"
+            name="min_<?= $name ?>"
+            id="min_<?= $name ?>"
             min="<?= $min ?>"
             max="<?= $max ?>"
-            value="<?= $startValue ?>"
-            <?php if ($step !== null) { echo "step=\"$step\""; } ?>
+            value="<?= $startValue ?? $min ?>"
+            step="<?= $step ?>"
+        />
+        <input
+            type="range"
+            name="max_<?= $name ?>"
+            id="max_<?= $name ?>"
+            min="<?= $min ?>"
+            max="<?= $max ?>"
+            value="<?= $startValueB ?? $max ?>"
+            step="<?= $step ?>"
+        />
+        <label for="min_<?= $name ?>" class="visually-hidden">
+            Minimum <?= $labelText ?>
+        </label>
+        <label for="max_<?= $name ?>" class="visually-hidden">
+            Maximum <?= $labelText ?>
+        </label>
+    </fieldset>
+    <?php } else { ?>
+    <div class="slider">
+        <label>
+            <?= $labelText ?>: <span data-slider-preview></span>
+        </label>
+        <input
+            type="range"
+            name="<?= $name ?>"
+            id="<?= $name ?>"
+            min="<?= $min ?>"
+            max="<?= $max ?>"
+            value="<?= $startValue ?? $min ?>"
+            step="<?= $step ?>"
         />
     </div>
-<?php } ?>
+    <?php }
+} ?>
 
 <?php function createCategoriesDialog(Restaurant | Dish $model, string $name = 'categories[]', string $id = 'categories') { ?>
     <dialog class="dialog confirmation" id="<?= $id ?>">

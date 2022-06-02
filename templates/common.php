@@ -128,13 +128,25 @@ require_once(__DIR__.'/form.php');
             <div class="content">
                 <section>
                     <h3 class="title h5">Restaurants</h3>
-                    <?php createSlider("min_restaurant_score", "Minimum Score:", "20", 0, 5, 2, 0.1); ?>
-                    <?php createSlider("max_restaurant_score", "Maximum Score:", "40", 0, 5, 4, 0.1); ?>
+                    <?php createSlider(
+                        name: "restaurant_score",
+                        labelText: "Score",
+                        min: 0,
+                        max: 5,
+                        step: 0.1,
+                        ranged: true
+                    ); ?>
                 </section>
                 <section>
                     <h3 class="title h5">Dishes</h3>
-                    <?php createSlider("min_dish_price", "Minimum Price:", "0.0€", 0, 20, 0, 0.01); ?>
-                    <?php createSlider("max_dish_price", "Maximum Price:", "20€", 0, 20, 20, 0.01); ?>
+                    <?php createSlider(
+                        name: "dish_price",
+                        labelText: "Price",
+                        min: 0,
+                        max: 20, 
+                        step: 0.01,
+                        ranged: true
+                    ); ?>
                 </section>
             </div>
             <div class="actions">
