@@ -93,19 +93,8 @@
                     );
 
                     createCategoryList($restaurant->getCategories(), true);
-
-                    ?><dialog class="dialog confirmation" id="categories">
-                        <header><h2 class="h5">Categories</h2></header>
-                        <?php createCheckBoxList(array_map(fn(Category $category) => [
-                            'label' => $category->name,
-                            'value' => $category->id,
-                            'name' => 'categories[]',
-                            'checked' => $restaurant->hasCategory($category->id)
-                        ], Category::getAll()), '', 'content'); ?>
-                        <div class="actions">
-                            <button class="button text" type="button" data-close-dialog="#categories">Done</button>
-                        </div>
-                    </dialog>
+                    createCategoriesDialog($restaurant);
+                    ?>
                 </div>
 
                 <div class="edit-restaurant-main">

@@ -128,24 +128,27 @@ require_once(__DIR__."/item.php");
     </section>
 <?php } ?>
 
-<?php function createCategoryList(?array $categories, bool $edit = false) {
+<?php function createCategoryList(?array $categories, bool $edit = false, string $dialog = 'categories') {
     if ($edit) { ?>
-    <a class="fullwidth chip-list-edit" href="#" data-open-dialog="#categories">
+    <a class="fullwidth chip-list-edit" href="#" data-open-dialog="#<?= $dialog ?>">
         <p>Categories</p>
-    <?php } ?>
-        <?php if ($categories || $edit) { ?>
         <ul class="chip-list wrap">
             <?php foreach($categories as $category) { ?>
                 <li class="chip" data-category-id="<?= $category->id ?>">
-                    <a href="/search/?q=<?= rawurlencode($category->name) ?>">
-                        <?= $category->name ?>
-                    </a>
+                    <?= $category->name ?>
                 </li>
             <?php } ?>
-
         </ul>
-        <?php } ?>
-    <?php if ($edit) { ?>
     </a>
+    <?php } else if ($categories) { ?>
+        <ul class="chip-list wrap">
+            <?php foreach($categories as $category) { ?>
+                <a href="/search/?q=<?= rawurlencode($category->name) ?>">
+                    <li class="chip" data-category-id="<?= $category->id ?>">
+                        <?= $category->name ?>
+                    </li>
+                </a>
+            <?php } ?>
+        </ul>
     <?php }
 } ?>

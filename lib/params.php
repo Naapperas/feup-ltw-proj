@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
+require(__DIR__.'/util.php');
+
 function _error() {
-    http_response_code(400);
-    require(dirname(__DIR__).'/error.php');
-    die();
+    error(400);
 }
 
 abstract class Param {

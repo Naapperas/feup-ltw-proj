@@ -8,6 +8,7 @@
     require_once('../database/models/user.php');
     
     require_once('../lib/params.php');
+    require_once('../lib/util.php');
 
     session_start();
 
@@ -25,11 +26,8 @@
 
     $user = User::getById($id);
 
-    if ($user === null) {
-        http_response_code(404);
-        require("../error.php");
-        die();
-    }
+    if ($user === null)
+        error(404);
 
     $owned_restaurants = $user->getOwnedRestaurants();
     $favorite_restaurants = $user->getFavoriteRestaurants();

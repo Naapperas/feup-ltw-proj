@@ -173,3 +173,17 @@ declare(strict_types=1);
     </div>
 <?php } ?>
 
+<?php function createCategoriesDialog(Restaurant | Dish $model, string $name = 'categories[]', string $id = 'categories') { ?>
+    <dialog class="dialog confirmation" id="<?= $id ?>">
+        <header><h2 class="h5">Categories</h2></header>
+        <?php createCheckBoxList(array_map(fn(Category $category) => [
+            'label' => $category->name,
+            'value' => $category->id,
+            'name' => $name,
+            'checked' => $model->hasCategory($category->id)
+        ], Category::getAll()), '', 'content'); ?>
+        <div class="actions">
+            <button class="button text" type="button" data-close-dialog="#<?= $id ?>">Done</button>
+        </div>
+    </dialog>
+<?php } ?>

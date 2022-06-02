@@ -5,7 +5,9 @@
     require_once('restaurant.php');
     include(dirname(__DIR__, 2).'/lib/password.php');
 
-    class User extends ModelWithImage {
+    class User extends Model {
+        use HasImage;
+
         public string $name;
         public string $email;
         public string $address;

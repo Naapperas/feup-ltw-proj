@@ -1,14 +1,15 @@
 <?php
     declare(strict_types=1);
 
-    require_once('model.php');
-    require_once('user.php');
-    require_once('category.php');
-    require_once('dish.php');
-    require_once('menu.php');
-    require_once('review.php');
+    require_once(__DIR__.'/model.php');
+    require_once(__DIR__.'/user.php');
+    require_once(__DIR__.'/category.php');
+    require_once(__DIR__.'/dish.php');
+    require_once(__DIR__.'/menu.php');
+    require_once(__DIR__.'/review.php');
 
-    class Restaurant extends ModelWithImage {
+    class Restaurant extends Model {
+        use HasImage, HasCategories;
 
         public string $name;
         public string $address;
@@ -27,21 +28,8 @@
             return "restaurant";
         }
 
-        public static function getForCategoryIds(array $categoryIds): array {
-
-            $restaurants = [];
-            $query = "SELECT restaurant AS id FROM Restaurant_category WHERE category = ?;";
-
-            foreach($categoryIds as $categoryId) {
-
-                $queryResults = getQueryResults(static::getDB(), $query, true, [$categoryId]);
-
-                if ($queryResults === false) $queryResults = [];
-
-                $restaurants = array_merge($restaurants, array_map(fn (array $data) => static::getById($data['id']), $queryResults));
-            }
-
-            return $restaurants;
+        protected static function getCategoryTableColumn(): string {
+            return 'restaurant';
         }
 
         public function getOwner(): ?User {
@@ -83,19 +71,6 @@
             return count($queryResults) > 0;
         }
 
-        public function getCategories(): array {
-
-            $query = "SELECT category AS id FROM Restaurant_category WHERE restaurant = ?;";
-
-            $categories = getQueryResults(static::getDB(), $query, true, [$this->id]);
-        
-            if ($categories === false) return [];
-
-            $result = array_map(fn(array $data) => Category::getById($data['id']), $categories);
-
-            return $result;
-        }
-
         public function getOwnedDishes(): array {
 
             $query = "SELECT * FROM Dish WHERE restaurant = ?;";
@@ -116,42 +91,6 @@
             if ($queryResults === false) return [];
 
             return array_map(fn(array $data) => Menu::getById($data['id']), $queryResults);
-        }
-
-        public function setCategories(array $categories) : bool {
-
-            $deleteQuery = "DELETE FROM Restaurant_category WHERE restaurant = ?;";
-
-            list($success,) = executeQuery(static::getDB(), $deleteQuery, [$this->id]);
-
-            if (count($categories) === 0) return $success;
-
-            // HACK
-            // using this query format we avoid making multiple queries to the DB,
-            // with the downside of 'having' to hardcode the restaurant id into the query itself, 
-            // but since that id comes from the restaurant model itself, there should be no problem (unless the DB is breached)
-            $query = sprintf("INSERT INTO Restaurant_category VALUES (%d, ?)", $this->id); 
-
-            for($i = 1; $i < sizeof($categories); $i++) {
-                $query.= sprintf(", (%d, ?)", $this->id);
-            }
-
-            $query .= ";";
-
-            list($success,) = executeQuery(static::getDB(), $query, $categories);
-        
-            return $success;
-        }
-
-        public function hasCategory(int $categoryID) : bool {
-
-            $query = "SELECT * FROM Restaurant_category WHERE restaurant = ? AND category = ?;";
-
-            $queryResults = getQueryResults(static::getDB(), $query, true, [$this->id, $categoryID]);
-        
-            if ($queryResults === false) return false;
-
-            return count($queryResults) > 0;
         }
     }
 ?>

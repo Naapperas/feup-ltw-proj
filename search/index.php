@@ -60,12 +60,12 @@
 
     $restaurants = array_unique(array_merge(
         Restaurant::getWithFilters([$nameContainsSearchTermFilter], limit: 10),
-        Restaurant::getForCategoryIds($categoryIds)
+        Restaurant::getByCategoryIds($categoryIds)
     ));
 
     $dishes = array_unique(array_merge(
         Dish::getWithFilters([$nameContainsSearchTermFilter, $dishPriceFilter], limit: 10),
-        Dish::getForCategoryIds($categoryIds)
+        Dish::getByCategoryIds($categoryIds)
     ));
 
     $menus = Menu::getWithFilters([$nameContainsSearchTermFilter], limit: 10);
@@ -86,8 +86,8 @@
             
             createUserList($users);
             createRestaurantList($restaurants);
-            createMenuList($menus);
-            createDishList($dishes);
+            createDishList($dishes, show_restaurant: true);
+            createMenuList($menus, show_restaurant: true);
             ?>
         </main>
     </body>

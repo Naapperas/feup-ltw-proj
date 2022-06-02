@@ -79,15 +79,20 @@ export const empowerDishCard = (dishCard) => {
         event?.preventDefault();
 
         try {
-            const dishAdded = await addProductToCart(dishId, "dish");
+            const newCart = await addProductToCart(parseInt(dishId), "dish");
 
-            if (dishAdded) {
+            console.debug(newCart);
+
+            if (newCart) {
                 /** @type HTMLElement */
                 const cartBadge = document.querySelector("[data-cart]");
 
-                cartBadge.dataset.badgeContent = (
-                    parseInt(cartBadge.dataset.badgeContent ?? "0") + 1
-                ).toString();
+                let cartCount = 0;
+                for (const id in newCart.dishes)
+                    cartCount += newCart.dishes[id];
+                for (const id in newCart.menus) cartCount += newCart.menus[id];
+
+                cartBadge.dataset.badgeContent = cartCount.toString();
                 cartBadge.classList.add("badge");
             }
         } catch {
@@ -102,6 +107,43 @@ export const empowerDishCard = (dishCard) => {
         "button[data-favorite-button]"
     );
     favoriteButton.addEventListener("click", toggleLikedStatus);
+};
+
+/**
+ * "Empowers" a menu card using javascript.
+ *
+ * @param {HTMLElement} menuCard
+ */
+export const empowerMenuCard = (menuCard) => {
+    const { menuId } = menuCard.dataset;
+
+    const addDishToCart = async (event) => {
+        event?.preventDefault();
+
+        try {
+            const newCart = await addProductToCart(parseInt(menuId), "menu");
+
+            console.debug(newCart);
+
+            if (newCart) {
+                /** @type HTMLElement */
+                const cartBadge = document.querySelector("[data-cart]");
+
+                let cartCount = 0;
+                for (const id in newCart.dishes)
+                    cartCount += newCart.dishes[id];
+                for (const id in newCart.menus) cartCount += newCart.menus[id];
+
+                cartBadge.dataset.badgeContent = cartCount.toString();
+                cartBadge.classList.add("badge");
+            }
+        } catch {
+            return;
+        }
+    };
+
+    const cardLink = menuCard.querySelector(".card-link");
+    cardLink.addEventListener("click", addDishToCart);
 };
 
 /**
@@ -191,6 +233,93 @@ export const createNewDishCard = (index) => {
     return card;
 };
 
+/**
+ * "Empowers" a menu card using javascript.
+ *
+ * @param {HTMLElement} editMenuCard
+ */
+export const empowerEditMenuCard = (editMenuCard) => {
+    /** @type HTMLButtonElement */
+    const deleteButton = editMenuCard.querySelector(
+        "button[data-delete-button]"
+    );
+    /** @type HTMLInputElement */
+    const nameInput = editMenuCard.querySelector("input[name*=name]");
+    /** @type HTMLInputElement */
+    const priceInput = editMenuCard.querySelector("input[name*=price]");
+    /** @type HTMLInputElement */
+    const imageInput = editMenuCard.querySelector("input[type=file]");
+    /** @type HTMLLabelElement */
+    const imagePicker = editMenuCard.querySelector("label.image-input");
+    /** @type HTMLInputElement */
+    const hiddenInput = editMenuCard.querySelector("input[type=hidden]");
+
+    const toggleDeletedStatus = async (event) => {
+        event?.preventDefault();
+        const deleted = editMenuCard.toggleAttribute("data-deleted");
+
+        deleteButton.dataset.toggleState = deleted ? "off" : "on";
+        deleteButton.ariaLabel = deleted ? "Undo delete" : "Delete";
+        deleteButton.textContent = deleted ? "delete_forever" : "delete";
+
+        if (nameInput) nameInput.disabled = deleted;
+        if (priceInput) priceInput.disabled = deleted;
+        if (imageInput) imageInput.disabled = deleted;
+        imagePicker?.classList.toggle("disabled", deleted);
+
+        if (hiddenInput) hiddenInput.disabled = !deleted;
+    };
+
+    if (deleteButton)
+        deleteButton.addEventListener("click", toggleDeletedStatus);
+};
+
+/**
+ * Creates a new menu card.
+ *
+ * @param {number} index
+ * @returns
+ */
+export const createNewMenuCard = (index) => {
+    const card = document.createElement("article");
+    card.classList.add("card", "responsive");
+    card.dataset.cardType = "new-menu";
+
+    const imageInput = createImageInput(
+        `menus_to_add[${index}]`,
+        "/assets/pictures/menu/default.webp",
+        ["thumbnail", "full", "media"],
+        ["thumbnail"]
+    );
+    const nameInput = createTextField("Name", `menus_to_add[${index}][name]`, {
+        type: "text",
+        required: "",
+    });
+    const priceInput = createTextField(
+        "Price",
+        `menus_to_add[${index}][price]`,
+        {
+            type: "number",
+            min: "0",
+            step: "0.01",
+            required: "",
+        }
+    );
+
+    const deleteButton = document.createElement("button");
+    deleteButton.classList.add("button", "icon", "top-right");
+    deleteButton.toggleAttribute("data-delete-button", true);
+    deleteButton.textContent = "delete";
+    deleteButton.ariaLabel = "Delete";
+    deleteButton.type = "button";
+
+    card.append(imageInput, nameInput, priceInput, deleteButton);
+
+    empowerEditMenuCard(card);
+
+    return card;
+};
+
 /** @type NodeListOf<HTMLElement> */
 const restaurantCards = document.querySelectorAll(
     "[data-card-type=restaurant]"
@@ -202,5 +331,13 @@ const dishCards = document.querySelectorAll("[data-card-type=dish]");
 dishCards.forEach(empowerDishCard);
 
 /** @type NodeListOf<HTMLElement> */
+const menuCards = document.querySelectorAll("[data-card-type=menu]");
+menuCards.forEach(empowerMenuCard);
+
+/** @type NodeListOf<HTMLElement> */
 const editDishCards = document.querySelectorAll("[data-card-type=edit-dish]");
 editDishCards.forEach(empowerEditDishCard);
+
+/** @type NodeListOf<HTMLElement> */
+const editMenuCards = document.querySelectorAll("[data-card-type=edit-menu]");
+editMenuCards.forEach(empowerEditMenuCard);

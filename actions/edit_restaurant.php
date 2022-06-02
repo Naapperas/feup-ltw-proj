@@ -33,7 +33,11 @@
             default: [],
             param_type: new ObjectParam([
                 'name' => new StringParam(min_len: 1),
-                'price' => new FloatParam(min: 0)
+                'price' => new FloatParam(min: 0),
+                'categories' => new ArrayParam(
+                    default: [],
+                    param_type: new IntParam()
+                ),
             ])
         ),
         'dishes_to_delete' => new ArrayParam(
@@ -44,7 +48,11 @@
             default: [],
             param_type: new ObjectParam([
                 'name' => new StringParam(min_len: 1),
-                'price' => new FloatParam(min: 0)
+                'price' => new FloatParam(min: 0),
+                'categories' => new ArrayParam(
+                    default: [],
+                    param_type: new IntParam()
+                ),
             ])
         ),
         'menus_to_edit' => new ArrayParam(
@@ -105,6 +113,7 @@
         
         $dish->name = $value['name'];
         $dish->price = $value['price'];
+        $dish->setCategories($value['categories']);
 
         $dish->update();
 
@@ -123,6 +132,7 @@
     foreach ($params['dishes_to_add'] as $i => $arr) {
         $arr['restaurant'] = $restaurant->id;
         $dish = Dish::create($arr);
+        $dish->setCategories($arr['categories']);
         uploadImage($_FILES['dishes_to_add'], 'dish', $dish->id, 1920, index: $i);
     }
 
@@ -137,7 +147,7 @@
 
         $menu->update();
 
-        uploadImage($_FILES['menus_to_edit'], 'dish', $id, 1920, index: $id);
+        uploadImage($_FILES['menus_to_edit'], 'menu', $id, 1920, index: $id);
     }
 
     foreach ($params['menus_to_delete'] as $id) {

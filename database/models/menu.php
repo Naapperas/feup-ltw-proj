@@ -5,7 +5,8 @@
     require_once('restaurant.php');
     require_once('dish.php');
 
-    class Menu extends ModelWithImage {
+    class Menu extends Model {
+        use HasImage;
 
         public string $name;
         public float $price;

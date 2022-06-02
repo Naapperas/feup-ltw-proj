@@ -9,6 +9,7 @@
     require_once("../database/models/restaurant.php");
 
     require_once('../lib/params.php');
+    require_once('../lib/util.php');
 
     session_start();
 
@@ -25,11 +26,8 @@
 
     $restaurant = Restaurant::getById($id);
 
-    if ($restaurant === null) {
-        http_response_code(404);
-        require("../error.php");
-        die();
-    }
+    if ($restaurant === null)
+        error(404);
 ?>
 <!DOCTYPE html>
 <html lang="en">

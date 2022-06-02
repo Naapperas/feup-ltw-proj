@@ -109,11 +109,9 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                 min: 0,
                 step: .01
             );
-            
-            if (($categories = $dish->getCategories()) !== []) {
-                echo '<hr class="divider" />';
-                // createDishCategories($categories, 'h4');
-            }
+
+            createCategoryList($dish->getCategories(), $edit, "dish-$dish->id-categories");
+            createCategoriesDialog($dish, "dishes_to_edit[$dish->id][categories][]", "dish-$dish->id-categories");
     
             createButton(
                 type: ButtonType::ICON,
@@ -149,17 +147,12 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                     <a href="#" class="card-link"><?= $dish->name ?></a>
                 </h3>
                 <span class="subtitle subtitle2 secondary">
-                    <!-- XXX: maybe add the price even when out of the restaurant page -->
-                    <?= $show_restaurant ? $restaurant->name : sprintf('%.2f€', $dish->price) ?>
+                    <?= sprintf('%.2f€', $dish->price) ?>
+                    <?php if ($show_restaurant) echo "· $restaurant->name" ?>
                 </span>
             </header>
             <?php
-            if (($categories = $dish->getCategories()) !== []) {
-                echo '<hr class="divider" />';
-                // createDishCategories($categories, 'h4');
-            }
-            
-            session_start();
+            createCategoryList($dish->getCategories(), $edit);
 
             if (isset($_SESSION['user'])) {
 
@@ -247,11 +240,11 @@ require_once(dirname(__DIR__)."/database/models/review.php");
         data-menu-id="<?= $menu->id ?>"
     >
         <img
-            src="https://picsum.photos/316/194"
-            width="320"
-            height="180"
+            src="<?= $menu->getImagePath() ?>"
+            width="1920"
+            height="1080"
             alt="Menu picture for <?= $menu->name ?>"
-            class="full media"
+            class="full media thumbnail"
         />
         <header class="header">
             <h3 class="title h6">

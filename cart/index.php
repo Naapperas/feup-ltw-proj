@@ -5,16 +5,14 @@
     require_once("../templates/list.php");
     require_once("../templates/metadata.php");
     require_once('../lib/params.php');
+    require_once('../lib/util.php');
 
     session_start();
 
     $user = User::getById($_SESSION['user']);
 
-    if ($user === null) {
-        http_response_code(404);
-        require("../error.php");
-        die();
-    }
+    if ($user === null)
+        error(404);
 
     $dishes = Dish::getById($_SESSION['cart']['dishes'] ?? []);
     $menus = Menu::getById($_SESSION['cart']['menus'] ?? []);

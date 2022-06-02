@@ -161,7 +161,7 @@
         }
     }
 
-    abstract class ModelWithImage extends Model {
+    trait HasImage {
         protected abstract static function getImageFolder(): string;
 
         function getImagePath(): string {
@@ -185,4 +185,29 @@
             return false;
         }
     }
+
+    // abstract class ModelWithImage extends Model {
+    //     protected abstract static function getImageFolder(): string;
+
+    //     function getImagePath(): string {
+    //         $folder = static::getImageFolder();
+    //         $src = "/assets/pictures/$folder/$this->id.webp";
+            
+    //         if (!file_exists(dirname(dirname(__DIR__)).$src))
+    //             $src = "/assets/pictures/$folder/default.webp";
+            
+    //         return $src;
+    //     }
+
+    //     function delete(): bool {
+    //         if (parent::delete()) {
+    //             $folder = static::getImageFolder();
+    //             $src = "/assets/pictures/$folder/$this->id.webp";
+    //             unlink(dirname(dirname(__DIR__)).$src);
+    //             return true;
+    //         }
+
+    //         return false;
+    //     }
+    // }
 ?>

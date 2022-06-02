@@ -1,19 +1,23 @@
 <?php
-
     declare(strict_types = 1);
 
-    if (strcmp($_SERVER['REQUEST_METHOD'], "POST") !== 0) {
-        http_response_code(405);
-        require_once("../../../error.php");
-        die;
-    }
+    require_once("../../lib/util.php");
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST'
+     && $_SERVER['REQUEST_METHOD'] !== 'GET')
+        error(405);
     
     session_start();
 
     // prevents requests from un-authenticated sources
-    if (!isset($_SESSION['user'])) {
-        http_response_code(401);
-        require_once("../../../error.php");
+    if (!isset($_SESSION['user']))
+        error(401);
+
+    $_SESSION['cart']['dishes'] ?? [];
+    $_SESSION['cart']['menus'] ?? [];
+
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        echo json_encode($_SESSION['cart']);
         die;
     }
 
@@ -26,22 +30,21 @@
         )
     ]);
 
-    $ok = true;
-
     require_once("../../database/models/dish.php");
     require_once("../../database/models/menu.php");
 
-    $productToAdd = (strcmp($params['productType'], 'dish') !== 0) ? Menu::getById($params['productId']) : Dish::getById($params['productId']);
+    $productToAdd = $params['productType'] === 'dish'
+                  ? Dish::getById($params['productId'])
+                  : Menu::getById($params['productId']);
 
-    if ($productToAdd === null || is_array($productToAdd))
-        $ok = false;
-    else {
-        $productType = strcmp($params['productType'], 'dish') ? 'menus' : 'dishes';
+    if ($productToAdd === null || is_array($productToAdd)) {
+        error(404);
+    } else {
+        $productType = $params['productType'] === 'dish' ? 'dishes' : 'menus';
 
-        if (!isset($_SESSION['cart'][$productType])) $_SESSION['cart'][$productType] = [];
-
-        $_SESSION['cart'][$productType][] = $productToAdd->id;
+        $_SESSION['cart'][$productType][$productToAdd->id] ??= 0;
+        $_SESSION['cart'][$productType][$productToAdd->id] += 1;
     }
 
-    echo json_encode(['ok' => $ok, 'product' => $productToAdd, $_SESSION['cart']]);
+    echo json_encode($_SESSION['cart']);
 ?>

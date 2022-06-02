@@ -2,22 +2,30 @@
 
 "use-strict";
 
+/**
+ *
+ * @param {number} id
+ * @param {"dish"|"menu"} type
+ * @returns {Promise<{
+ *      'dishes': Record<number, number> | undefined,
+ *      'menus': Record<number, number> | undefined
+ *  }?>}
+ */
 export const addProductToCart = async (id, type) => {
     const data = new FormData();
-    data.append("productId", id);
+    data.append("productId", id.toString(10));
     data.append("productType", type);
 
-    const response = await fetch(
-        "/api/cart/index.php",
-        {
+    try {
+        const response = await fetch("/api/cart/index.php", {
             method: "POST",
             body: data,
-        }
-    );
+        });
 
-    if (!response.ok) return;
+        if (!response.ok) return;
 
-    const { ok } = await response.json();
-
-    return ok;
-}
+        return await response.json();
+    } catch {
+        return;
+    }
+};

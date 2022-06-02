@@ -56,7 +56,8 @@ require_once(__DIR__.'/form.php');
 
 <?php function createUserButtons() {
     if (isset($_SESSION['user'])) {    
-        $cartItemCount = count($_SESSION['cart']['dishes'] ?? []) + count($_SESSION['cart']['menus'] ?? []);
+        $cartItemCount = array_sum($_SESSION['cart']['dishes'] ?? []) 
+                       + array_sum($_SESSION['cart']['menus'] ?? []);
     
         createButton(
             type: ButtonType::ICON,
