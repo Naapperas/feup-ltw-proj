@@ -224,6 +224,9 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                 class: "top-right",
                 attributes: "data-delete-button"
             );
+
+            createMenuDishList($menu->getDishes(), true, "menu-$menu->id-dishes");
+            createDishesDialog($menu, "menus_to_edit[$menu->id][dishes][]", "menu-$menu->id-dishes");
             ?>
 
             <input
@@ -254,6 +257,8 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                 <?= $show_restaurant ? $restaurant->name : sprintf('%.2f€', $menu->price) ?>
             </span>
         </header>
+
+        <?php createMenuDishList($menu->getDishes()); ?>
     </article>
 <?php } } ?>
 

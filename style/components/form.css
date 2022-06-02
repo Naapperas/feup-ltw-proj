@@ -91,8 +91,8 @@
 fieldset.selection-list {
     border: none;
 
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: column;
     justify-items: start;
 
     width: 100%;

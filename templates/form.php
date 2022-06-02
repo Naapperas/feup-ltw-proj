@@ -222,3 +222,18 @@ declare(strict_types=1);
         </div>
     </dialog>
 <?php } ?>
+
+<?php function createDishesDialog(Menu $model, string $name = 'dishes[]', string $id = 'dishes') { ?>
+    <dialog class="dialog confirmation" id="<?= $id ?>">
+        <header><h2 class="h5">Dishes</h2></header>
+        <?php createCheckBoxList(array_map(fn(Dish $dish) => [
+            'label' => $dish->name,
+            'value' => $dish->id,
+            'name' => $name,
+            'checked' => $model->hasDish($dish->id)
+        ], Dish::getAll()), '', 'content'); ?>
+        <div class="actions">
+            <button class="button text" type="button" data-close-dialog="#<?= $id ?>">Done</button>
+        </div>
+    </dialog>
+<?php } ?>

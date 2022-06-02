@@ -53,6 +53,29 @@ require_once(__DIR__."/item.php");
     </section>
 <?php } ?>
 
+<?php function createMenuDishList(array $dishes, bool $edit = false, string $dialog = 'dishes') {
+    if ($edit) { ?>
+        <a class="fullwidth" href="#" data-open-dialog="#<?= $dialog ?>">
+            <p>Dishes</p>
+            <ul>
+                <?php foreach($dishes as $dish) { ?>
+                    <li data-dish-id="<?= $dish->id ?>">
+                        <?= $dish->name ?>
+                    </li>
+                <?php } ?>
+            </ul>
+        </a>
+        <?php } else if ($dishes) { ?>
+            <ul>
+                <?php foreach($dishes as $dish) { ?>
+                    <li data-dish-id="<?= $dish->id ?>">
+                        <?= $dish->name ?>
+                    </li>
+                <?php } ?>
+            </ul>
+        <?php }
+} ?> 
+
 <?php function createMenuList(
     ?array $menus, string $h = 'h3', string $vh = 'h4',
     string $title = 'Menus', bool $show_restaurant = false, bool $edit = false
