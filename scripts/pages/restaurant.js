@@ -98,8 +98,7 @@ const empowerOrderSelect = (select) => {
 
             reviewElement.appendChild(reviewText);
 
-            reviewList.appendChild(reviewElement);
-
+            return reviewElement;
         } catch {
             return
         }
@@ -110,19 +109,20 @@ const empowerOrderSelect = (select) => {
 
         const restaurantId = e.target.parentElement.parentElement.parentElement.dataset.restaurantId;
 
-        let child = reviewList.lastElementChild; 
-        while (child !== null) {
-            reviewList.removeChild(child);
-            child = reviewList.lastElementChild;
-        }
-
         const reviewOrdering = e.target.value;
 
         const [attribute, order] = reviewOrdering.split('-');
 
         const reviews = await fetchOrderedReviews(restaurantId, attribute, order);
 
-        reviews.forEach(createReview);
+        const nodes = await Promise.all(reviews.map(createReview));
+
+        for (let i = 0; i < nodes.length; i++) { // .replaceChildren didn't work, this did
+
+            const elem = reviewList.children[i];
+
+            reviewList.replaceChild(nodes[i], elem);
+        }
     }
 
     // @ts-ignore

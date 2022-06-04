@@ -166,11 +166,11 @@ require_once(__DIR__.'/form.php');
         createUserButtons();
         ?>
         <section class="snackbar-container">
-            <output class="snackbar">
+            <!-- <output class="snackbar">
                 TEST
                 <button class="button text">ACTION</button>
             </output>
-            <output class="snackbar">TEST</output>
+            <output class="snackbar">TEST</output> -->
         </section>
     </header>
 <?php } ?>
