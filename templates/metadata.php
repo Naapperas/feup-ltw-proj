@@ -20,6 +20,14 @@ declare(strict_types=1);
         <?php foreach ($scripts as $script) { ?>
             <script src="/scripts/<?= $script ?>" defer type="module"></script>
         <?php } ?>
+
+        <?php if ($_SESSION['easter-egg'] === true) { ?>
+        <style>
+            * {
+                float: right;
+            }
+        </style>
+        <?php } ?>
     </head>
 <?php } ?>
 

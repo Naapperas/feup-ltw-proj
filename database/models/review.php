@@ -9,6 +9,7 @@
 
         public int $score;
         public string $text;
+        public string $review_date;
 
         public int $client;
         public int $restaurant;

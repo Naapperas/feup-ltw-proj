@@ -13,7 +13,11 @@ export const toggleDishLikedStatus = async (id) => {
 
     if (!response.ok) return;
 
-    const { favorite } = await response.json();
+    const { favorite, error } = await response.json();
+
+    if (error) {
+        // TODO: add snackbar
+    }
 
     return favorite;
 };

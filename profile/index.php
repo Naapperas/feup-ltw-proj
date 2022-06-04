@@ -27,7 +27,7 @@
     $user = User::getById($id);
 
     if ($user === null)
-        error(HTTPStatusCode::NOT_FOUND);
+        pageError(HTTPStatusCode::NOT_FOUND);
 
     $owned_restaurants = $user->getOwnedRestaurants();
     $favorite_restaurants = $user->getFavoriteRestaurants();

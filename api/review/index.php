@@ -3,8 +3,10 @@
 
     require_once("../../lib/util.php");
 
-    if ($_SERVER['REQUEST_METHOD'] !== 'GET')
+    if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
         error(HTTPStatusCode::METHOD_NOT_ALLOWED);
+        die;
+    }
 
     require_once("../../lib/params.php");
 
@@ -37,5 +39,5 @@
 
     $reviews = Review::getWithFilters([$equalClause], $params['limit'], $orderClause);
 
-    echo json_encode($reviews);
+    echo json_encode(['reviews' => $reviews]);
 ?>

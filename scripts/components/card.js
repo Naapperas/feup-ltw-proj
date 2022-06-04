@@ -26,6 +26,8 @@ export const empowerRestaurantCard = (restaurantCard) => {
         try {
             const favorite = await toggleRestaurantLikedStatus(restaurantId);
 
+            if (favorite === undefined) return;
+
             /** @type NodeListOf<HTMLButtonElement> */
             const favoriteButtons = document.querySelectorAll(
                 `[data-card-type="restaurant"][data-restaurant-id="${restaurantId}"] button[data-favorite-button]`
@@ -61,6 +63,8 @@ export const empowerDishCard = (dishCard) => {
         try {
             const favorite = await toggleDishLikedStatus(dishId);
 
+            if (favorite === undefined) return;
+
             /** @type NodeListOf<HTMLButtonElement> */
             const favoriteButtons = document.querySelectorAll(
                 `[data-card-type="dish"][data-dish-id="${dishId}"] button[data-favorite-button]`
@@ -80,8 +84,6 @@ export const empowerDishCard = (dishCard) => {
 
         try {
             const newCart = await addProductToCart(parseInt(dishId), "dish");
-
-            console.debug(newCart);
 
             if (newCart) {
                 /** @type HTMLElement */
@@ -122,8 +124,6 @@ export const empowerMenuCard = (menuCard) => {
 
         try {
             const newCart = await addProductToCart(parseInt(menuId), "menu");
-
-            console.debug(newCart);
 
             if (newCart) {
                 /** @type HTMLElement */

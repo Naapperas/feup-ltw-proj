@@ -3,8 +3,10 @@
 
     require_once(dirname(dirname(dirname(__DIR__))).'/lib/util.php');
 
-    if (strcmp($_SERVER['REQUEST_METHOD'], "POST") !== 0)
+    if (strcmp($_SERVER['REQUEST_METHOD'], "POST") !== 0) {
         error(HTTPStatusCode::METHOD_NOT_ALLOWED);
+        die;
+    }
 
     require_once(dirname(dirname(dirname(__DIR__))).'/lib/params.php');
     require_once(dirname(dirname(dirname(__DIR__))).'/database/models/user.php');
@@ -14,17 +16,21 @@
 
     // prevents requests from un-authenticated sources
     if (!isset($_SESSION['user']))
-        error(HTTPStatusCode::UNAUTHORIZED);
+        apiError(HTTPStatusCode::UNAUTHORIZED, 'User has to be authenticated');
 
     $params = parseParams(post_params: [
         'restaurantId' => new IntParam(),
     ]);
 
     $user = User::getById($_SESSION['user']);
+
+    if ($user === null || is_array($user))
+        APIError(HTTPStatusCode::NOT_FOUND, 'Could not find user to perform this action: TOGGLE_LIKED_RESTAURANT');
+
     $restaurant = Restaurant::getById($params['restaurantId']);
 
-    if ($restaurant === null)
-        error(HTTPStatusCode::NOT_FOUND);
+    if ($restaurant === null || is_array($restaurant))
+        APIError(HTTPStatusCode::NOT_FOUND, 'Could not find restaurant to perform this action: TOGGLE_LIKED_RESTAURANT');
 
     $isFavorite = $restaurant->isLikedBy($user);
 
@@ -32,7 +38,7 @@
     $success = $user->$action($restaurant->id);
 
     if (!$success)
-        error(HTTPStatusCode::INTERNAL_SERVER_ERROR);
+        APIError(HTTPStatusCode::INTERNAL_SERVER_ERROR, 'Error when attempting to update restaurant\'s liked status for current user');
 
     echo json_encode([
         "favorite" => !$isFavorite

@@ -11,7 +11,7 @@
         public string $name;
         public string $email;
         public string $address;
-        public string $phone_number;
+        public int $phone_number;
         public string $full_name;
     
         protected static function getTableName(): string {

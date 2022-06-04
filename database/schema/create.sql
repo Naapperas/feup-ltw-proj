@@ -72,6 +72,7 @@ CREATE TABLE "Review" (
     "id" INTEGER NOT NULL,
     "score" INTEGER NOT NULL,
     "text" TEXT NOT NULL,
+    "review_date" DATE NOT NULL,
     "client" INTEGER NOT NULL,
     "restaurant" INTEGER NOT NULL,
     PRIMARY KEY("id"),
@@ -88,7 +89,7 @@ CREATE TABLE "User" (
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "address" TEXT NOT NULL,
-    "phone_number" TEXT NOT NULL,
+    "phone_number" INTEGER NOT NULL,
     "full_name" TEXT NOT NULL,
     PRIMARY KEY("id"),
     CONSTRAINT "unique_username" UNIQUE("name"),
@@ -105,6 +106,16 @@ CREATE TABLE "Order" (
     PRIMARY KEY("id"),
     FOREIGN KEY("driver") REFERENCES "User",
     FOREIGN KEY ("user_to_deliver") REFERENCES "User"
+);
+
+CREATE TABLE "Review_response" (
+    "id" INTEGER NOT NULL,
+    "text" TEXT NOT NULL,
+    "response_date" DATE NOT NULL,
+    "review_id" INTEGER NOT NULL,
+    PRIMARY KEY("id"),
+    FOREIGN KEY("review_id") REFERENCES "Review",
+    CONSTRAINT "one_response_per_review" UNIQUE("review_id")
 );
 
 -- Many to many

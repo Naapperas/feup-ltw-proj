@@ -10,7 +10,13 @@ export const fetchUser = async (/** @type {Number} */ userId) => {
 
     const response = await fetch(`/api/user?${Object.entries(data).map(([k, v]) => `${k}=${v}`).join("&")}`);
 
-    if (!response.ok) return [];
+    if (!response.ok) return {};
 
-    return await response.json();
+    const { user, userPhotoPath, error } = await response.json();
+    
+    if (error) {
+        // TODO: add snackbar
+    }
+
+    return { user, userPhotoPath };
 }

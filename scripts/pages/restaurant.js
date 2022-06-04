@@ -22,6 +22,8 @@ const empowerRestaurantLikeButton = (button) => {
         try {
             const favorite = await toggleRestaurantLikedStatus(restaurantId);
 
+            if (favorite === undefined) return;
+
             button.dataset.toggleState = favorite ? "on" : "off";
             button.ariaLabel = favorite ? "Unfavorite" : "Favorite";
         } catch {
@@ -35,14 +37,14 @@ const empowerRestaurantLikeButton = (button) => {
 const empowerOrderSelect = (select) => {
 
     /** @type HTMLElement */
-    const reviewList = select.parentElement.parentElement.parentElement.querySelector("#review-list");
+    const reviewList = document.querySelector("#review-list");
 
     const createReview = async (review) => {
 
         try {
             const { user, userPhotoPath } = await fetchUser(review.client);
 
-            if (!user) return;
+            if (!user || !userPhotoPath) return;
 
             const { id: userId, name: userName, address: userAddress } = user;
 
@@ -92,7 +94,7 @@ const empowerOrderSelect = (select) => {
 
             const reviewText = document.createElement('p');
             reviewText.classList.add('review-content');
-            reviewText.textContent = review.text;
+            reviewText.innerHTML = review.text; // this is safe to use here because this text comes from stored reviews, which can only be created through the given action which uses StringParams that escape the given text
 
             reviewElement.appendChild(reviewText);
 

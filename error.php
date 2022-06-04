@@ -85,7 +85,10 @@ $description = [
 ?>
 <!DOCTYPE html>
 <html lang="en">
-    <?php createHead(metadata: baseMetadata(title: "$response_code $description")) ?>
+    <?php createHead(
+        metadata: baseMetadata(title: "$response_code $description"), 
+        scripts: ["components/dialog.js"]
+    ) ?>
     <body class="top-app-bar layout">
         <?php createAppBar() ?>
         <main class="large-spacing column layout">

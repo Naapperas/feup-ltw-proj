@@ -4,14 +4,16 @@
     require_once("../../lib/util.php");
 
     if ($_SERVER['REQUEST_METHOD'] !== 'POST'
-     && $_SERVER['REQUEST_METHOD'] !== 'GET')
+     && $_SERVER['REQUEST_METHOD'] !== 'GET') {
         error(HTTPStatusCode::METHOD_NOT_ALLOWED);
+        die;
+     }
     
     session_start();
 
     // prevents requests from un-authenticated sources
     if (!isset($_SESSION['user']))
-        error(HTTPStatusCode::UNAUTHORIZED);
+        APIError(HTTPStatusCode::UNAUTHORIZED, 'The user needs to be authenticated to perform this action');
 
     $_SESSION['cart']['dishes'] ??= [];
     $_SESSION['cart']['menus'] ??= [];
@@ -38,13 +40,17 @@
                   : Menu::getById($params['productId']);
 
     if ($productToAdd === null || is_array($productToAdd)) {
-        error(HTTPStatusCode::NOT_FOUND);
+        APIError(HTTPStatusCode::NOT_FOUND, sprintf('Product of type \'%s\' with id %d not found', $params['productType'], $params['productId']));
     } else {
         $productType = $params['productType'] === 'dish' ? 'dishes' : 'menus';
 
         $_SESSION['cart'][$productType][$productToAdd->id] ??= 0;
         $_SESSION['cart'][$productType][$productToAdd->id] += 1;
+
+        if ($_SESSION['cart'][$productType][$productToAdd->id] >= 50) {
+            $_SESSION['easter-egg'] = true;
+        }
     }
 
-    echo json_encode($_SESSION['cart']);
+    echo json_encode(['cart' => $_SESSION['cart']]);
 ?>

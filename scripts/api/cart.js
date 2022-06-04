@@ -23,5 +23,11 @@ export const addProductToCart = async (id, type) => {
 
     if (!response.ok) return;
 
-    return await response.json();
+    const { cart, error } = await response.json();
+
+    if (error) {
+        // TODO: add snackbar
+    }
+
+    return cart;
 };

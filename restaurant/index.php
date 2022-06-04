@@ -27,7 +27,7 @@
     $restaurant = Restaurant::getById($id);
 
     if ($restaurant === null)
-        error(HTTPStatusCode::NOT_FOUND);
+        pageError(HTTPStatusCode::NOT_FOUND);
 ?>
 <!DOCTYPE html>
 <html lang="en">

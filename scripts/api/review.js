@@ -14,5 +14,11 @@ export const fetchOrderedReviews = async (/** @type {Number} */ restaurantId, /*
 
     if (!response.ok) return [];
 
-    return await response.json();
+    const { reviews, error } = await response.json();
+
+    if (error) {
+        // TODO: add snackbar
+    }
+
+    return reviews
 }
