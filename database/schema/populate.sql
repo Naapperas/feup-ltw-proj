@@ -1,8 +1,8 @@
 INSERT INTO "User" ("name", "email", "password", "address", "phone_number", "full_name")
-VALUES ("owner", "owner@owner.com", "$2y$10$CLQNUjI41V6l74P3C3S2b.ujaxi1vUrq8C6zHFPpBbqvX91lbHuaK", "owner address", 999999999, "owner owneronimous");
+VALUES ("owner", "owner@owner.com", "$2y$10$CLQNUjI41V6l74P3C3S2b.ujaxi1vUrq8C6zHFPpBbqvX91lbHuaK", "owner address", "999999999", "owner owneronimous");
 
 INSERT INTO "User" ("name", "email", "password", "address", "phone_number", "full_name")
-VALUES ("user", "user@user.com", "$2y$10$jz3M4Opty4lsaDP6jmr1BuTRz4uStCrB4u.P40YPl0wTHnqPlq1vm", "user address", 000000000, "user useronimous");
+VALUES ("user", "user@user.com", "$2y$10$jz3M4Opty4lsaDP6jmr1BuTRz4uStCrB4u.P40YPl0wTHnqPlq1vm", "user address", "000000000", "user useronimous");
 
 INSERT INTO "Restaurant" ("name", "address", "phone_number", "website", "opening_time", "closing_time", "owner")
 VALUES ('McDonald''s', 'Estr. da Circunvalação 8114 8116, 4200-163 Porto', '225091784', 'https://www.mcdonalds.pt/', '08:00', '02:00', 1);

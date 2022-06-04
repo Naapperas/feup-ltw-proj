@@ -89,7 +89,7 @@ CREATE TABLE "User" (
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "address" TEXT NOT NULL,
-    "phone_number" INTEGER NOT NULL,
+    "phone_number" TEXT NOT NULL,
     "full_name" TEXT NOT NULL,
     PRIMARY KEY("id"),
     CONSTRAINT "unique_username" UNIQUE("name"),
