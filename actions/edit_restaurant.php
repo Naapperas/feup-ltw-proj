@@ -139,8 +139,15 @@
 
     foreach ($params['dishes_to_add'] as $i => $arr) {
         $arr['restaurant'] = $restaurant->id;
+
+        $categories = $arr['categories'];
+        unset($arr['categories']);
+
         $dish = Dish::create($arr);
-        $dish->setCategories($arr['categories']);
+
+        if ($dish === null) continue;
+
+        $dish->setCategories($categories);
         uploadImage($_FILES['dishes_to_add'], 'dish', $dish->id, 1920, index: $i);
     }
 
@@ -170,8 +177,15 @@
 
     foreach ($params['menus_to_add'] as $i => $arr) {
         $arr['restaurant'] = $restaurant->id;
+
+        $dishes = $arr['dishes'];
+        unset($arr['dishes']);
+
         $menu = Menu::create($arr);
-        $menu->setDishes($arr['dishes']);
+
+        if ($menu === null) continue;
+
+        $menu->setDishes($dishes);
         uploadImage($_FILES['menus_to_add'], 'menu', $menu->id, 1920, index: $i);
     }
 

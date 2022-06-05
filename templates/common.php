@@ -156,6 +156,16 @@ require_once(__DIR__.'/form.php');
     </form>
 <?php } ?>
 
+<?php function createSnackbar(string $text) { ?>
+    <output class="snackbar">
+        <?= $text ?>
+        <?php createButton(
+            type: ButtonType::ICON, icon: 'close', 
+            attributes: 'data-close-snackbar'
+        ); ?>
+    </output>
+<?php } ?>
+
 <?php function createAppBar(?string $query = null) { ?>
     <header class="appbar elevated fixed">
         <a href="/" class="title homepage-link"><h1 class="h6 color logo"></h1></a>
@@ -165,7 +175,9 @@ require_once(__DIR__.'/form.php');
         createColorSchemeToggle();
         createUserButtons();
         ?>
-        <section class="snackbar-container">
+        <section id="snackbar-container">
+            <?php createSnackbar("Dish added to cart"); ?>
+            <?php createSnackbar("Menu added to cart"); ?>
             <!-- <output class="snackbar">
                 TEST
                 <button class="button text">ACTION</button>

@@ -22,7 +22,8 @@
         scripts: [
             'components/form.js',
             'components/textfield.js',
-            'components/imageinput.js'
+            'components/imageinput.js',
+            "components/snackbar.js"
         ]
     ); ?>
     <body class="top-app-bar layout">

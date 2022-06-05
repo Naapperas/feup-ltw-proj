@@ -25,7 +25,8 @@ $recommended_dishes = DIsh::getAll();
             "components/form.js",
             "components/card.js",
             "components/dialog.js",
-            "components/slider.js"
+            "components/slider.js",
+            "components/snackbar.js"
         ]
     ); ?>
     <body class="top-app-bar layout">

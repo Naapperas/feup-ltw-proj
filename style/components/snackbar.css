@@ -1,4 +1,4 @@
-.snackbar-container {
+#snackbar-container {
     position: fixed;
     inset: 0;
     padding: 24px;
@@ -43,8 +43,22 @@
     margin: -8px;
 }
 
+@keyframes snackbar-exit { /* FIXME: maybe a more elegant way to achieve this */
+    from {
+        transform: translateX(0%);
+    }
+    
+    to {
+        transform: translateX(-150%);
+    }
+}
+
+.snackbar.exit {
+    animation: snackbar-exit 2s ease-in-out;
+}
+
 @media screen and (max-width: 480px) {
-    .snackbar-container {
+    #snackbar-container {
         padding: 8px;
     }
 

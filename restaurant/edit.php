@@ -39,6 +39,7 @@
             'components/imageinput.js',
             'components/dialog.js',
             'components/card.js',
+            "components/snackbar.js",
 
             'pages/editrestaurant.js'
         ]
