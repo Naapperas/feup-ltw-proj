@@ -30,9 +30,9 @@ export const empowerSnackbar = (snackbar) => {
         setTimeout(() => snackbar.remove(), 1750);
     }
 
-    // const timeout = setTimeout(dismissSnackbar, 5000);
+    const timeout = setTimeout(dismissSnackbar, 5000);
     closeButton.addEventListener('click', () => {
-        // clearTimeout(timeout);
+        clearTimeout(timeout);
         dismissSnackbar();
     });
 };

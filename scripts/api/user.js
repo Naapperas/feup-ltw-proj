@@ -2,6 +2,8 @@
 
 "use strict";
 
+import { addSnackbar } from '../components/snackbar.js';
+
 export const fetchUser = async (/** @type {Number} */ userId) => {
 
     const data = {
@@ -10,12 +12,10 @@ export const fetchUser = async (/** @type {Number} */ userId) => {
 
     const response = await fetch(`/api/user?${Object.entries(data).map(([k, v]) => `${k}=${v}`).join("&")}`);
 
-    if (!response.ok) return {};
-
     const { user, userPhotoPath, error } = await response.json();
     
     if (error) {
-        // TODO: add snackbar
+        addSnackbar(error);
     }
 
     return { user, userPhotoPath };

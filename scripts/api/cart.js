@@ -2,6 +2,8 @@
 
 "use-strict";
 
+import { addSnackbar } from '../components/snackbar.js';
+
 /**
  *
  * @param {number} id
@@ -21,12 +23,10 @@ export const addProductToCart = async (id, type) => {
         body: data,
     });
 
-    if (!response.ok) return;
-
     const { cart, error } = await response.json();
 
     if (error) {
-        // TODO: add snackbar
+        addSnackbar(error);
     }
 
     return cart;

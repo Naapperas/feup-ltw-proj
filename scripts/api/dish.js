@@ -2,6 +2,8 @@
 
 "use strict";
 
+import { addSnackbar } from '../components/snackbar.js';
+
 export const toggleDishLikedStatus = async (id) => {
     const data = new FormData(); // POSTing to PHP requires FormData
     data.append("dishId", id);
@@ -11,12 +13,10 @@ export const toggleDishLikedStatus = async (id) => {
         body: data,
     });
 
-    if (!response.ok) return;
-
     const { favorite, error } = await response.json();
 
     if (error) {
-        // TODO: add snackbar
+        addSnackbar(error);
     }
 
     return favorite;
