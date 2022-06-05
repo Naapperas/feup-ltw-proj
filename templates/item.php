@@ -31,8 +31,8 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                 </a>
             </h3>
             <span class="subtitle subtitle2 secondary"><?= $restaurant->address ?></span>
-            <?php if (($avgScore = $restaurant->getReviewScore()) !== null) { ?>
-            <span class="chip right"><?php createIcon(icon: "star") ?><?= round($avgScore, 1) ?></span>
+            <?php if ($restaurant->score !== null) { ?>
+            <span class="chip right"><?php createIcon(icon: "star") ?><?= round($restaurant->score, 1) ?></span>
             <?php } ?>
         </header>
         <?php

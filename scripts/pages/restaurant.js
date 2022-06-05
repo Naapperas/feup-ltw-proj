@@ -129,6 +129,13 @@ const empowerOrderSelect = (select) => {
     select.addEventListener("change", handleInputChange);
 }
 
+const empowerReview = (reviewElement) => {
+
+    reviewElement.addEventListener('click', () => {
+        console.log("oi");
+    });
+}
+
 /** @type HTMLElement */
 const _restaurantFavoriteButton = document.querySelector(
     "[data-restaurant-id][data-favorite-button]"
@@ -141,3 +148,7 @@ const orderSelect = document.querySelector(
 );
 
 empowerOrderSelect(orderSelect);
+
+const reviewList = document.querySelectorAll('#review-list > .review');
+
+reviewList.forEach(empowerReview);

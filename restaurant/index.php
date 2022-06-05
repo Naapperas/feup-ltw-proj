@@ -107,8 +107,8 @@
                 <a href="<?= $restaurant->website ?>" target="_blank">
                     <?= preg_replace('/^www\./', '', parse_url($restaurant->website, PHP_URL_HOST), 1) ?>
                 </a>
-                <?php if (($score = $restaurant->getReviewScore()) != null) {
-                createIcon("star");?><span><?= round($score, 1) ?></span>
+                <?php if ($restaurant->score != null) {
+                createIcon("star");?><span><?= round($restaurant->score, 1) ?></span>
                 <?php } ?>
 
                 <?php createCategoryList($restaurant->getCategories()) ?>

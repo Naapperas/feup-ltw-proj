@@ -37,9 +37,9 @@
 
     $nameContainsSearchTermFilter = new Like('name', $params['q']);
 
-    $restaurantScoreFilter = new AndClause([ /* FIXME: this does not work yet because it requires that we store the score on the restaurant model */
-        isset($params['min_restaurant_score']) ? new GreaterThanOrEqual('score', ($params['min_restaurant_score'] / 10)) : null,
-        isset($params['max_restaurant_score']) ? new LessThanOrEqual('score', ($params['max_restaurant_score'] / 10)) : null
+    $restaurantScoreFilter = new AndClause([
+        isset($params['min_restaurant_score']) ? new GreaterThanOrEqual('score', $params['min_restaurant_score']) : null,
+        isset($params['max_restaurant_score']) ? new LessThanOrEqual('score', $params['max_restaurant_score']) : null
     ]);
 
     $dishPriceFilter = new AndClause([
@@ -59,7 +59,7 @@
     $users = User::getWithFilters([$nameContainsSearchTermFilter], limit: 10);
 
     $restaurants = array_unique(array_merge(
-        Restaurant::getWithFilters([$nameContainsSearchTermFilter], limit: 10),
+        Restaurant::getWithFilters([$nameContainsSearchTermFilter, $restaurantScoreFilter], limit: 10),
         Restaurant::getByCategoryIds($categoryIds)
     ));
 
@@ -80,7 +80,7 @@
 
         <main class="large medium-spacing column layout">
             <header class="header">
-                <h2 class="title h3">Search results for '<?= $params['q'] ?>'</h2>
+                <h2 class="title h3">Search results for '<?= $params['q'] ?>':</h2>
             </header>
             <?php 
             

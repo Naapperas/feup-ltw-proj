@@ -18,6 +18,7 @@
         public string $website;
         public string $opening_time;
         public string $closing_time;
+        public ?float $score;
 
         public int $owner;
 
@@ -35,17 +36,6 @@
 
         public function getOwner(): ?User {
             return User::getById($this->owner);
-        }
-
-        public function getReviewScore(): ?float { // use this instead of an attribute because of the nullability
-
-            $query = "SELECT avg(score) AS average FROM Review WHERE restaurant = ?;";
-
-            $queryResults = getQueryResults(static::getDB(), $query, false, [$this->id]);
-        
-            if ($queryResults === false) return 0;
-
-            return $queryResults['average']; // returns null if restaurant has no reviews
         }
 
         public function getReviews(int $limit, OrderClause $order = new OrderClause([['score', false]])): array {

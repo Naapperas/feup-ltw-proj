@@ -36,7 +36,7 @@ declare(strict_types=1);
     string $image = "/assets/logo.webp", string $type = "website",
     ?string $preview_title = null, ?string $preview_description = null
 ) { 
-    return function() use ($title, $description, $image, $type) { ?>
+    return function() use ($title, $description, $image, $type, $preview_title, $preview_description) { ?>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -79,6 +79,6 @@ declare(strict_types=1);
             title: $restaurant->name,
             description: "$restaurant->name's page on Xau Fome",
             image: $restaurant->getImagePath(),
-            preview_description: sprintf("%.2f ★ · %s", $restaurant->getReviewScore(), $restaurant->address)
+            preview_description: sprintf("%.2f ★ · %s", $restaurant->score, $restaurant->address)
         )(); ?>
 <?php };} ?>
