@@ -28,6 +28,10 @@
 
     if ($restaurant === null)
         pageError(HTTPStatusCode::NOT_FOUND);
+
+    if (isset($_SESSION['user'])) {
+        $user = User::getById($_SESSION['user']);
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,7 +41,36 @@
     );
     ?>
     <body class="top-app-bar restaurant layout">
-        <?php createAppBar(); ?>
+        <?php
+        createAppBar();
+        if ($user) {
+            if ($user->id === $restaurant->owner) {
+                createButton(
+                    type: ButtonType::FAB,
+                    text: "Edit",
+                    icon: "edit",
+                    href: "/restaurant/edit.php?id=$restaurant->id");
+            } else {
+                if ($restaurant->isLikedBy($user)) {
+                    $state = "on";
+                    $text = "Unfavorite";
+                } else {
+                    $state = "off";
+                    $text = "Favorite";
+                }
+
+                createButton(
+                    type: ButtonType::FAB, text: $text, class: "toggle",
+                    attributes: 
+                        "data-on-icon=\"favorite\"\n".
+                        "data-off-icon=\"favorite_border\"\n".
+                        "data-toggle-state=\"$state\"\n".
+                        "data-restaurant-id=\"$restaurant->id\"".
+                        "data-favorite-button"
+                );
+            }
+        }
+        ?>
 
         <main class="restaurant-main">
             <header class="restaurant-header">
@@ -82,61 +115,30 @@
             </div>
 
             <?php
-                createReviewList($restaurant->getReviews(50), $restaurant->id);
-
-                if (isset($_SESSION['user'])) {
-
-                    $currentUser = User::getById($_SESSION['user']);
-
-                    if ($currentUser !== null) {
-                        if($restaurant->owner === $currentUser->id) {
-                            createButton(
-                                type: ButtonType::FAB,
-                                text: "Edit",
-                                icon: "edit",
-                                href: "/restaurant/edit.php?id=$restaurant->id");
-                        } else {
-                            createForm(
-                                'POST', 'review', '/actions/create_review.php',
-                                function() use ($restaurant, $currentUser) {
-                                    ?><header class="header">
-                                        <h3 class="title h4">Leave a review</h3>
-                                    </header>
-                                    <fieldset class="score">
-                                        <input class="radio" type="radio" name="score" value="0" checked>
-                                        <input class="radio" type="radio" name="score" value="1">
-                                        <input class="radio" type="radio" name="score" value="2">
-                                        <input class="radio" type="radio" name="score" value="3">
-                                        <input class="radio" type="radio" name="score" value="4">
-                                        <input class="radio" type="radio" name="score" value="5">
-                                    </fieldset>
-                                    <input type="hidden" name="restaurantId" value="<?= $restaurant->id ?>">
-                                    <input type="hidden" name="userId" value="<?= $currentUser->id ?>"><?php
-                                    createTextField(name: 'content', label: 'Details', type: 'multiline');
-                                    createButton(text: 'Post', submit: true);
-                                }
-                            );
-
-                            if ($restaurant->isLikedBy($currentUser)) {
-                                $state = "on";
-                                $text = "Unfavorite";
-                            } else {
-                                $state = "off";
-                                $text = "Favorite";
-                            }
-    
-                            createButton(
-                                type: ButtonType::FAB, text: $text, class: "toggle",
-                                attributes: 
-                                    "data-on-icon=\"favorite\"\n".
-                                    "data-off-icon=\"favorite_border\"\n".
-                                    "data-toggle-state=\"$state\"\n".
-                                    "data-restaurant-id=\"$restaurant->id\"".
-                                    "data-favorite-button"
-                            );
+                if ($user !== null && $restaurant->owner !== $user->id) {
+                    createForm(
+                        'POST', 'review', '/actions/create_review.php',
+                        function() use ($restaurant, $user) {
+                            ?><header class="header">
+                                <h3 class="title h4">Leave a review</h3>
+                            </header>
+                            <fieldset class="score">
+                                <input class="radio" type="radio" name="score" value="0" checked>
+                                <input class="radio" type="radio" name="score" value="1">
+                                <input class="radio" type="radio" name="score" value="2">
+                                <input class="radio" type="radio" name="score" value="3">
+                                <input class="radio" type="radio" name="score" value="4">
+                                <input class="radio" type="radio" name="score" value="5">
+                            </fieldset>
+                            <input type="hidden" name="restaurantId" value="<?= $restaurant->id ?>">
+                            <input type="hidden" name="userId" value="<?= $user->id ?>"><?php
+                            createTextField(name: 'content', label: 'Details', type: 'multiline');
+                            createButton(text: 'Post', submit: true);
                         }
-                    }
+                    );
                 }
+                
+                createReviewList($restaurant->getReviews(50), $restaurant->id);
             ?>
         </aside>
 
