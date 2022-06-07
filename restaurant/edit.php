@@ -39,12 +39,20 @@
             'components/imageinput.js',
             'components/dialog.js',
             'components/card.js',
-            "components/snackbar.js",
+            'components/snackbar.js',
 
             'pages/editrestaurant.js'
         ]
     ); ?>
     <body class="top-app-bar layout edit-restaurant">
+
+        <template id="categories-template">
+            <?php createCategoriesDialog(null, id: ''); ?>
+        </template>
+        <template id="dishes-template">
+            <?php createDishesDialog(null, id: ''); ?>
+        </template>
+
         <?php createAppBar(); ?>
         <?php createForm(
             'POST', 'restaurant', '/actions/edit_restaurant.php',

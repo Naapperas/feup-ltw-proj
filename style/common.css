@@ -182,3 +182,9 @@ a {
 ::-webkit-scrollbar-track:active {
     --opacity: var(--opacity-active);
 }
+
+@supports (overflow-y: overlay) {
+    body {
+        overflow-y: overlay;
+    }
+}

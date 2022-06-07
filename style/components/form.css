@@ -116,4 +116,11 @@ fieldset.selection-list > legend {
     flex-direction: column;
     gap: 8px;
     text-align: start;
+
+    transition-property: opacity;
+}
+
+.chip-list-edit.disabled {
+    opacity: var(--opacity-disabled);
+    pointer-events: none;
 }

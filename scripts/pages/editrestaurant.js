@@ -4,53 +4,6 @@
 
 import { createNewDishCard, createNewMenuCard } from "../components/card.js";
 
-/**
- * Creates a category chip.
- *
- * @param {string} category
- * @param {number} id
- */
-const createCategoryChip = (category, id) => {
-    const chip = document.createElement("li");
-
-    chip.classList.add("chip");
-    chip.textContent = category;
-    chip.dataset.categoryId = id.toString(10);
-
-    return chip;
-};
-
-/** @type NodeListOf<HTMLElement> */
-const chipLists = document.querySelectorAll("a[data-open-dialog]");
-
-chipLists.forEach((chipList) => {
-    /** @type HTMLElement */
-    const list = chipList.querySelector("ul.chip-list");
-    /** @type HTMLFieldSetElement */
-    const fieldset = document.querySelector(
-        `${chipList.dataset.openDialog} fieldset`
-    );
-
-    fieldset.addEventListener("input", (e) => {
-        /** @type HTMLInputElement */
-        // @ts-ignore
-        const target = e.target;
-
-        const id = parseInt(target.value);
-        const label = target.labels[0].textContent;
-        const checked = target.checked;
-
-        const chip = list.querySelector(`li[data-category-id="${id}"]`);
-
-        if (chip && !checked) {
-            chip.remove();
-        } else if (!chip && checked) {
-            const chip = createCategoryChip(label, id);
-            list.appendChild(chip);
-        }
-    });
-});
-
 /** @type HTMLElement */
 const dishList = document.querySelector(".dish-list");
 /** @type HTMLElement */

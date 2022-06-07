@@ -7,6 +7,24 @@ import { toggleDishLikedStatus } from "../api/dish.js";
 import { addProductToCart } from "../api/cart.js";
 import { createTextField } from "./textfield.js";
 import { createImageInput } from "./imageinput.js";
+import { empowerOpenDialogButton } from "./dialog.js";
+import { empowerCloseDialogButton } from "./dialog.js";
+
+/**
+ * Creates a category chip.
+ *
+ * @param {string} category
+ * @param {number} id
+ */
+const createCategoryChip = (category, id) => {
+    const chip = document.createElement("li");
+
+    chip.classList.add("chip");
+    chip.textContent = category;
+    chip.dataset.categoryId = id.toString(10);
+
+    return chip;
+};
 
 /**
  * "Empowers" a restaurant card using javascript.
@@ -152,20 +170,48 @@ export const empowerMenuCard = (menuCard) => {
  * @param {HTMLElement} editDishCard
  */
 export const empowerEditDishCard = (editDishCard) => {
-    /** @type HTMLButtonElement */
+    /** @type {HTMLButtonElement} */
     const deleteButton = editDishCard.querySelector(
         "button[data-delete-button]"
     );
-    /** @type HTMLInputElement */
+    /** @type {HTMLInputElement} */
     const nameInput = editDishCard.querySelector("input[name*=name]");
-    /** @type HTMLInputElement */
+    /** @type {HTMLInputElement} */
     const priceInput = editDishCard.querySelector("input[name*=price]");
-    /** @type HTMLInputElement */
+    /** @type {HTMLInputElement} */
     const imageInput = editDishCard.querySelector("input[type=file]");
-    /** @type HTMLLabelElement */
+    /** @type {HTMLLabelElement} */
     const imagePicker = editDishCard.querySelector("label.image-input");
-    /** @type HTMLInputElement */
+    /** @type {HTMLInputElement} */
     const hiddenInput = editDishCard.querySelector("input[type=hidden]");
+
+    /** @type {HTMLAnchorElement} */
+    const chipListLink = editDishCard.querySelector("a[data-open-dialog]");
+    /** @type {HTMLElement} */
+    const chipList = chipListLink.querySelector("ul.chip-list");
+    /** @type {HTMLFieldSetElement} */
+    const categoriesFieldset = editDishCard.querySelector(
+        `${chipListLink.dataset.openDialog} fieldset`
+    );
+
+    categoriesFieldset?.addEventListener("input", (e) => {
+        /** @type {HTMLInputElement} */
+        // @ts-ignore
+        const target = e.target;
+
+        const id = parseInt(target.value);
+        const label = target.labels[0].textContent;
+        const checked = target.checked;
+
+        const chip = chipList.querySelector(`li[data-category-id="${id}"]`);
+
+        if (chip && !checked) {
+            chip.remove();
+        } else if (!chip && checked) {
+            const chip = createCategoryChip(label, id);
+            chipList.appendChild(chip);
+        }
+    });
 
     const toggleDeletedStatus = async (event) => {
         event?.preventDefault();
@@ -179,6 +225,8 @@ export const empowerEditDishCard = (editDishCard) => {
         if (priceInput) priceInput.disabled = deleted;
         if (imageInput) imageInput.disabled = deleted;
         imagePicker?.classList.toggle("disabled", deleted);
+        chipListLink?.classList.toggle("disabled", deleted);
+        if (categoriesFieldset) categoriesFieldset.disabled = deleted;
 
         if (hiddenInput) hiddenInput.disabled = !deleted;
     };
@@ -219,6 +267,41 @@ export const createNewDishCard = (index) => {
         }
     );
 
+    const chipListLink = document.createElement("a");
+    chipListLink.href = "#";
+    chipListLink.dataset.openDialog = `#new-dish-${index}-categories`;
+    chipListLink.classList.add("fullwidth", "chip-list-edit");
+
+    const chipListTitle = document.createElement("p");
+    chipListTitle.innerText = "Categories";
+    chipListLink.appendChild(chipListTitle);
+
+    const chipList = document.createElement("ul");
+    chipList.classList.add("chip-list", "wrap");
+    chipListLink.appendChild(chipList);
+
+    /** @type {HTMLTemplateElement} */
+    const categoriesTemplate = document.querySelector("#categories-template");
+    /** @type {HTMLDialogElement} */
+    // @ts-ignore
+    const categoriesDialog = categoriesTemplate.content
+        .querySelector("dialog")
+        .cloneNode(true);
+    categoriesDialog.id = `new-dish-${index}-categories`;
+    /** @type {HTMLButtonElement} */
+    const closeDialogButton = categoriesDialog.querySelector(
+        "button[data-close-dialog]"
+    );
+    closeDialogButton.dataset.closeDialog = `#new-dish-${index}-categories`;
+    /** @type {NodeListOf<HTMLInputElement>} */
+    const categoryInputs = categoriesDialog.querySelectorAll("input");
+    categoryInputs.forEach(
+        (i) => (i.name = `dishes_to_add[${index}][categories][]`)
+    );
+
+    empowerOpenDialogButton(chipListLink, categoriesDialog);
+    empowerCloseDialogButton(closeDialogButton, categoriesDialog);
+
     const deleteButton = document.createElement("button");
     deleteButton.classList.add("button", "icon", "top-right");
     deleteButton.toggleAttribute("data-delete-button", true);
@@ -226,7 +309,14 @@ export const createNewDishCard = (index) => {
     deleteButton.ariaLabel = "Delete";
     deleteButton.type = "button";
 
-    card.append(imageInput, nameInput, priceInput, deleteButton);
+    card.append(
+        imageInput,
+        nameInput,
+        priceInput,
+        chipListLink,
+        categoriesDialog,
+        deleteButton
+    );
 
     empowerEditDishCard(card);
 

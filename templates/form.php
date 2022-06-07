@@ -210,14 +210,14 @@ declare(strict_types=1);
     <?php }
 } ?>
 
-<?php function createCategoriesDialog(Restaurant | Dish $model, string $name = 'categories[]', string $id = 'categories') { ?>
+<?php function createCategoriesDialog(Restaurant | Dish | null $model, string $name = 'categories[]', string $id = 'categories') { ?>
     <dialog class="dialog confirmation" id="<?= $id ?>">
         <header><h2 class="h5">Categories</h2></header>
         <?php createCheckBoxList(array_map(fn(Category $category) => [
             'label' => $category->name,
             'value' => $category->id,
             'name' => $name,
-            'checked' => $model->hasCategory($category->id)
+            'checked' => $model && $model->hasCategory($category->id)
         ], Category::getAll()), '', 'content'); ?>
         <div class="actions">
             <button class="button text" type="button" data-close-dialog="#<?= $id ?>">Done</button>
@@ -225,14 +225,14 @@ declare(strict_types=1);
     </dialog>
 <?php } ?>
 
-<?php function createDishesDialog(Menu $model, string $name = 'dishes[]', string $id = 'dishes') { ?>
+<?php function createDishesDialog(?Menu $model, string $name = 'dishes[]', string $id = 'dishes') { ?>
     <dialog class="dialog confirmation" id="<?= $id ?>">
         <header><h2 class="h5">Dishes</h2></header>
         <?php createCheckBoxList(array_map(fn(Dish $dish) => [
             'label' => $dish->name,
             'value' => $dish->id,
             'name' => $name,
-            'checked' => $model->hasDish($dish->id)
+            'checked' => $model && $model->hasDish($dish->id)
         ], Dish::getAll()), '', 'content'); ?>
         <div class="actions">
             <button class="button text" type="button" data-close-dialog="#<?= $id ?>">Done</button>
