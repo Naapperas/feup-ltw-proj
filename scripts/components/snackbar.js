@@ -56,19 +56,24 @@ export const addSnackbar = (
 ) => {
     const snackbar = createSnackbar(snackbarText, snackbarDelay);
 
-    const from = snackbarContainer.offsetHeight;
-    snackbarContainer.appendChild(snackbar);
-    empowerSnackbar(snackbar);
-    const to = snackbarContainer.offsetHeight;
+    if (snackbarContainer.children.length > 0) {
+        const from = snackbarContainer.offsetHeight;
+        snackbarContainer.appendChild(snackbar);
+        empowerSnackbar(snackbar);
+        const to = snackbarContainer.offsetHeight;
 
-    const animation = snackbarContainer.animate(
-        [
-            { transform: `translateY(${to - from}px)` },
-            { transform: `translateY(0)` },
-        ],
-        { duration: 200, easing: "ease-in-out" }
-    );
-    animation.startTime = document.timeline.currentTime;
+        const animation = snackbarContainer.animate(
+            [
+                { transform: `translateY(${to - from}px)` },
+                { transform: `translateY(0)` },
+            ],
+            { duration: 200, easing: "ease-in-out" }
+        );
+        animation.startTime = document.timeline.currentTime;
+    } else {
+        snackbarContainer.appendChild(snackbar);
+        empowerSnackbar(snackbar);
+    }
 };
 
 /** @type {NodeListOf<HTMLOutputElement>} */
