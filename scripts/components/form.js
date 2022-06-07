@@ -136,20 +136,27 @@ const empowerForm = (form) => {
     setButtonState();
 
     const observer = new MutationObserver((mutations) => {
-        for (const mutation of mutations) {
-            for (const node of mutation.addedNodes) {
-                /** @type {NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>} */
-                // @ts-ignore
-                const inputs = node.querySelectorAll("input, select, textarea");
-                inputs.forEach(empowerInput);
-            }
-        }
+        console.log(mutations);
 
-        setButtonState();
+        for (const mutation of mutations) {
+            if (mutation.type == "childList")
+                for (const node of mutation.addedNodes) {
+                    /** @type {NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>} */
+                    const inputs =
+                        // @ts-ignore
+                        node.querySelectorAll?.("input, select, textarea") ??
+                        [];
+                    inputs.forEach(empowerInput);
+                }
+
+            if (mutation.target != submitButton) setButtonState();
+        }
     });
     observer.observe(form, {
         childList: true,
         subtree: true,
+        attributes: true,
+        attributeFilter: ["disabled"],
     });
 };
 
