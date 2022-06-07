@@ -37,24 +37,36 @@
     text-align: start;
 
     transition-property: background, color, box-shadow;
+
+    animation-name: snackbar-enter, snackbar-exit;
+    animation-duration: 200ms;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+    animation-delay: 0ms, var(--snackbar-delay);
 }
 
 .snackbar > .button:is(.text, .icon) {
     margin: -8px;
 }
 
-@keyframes snackbar-exit { /* FIXME: maybe a more elegant way to achieve this */
-    from {
-        transform: translateX(0%);
+@keyframes snackbar-enter {
+    0% {
+        opacity: 0%;
     }
-    
-    to {
-        transform: translateX(-150%);
+
+    100% {
+        opacity: 100%;
     }
 }
 
-.snackbar.exit {
-    animation: snackbar-exit 2s ease-in-out;
+@keyframes snackbar-exit {
+    0% {
+        opacity: 100%;
+    }
+
+    100% {
+        opacity: 0%;
+    }
 }
 
 @media screen and (max-width: 480px) {

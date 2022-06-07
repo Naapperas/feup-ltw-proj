@@ -2,51 +2,75 @@
 
 "use strict";
 
-export const createSnackbar = (/** @type {string} */ snackbarText) => {
-    const snackbar = document.createElement('output');
-    snackbar.classList.add('snackbar');
+export const createSnackbar = (
+    /** @type {string} */ snackbarText,
+    /** @type {number} */ snackbarDelay = 5
+) => {
+    const snackbar = document.createElement("output");
+    snackbar.classList.add("snackbar");
+    snackbar.style.setProperty("--snackbar-delay", `${snackbarDelay}s`);
+    snackbar.setAttribute("role", "status");
+    snackbar.setAttribute("aria-live", "polite");
+    snackbar.innerText = snackbarText;
 
-    const snackbarTextElement = document.createTextNode(snackbarText);
+    // const snackbarCloseButton = document.createElement("button");
+    // snackbarCloseButton.classList.add("button", "icon");
+    // snackbarCloseButton.type = "button";
+    // snackbarCloseButton.dataset.closeSnackbar = "";
+    // snackbarCloseButton.textContent = "close";
 
-    const snackbarCloseButton = document.createElement('button');
-    snackbarCloseButton.classList.add('button', 'icon');
-    snackbarCloseButton.type = 'button';
-    snackbarCloseButton.dataset.closeSnackbar = '';
-    snackbarCloseButton.textContent = 'close';
-
-    snackbar.appendChild(snackbarTextElement);
-    snackbar.appendChild(snackbarCloseButton);
+    // snackbar.appendChild(snackbarCloseButton);
 
     return snackbar;
 };
 
 // mark as an export to be able to create and empower snackbars somewhere else
-export const empowerSnackbar = (snackbar) => {
+export const empowerSnackbar = (/** @type {HTMLOutputElement} */ snackbar) => {
+    // const closeButton = snackbar.querySelector("[data-close-snackbar]");
 
-    const closeButton = snackbar.querySelector('[data-close-snackbar]');
+    Promise.allSettled(snackbar.getAnimations().map((a) => a.finished)).then(
+        () => snackbar.remove()
+    );
 
-    const dismissSnackbar = () => {
-        snackbar.classList.add('exit');
-        setTimeout(() => snackbar.remove(), 1750);
-    }
-
-    const timeout = setTimeout(dismissSnackbar, 5000);
-    closeButton.addEventListener('click', () => {
-        clearTimeout(timeout);
-        dismissSnackbar();
-    });
+    // closeButton.addEventListener("click", () => {
+    //     console.debug(snackbar.getAnimations());
+    //     snackbar.style.setProperty("--snackbar-delay", "0ms");
+    // });
 };
 
-const snackbarContainer = document.querySelector('#snackbar-container');
+const createSnackbarContainer = () => {
+    const snackbarContainer = document.createElement("section");
+    snackbarContainer.id = "snackbar-container";
+    document.body.appendChild(snackbarContainer);
 
-export const addSnackbar = (/** @type {string|HTMLOutputElement} */snackbar) => {
+    return snackbarContainer;
+};
 
-    snackbar = typeof snackbar === 'string' ? createSnackbar(snackbar) : snackbar;
+/** @type {HTMLElement} */
+const snackbarContainer =
+    document.querySelector("#snackbar-container") ?? createSnackbarContainer();
 
+export const addSnackbar = (
+    /** @type {string} */ snackbarText,
+    /** @type {number} */ snackbarDelay = 5
+) => {
+    const snackbar = createSnackbar(snackbarText, snackbarDelay);
+
+    const from = snackbarContainer.offsetHeight;
     snackbarContainer.appendChild(snackbar);
     empowerSnackbar(snackbar);
-}
+    const to = snackbarContainer.offsetHeight;
 
-const snackbarList = snackbarContainer.querySelectorAll('output.snackbar');
+    const animation = snackbarContainer.animate(
+        [
+            { transform: `translateY(${to - from}px)` },
+            { transform: `translateY(0)` },
+        ],
+        { duration: 200, easing: "ease-in-out" }
+    );
+    animation.startTime = document.timeline.currentTime;
+};
 
+/** @type {NodeListOf<HTMLOutputElement>} */
+const snackbarList = snackbarContainer.querySelectorAll("output.snackbar");
 snackbarList.forEach(empowerSnackbar);
