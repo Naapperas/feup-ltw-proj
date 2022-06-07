@@ -197,6 +197,7 @@ but that is impossible outside chromium
     display: inline-block;
     padding-top: 4px;
     height: calc(1em + 8px);
+    width: max-content;
 
     overflow: hidden;
 
