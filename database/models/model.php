@@ -111,6 +111,9 @@
         }
 
         static function getWithFilters(array $filters, int $limit = null, OrderClause $order = null): array {
+
+            if (count($filters) === 0) return static::getAll($limit, $order);
+
             $table = static::getTableName();
             $query = "SELECT * FROM $table WHERE ";
 

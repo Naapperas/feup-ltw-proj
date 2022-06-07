@@ -131,6 +131,8 @@ const empowerOrderSelect = (select) => {
 
 const empowerReview = (reviewElement) => {
 
+    // TODO: implement owner responses
+
     reviewElement.addEventListener('click', () => {
         console.log("oi");
     });

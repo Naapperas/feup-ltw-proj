@@ -134,7 +134,6 @@ require_once(__DIR__."/item.php");
     <section class="restaurant-reviews" data-restaurant-id="<?= $restaurantId ?>">
         <header class="header">
             <<?= $h ?> class="title <?= $vh ?>"><?= $title ?></<?= $h ?>>
-            <!-- to be dealt with in JavaScript + AJAX -->
             <div class="select right">
                 <select name="options" id="options"> 
                     <option value="score-desc">Score - Desc</option>
@@ -150,6 +149,7 @@ require_once(__DIR__."/item.php");
             showReview($review);
         } ?>
         </div>
+        <!-- TODO: Create here dialog for responding to reviews -->
     </section>
 <?php } ?>
 
