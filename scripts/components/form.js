@@ -22,17 +22,17 @@ const defaultErrorMessages = Object.freeze({
 const empowerForm = (form) => {
     form.noValidate = true;
 
-    /** @type NodeListOf<HTMLFieldSetElement> */
+    /** @type {NodeListOf<HTMLFieldSetElement>} */
     const sections = form.querySelectorAll("fieldset[data-section]");
 
     sections.forEach((section, i) => {
-        /** @type HTMLButtonElement */
+        /** @type {HTMLButtonElement} */
         const backButton = section.querySelector("button[data-back]");
 
-        /** @type HTMLButtonElement */
+        /** @type {HTMLButtonElement} */
         const nextButton = section.querySelector("button[data-next]");
 
-        /** @type NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> */
+        /** @type {NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>} */
         const inputs = section.querySelectorAll("input, select, textarea");
 
         if (backButton && i > 0) {
@@ -81,7 +81,7 @@ const empowerForm = (form) => {
                 sections[i + 1].classList.remove("hidden");
                 sections[i + 1].ariaHidden = "false";
 
-                /** @type NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | HTMLButtonElement> */
+                /** @type {NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | HTMLButtonElement>} */
                 const fields = sections[i + 1].querySelectorAll(
                     "input, select, textarea, button"
                 );
@@ -91,15 +91,15 @@ const empowerForm = (form) => {
         }
     });
 
-    /** @type HTMLButtonElement */
+    /** @type {HTMLButtonElement} */
     const submitButton = form.querySelector("button[type=submit]");
 
-    /** @type NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> */
+    /** @type {NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>} */
     const inputs = form.querySelectorAll("input, select, textarea");
 
     inputs[0].focus();
 
-    inputs.forEach((e) => {
+    const empowerInput = (e) => {
         try {
             /** @type HTMLElement */
             const errorText = document.querySelector(`#${e.dataset.errorText}`);
@@ -108,7 +108,6 @@ const empowerForm = (form) => {
                 if (errorText) errorText.textContent = "";
 
                 e.classList.remove("error");
-                e.removeEventListener("input", resetValidity);
             };
 
             e.addEventListener("blur", () => {
@@ -123,16 +122,35 @@ const empowerForm = (form) => {
                             }
 
                     e.classList.add("error");
-                    e.addEventListener("input", resetValidity);
+                    e.addEventListener("input", resetValidity, { once: true });
                 }
             });
         } catch {}
-    });
+    };
+
+    inputs.forEach(empowerInput);
 
     const setButtonState = () =>
         (submitButton.disabled = !form.checkValidity());
     form.addEventListener("input", setButtonState);
     setButtonState();
+
+    const observer = new MutationObserver((mutations) => {
+        for (const mutation of mutations) {
+            for (const node of mutation.addedNodes) {
+                /** @type {NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>} */
+                // @ts-ignore
+                const inputs = node.querySelectorAll("input, select, textarea");
+                inputs.forEach(empowerInput);
+            }
+        }
+
+        setButtonState();
+    });
+    observer.observe(form, {
+        childList: true,
+        subtree: true,
+    });
 };
 
 /** @type NodeListOf<HTMLFormElement> */

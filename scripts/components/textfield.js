@@ -48,23 +48,43 @@ export const empowerTextField = (textfield) => {
  * @param {string} label
  * @param {string} name
  * @param {Object} inputAttributes
+ * @param {boolean} errorText
  */
-export const createTextField = (label, name, inputAttributes) => {
+export const createTextField = (
+    label,
+    name,
+    inputAttributes,
+    errorText = true
+) => {
     const wrapper = document.createElement("div");
     wrapper.classList.add("textfield");
 
     const input = document.createElement("input");
     input.placeholder = " ";
     for (const i in inputAttributes) input.setAttribute(i, inputAttributes[i]);
-    input.id = name;
+    input.id = name.replace(/\[/g, "-").replace(/]/g, "");
     input.name = name;
 
     const labelEl = document.createElement("label");
-    labelEl.htmlFor = name;
+    labelEl.htmlFor = input.id;
     labelEl.textContent = label;
 
     wrapper.appendChild(input);
     wrapper.appendChild(labelEl);
+
+    if (errorText) {
+        input.setAttribute("aria-describedby", `${input.id}-error-text`);
+        input.dataset.errorText = `${input.id}-error-text`;
+
+        const errorTextEl = document.createElement("span");
+        errorTextEl.classList.add("error-text");
+        errorTextEl.setAttribute("aria-live", "assertive");
+        errorTextEl.id = `${input.id}-error-text`;
+
+        wrapper.appendChild(errorTextEl);
+    }
+
+    empowerTextField(wrapper);
 
     return wrapper;
 };

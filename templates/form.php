@@ -12,16 +12,18 @@ declare(strict_types=1);
     bool $characterCounter = false, bool $errorText = true,
     array $errors = [], string $value = ""
 ) { 
+    $id = str_replace("[", "-", str_replace("]", "", $name));
+    
     $describedby = [];
-    if ($helperText !== "") $describedby[] = "$name-helper-text";
-    if ($errors !== [] || $errorText) $describedby[] = "$name-error-text";
+    if ($helperText !== "") $describedby[] = "$id-helper-text";
+    if ($errors !== [] || $errorText) $describedby[] = "$id-error-text";
     $describedby = implode(" ", $describedby);
     ?>
     <div class="textfield <?= $class ?>">
         <<?php if ($type === 'multiline') { ?>textarea<?php } else { ?>input
             type="<?= $type ?>" <?php } ?>
             placeholder=" "
-            id="<?= $name ?>"
+            id="<?= $id ?>"
             name="<?= $name ?>"
             <?php if ($autocomplete !== "") { ?>
             autocomplete="<?= $autocomplete ?>"
@@ -55,10 +57,10 @@ declare(strict_types=1);
                 echo "aria-describedby=\"$describedby\"\n";
                 
             if ($errors !== [] || $errorText) 
-                echo "data-error-text=\"$name-error-text\"\n";
+                echo "data-error-text=\"$id-error-text\"\n";
             ?>
         /><?php if ($type === 'multiline') { ?></textarea><?php } ?>
-        <label for="<?= $name ?>"><?= $label ?></label>
+        <label for="<?= $id ?>"><?= $label ?></label>
         <?php if ($toggleVisibility) {
             createButton(
                 type: ButtonType::ICON,
@@ -69,14 +71,14 @@ declare(strict_types=1);
         <?php if ($helperText !== "") { ?>
         <span 
             class="error-text" 
-            id="<?= $name ?>-helper-text"
+            id="<?= $id ?>-helper-text"
         ><?= $helperText ?></span>
         <?php } ?>
         <?php if ($errors !== [] || $errorText) { ?>
         <span 
             class="error-text"
             aria-live="assertive"
-            id="<?= $name ?>-error-text"
+            id="<?= $id ?>-error-text"
             <?php 
             foreach ($errors as $key => $value)
                 echo "data-$key=\"$value\""
