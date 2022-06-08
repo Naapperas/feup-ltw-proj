@@ -138,7 +138,7 @@ require_once(__DIR__."/item.php");
         <header class="header">
             <<?= $h ?> class="title <?= $vh ?>"><?= $title ?></<?= $h ?>>
             <div class="select right">
-                <select name="options" id="options"> 
+                <select name="options" id="options"> <!-- TODO: STYLES!!!! -->
                     <option value="score-desc">Score - Desc</option>
                     <option value="score-asc">Score - Asc</option>
                     <option value="date-desc">Date - Desc</option>
@@ -158,6 +158,7 @@ require_once(__DIR__."/item.php");
             <div class="content">
                 <section id="response-review"> <!-- FIXME: needs better id -->
                 </section>
+                <section id="response-text"></section> <!-- TODO: STYLES!!!! -->
                 <?php createForm(
                     'POST', 
                     'review-response-form', 

@@ -4,6 +4,7 @@
 
 import { toggleRestaurantLikedStatus } from "../api/restaurant.js";
 import { fetchOrderedRestaurantReviews, fetchReview } from "../api/review.js";
+import { fetchReviewResponse } from "../api/response.js";
 import { fetchUser } from "../api/user.js";
 
 /**
@@ -139,12 +140,26 @@ const empowerReview = (reviewElement) => {
         const { reviewId } = reviewElement.dataset;
 
         const review = await fetchReview(reviewId);
+        const reviewResponse = await fetchReviewResponse(reviewId);
+
+        console.log({reviewResponse});
 
         const reviewNode = await createReview(review);
 
         dialog.querySelector("div.content > section#response-review")?.replaceChildren(reviewNode);
-        // @ts-ignore
-        dialog.querySelector('input[type=hidden][name=reviewId]').value = review.id;
+
+        // TODO: this is kinda monkey-patched, figure out a way of doing this right
+
+        dialog.querySelector('[type=submit]')?.removeAttribute('disabled');
+        dialog.querySelector('textarea')?.removeAttribute('disabled');
+        dialog.querySelector('#response-text').textContent = ''; // this does not trigger HTML re-parsing
+        if (reviewResponse !== null) {
+            dialog.querySelector('[type=submit]')?.setAttribute('disabled', 'disabled');
+            dialog.querySelector('textarea')?.setAttribute('disabled', 'disabled');
+            dialog.querySelector('#response-text').appendChild(document.createTextNode(reviewResponse.text));
+        } else
+            // @ts-ignore
+            dialog.querySelector('input[type=hidden][name=reviewId]').value = review.id;
 
         // @ts-ignore
         dialog.showModal();
