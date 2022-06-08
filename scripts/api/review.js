@@ -4,7 +4,7 @@
 
 import { addSnackbar } from '../components/snackbar.js';
 
-export const fetchOrderedReviews = async (/** @type {Number} */ restaurantId, /** @type {string} */ attribute, /** @type {string} */ order) => {
+export const fetchOrderedRestaurantReviews = async (/** @type {Number} */ restaurantId, /** @type {string} */ attribute, /** @type {string} */ order) => {
 
     const data = {
         'restaurantId': restaurantId.toString(10),
@@ -12,7 +12,7 @@ export const fetchOrderedReviews = async (/** @type {Number} */ restaurantId, /*
         'order': order
     };
 
-    const response = await fetch(`/api/review?${Object.entries(data).map(([k, v]) => `${k}=${v}`).join("&")}`);
+    const response = await fetch(`/api/restaurant/reviews?${Object.entries(data).map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`).join("&")}`);
 
     const { reviews, error } = await response.json();
 
@@ -20,5 +20,22 @@ export const fetchOrderedReviews = async (/** @type {Number} */ restaurantId, /*
         addSnackbar(error);
     }
 
-    return reviews
+    return reviews;
+}
+
+export const fetchReview = async (/** @type {Number} */ reviewId) => {
+    
+    const data = {
+        'reviewId': reviewId.toString(10),
+    };
+
+    const response = await fetch(`/api/review?${Object.entries(data).map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`).join("&")}`);
+
+    const { review, error } = await response.json();
+
+    if (error) {
+        addSnackbar(error);
+    }
+
+    return review;
 }

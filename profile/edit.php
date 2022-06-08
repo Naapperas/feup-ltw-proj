@@ -30,7 +30,7 @@
         <?php createAppBar(); ?>
         <main class="small column layout">
             <?php createForm(
-                'POST', 'profile', '/actions/edit_profile.php',
+                'POST', 'profile', '/actions/edit_profile.php', 'edit-profile-form',
                 function() use ($user) { ?>
                     <label class="image-input avatar big">
                         <img 

@@ -55,7 +55,7 @@
 
         <?php createAppBar(); ?>
         <?php createForm(
-            'POST', 'restaurant', '/actions/edit_restaurant.php',
+            'POST', 'restaurant', '/actions/edit_restaurant.php', 'edit-restaurant-form',
             function() use ($restaurant) { ?>
                 <div class="edit-restaurant-sidebar">
                     <label class="image-input thumbnail rounded">

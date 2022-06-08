@@ -3,7 +3,7 @@
 "use strict";
 
 import { toggleRestaurantLikedStatus } from "../api/restaurant.js";
-import { fetchOrderedReviews } from "../api/review.js";
+import { fetchOrderedRestaurantReviews, fetchReview } from "../api/review.js";
 import { fetchUser } from "../api/user.js";
 
 /**
@@ -113,7 +113,7 @@ const empowerOrderSelect = (select) => {
 
         const [attribute, order] = reviewOrdering.split('-');
 
-        const reviews = await fetchOrderedReviews(restaurantId, attribute, order);
+        const reviews = await fetchOrderedRestaurantReviews(restaurantId, attribute, order);
 
         const nodes = await Promise.all(reviews.map(createReview));
 
@@ -131,10 +131,20 @@ const empowerOrderSelect = (select) => {
 
 const empowerReview = (reviewElement) => {
 
-    // TODO: implement owner responses
+    reviewElement.addEventListener('click', async (e) => {
+        const dialog = document.querySelector("#review-response"); // do this way so we can run custom code with this specific dialog
 
-    reviewElement.addEventListener('click', () => {
-        console.log("oi");
+        const { reviewId } = reviewElement.dataset;
+
+        const review = await fetchReview(reviewId);
+        const { user, userPhotoPath } = await fetchUser(review.client);
+
+        console.log(review, user);
+
+        // TODO: figure out templates
+
+        // @ts-ignore
+        dialog.showModal();
     });
 }
 

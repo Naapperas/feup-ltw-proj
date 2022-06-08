@@ -17,7 +17,7 @@ session_start();
         <a href="/" class="homepage-link"><h1 class="h3 color logo"></h1></a>
 
         <?php createForm(
-            'POST', 'login', '/actions/login.php',
+            'POST', 'login', '/actions/login.php', 'login-form',
             function() {
                 createTextField(
                     name: "username", label: "Username", autocomplete: "username"

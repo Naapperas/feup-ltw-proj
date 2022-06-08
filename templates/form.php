@@ -92,10 +92,11 @@ declare(strict_types=1);
 <?php } ?>
 
 <?php function createForm(
-    string $method, string $name, string $action,
+    string $method, string $name, string $action, string $form_id,
     callable ...$sections
 ) { ?>
     <form
+        id="<?= $form_id ?>"
         action="<?= $action ?>"
         method="<?= $method ?>"
         enctype="multipart/form-data"

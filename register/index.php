@@ -18,7 +18,7 @@ session_start();
         <a href="/" class="homepage-link"><h1 class="h3 color logo"></h1></a>
 
         <?php createForm(
-            'POST', 'register', '/actions/register.php',
+            'POST', 'register', '/actions/register.php', 'register-form',
             function() { ?>
                 <input type="hidden" name="referer" value="<?= $_SESSION['referer'] ?? $_SERVER["HTTP_REFERER"]?>">
             <?php },

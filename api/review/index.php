@@ -11,33 +11,16 @@
     require_once("../../lib/params.php");
 
     $params = parseParams(get_params: [
-        'restaurantId' => new IntParam(),
-        'attribute' => new StringParam(
-            pattern: '/^(score|date)$/'
-        ),
-        'order' => new StringParam(
-            pattern: '/^(asc|desc)$/'
-        ),
-        'limit' => new IntParam(
-            optional: true,
-            default: 50
-        )
+        'reviewId' => new IntParam(),
     ]);
-
-    const orderings = [
-        'date' => 'id',
-        'score' => 'score',
-    ];
 
     require_once("../../database/models/review.php");
 
-    $orderClause = new OrderClause([
-        [orderings[$params['attribute']], strcmp($params['order'], 'asc') === 0]
-    ]);
+    $review = Review::getById($params['reviewId']);
 
-    $equalClause = new Equals('restaurant', $params['restaurantId']);
+    if ($review === null) {
+        APIError(HTTPStatusCode::NOT_FOUND, "Could not find review with given id");
+    }
 
-    $reviews = Review::getWithFilters([$equalClause], $params['limit'], $orderClause);
-
-    echo json_encode(['reviews' => $reviews]);
+    echo json_encode(['review' => $review]);
 ?>

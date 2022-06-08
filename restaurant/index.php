@@ -14,15 +14,8 @@
     session_start();
 
     list('id' => $id) = parseParams(get_params: [
-        'id' => new IntParam(
-            optional: true
-        ),
+        'id' => new IntParam(),
     ]);
-
-    if (!isset($id)) {
-        header("Location: /");
-        die();
-    }
 
     $restaurant = Restaurant::getById($id);
 
@@ -117,7 +110,7 @@
             <?php
                 if ($user !== null && $restaurant->owner !== $user->id) {
                     createForm(
-                        'POST', 'review', '/actions/create_review.php',
+                        'POST', 'review', '/actions/create_review.php', 'create-review-form',
                         function() use ($restaurant, $user) {
                             ?><header class="header">
                                 <h3 class="title h4">Leave a review</h3>

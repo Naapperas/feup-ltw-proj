@@ -296,7 +296,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
 
     if ($user == null) return;
     ?>
-    <article class="review">
+    <article class="review" data-review-id="<?= $review->id ?>">
         <a href="/profile/?id=<?= $user->id ?>">
             <header class="header">
                 <img 
