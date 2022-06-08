@@ -34,75 +34,75 @@ const empowerRestaurantLikeButton = (button) => {
     button.addEventListener("click", toggleLikedStatus);
 };
 
+const createReview = async (review) => {
+
+    try {
+        const { user, userPhotoPath } = await fetchUser(review.client);
+
+        if (!user || !userPhotoPath) return;
+
+        const { id: userId, name: userName, address: userAddress } = user;
+
+        const reviewElement = document.createElement('article');
+        reviewElement.classList.add('review');
+
+        const reviewHeaderLink = document.createElement('a');
+        reviewHeaderLink.href = `/profile/?id=${userId}`;
+
+        const reviewHeader = document.createElement('header');
+        reviewHeader.classList.add('header');
+
+        const profilePicture = document.createElement('img');
+        profilePicture.src = userPhotoPath;
+        profilePicture.alt = `Review profile image for user ${userId}`;
+        profilePicture.classList.add('avatar', 'small');
+
+        const profileName = document.createElement('span');
+        profileName.classList.add('title');
+
+        profileName.textContent = userName;
+        
+        const profileAddress = document.createElement('span');
+        profileAddress.classList.add('subtitle', 'secondary');
+        profileAddress.textContent = userAddress;
+
+        const scoreSpan = document.createElement('span');
+        scoreSpan.classList.add('chip', 'right')
+
+        const iconSpan = document.createElement('span');
+        iconSpan.classList.add('icon');
+        iconSpan.textContent = 'star';
+
+        const scoreText = document.createTextNode(`${Math.round(review.score * 100) / 100}`);
+
+        scoreSpan.appendChild(iconSpan);
+        scoreSpan.appendChild(scoreText);
+        
+        reviewHeader.appendChild(profilePicture);
+        reviewHeader.appendChild(profileName);
+        reviewHeader.appendChild(profileAddress);
+        reviewHeader.appendChild(scoreSpan);
+
+        reviewHeaderLink.appendChild(reviewHeader);
+
+        reviewElement.appendChild(reviewHeaderLink);
+
+        const reviewText = document.createElement('p');
+        reviewText.classList.add('review-content');
+        reviewText.innerHTML = review.text; // this is safe to use here because this text comes from stored reviews, which can only be created through the given action which uses StringParams that escape the given text
+
+        reviewElement.appendChild(reviewText);
+
+        return reviewElement;
+    } catch {
+        return;
+    }
+}
+
 const empowerOrderSelect = (select) => {
 
     /** @type HTMLElement */
     const reviewList = document.querySelector("#review-list");
-
-    const createReview = async (review) => {
-
-        try {
-            const { user, userPhotoPath } = await fetchUser(review.client);
-
-            if (!user || !userPhotoPath) return;
-
-            const { id: userId, name: userName, address: userAddress } = user;
-
-            const reviewElement = document.createElement('article');
-            reviewElement.classList.add('review');
-
-            const reviewHeaderLink = document.createElement('a');
-            reviewHeaderLink.href = `/profile/?id=${userId}`;
-
-            const reviewHeader = document.createElement('header');
-            reviewHeader.classList.add('header');
-
-            const profilePicture = document.createElement('img');
-            profilePicture.src = userPhotoPath;
-            profilePicture.alt = `Review profile image for user ${userId}`;
-            profilePicture.classList.add('avatar', 'small');
-
-            const profileName = document.createElement('span');
-            profileName.classList.add('title');
-
-            profileName.textContent = userName;
-            
-            const profileAddress = document.createElement('span');
-            profileAddress.classList.add('subtitle', 'secondary');
-            profileAddress.textContent = userAddress;
-
-            const scoreSpan = document.createElement('span');
-            scoreSpan.classList.add('chip', 'right')
-
-            const iconSpan = document.createElement('span');
-            iconSpan.classList.add('icon');
-            iconSpan.textContent = 'star';
-
-            const scoreText = document.createTextNode(`${Math.round(review.score * 100) / 100}`);
-
-            scoreSpan.appendChild(iconSpan);
-            scoreSpan.appendChild(scoreText);
-            
-            reviewHeader.appendChild(profilePicture);
-            reviewHeader.appendChild(profileName);
-            reviewHeader.appendChild(profileAddress);
-            reviewHeader.appendChild(scoreSpan);
-
-            reviewHeaderLink.appendChild(reviewHeader);
-
-            reviewElement.appendChild(reviewHeaderLink);
-
-            const reviewText = document.createElement('p');
-            reviewText.classList.add('review-content');
-            reviewText.innerHTML = review.text; // this is safe to use here because this text comes from stored reviews, which can only be created through the given action which uses StringParams that escape the given text
-
-            reviewElement.appendChild(reviewText);
-
-            return reviewElement;
-        } catch {
-            return
-        }
-    }
 
     const handleInputChange = async (e) => {
         e?.preventDefault();
@@ -131,17 +131,20 @@ const empowerOrderSelect = (select) => {
 
 const empowerReview = (reviewElement) => {
 
-    reviewElement.addEventListener('click', async (e) => {
-        const dialog = document.querySelector("#review-response"); // do this way so we can run custom code with this specific dialog
+    reviewElement.addEventListener('click', async () => {
+        const dialog = document.querySelector("#review-response[data-owner-logged-in]"); // do this way so we can run custom code with this specific dialog
+
+        if (!dialog) return; // the user is not the restaurant owner
 
         const { reviewId } = reviewElement.dataset;
 
         const review = await fetchReview(reviewId);
-        const { user, userPhotoPath } = await fetchUser(review.client);
 
-        console.log(review, user);
+        const reviewNode = await createReview(review);
 
-        // TODO: figure out templates
+        dialog.querySelector("div.content > section#response-review")?.replaceChildren(reviewNode);
+        // @ts-ignore
+        dialog.querySelector('input[type=hidden][name=reviewId]').value = review.id;
 
         // @ts-ignore
         dialog.showModal();

@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS "Category";
 DROP TABLE IF EXISTS "Dish";
 DROP TABLE IF EXISTS "Order";
 DROP TABLE IF EXISTS "Review";
+DROP TABLE IF EXISTS "Review_response";
 DROP TABLE IF EXISTS "User";
 
 -- Many to many
@@ -112,10 +113,10 @@ CREATE TABLE "Review_response" (
     "id" INTEGER NOT NULL,
     "text" TEXT NOT NULL,
     "response_date" DATE NOT NULL,
-    "review_id" INTEGER NOT NULL,
+    "review" INTEGER NOT NULL,
     PRIMARY KEY("id"),
-    FOREIGN KEY("review_id") REFERENCES "Review",
-    CONSTRAINT "one_response_per_review" UNIQUE("review_id")
+    FOREIGN KEY("review") REFERENCES "Review",
+    CONSTRAINT "one_response_per_review" UNIQUE("review")
 );
 
 -- Many to many
