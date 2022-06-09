@@ -8,6 +8,15 @@
             APIError(HTTPStatusCode::UNAUTHORIZED, 'You are not logged in');
     }
 
+    function requireAuthUser() {
+        if (!isset($_SESSION['user']) 
+         || ($user = User::getById($_SESSION['user'])) === null
+         || is_array($user))
+            APIError(HTTPStatusCode::UNAUTHORIZED, 'You are not logged in');
+
+        return $user;
+    }
+
     function getModel($Model, ?string $name = null, ?string $plural = null) {
         $name ??= strtolower($Model);
         $plural ??= "{$name}s";
