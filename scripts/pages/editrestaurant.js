@@ -3,6 +3,7 @@
 "use strict";
 
 import { createNewDishCard, createNewMenuCard } from "../components/card.js";
+import { empowerEditCategoryList } from "../components/categorylist.js";
 
 /** @type HTMLElement */
 const dishList = document.querySelector(".dish-list");
@@ -37,3 +38,10 @@ newMenuButton.addEventListener("click", () => {
 
     newMenuButtonCard.before(newMenuCard);
 });
+
+/** @type {HTMLElement} */
+const chipList = document.querySelector("ul.chip-list");
+/** @type {HTMLFieldSetElement} */
+const categoriesFieldset = document.querySelector(`#categories fieldset`);
+
+empowerEditCategoryList(chipList, categoriesFieldset);
