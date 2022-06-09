@@ -1,6 +1,7 @@
 <?php
     declare(strict_types=1);
 
+    // FIXME: Move to /api/user/favorite_restaurants
     // TODO: Use APIRoute
 
     require_once(dirname(dirname(dirname(__DIR__)))."/lib/util.php");
