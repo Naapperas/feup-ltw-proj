@@ -14,7 +14,7 @@
             $_SESSION['cart']['dishes'] ??= [];
             $_SESSION['cart']['menus'] ??= [];
 
-            echo json_encode($_SESSION['cart']);
+            return ['cart' => $_SESSION['cart']];
         },
         post: function() {
             $params = parseParams(body: [
@@ -41,7 +41,7 @@
                 }
             }
 
-            echo json_encode(['cart' => $_SESSION['cart']]);
+            return ['cart' => $_SESSION['cart']];
         }
     );
 ?>
