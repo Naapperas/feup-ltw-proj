@@ -5,7 +5,7 @@
     require_once('restaurant.php');
     require_once(dirname(__DIR__, 2).'/lib/password.php');
 
-    class User extends Model implements JsonSerializable {
+    class User extends Model {
         use HasImage;
 
         public string $name;

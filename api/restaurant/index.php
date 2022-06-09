@@ -4,7 +4,7 @@
     require_once("../../lib/api.php");
     require_once("../../database/models/restaurant.php");
 
-    // TODO: Categories
+    // TODO: Categories, dishes, menus
 
     APIRoute(
         get: getModel(Restaurant::class)

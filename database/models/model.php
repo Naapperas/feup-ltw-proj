@@ -4,7 +4,7 @@
     require_once(dirname(__DIR__).'/connection.php');
     require_once('query.php');
 
-    abstract class Model {
+    abstract class Model implements JsonSerializable {
         public readonly int $id;
     
         protected static function getDB(): PDO {
@@ -162,6 +162,14 @@
             $results = executeQuery(static::getDB(), $query, [...$props, 'id' => $this->id]);
             return $results[0];
         }
+
+        protected function getSerializableProperties(): array {
+            return [];
+        }
+
+        function jsonSerialize() {
+            return array_merge(get_object_vars($this), $this->getSerializableProperties());
+        }
     }
 
     trait HasImage {
@@ -188,10 +196,8 @@
             return false;
         }
 
-        function jsonSerialize() {
-            $arr = get_object_vars($this);
-            $arr['image'] = $this->getImagePath();
-            return $arr;
+        function getSerializableProperties(): array {
+            return array_merge(parent::getSerializableProperties(), ['image' => $this->getImagePath()]);
         }
     }
 ?>

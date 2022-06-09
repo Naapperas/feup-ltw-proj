@@ -9,7 +9,7 @@
     require_once(__DIR__.'/review.php');
     require_once(__DIR__.'/query.php');
 
-    class Restaurant extends Model implements JsonSerializable {
+    class Restaurant extends Model {
         use HasImage, HasCategories;
 
         public string $name;

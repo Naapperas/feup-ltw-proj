@@ -5,7 +5,7 @@
     require_once(__DIR__.'/restaurant.php');
     require_once(__DIR__.'/category.php');
 
-    class Dish extends Model implements JsonSerializable {
+    class Dish extends Model {
         use HasImage, HasCategories;
 
         public string $name;
