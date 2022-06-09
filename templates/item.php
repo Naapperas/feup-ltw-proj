@@ -81,9 +81,9 @@ require_once(dirname(__DIR__)."/database/models/review.php");
             data-card-type="edit-dish"
             data-dish-id="<?= $dish->id ?>"
         >
-            <label class="image-input full media thumbnail">
+            <label class="image-input full media square">
                 <img
-                    class="thumbnail"
+                    class="square"
                     src="<?= $dish->getImagePath() ?>"
                     alt=""
                 >
@@ -140,7 +140,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                 width="1920"
                 height="1080"
                 alt="Dish picture for <?= $dish->name ?>"
-                class="full media thumbnail"
+                class="full media square"
             />
             <header class="header">
                 <h3 class="title h6">
@@ -188,9 +188,9 @@ require_once(dirname(__DIR__)."/database/models/review.php");
             data-card-type="edit-menu"
             data-menu-id="<?= $menu->id ?>"
         >
-            <label class="image-input full media thumbnail">
+            <label class="image-input full media square">
                 <img
-                    class="thumbnail"
+                    class="square"
                     src="<?= $menu->getImagePath() ?>"
                     alt=""
                 >
@@ -247,7 +247,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
             width="1920"
             height="1080"
             alt="Menu picture for <?= $menu->name ?>"
-            class="full media thumbnail"
+            class="full media square"
         />
         <header class="header">
             <h3 class="title h6">

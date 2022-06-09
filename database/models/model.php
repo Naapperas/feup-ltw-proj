@@ -173,14 +173,28 @@
     }
 
     trait HasImage {
+        public readonly int $id;
+
         protected abstract static function getImageFolder(): string;
+
+        protected static function getNumberOfDefaultImages(): int {
+            return 1;
+        }
 
         function getImagePath(): string {
             $folder = static::getImageFolder();
             $src = "/assets/pictures/$folder/$this->id.webp";
             
-            if (!file_exists(dirname(dirname(__DIR__)).$src))
-                $src = "/assets/pictures/$folder/default.webp";
+            if (!file_exists(dirname(dirname(__DIR__)).$src)) {
+                $n = static::getNumberOfDefaultImages();
+
+                if ($n === 1) {
+                    $src = "/assets/pictures/$folder/default.svg";
+                } else {
+                    $p = $this->id % $n;
+                    $src = "/assets/pictures/$folder/default$p.svg";
+                }
+            }
             
             return $src;
         }

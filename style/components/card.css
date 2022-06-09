@@ -33,12 +33,24 @@
     --elevation: var(--elevation-4);
 }
 
-.avatar {
-    aspect-ratio: 1 / 1;
-    border-radius: 50%;
+:is(.thumbnail, .square, .avatar) {
+    width: 100%;
     object-fit: cover;
     object-position: center;
     overflow: hidden;
+}
+
+.thumbnail {
+    aspect-ratio: 16 / 9;
+}
+
+.square {
+    aspect-ratio: 1 / 1;
+}
+
+.avatar {
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
 }
 
 .avatar.small {
@@ -54,14 +66,6 @@
 .avatar.big {
     width: 280px;
     height: 280px;
-}
-
-.thumbnail {
-    aspect-ratio: 16 / 9;
-    width: 100%;
-    object-fit: cover;
-    object-position: center;
-    overflow: hidden;
 }
 
 .secondary {

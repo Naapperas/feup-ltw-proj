@@ -61,7 +61,7 @@
                         type: ButtonType::CONTAINED,
                         text: 'New restaurant',
                         icon: 'add',
-                        href: '/restaurant/edit.php'
+                        href: '/restaurant/create.php'
                     );
                 }
             ?>

@@ -22,6 +22,10 @@
             return "user";
         }
 
+        protected static function getNumberOfDefaultImages(): int {
+            return 6;
+        }
+
         function validatePassword(string $passwordCandidate): bool {
             
             $query = "SELECT password FROM User WHERE id = ?;";

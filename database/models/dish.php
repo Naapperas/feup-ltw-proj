@@ -21,6 +21,10 @@
             return "dish";
         }
 
+        protected static function getNumberOfDefaultImages(): int {
+            return 9;
+        }
+
         protected static function getCategoryTableColumn(): string {
             return 'dish';
         }
