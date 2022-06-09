@@ -1,3 +1,1 @@
-<?php 
-    header('Location: /restaurant/edit.php');
-?>
+<?php require('edit.php'); /* Use this to have the browser URL actually meaningful */ ?>
