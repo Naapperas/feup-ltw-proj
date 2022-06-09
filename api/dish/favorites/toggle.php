@@ -1,6 +1,8 @@
 <?php
     declare(strict_types=1);
 
+    // TODO: Use APIRoute
+
     require_once(dirname(dirname(dirname(__DIR__)))."/lib/util.php");
 
     if (strcmp($_SERVER['REQUEST_METHOD'], "POST") !== 0) {

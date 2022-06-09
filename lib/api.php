@@ -1,7 +1,12 @@
 <?php 
     declare(strict_types=1);
 
-    function APIPage(
+    function requireAuth() {
+        if (!isset($_SESSION['user']))
+            APIError(HTTPStatusCode::UNAUTHORIZED, 'You are not logged in');
+    }
+
+    function APIRoute(
         callable $get = null, callable $post = null,
         callable $put = null, callable $delete = null
     ) {

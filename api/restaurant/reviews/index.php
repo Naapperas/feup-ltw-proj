@@ -1,6 +1,8 @@
 <?php 
     declare(strict_types = 1);
 
+    // TODO: Use APIRoute
+
     if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
         error(HTTPStatusCode::METHOD_NOT_ALLOWED);
         die;

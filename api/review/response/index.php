@@ -1,6 +1,8 @@
 <?php 
     declare(strict_types = 1);
 
+    // TODO: Use APIRoute
+
     require_once("../../../lib/util.php");
 
     if ($_SERVER['REQUEST_METHOD'] !== 'GET') {

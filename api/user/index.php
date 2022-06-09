@@ -7,7 +7,7 @@
 
     require_once("../../database/models/user.php");
 
-    APIPage(
+    APIRoute(
         get: function() {
             $params = parseParams(query: [
                 'id' => new IntParam(optional: true),
