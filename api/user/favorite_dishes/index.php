@@ -45,19 +45,12 @@
         put: function() {
             list($user, $dish) = common();
             $success = $user->addLikedDish($dish->id);
-
-            if (!$success)
-                APIError(HTTPStatusCode::INTERNAL_SERVER_ERROR, 'Error trying to favorite dish');
-            
             return ['favorite' => true];
         },
         delete: function() {
             list($user, $dish) = common();
             $success = $user->removeLikedDish($dish->id);
 
-            if (!$success)
-                APIError(HTTPStatusCode::INTERNAL_SERVER_ERROR, 'Error trying to unfavorite dish');
-            
             return ['favorite' => false];
         },
         post: function() {
@@ -67,9 +60,6 @@
             $action = $isFavorite ? 'removeLikedDish' : 'addLikedDish';
             $success = $user->$action($dish->id);
 
-            if (!$success)
-                APIError(HTTPStatusCode::INTERNAL_SERVER_ERROR, 'Error trying to favorite dish');
-            
             return ['favorite' => !$isFavorite];
         }
     );

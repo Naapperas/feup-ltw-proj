@@ -57,11 +57,13 @@
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'PUT' && $put) {
+            parse_str(file_get_contents('php://input'), $_POST);
             echo json_encode($put());
             return;
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'DELETE' && $delete) {
+            parse_str(file_get_contents('php://input'), $_POST);
             echo json_encode($delete());
             return;
         }
