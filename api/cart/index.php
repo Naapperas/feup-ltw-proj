@@ -21,7 +21,8 @@
                 'productId' => new IntParam(),
                 'productType' => new StringParam(
                     pattern: "/^(menu|dish)$/"
-                )
+                ),
+                'amount' => new IntParam(default: 1)
             ]);
 
             $productToAdd = $params['productType'] === 'dish'
@@ -34,7 +35,10 @@
                 $productType = $params['productType'] === 'dish' ? 'dishes' : 'menus';
 
                 $_SESSION['cart'][$productType][$productToAdd->id] ??= 0;
-                $_SESSION['cart'][$productType][$productToAdd->id] += 1;
+                $_SESSION['cart'][$productType][$productToAdd->id] = max(
+                    $_SESSION['cart'][$productType][$productToAdd->id] + $params['amount'],
+                    0
+                );
 
                 if ($_SESSION['cart'][$productType][$productToAdd->id] >= 50) {
                     $_SESSION['easter-egg'] = true;

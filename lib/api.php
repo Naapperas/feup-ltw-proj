@@ -57,6 +57,19 @@
             return;
         }
 
+        $methods[] = 'OPTIONS';
+        if ($get) $methods[] = 'GET';
+        if ($post) $methods[] = 'POST';
+        if ($put) $methods[] = 'PUT';
+        if ($delete) $methods[] = 'DELETE';
+
+        $methods = implode(', ', $methods);
+        header("Allow: $methods");
+
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            return;
+        }
+
         APIError(HTTPStatusCode::METHOD_NOT_ALLOWED, "Method not allowed");
     }
 ?>
