@@ -15,7 +15,7 @@
             if ($restaurant === null || is_array($restaurant))
                 APIError(HTTPStatusCode::NOT_FOUND, "Restaurant not found");
 
-            return ['dishes' => $restaurant->getOwnedDishes()];
+            return ['categories' => $restaurant->getCategories()];
         }
     );
 ?>

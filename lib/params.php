@@ -184,6 +184,7 @@ class ObjectParam extends Param {
     }
 }
 
+// FIXME: Support api errors instead
 function parseParams(array $query = [], array $body = []) {
     foreach ($query as $name => $p) {
         if (is_int($name)){
