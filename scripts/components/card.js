@@ -7,8 +7,11 @@ import { toggleDishLikedStatus } from "../api/dish.js";
 import { addProductToCart } from "../api/cart.js";
 import { createTextField } from "./textfield.js";
 import { createImageInput } from "./imageinput.js";
-import { empowerOpenDialogButton } from "./dialog.js";
-import { empowerCloseDialogButton } from "./dialog.js";
+import {
+    empowerDialog,
+    empowerOpenDialogButton,
+    empowerCloseDialogButton,
+} from "./dialog.js";
 
 /**
  * Creates a category chip.
@@ -226,6 +229,8 @@ export const empowerEditDishCard = (editDishCard) => {
         if (imageInput) imageInput.disabled = deleted;
         imagePicker?.classList.toggle("disabled", deleted);
         chipListLink?.classList.toggle("disabled", deleted);
+        if (deleted) chipListLink?.removeAttribute("href");
+        else chipListLink?.setAttribute("href", "#");
         if (categoriesFieldset) categoriesFieldset.disabled = deleted;
 
         if (hiddenInput) hiddenInput.disabled = !deleted;
@@ -299,6 +304,7 @@ export const createNewDishCard = (index) => {
         (i) => (i.name = `dishes_to_add[${index}][categories][]`)
     );
 
+    empowerDialog(categoriesDialog);
     empowerOpenDialogButton(chipListLink, categoriesDialog);
     empowerCloseDialogButton(closeDialogButton, categoriesDialog);
 

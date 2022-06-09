@@ -58,9 +58,12 @@ export const empowerDialogButton = (btn) => {
     empowerCloseDialogButton(btn, dialogToClose);
 };
 
+export const empowerDialog = (/** @type {HTMLDialogElement} */ dialog) =>
+    dialog.addEventListener("cancel", closeDialog(dialog));
+
 /** @type {NodeListOf<HTMLDialogElement>} */
 const dialogs = document.querySelectorAll("dialog.dialog");
-dialogs.forEach((d) => d.addEventListener("cancel", closeDialog(d)));
+dialogs.forEach(empowerDialog);
 
 /** @type {NodeListOf<HTMLElement>} */
 const dialogButtons = document.querySelectorAll(

@@ -14,8 +14,8 @@
     if ($user === null)
         pageError(HTTPStatusCode::NOT_FOUND);
 
-    $dishes = Dish::getById(array_keys($_SESSION['cart']['dishes']) ?? []);
-    $menus = Menu::getById(array_keys($_SESSION['cart']['menus']) ?? []);
+    $dishes = Dish::getById(array_keys($_SESSION['cart']['dishes'] ?? []));
+    $menus = Menu::getById(array_keys($_SESSION['cart']['menus'] ?? []));
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -36,7 +36,6 @@ const empowerRestaurantLikeButton = (button) => {
 };
 
 const createReview = async (review) => {
-
     try {
         const { user, userPhotoPath } = await fetchUser(review.client);
 
@@ -44,53 +43,56 @@ const createReview = async (review) => {
 
         const { id: userId, name: userName, address: userAddress } = user;
 
-        const reviewElement = document.createElement('article');
-        reviewElement.classList.add('review');
+        const reviewElement = document.createElement("article");
+        reviewElement.classList.add("review");
 
-        const reviewHeaderLink = document.createElement('a');
+        const reviewHeaderLink = document.createElement("a");
         reviewHeaderLink.href = `/profile/?id=${userId}`;
 
-        const reviewHeader = document.createElement('header');
-        reviewHeader.classList.add('header');
+        const reviewHeader = document.createElement("header");
+        reviewHeader.classList.add("header");
 
-        const profilePicture = document.createElement('img');
+        const profilePicture = document.createElement("img");
         profilePicture.src = userPhotoPath;
         profilePicture.alt = `Review profile image for user ${userId}`;
-        profilePicture.classList.add('avatar', 'small');
+        profilePicture.classList.add("avatar", "small");
 
-        const profileName = document.createElement('span');
-        profileName.classList.add('title');
-
+        const profileName = document.createElement("span");
+        profileName.classList.add("title");
         profileName.textContent = userName;
-        
-        const profileAddress = document.createElement('span');
-        profileAddress.classList.add('subtitle', 'secondary');
+
+        const profileAddress = document.createElement("span");
+        profileAddress.classList.add("subtitle", "secondary");
         profileAddress.textContent = userAddress;
 
-        const scoreSpan = document.createElement('span');
-        scoreSpan.classList.add('chip', 'right')
+        const scoreSpan = document.createElement("span");
+        scoreSpan.classList.add("chip", "right");
 
-        const iconSpan = document.createElement('span');
-        iconSpan.classList.add('icon');
-        iconSpan.textContent = 'star';
+        const iconSpan = document.createElement("span");
+        iconSpan.classList.add("icon");
+        iconSpan.textContent = "star";
 
-        const scoreText = document.createTextNode(`${Math.round(review.score * 100) / 100}`);
+        const scoreText = document.createTextNode(`${review.score.toFixed()}`);
 
-        scoreSpan.appendChild(iconSpan);
-        scoreSpan.appendChild(scoreText);
-        
-        reviewHeader.appendChild(profilePicture);
-        reviewHeader.appendChild(profileName);
-        reviewHeader.appendChild(profileAddress);
-        reviewHeader.appendChild(scoreSpan);
+        scoreSpan.append(iconSpan, scoreText);
+
+        reviewHeader.append(
+            profilePicture,
+            profileName,
+            profileAddress,
+            scoreSpan
+        );
 
         reviewHeaderLink.appendChild(reviewHeader);
 
         reviewElement.appendChild(reviewHeaderLink);
 
-        const reviewText = document.createElement('p');
-        reviewText.classList.add('review-content');
-        reviewText.innerHTML = review.text; // this is safe to use here because this text comes from stored reviews, which can only be created through the given action which uses StringParams that escape the given text
+        const reviewText = document.createElement("p");
+        reviewText.classList.add("review-content");
+        // this is safe to use here because this text comes from stored
+        // reviews, which can only be created through the given action which
+        // uses StringParams that escape the given text
+        reviewText.innerHTML = review.text;
 
         reviewElement.appendChild(reviewText);
 
@@ -98,42 +100,49 @@ const createReview = async (review) => {
     } catch {
         return;
     }
-}
+};
 
 const empowerOrderSelect = (select) => {
-
     /** @type HTMLElement */
     const reviewList = document.querySelector("#review-list");
 
     const handleInputChange = async (e) => {
         e?.preventDefault();
 
-        const restaurantId = e.target.parentElement.parentElement.parentElement.dataset.restaurantId;
+        const restaurantId =
+            e.target.parentElement.parentElement.parentElement.dataset
+                .restaurantId;
 
         const reviewOrdering = e.target.value;
 
-        const [attribute, order] = reviewOrdering.split('-');
+        const [attribute, order] = reviewOrdering.split("-");
 
-        const reviews = await fetchOrderedRestaurantReviews(restaurantId, attribute, order);
+        const reviews = await fetchOrderedRestaurantReviews(
+            restaurantId,
+            attribute,
+            order
+        );
 
         const nodes = await Promise.all(reviews.map(createReview));
 
-        for (let i = 0; i < nodes.length; i++) { // .replaceChildren didn't work, this did
-
+        // .replaceChildren didn't work, this did
+        for (let i = 0; i < nodes.length; i++) {
             const elem = reviewList.children[i];
 
             reviewList.replaceChild(nodes[i], elem);
         }
-    }
+    };
 
-    // @ts-ignore
     select.addEventListener("change", handleInputChange);
-}
+};
 
 const empowerReview = (reviewElement) => {
-
-    reviewElement.addEventListener('click', async () => {
-        const dialog = document.querySelector("#review-response[data-owner-logged-in]"); // do this way so we can run custom code with this specific dialog
+    reviewElement.addEventListener("click", async () => {
+        // do this way so we can run custom code with this specific dialog
+        /** @type {HTMLDialogElement} */
+        const dialog = document.querySelector(
+            "#review-response[data-owner-logged-in]"
+        );
 
         if (!dialog) return; // the user is not the restaurant owner
 
@@ -142,29 +151,42 @@ const empowerReview = (reviewElement) => {
         const review = await fetchReview(reviewId);
         const reviewResponse = await fetchReviewResponse(reviewId);
 
-        console.log({reviewResponse});
+        console.log({ reviewResponse });
 
         const reviewNode = await createReview(review);
 
-        dialog.querySelector("div.content > section#response-review")?.replaceChildren(reviewNode);
+        dialog
+            .querySelector("div.content > section#response-review")
+            ?.replaceChildren(reviewNode);
 
-        // TODO: this is kinda monkey-patched, figure out a way of doing this right
+        // TODO: this is kinda monkey-patched, figure out a way of doing
+        // this right
 
-        dialog.querySelector('[type=submit]')?.removeAttribute('disabled');
-        dialog.querySelector('textarea')?.removeAttribute('disabled');
-        dialog.querySelector('#response-text').textContent = ''; // this does not trigger HTML re-parsing
+        /** @type {HTMLButtonElement} */
+        const submitButton = dialog.querySelector("[type=submit]");
+        submitButton.disabled = false;
+        /** @type {HTMLTextAreaElement} */
+        const textArea = dialog.querySelector("textarea");
+        textArea.disabled = false;
+        // this does not trigger HTML re-parsing
+        /** @type {HTMLElement} */
+        const text = dialog.querySelector("#response-text");
+        text.textContent = "";
         if (reviewResponse !== null) {
-            dialog.querySelector('[type=submit]')?.setAttribute('disabled', 'disabled');
-            dialog.querySelector('textarea')?.setAttribute('disabled', 'disabled');
-            dialog.querySelector('#response-text').appendChild(document.createTextNode(reviewResponse.text));
-        } else
-            // @ts-ignore
-            dialog.querySelector('input[type=hidden][name=reviewId]').value = review.id;
+            submitButton.disabled = true;
+            textArea.disabled = true;
+            text.appendChild(document.createTextNode(reviewResponse.text));
+        } else {
+            /** @type {HTMLInputElement} */
+            const hiddenInput = dialog.querySelector(
+                "input[type=hidden][name=reviewId]"
+            );
+            hiddenInput.value = review.id;
+        }
 
-        // @ts-ignore
         dialog.showModal();
     });
-}
+};
 
 /** @type HTMLElement */
 const _restaurantFavoriteButton = document.querySelector(
@@ -173,12 +195,10 @@ const _restaurantFavoriteButton = document.querySelector(
 empowerRestaurantLikeButton(_restaurantFavoriteButton);
 
 /** @type HTMLElement */
-const orderSelect = document.querySelector(
-    ".select > select"
-);
+const orderSelect = document.querySelector(".select > select");
 
 empowerOrderSelect(orderSelect);
 
-const reviewList = document.querySelectorAll('#review-list > .review');
+const reviewList = document.querySelectorAll("#review-list > .review");
 
 reviewList.forEach(empowerReview);
