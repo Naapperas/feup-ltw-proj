@@ -187,5 +187,11 @@
 
             return false;
         }
+
+        function jsonSerialize() {
+            $arr = get_object_vars($this);
+            $arr['image'] = $this->getImagePath();
+            return $arr;
+        }
     }
 ?>

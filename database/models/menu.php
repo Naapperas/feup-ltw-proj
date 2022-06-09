@@ -5,7 +5,7 @@
     require_once('restaurant.php');
     require_once('dish.php');
 
-    class Menu extends Model {
+    class Menu extends Model implements JsonSerializable {
         use HasImage;
 
         public string $name;

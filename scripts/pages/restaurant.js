@@ -37,11 +37,16 @@ const empowerRestaurantLikeButton = (button) => {
 
 const createReview = async (review) => {
     try {
-        const { user, userPhotoPath } = await fetchUser(review.client);
+        const user = await fetchUser(review.client);
 
-        if (!user || !userPhotoPath) return;
+        if (!user) return;
 
-        const { id: userId, name: userName, address: userAddress } = user;
+        const {
+            id: userId,
+            name: userName,
+            address: userAddress,
+            image: userPhotoPath,
+        } = user;
 
         const reviewElement = document.createElement("article");
         reviewElement.classList.add("review");
