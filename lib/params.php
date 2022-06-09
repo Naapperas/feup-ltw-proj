@@ -184,8 +184,8 @@ class ObjectParam extends Param {
     }
 }
 
-function parseParams(array $get_params = [], array $post_params = []) {
-    foreach ($get_params as $name => $p) {
+function parseParams(array $query = [], array $body = []) {
+    foreach ($query as $name => $p) {
         if (is_int($name)){
             $name = $p;
             $p = new StringParam();
@@ -194,7 +194,7 @@ function parseParams(array $get_params = [], array $post_params = []) {
         $r[$name] = $p->parse($_GET[$name]);
     }
 
-    foreach ($post_params as $name => $p) {
+    foreach ($body as $name => $p) {
         if (is_int($name)){
             $name = $p;
             $p = new StringParam();

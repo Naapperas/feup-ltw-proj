@@ -25,7 +25,7 @@
 
     require_once("../../lib/params.php");
 
-    $params = parseParams(post_params: [
+    $params = parseParams(body: [
         'productId' => new IntParam(),
         'productType' => new StringParam(
             pattern: "/^(menu|dish)$/"

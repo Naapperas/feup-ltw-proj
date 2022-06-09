@@ -9,7 +9,7 @@
 
     require_once('../lib/params.php');
 
-    $params = parseParams(post_params: [
+    $params = parseParams(body: [
         'email' => new StringParam(
             pattern: '/^[a-zA-Z0-9.!#$%&\'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/',
             case_insensitive: true

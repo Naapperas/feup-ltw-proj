@@ -8,7 +8,7 @@
 
     require_once("../../../lib/params.php");
 
-    $params = parseParams(get_params: [
+    $params = parseParams(query: [
         'restaurantId' => new IntParam(),
         'attribute' => new StringParam(
             pattern: '/^(score|date)$/'

@@ -16,7 +16,7 @@
         die;
     }
 
-    $params = parseParams(post_params: [
+    $params = parseParams(body: [
         'id' => new IntParam(
             default: $_SESSION['user'] // default to current user
         ),

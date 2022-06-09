@@ -14,7 +14,7 @@
 
     require_once('../lib/params.php');
 
-    $params = parseParams(post_params: [
+    $params = parseParams(body: [
         'score' => new IntParam(
             max: 5,
             min: 0

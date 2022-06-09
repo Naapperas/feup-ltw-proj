@@ -14,7 +14,7 @@
 
     require_once('../lib/params.php');
 
-    $params = parseParams(post_params: [
+    $params = parseParams(body: [
         'reviewResponse' => new StringParam(),
         'restaurantId' => new IntParam(),
         'reviewId' => new IntParam()

@@ -9,7 +9,7 @@
 
     APIPage(
         get: function() {
-            $params = parseParams(get_params: [
+            $params = parseParams(query: [
                 'id' => new IntParam(optional: true),
             ]);
 

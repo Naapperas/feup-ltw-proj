@@ -10,7 +10,7 @@
 
     require_once("../../lib/params.php");
 
-    $params = parseParams(get_params: [
+    $params = parseParams(query: [
         'reviewId' => new IntParam(),
     ]);
 

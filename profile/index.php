@@ -12,7 +12,7 @@
 
     session_start();
 
-    list('id' => $id) = parseParams(get_params: [
+    list('id' => $id) = parseParams(query: [
         'id' => new IntParam(
             default: $_SESSION['user'], 
             optional: true

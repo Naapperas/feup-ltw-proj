@@ -9,7 +9,7 @@
 
     require_once('../lib/params.php');
 
-    $params = parseParams(post_params: [
+    $params = parseParams(body: [
         'username' => new StringParam(min_len: 1),
         'password' => new StringParam(min_len: 1),
         'referer'

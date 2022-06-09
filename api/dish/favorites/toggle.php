@@ -18,7 +18,7 @@
     if (!isset($_SESSION['user']))
         apiError(HTTPStatusCode::UNAUTHORIZED, 'User has to be authenticated');
 
-    $params = parseParams(post_params: [
+    $params = parseParams(body: [
         'dishId' => new IntParam(),
     ]);
 

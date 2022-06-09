@@ -10,7 +10,7 @@
     require_once("../database/models/user.php");
     require_once("../database/models/restaurant.php");
 
-    $params = parseParams(post_params: [
+    $params = parseParams(body: [
         'id' => new IntParam(),
         'name' => new StringParam(min_len: 1),
         'address' => new StringParam(min_len: 1),

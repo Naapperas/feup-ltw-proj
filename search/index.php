@@ -11,7 +11,7 @@
     require_once("../lib/params.php");
     require_once("../database/models/query.php");
 
-    $params = parseParams(get_params: [
+    $params = parseParams(query: [
         'q',
         'min_restaurant_score' => new FloatParam(
             min: 0,
