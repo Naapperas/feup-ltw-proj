@@ -11,7 +11,7 @@
             'restaurantId' => new IntParam(),
         ]);
 
-        $restaurant = Dish::getById($params['restaurantId']);
+        $restaurant = Restaurant::getById($params['restaurantId']);
 
         if ($restaurant === null || is_array($restaurant))
             APIError(HTTPStatusCode::NOT_FOUND, 'Restaurant not found');

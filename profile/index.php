@@ -56,6 +56,13 @@
                         text: "Edit",
                         icon: "edit",
                         href: "/profile/edit.php");
+                    // TODO: Maybe move this
+                    createButton(
+                        type: ButtonType::CONTAINED,
+                        text: 'New restaurant',
+                        icon: 'add',
+                        href: '/restaurant/edit.php'
+                    );
                 }
             ?>
 

@@ -90,28 +90,40 @@
         die;
     }
 
-    $restaurant = Restaurant::getById($params['id']);
+    if (!$params['id']) {
+        $restaurant = Restaurant::create([
+            'name' => $params['name'],
+            'address' => $params['address'],
+            'phone_number' => $params['phone'],
+            'website' => $params['website'],
+            'opening_time' => $params['opening_time'],
+            'closing_time' => $params['closing_time'],
+            'owner' => $_SESSION['user']
+        ]);
+    } else {
+        $restaurant = Restaurant::getById($params['id']);
+    
+        if ($restaurant === null) { // error fetching restaurant model
+            header("Location: /restaurant?id=".$params['id']);
+            die;
+        }
+    
+        if($_SESSION['user'] !== $restaurant->owner) { // prevents edits from everyone other than the restaurant owner
+            header("Location: /restaurant?id=".$params['id']);
+            die();
+        }
+    
+        $restaurant->name = $params['name'];
+        $restaurant->address = $params['address'];
+        $restaurant->phone_number = $params['phone'];
+        $restaurant->website = $params['website'];
+        $restaurant->opening_time = $params['opening_time'];
+        $restaurant->closing_time = $params['closing_time'];
 
-    if ($restaurant === null) { // error fetching restaurant model
-        header("Location: /restaurant?id=".$params['id']);
-        die;
+        $restaurant->update();
     }
-
-    if($_SESSION['user'] !== $restaurant->owner) { // prevents edits from everyone other than the restaurant owner
-        header("Location: /restaurant?id=".$params['id']);
-        die();
-    }
-
-    $restaurant->name = $params['name'];
-    $restaurant->address = $params['address'];
-    $restaurant->phone_number = $params['phone'];
-    $restaurant->website = $params['website'];
-    $restaurant->opening_time = $params['opening_time'];
-    $restaurant->closing_time = $params['closing_time'];
 
     $restaurant->setCategories($params['categories']);
-
-    $restaurant->update();
 
     foreach ($params['dishes_to_edit'] as $id => $value) {
         $dish = Dish::getById($id);
@@ -191,5 +203,5 @@
 
     uploadImage($_FILES['thumbnail'], 'restaurant', $restaurant->id, 1920);
 
-    header("Location: /restaurant?id=".$params['id']);
+    header("Location: /restaurant?id=".$restaurant->id);
 ?>
