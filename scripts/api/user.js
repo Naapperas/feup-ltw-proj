@@ -11,7 +11,7 @@ export const fetchUser = async (/** @type {Number} */ userId) => {
 
     const response = await fetch(
         `/api/user?${Object.entries(data)
-            .map(([k, v]) => `${k}=${v}`)
+            .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
             .join("&")}`
     );
 
@@ -21,5 +21,5 @@ export const fetchUser = async (/** @type {Number} */ userId) => {
         addSnackbar(error);
     }
 
-    return { user };
+    return user;
 };
