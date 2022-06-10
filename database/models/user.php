@@ -3,6 +3,7 @@
 
     require_once('model.php');
     require_once('restaurant.php');
+    require_once('dish.php');
     require_once(dirname(__DIR__, 2).'/lib/password.php');
 
     class User extends Model {
