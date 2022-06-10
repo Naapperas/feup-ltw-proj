@@ -23,7 +23,9 @@
             'components/form.js',
             'components/textfield.js',
             'components/imageinput.js',
-            "components/snackbar.js"
+            "components/snackbar.js",
+            "components/dialog.js",
+            "components/slider.js",
         ]
     ); ?>
     <body class="top-app-bar layout">

@@ -36,7 +36,12 @@
 <!DOCTYPE html>
 <html lang="en">
     <?php createHead(metadata: userMetadata($user),
-        scripts: ["components/card.js", "components/dialog.js", "components/slider.js", "components/snackbar.js"]
+        scripts: [
+            "components/card.js",
+            "components/dialog.js",
+            "components/slider.js",
+            "components/snackbar.js"
+        ]
     ); ?>
     <body class="top-app-bar layout">
         <?php createAppBar(); ?>

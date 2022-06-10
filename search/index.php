@@ -74,7 +74,12 @@
 <html lang="en">
     <?php createHead(
             baseMetadata(description: "Search Page"),
-            scripts: ["components/dialog.js", "components/slider.js", "components/card.js", "components/snackbar.js"]); ?>
+            scripts: [
+                "components/dialog.js",
+                "components/slider.js",
+                "components/card.js",
+                "components/snackbar.js"
+            ]); ?>
     <body class="top-app-bar layout">
         <?php createAppBar(query: $params['q']); ?>
 

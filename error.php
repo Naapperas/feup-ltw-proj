@@ -87,7 +87,11 @@ $description = [
 <html lang="en">
     <?php createHead(
         metadata: baseMetadata(title: "$response_code $description"), 
-        scripts: ["components/dialog.js", "components/snackbar.js"]
+        scripts: [
+            "components/dialog.js",
+            "components/slider.js",
+            "components/snackbar.js"
+        ]
     ) ?>
     <body class="top-app-bar layout">
         <?php createAppBar() ?>

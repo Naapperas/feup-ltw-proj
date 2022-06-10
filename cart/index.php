@@ -27,7 +27,12 @@
             title: 'Cart',
             description: "Cart for XauFome."
         ),
-        scripts: ["components/card.js", "components/dialog.js", "components/snackbar.js"]
+        scripts: [
+            "components/card.js",
+            "components/dialog.js",
+            "components/slider.js",
+            "components/snackbar.js"
+        ]
     ); ?>
     <body class="top-app-bar layout">
         <?php createAppBar(); ?>
