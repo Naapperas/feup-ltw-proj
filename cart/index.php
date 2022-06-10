@@ -9,10 +9,13 @@
 
     session_start();
 
+    if (!isset($_SESSION['user']))
+        pageError(HTTPStatusCode::UNAUTHORIZED);
+
     $user = User::getById($_SESSION['user']);
 
     if ($user === null)
-        pageError(HTTPStatusCode::NOT_FOUND);
+        pageError(HTTPStatusCode::INTERNAL_SERVER_ERROR);
 
     $dishes = Dish::getById(array_keys($_SESSION['cart']['dishes'] ?? []));
     $menus = Menu::getById(array_keys($_SESSION['cart']['menus'] ?? []));

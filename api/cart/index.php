@@ -7,16 +7,23 @@
     require_once("../../database/models/dish.php");
     require_once("../../database/models/menu.php");
 
-    APIRoute(
-        get: function() {
+    function common(callable $routeHandler): callable {
+
+        return function() use ($routeHandler) {
             requireAuth();
 
-            $_SESSION['cart']['dishes'] ??= [];
-            $_SESSION['cart']['menus'] ??= [];
+            $routeHandler();
 
             return ['cart' => $_SESSION['cart']];
-        },
-        post: function() {
+        };
+    }
+
+    APIRoute(
+        get: common(function () {
+            $_SESSION['cart']['dishes'] ??= [];
+            $_SESSION['cart']['menus'] ??= [];
+        }),
+        post: common(function () {
             $params = parseParams(body: [
                 'productId' => new IntParam(),
                 'productType' => new StringParam(
@@ -44,8 +51,6 @@
                     $_SESSION['easter-egg'] = true;
                 }
             }
-
-            return ['cart' => $_SESSION['cart']];
-        }
+        })
     );
 ?>

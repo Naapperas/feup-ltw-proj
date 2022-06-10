@@ -103,7 +103,7 @@
         private string $queryString;
         private array $queryValues;
 
-        public function __construct(public string $attribute, public array $elems) {
+        public function __construct(string $attribute, array $elems) {
             
             $this->queryString = sprintf("%s IN (%s)", $attribute, implode(', ', array_fill(0, count($elems), '?')));
 
@@ -171,7 +171,7 @@
         private string $queryString;
         private array $queryValues;
 
-        public function __construct(public QueryToken $clause) {
+        public function __construct(QueryToken $clause) {
             $this->queryString = sprintf(" NOT (%s)", $this->clause->getQueryString());
             $this->queryValues = $clause->getQueryValues();
         }
