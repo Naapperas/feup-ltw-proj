@@ -18,6 +18,7 @@ DROP TABLE IF EXISTS "Restaurant_category";
 DROP TABLE IF EXISTS "Favorite_dish";
 DROP TABLE IF EXISTS "Favorite_restaurant";
 DROP TABLE IF EXISTS "Dish_order";
+DROP TABLE IF EXISTS "Menu_order";
 DROP TABLE IF EXISTS "Dish_menu";
 
 -- Classes
@@ -73,7 +74,7 @@ CREATE TABLE "Review" (
     "id" INTEGER NOT NULL,
     "score" INTEGER NOT NULL,
     "text" TEXT NOT NULL,
-    "review_date" DATE NOT NULL,
+    "review_date" TEXT NOT NULL,
     "client" INTEGER NOT NULL,
     "restaurant" INTEGER NOT NULL,
     PRIMARY KEY("id"),
@@ -101,18 +102,21 @@ CREATE TABLE "User" (
 CREATE TABLE "Order" (
     "id" INTEGER NOT NULL,
     "state" TEXT NOT NULL,
-    "delivery" BOOLEAN NOT NULL,
-    "user_to_deliver" INTEGER NOT NULL,
-    "driver" INTEGER NOT NULL,
+    "order_date" TEXT NOT NULL,
+    "user" INTEGER NOT NULL,
+    "restaurant" INTEGER NOT NULL,
     PRIMARY KEY("id"),
-    FOREIGN KEY("driver") REFERENCES "User",
-    FOREIGN KEY ("user_to_deliver") REFERENCES "User"
+    FOREIGN KEY ("user") REFERENCES "User",
+    FOREIGN KEY ("restaurant") REFERENCES "Restaurant",
+    CONSTRAINT "valid_state" CHECK (
+        "state" IN ('pending', 'in_progress', 'ready', 'delivered')
+    )
 );
 
 CREATE TABLE "Review_response" (
     "id" INTEGER NOT NULL,
     "text" TEXT NOT NULL,
-    "response_date" DATE NOT NULL,
+    "response_date" TEXT NOT NULL,
     "review" INTEGER NOT NULL,
     PRIMARY KEY("id"),
     FOREIGN KEY("review") REFERENCES "Review",
@@ -158,6 +162,14 @@ CREATE TABLE "Dish_order" (
     "order" INTEGER NOT NULL,
     PRIMARY KEY("dish", "order"),
     FOREIGN KEY("dish") REFERENCES "Dish",
+    FOREIGN KEY("order") REFERENCES "Order"
+);
+
+CREATE TABLE "Menu_order" (
+    "menu" INTEGER NOT NULL,
+    "order" INTEGER NOT NULL,
+    PRIMARY KEY("menu", "order"),
+    FOREIGN KEY("menu") REFERENCES "Menu",
     FOREIGN KEY("order") REFERENCES "Order"
 );
 

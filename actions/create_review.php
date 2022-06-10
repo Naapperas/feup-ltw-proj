@@ -51,7 +51,7 @@
         'score' => round($params['score'], 1),
         'restaurant' => $params['restaurantId'],
         'client' => $params['userId'],
-        'review_date' => date("Y-m-d")
+        'review_date' => date(DATE_ISO8601)
     ]);
 
     header("Location: /restaurant?id=".$params['restaurantId']);

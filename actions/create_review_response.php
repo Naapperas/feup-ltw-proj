@@ -38,7 +38,7 @@
     Response::create([
         'text' => $params['reviewResponse'],
         'review' => $params['reviewId'],
-        'response_date' => date("Y-m-d")
+        'response_date' => date(DATE_ISO8601)
     ]);
 
     header("Location: /restaurant?id=".$params['restaurantId']);

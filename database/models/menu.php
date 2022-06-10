@@ -25,29 +25,14 @@
             return Restaurant::getById($this->restaurant);
         }
 
-        public function addDish(Dish $dish): bool {
-
-            $query = 'INSERT INTO Dish_menu VALUES (?, ?);';
-
-            list($success,) = executeQuery(static::getDB(), $query, [$dish->id, $this->id]);
-
-            if ($success) {
-
-                $this->price += $dish->price;
-                while(!$this->update()); // yikes
-
-                return true;
-            } else return false;
-        }
-
         public function getDishes(): array {
             $query = "SELECT dish AS id FROM Dish_menu WHERE menu = ?;";
 
-            $categories = getQueryResults(static::getDB(), $query, true, [$this->id]);
+            $dishes = getQueryResults(static::getDB(), $query, true, [$this->id]);
         
-            if ($categories === false) return [];
+            if ($dishes === false) return [];
 
-            $result = array_map(fn(array $data) => Dish::getById($data['id']), $categories);
+            $result = array_map(fn(array $data) => Dish::getById($data['id']), $dishes);
 
             return $result;
         }

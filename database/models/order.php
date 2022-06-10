@@ -5,23 +5,46 @@
     require_once('user.php');
 
     class Order extends Model {
-
         public string $state;
-        public bool $delivery;
+        public string $order_date;
 
-        public int $user_to_deliver;
-        public int $driver;
+        public int $user;
+        public int $restaurant;
 
         protected static function getTableName(): string {
             return "Order";
         }
-
-        public function getDriver(): ?User {
-            return User::getById($this->driver);
+        
+        public function getUser(): ?User {
+            return User::getById($this->user);
         }
         
-        public function getUserToDeliver(): ?User {
-            return User::getById($this->user_to_deliver);
+        public function getRestaurant(): ?Restaurant {
+            return Restaurant::getById($this->restaurant);
+        }
+
+        public function getDishes(): array {
+            $query = "SELECT dish AS id FROM Dish_order WHERE order = ?;";
+
+            $dishes = getQueryResults(static::getDB(), $query, true, [$this->id]);
+        
+            if ($dishes === false) return [];
+
+            $result = array_map(fn(array $data) => Dish::getById($data['id']), $dishes);
+
+            return $result;
+        }
+
+        public function getMenus(): array {
+            $query = "SELECT menu AS id FROM Menu_order WHERE order = ?;";
+
+            $menus = getQueryResults(static::getDB(), $query, true, [$this->id]);
+        
+            if ($menus === false) return [];
+
+            $result = array_map(fn(array $data) => Menu::getById($data['id']), $menus);
+
+            return $result;
         }
     }
 ?>

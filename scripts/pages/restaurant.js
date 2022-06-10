@@ -66,9 +66,11 @@ const createReview = async (review) => {
         profileName.classList.add("title");
         profileName.textContent = userName;
 
-        const profileAddress = document.createElement("span");
-        profileAddress.classList.add("subtitle", "secondary");
-        profileAddress.textContent = userAddress;
+        const reviewDate = document.createElement("span");
+        reviewDate.classList.add("subtitle", "secondary");
+        reviewDate.textContent = new Date(
+            review.review_date
+        ).toLocaleDateString();
 
         const scoreSpan = document.createElement("span");
         scoreSpan.classList.add("chip", "right");
@@ -81,12 +83,7 @@ const createReview = async (review) => {
 
         scoreSpan.append(iconSpan, scoreText);
 
-        reviewHeader.append(
-            profilePicture,
-            profileName,
-            profileAddress,
-            scoreSpan
-        );
+        reviewHeader.append(profilePicture, profileName, reviewDate, scoreSpan);
 
         reviewHeaderLink.appendChild(reviewHeader);
 

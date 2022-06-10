@@ -308,7 +308,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                     class="avatar small"
                 >
                 <span class="title"><?= $user->name ?></span>
-                <span class="subtitle secondary"><?= $user->address ?></span>
+                <span class="subtitle secondary"><?= date_create($review->review_date)->format('j/n/Y') ?></span>
                 <span class="chip right"><?php createIcon("star"); ?><?= round($review->score, 1) ?></span>
             </header>
         </a>
