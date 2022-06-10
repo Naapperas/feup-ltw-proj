@@ -1,0 +1,6 @@
+#!/bin/bash
+
+rm -f main.db
+sqlite3 main.db <schema/create.sql
+sqlite3 main.db <schema/triggers.sql
+sqlite3 main.db <schema/populate.sql

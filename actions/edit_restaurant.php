@@ -157,6 +157,8 @@
 
         $dish = Dish::create($arr);
 
+        $params['dishes_to_add'][$i] = $dish;
+
         if ($dish === null) continue;
 
         $dish->setCategories($categories);
@@ -168,10 +170,18 @@
 
         if ($menu == null || $menu->restaurant != $restaurant->id)
             continue;
+
+        $dishes = [];
+        foreach ($value['dishes'] as $dish) {
+            if ($dish > 0)
+                $dishes[] = $dish;
+            else if (isset($params['dishes_to_add'][-$dish]))
+                $dishes[] = $params['dishes_to_add'][-$dish]->id;
+        }
         
         $menu->name = $value['name'];
         $menu->price = $value['price'];
-        $menu->setDishes($value['dishes']);
+        $menu->setDishes($dishes);
 
         $menu->update();
 
@@ -190,7 +200,14 @@
     foreach ($params['menus_to_add'] as $i => $arr) {
         $arr['restaurant'] = $restaurant->id;
 
-        $dishes = $arr['dishes'];
+        $dishes = [];
+        foreach ($arr['dishes'] as $dish) {
+            if ($dish > 0)
+                $dishes[] = $dish;
+            else if (isset($params['dishes_to_add'][-$dish]))
+                $dishes[] = $params['dishes_to_add'][-$dish]->id;
+        }
+
         unset($arr['dishes']);
 
         $menu = Menu::create($arr);

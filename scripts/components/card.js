@@ -13,6 +13,7 @@ import {
     empowerCloseDialogButton,
 } from "./dialog.js";
 import { empowerEditCategoryList } from "./categorylist.js";
+import { empowerEditDishList } from "./dishlist.js";
 
 /**
  * "Empowers" a restaurant card using javascript.
@@ -184,6 +185,25 @@ export const empowerEditDishCard = (editDishCard) => {
 
     empowerEditCategoryList(chipList, categoriesFieldset);
 
+    const { dishId } = editDishCard.dataset;
+
+    nameInput.addEventListener("change", () => {
+        /** @type {NodeListOf<HTMLInputElement>} */
+        const inputs = document.querySelectorAll(
+            `dialog[id*="menu-"][id$="-dishes"] fieldset input[value="${dishId}"]`
+        );
+        inputs.forEach(
+            (i) => (i.labels[0].lastChild.textContent = " " + nameInput.value)
+        );
+        /** @type {HTMLTemplateElement} */
+        const dishesTemplate = document.querySelector("#dishes-template");
+        /** @type {HTMLInputElement} */
+        const templateInput = dishesTemplate.content.querySelector(
+            `input[value="${dishId}"]`
+        );
+        templateInput.labels[0].lastChild.textContent = " " + nameInput.value;
+    });
+
     const toggleDeletedStatus = async (event) => {
         event?.preventDefault();
         const deleted = editDishCard.toggleAttribute("data-deleted");
@@ -202,6 +222,19 @@ export const empowerEditDishCard = (editDishCard) => {
         if (categoriesFieldset) categoriesFieldset.disabled = deleted;
 
         if (hiddenInput) hiddenInput.disabled = !deleted;
+
+        /** @type {NodeListOf<HTMLInputElement>} */
+        const inputs = document.querySelectorAll(
+            `dialog[id*="menu-"][id$="-dishes"] fieldset input[value="${dishId}"]`
+        );
+        inputs.forEach((i) => (i.disabled = deleted));
+        /** @type {HTMLTemplateElement} */
+        const dishesTemplate = document.querySelector("#dishes-template");
+        /** @type {HTMLInputElement} */
+        const templateInput = dishesTemplate.content.querySelector(
+            `input[value="${dishId}"]`
+        );
+        templateInput.disabled = deleted;
     };
 
     if (deleteButton)
@@ -218,12 +251,13 @@ export const createNewDishCard = (index) => {
     const card = document.createElement("article");
     card.classList.add("card", "responsive");
     card.dataset.cardType = "new-dish";
+    card.dataset.dishId = (-index).toString();
 
     const imageInput = createImageInput(
         `dishes_to_add[${index}]`,
-        "/assets/pictures/dish/default.webp",
-        ["thumbnail", "full", "media"],
-        ["thumbnail"]
+        `/assets/pictures/dish/default${Math.floor(Math.random() * 9)}.svg`,
+        ["square", "full", "media"],
+        ["square"]
     );
     const nameInput = createTextField("Name", `dishes_to_add[${index}][name]`, {
         type: "text",
@@ -294,6 +328,29 @@ export const createNewDishCard = (index) => {
 
     empowerEditDishCard(card);
 
+    const addToFieldset = (/** @type {HTMLFieldSetElement} */ f) => {
+        /** @type {HTMLElement} */
+        // @ts-ignore
+        const newItem = f.firstElementChild.cloneNode(true);
+        newItem.lastChild.textContent = " ";
+        /** @type {HTMLInputElement} */
+        // @ts-ignore
+        const input = newItem.firstElementChild;
+        input.value = (-index).toString();
+        f.appendChild(newItem);
+    };
+
+    /** @type {NodeListOf<HTMLFieldSetElement>} */
+    const fieldsets = document.querySelectorAll(
+        `dialog[id*="menu-"][id$="-dishes"] fieldset`
+    );
+    fieldsets.forEach(addToFieldset);
+    /** @type {HTMLTemplateElement} */
+    const dishesTemplate = document.querySelector("#dishes-template");
+    /** @type {HTMLFieldSetElement} */
+    const templateFieldset = dishesTemplate.content.querySelector("fieldset");
+    addToFieldset(templateFieldset);
+
     return card;
 };
 
@@ -318,6 +375,17 @@ export const empowerEditMenuCard = (editMenuCard) => {
     /** @type HTMLInputElement */
     const hiddenInput = editMenuCard.querySelector("input[type=hidden]");
 
+    /** @type {HTMLAnchorElement} */
+    const dishListLink = editMenuCard.querySelector("a[data-open-dialog]");
+    /** @type {HTMLElement} */
+    const dishList = dishListLink.querySelector("ul");
+    /** @type {HTMLFieldSetElement} */
+    const dishesFieldset = editMenuCard.querySelector(
+        `${dishListLink.dataset.openDialog} fieldset`
+    );
+
+    empowerEditDishList(dishList, dishesFieldset);
+
     const toggleDeletedStatus = async (event) => {
         event?.preventDefault();
         const deleted = editMenuCard.toggleAttribute("data-deleted");
@@ -330,6 +398,10 @@ export const empowerEditMenuCard = (editMenuCard) => {
         if (priceInput) priceInput.disabled = deleted;
         if (imageInput) imageInput.disabled = deleted;
         imagePicker?.classList.toggle("disabled", deleted);
+        dishListLink?.classList.toggle("disabled", deleted);
+        if (deleted) dishListLink?.removeAttribute("href");
+        else dishListLink?.setAttribute("href", "#");
+        if (dishesFieldset) dishesFieldset.disabled = deleted;
 
         if (hiddenInput) hiddenInput.disabled = !deleted;
     };
@@ -351,9 +423,9 @@ export const createNewMenuCard = (index) => {
 
     const imageInput = createImageInput(
         `menus_to_add[${index}]`,
-        "/assets/pictures/menu/default.webp",
-        ["thumbnail", "full", "media"],
-        ["thumbnail"]
+        "/assets/pictures/menu/default.svg",
+        ["square", "full", "media"],
+        ["square"]
     );
     const nameInput = createTextField("Name", `menus_to_add[${index}][name]`, {
         type: "text",
@@ -370,6 +442,39 @@ export const createNewMenuCard = (index) => {
         }
     );
 
+    const dishListLink = document.createElement("a");
+    dishListLink.href = "#";
+    dishListLink.dataset.openDialog = `#new-menu-${index}-dishes`;
+    dishListLink.classList.add("fullwidth");
+
+    const dishListTitle = document.createElement("p");
+    dishListTitle.innerText = "Dishes";
+    dishListLink.appendChild(dishListTitle);
+
+    const dishList = document.createElement("ul");
+    dishListLink.appendChild(dishList);
+
+    /** @type {HTMLTemplateElement} */
+    const dishesTemplate = document.querySelector("#dishes-template");
+    /** @type {HTMLDialogElement} */
+    // @ts-ignore
+    const dishesDialog = dishesTemplate.content
+        .querySelector("dialog")
+        .cloneNode(true);
+    dishesDialog.id = `new-menu-${index}-dishes`;
+    /** @type {HTMLButtonElement} */
+    const closeDialogButton = dishesDialog.querySelector(
+        "button[data-close-dialog]"
+    );
+    closeDialogButton.dataset.closeDialog = `#new-menu-${index}-dishes`;
+    /** @type {NodeListOf<HTMLInputElement>} */
+    const dishInputs = dishesDialog.querySelectorAll("input");
+    dishInputs.forEach((i) => (i.name = `menus_to_add[${index}][dishes][]`));
+
+    empowerDialog(dishesDialog);
+    empowerOpenDialogButton(dishListLink, dishesDialog);
+    empowerCloseDialogButton(closeDialogButton, dishesDialog);
+
     const deleteButton = document.createElement("button");
     deleteButton.classList.add("button", "icon", "top-right");
     deleteButton.toggleAttribute("data-delete-button", true);
@@ -377,7 +482,14 @@ export const createNewMenuCard = (index) => {
     deleteButton.ariaLabel = "Delete";
     deleteButton.type = "button";
 
-    card.append(imageInput, nameInput, priceInput, deleteButton);
+    card.append(
+        imageInput,
+        nameInput,
+        priceInput,
+        dishListLink,
+        dishesDialog,
+        deleteButton
+    );
 
     empowerEditMenuCard(card);
 

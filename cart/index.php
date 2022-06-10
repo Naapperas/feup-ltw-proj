@@ -20,14 +20,19 @@
 <!DOCTYPE html>
 <html lang="en">
     <?php createHead(
-        metadata: baseMetadata(description: "Cart for XauFome."),
+        metadata: baseMetadata(
+            title: 'Cart',
+            description: "Cart for XauFome."
+        ),
         scripts: ["components/card.js", "components/dialog.js", "components/snackbar.js"]
     ); ?>
     <body class="top-app-bar layout">
-        <?php
-        createAppBar();
-        createDishList($dishes);
-        createMenuList($menus);
-        ?>
+        <?php createAppBar(); ?>
+        <main class="medium medium-spacing column layout">
+            <?php
+            createDishList($dishes);
+            createMenuList($menus);
+            ?>
+        </main>
     </body>
 </html>

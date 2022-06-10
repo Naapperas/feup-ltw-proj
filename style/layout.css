@@ -349,6 +349,20 @@
     padding-top: 16px;
 }
 
+.edit-restaurant :is(.menu-list, .dish-list) .card:last-child {
+    aspect-ratio: 1/1.5;
+    height: 100%;
+    place-content: center;
+    place-items: center;
+}
+
+.edit-restaurant :is(.menu-list, .dish-list) .card:last-child > .button {
+    font-size: 96px;
+    width: 160px;
+    height: 160px;
+    min-width: 160px;
+}
+
 @media screen and (max-width: 960px) {
     .edit-restaurant.layout {
         max-height: unset;
