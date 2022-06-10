@@ -16,6 +16,7 @@
 
     --color-button: var(--color-on-surface);
 
+    position: relative;
     z-index: 1;
 }
 
@@ -54,10 +55,6 @@
     scroll-behavior: smooth;
     scroll-snap-type: proximity;
     gap: 16px;
-}
-
-.chip-list a {
-    z-index: 1;
 }
 
 .chip-list.wrap {

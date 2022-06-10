@@ -33,41 +33,6 @@
     --elevation: var(--elevation-4);
 }
 
-:is(.thumbnail, .square, .avatar) {
-    width: 100%;
-    object-fit: cover;
-    object-position: center;
-    overflow: hidden;
-}
-
-.thumbnail {
-    aspect-ratio: 16 / 9;
-}
-
-.square {
-    aspect-ratio: 1 / 1;
-}
-
-.avatar {
-    aspect-ratio: 1 / 1;
-    border-radius: 50%;
-}
-
-.avatar.small {
-    width: 40px;
-    height: 40px;
-}
-
-.avatar.medium {
-    width: 120px;
-    height: 120px;
-}
-
-.avatar.big {
-    width: 280px;
-    height: 280px;
-}
-
 .secondary {
     color: rgba(var(--color-on-surface), var(--opacity-medium-emphasis));
 
@@ -106,6 +71,49 @@
     grid-area: right;
 }
 
+.thumbnail {
+    aspect-ratio: 16 / 9;
+}
+
+.square {
+    aspect-ratio: 1 / 1;
+}
+
+.avatar {
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+}
+
+.avatar.small {
+    width: 40px;
+    height: 40px;
+}
+
+.avatar.medium {
+    width: 120px;
+    height: 120px;
+}
+
+.avatar.big {
+    width: 280px;
+    height: 280px;
+}
+
+.card > .media {
+    overflow: hidden;
+    position: relative;
+}
+
+.card > .media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    overflow: hidden;
+
+    transition-property: transform;
+}
+
 .card > .media.full {
     margin: -16px;
     width: calc(100% + 32px);
@@ -118,6 +126,20 @@
 
 .card > .media.full:not(:last-child) {
     margin-bottom: 0;
+}
+
+.card > .media.full.gradient::after {
+    position: absolute;
+    content: "";
+    inset: 0;
+    background: radial-gradient(
+        rgba(var(--color-image-surface), 0%),
+        rgba(var(--color-image-surface), 18%)
+    );
+}
+
+.card.interactive:is(:hover, :focus-within) > .media.full img {
+    transform: scale(110%);
 }
 
 .card > .actions {

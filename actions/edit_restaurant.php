@@ -137,7 +137,7 @@
 
         $dish->update();
 
-        uploadImage($_FILES['dishes_to_edit'], 'dish', $id, 1920, index: $id);
+        uploadImage($_FILES['dishes_to_edit'], 'dish', $id, 1920, 1, $id);
     }
 
     foreach ($params['dishes_to_delete'] as $id) {
@@ -162,7 +162,7 @@
         if ($dish === null) continue;
 
         $dish->setCategories($categories);
-        uploadImage($_FILES['dishes_to_add'], 'dish', $dish->id, 1920, index: $i);
+        uploadImage($_FILES['dishes_to_add'], 'dish', $dish->id, 1920, 1, $i);
     }
 
     foreach ($params['menus_to_edit'] as $id => $value) {
@@ -185,7 +185,7 @@
 
         $menu->update();
 
-        uploadImage($_FILES['menus_to_edit'], 'menu', $id, 1920, index: $id);
+        uploadImage($_FILES['menus_to_edit'], 'menu', $id, 1920, 1, $id);
     }
 
     foreach ($params['menus_to_delete'] as $id) {
@@ -215,10 +215,10 @@
         if ($menu === null) continue;
 
         $menu->setDishes($dishes);
-        uploadImage($_FILES['menus_to_add'], 'menu', $menu->id, 1920, index: $i);
+        uploadImage($_FILES['menus_to_add'], 'menu', $menu->id, 1920, 1, $i);
     }
 
-    uploadImage($_FILES['thumbnail'], 'restaurant', $restaurant->id, 1920);
+    uploadImage($_FILES['thumbnail'], 'restaurant', $restaurant->id, 1920, 16/9);
 
     header("Location: /restaurant?id=".$restaurant->id);
 ?>

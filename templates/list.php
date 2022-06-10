@@ -194,8 +194,8 @@ require_once(__DIR__."/item.php");
     <?php } else if ($categories) { ?>
         <ul class="chip-list wrap">
             <?php foreach($categories as $category) { ?>
-                <li class="chip" data-category-id="<?= $category->id ?>">
-                    <a href="/search/?q=<?= rawurlencode($category->name) ?>">
+                <li data-category-id="<?= $category->id ?>">
+                    <a class="chip" href="/search/?q=<?= rawurlencode($category->name) ?>">
                         <?= $category->name ?>
                     </a>
                 </li>

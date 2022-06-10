@@ -14,13 +14,14 @@ require_once(dirname(__DIR__)."/database/models/review.php");
         data-card-type="restaurant"
         data-restaurant-id="<?= $restaurant->id ?>"
     >
-        <img
-            src="<?= $restaurant->getImagePath() ?>"
-            width="1920"
-            height="1080"
-            alt="Profile picture for <?= $restaurant->name ?>"
-            class="full media thumbnail"
-        />
+        <div class="full media gradient thumbnail">
+            <img
+                src="<?= $restaurant->getImagePath() ?>"
+                width="1920"
+                height="1080"
+                alt="Profile picture for <?= $restaurant->name ?>"
+            />
+        </div>
         <header class="header">
             <h3 class="title h6">
                 <a
@@ -135,13 +136,14 @@ require_once(dirname(__DIR__)."/database/models/review.php");
             data-card-type="dish"
             data-dish-id="<?= $dish->id ?>"
         >
-            <img
-                src="<?= $dish->getImagePath() ?>"
-                width="1920"
-                height="1080"
-                alt="Dish picture for <?= $dish->name ?>"
-                class="full media square"
-            />
+            <div class="full media gradient square">
+                <img
+                    src="<?= $dish->getImagePath() ?>"
+                    width="512"
+                    height="512"
+                    alt="Dish picture for <?= $dish->name ?>"
+                />
+            </div>
             <header class="header">
                 <h3 class="title h6">
                     <a href="#" class="card-link"><?= $dish->name ?></a>
@@ -242,13 +244,14 @@ require_once(dirname(__DIR__)."/database/models/review.php");
         data-card-type="menu" 
         data-menu-id="<?= $menu->id ?>"
     >
-        <img
-            src="<?= $menu->getImagePath() ?>"
-            width="1920"
-            height="1080"
-            alt="Menu picture for <?= $menu->name ?>"
-            class="full media square"
-        />
+        <div class="full media square">
+            <img
+                src="<?= $menu->getImagePath() ?>"
+                width="512"
+                height="512"
+                alt="Menu picture for <?= $menu->name ?>"
+            />
+        </div>
         <header class="header">
             <h3 class="title h6">
                 <a href="#" class="card-link"><?= $menu->name ?></a>

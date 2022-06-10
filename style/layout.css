@@ -395,28 +395,32 @@
 
 /* COMMON */
 
-.restaurant-list {
+.restaurant-list,
+.dish-list,
+.menu-list,
+.user-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 8px;
+}
+
+:is(.dish-list, .menu-list) .chip-list {
+    margin-top: auto;
+}
+
+.restaurant-list {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 }
 
 .dish-list {
-    display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 8px;
 }
 
 .menu-list {
-    display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 8px;
 }
 
 .user-list {
-    display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 8px;
 }
 
 @media screen and (max-width: 400px) {
