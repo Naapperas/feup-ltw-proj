@@ -114,30 +114,34 @@
             </div>
 
             <?php
-                if ($user !== null && $restaurant->owner !== $user->id) {
-                    createForm(
-                        'POST', 'review', '/actions/create_review.php', 'create-review-form',
-                        function() use ($restaurant, $user) {
-                            ?><header class="header">
-                                <h3 class="title h4">Leave a review</h3>
-                            </header>
-                            <fieldset class="score">
-                                <input class="radio" type="radio" name="score" value="0" checked>
-                                <input class="radio" type="radio" name="score" value="1">
-                                <input class="radio" type="radio" name="score" value="2">
-                                <input class="radio" type="radio" name="score" value="3">
-                                <input class="radio" type="radio" name="score" value="4">
-                                <input class="radio" type="radio" name="score" value="5">
-                            </fieldset>
-                            <input type="hidden" name="restaurantId" value="<?= $restaurant->id ?>">
-                            <input type="hidden" name="userId" value="<?= $user->id ?>"><?php
-                            createTextField(name: 'content', label: 'Details', type: 'multiline');
-                            createButton(text: 'Post', submit: true);
-                        }
-                    );
+                if ($user !== null) {
+                    if ($restaurant->owner === $user->id) {
+                        createOrderList($restaurant->getOrders(), show_restaurant: false);
+                    } else {
+                        createForm(
+                            'POST', 'review', '/actions/create_review.php', 'create-review-form',
+                            function() use ($restaurant, $user) {
+                                ?><header class="header">
+                                    <h3 class="title h4">Leave a review</h3>
+                                </header>
+                                <fieldset class="score">
+                                    <input class="radio" type="radio" name="score" value="0" checked>
+                                    <input class="radio" type="radio" name="score" value="1">
+                                    <input class="radio" type="radio" name="score" value="2">
+                                    <input class="radio" type="radio" name="score" value="3">
+                                    <input class="radio" type="radio" name="score" value="4">
+                                    <input class="radio" type="radio" name="score" value="5">
+                                </fieldset>
+                                <input type="hidden" name="restaurantId" value="<?= $restaurant->id ?>">
+                                <input type="hidden" name="userId" value="<?= $user->id ?>"><?php
+                                createTextField(name: 'content', label: 'Details', type: 'multiline');
+                                createButton(text: 'Post', submit: true);
+                            }
+                        );
+                    }
                 }
                 
-                createReviewList($restaurant->getReviews(50), $restaurant->id);
+                createReviewList($restaurant->getReviews(50), $restaurant);
             ?>
         </aside>
 

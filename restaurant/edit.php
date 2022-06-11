@@ -58,9 +58,9 @@
             'POST', 'restaurant', '/actions/edit_restaurant.php', 'edit-restaurant-form',
             function() use ($restaurant) { ?>
                 <div class="edit-restaurant-sidebar">
-                    <label class="image-input thumbnail rounded">
+                    <label class="image-input thumbnail rounded fullwidth">
                         <img
-                            src="<?= $restaurant?->getImagePath() ?? '/assets/pictures/restaurant/default.webp' ?>"
+                            src="<?= $restaurant?->getImagePath() ?? '/assets/pictures/restaurant/default.svg' ?>"
                             alt=""
                         >
                         <input

@@ -129,18 +129,15 @@ require_once(dirname(__DIR__)."/database/models/menu.php");
 <?php } ?>
 
 <?php function createReviewList(
-    ?array $reviews, int $restaurantId, string $h = 'h3', string $vh = 'h4',
+    ?array $reviews, Restaurant $restaurant, string $h = 'h3', string $vh = 'h4',
     string $title = 'Reviews'
 ) {
-
-    $restaurant = Restaurant::getById($restaurantId);
-
     if (!$reviews || $restaurant === null) return;
     ?>
-    <section class="restaurant-reviews" data-restaurant-id="<?= $restaurantId ?>">
+    <section class="restaurant-reviews" data-restaurant-id="<?= $restaurant->id ?>">
         <header class="header">
             <<?= $h ?> class="title <?= $vh ?>"><?= $title ?></<?= $h ?>>
-            <div class="select right">
+            <div class="select subtitle">
                 <select name="options" id="options"> <!-- TODO: STYLES!!!! -->
                     <option value="score-desc">Score - Desc</option>
                     <option value="score-asc">Score - Asc</option>
@@ -167,11 +164,11 @@ require_once(dirname(__DIR__)."/database/models/menu.php");
                     'review-response-form', 
                     '/actions/create_review_response.php', 
                     'review-response-form',
-                    function() use ($restaurantId) { 
+                    function() use ($restaurant) { 
                         createTextField(name: 'reviewResponse', label: 'Write a response...', type: 'multiline');
                     ?>
                     <input type="hidden" name="reviewId"></input>
-                    <input type="hidden" name="restaurantId" value="<?= $restaurantId ?>"></input>
+                    <input type="hidden" name="restaurantId" value="<?= $restaurant->id ?>"></input>
                 <?php }); ?>
             </div>
             <div class="actions">
@@ -179,6 +176,24 @@ require_once(dirname(__DIR__)."/database/models/menu.php");
                 <?php createButton(type: ButtonType::TEXT, text: 'Post', submit: true, attributes: 'form="review-response-form"') ?>
             </div>
         </dialog>
+    </section>
+<?php } ?>
+
+<?php function createOrderList(
+    ?array $orders, string $h = 'h3', string $vh = 'h4',
+    string $title = 'Orders', bool $show_restaurant = true
+) {
+    if (!$orders) return;
+    ?>
+    <section class="restaurant-orders">
+        <header class="header">
+            <<?= $h ?> class="title <?= $vh ?>"><?= $title ?></<?= $h ?>>
+        </header>
+        <div id="review-list">
+        <?php foreach($orders as $order) {
+            showOrder($order, $show_restaurant);
+        } ?>
+        </div>
     </section>
 <?php } ?>
 

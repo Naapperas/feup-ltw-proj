@@ -7,6 +7,7 @@
     require_once(__DIR__.'/dish.php');
     require_once(__DIR__.'/menu.php');
     require_once(__DIR__.'/review.php');
+    require_once(__DIR__.'/order.php');
     require_once(__DIR__.'/query.php');
 
     class Restaurant extends Model {
@@ -88,7 +89,7 @@
         }
 
         function getOrders(): array {
-            $query = "SELECT id FROM Order WHERE restaurant = ?;";
+            $query = "SELECT \"id\" FROM \"Order\" WHERE \"restaurant\" = ? AND \"state\" <> 'delivered' AND \"state\" <> 'canceled';";
 
             $queryResults = getQueryResults(static::getDB(), $query, true, [$this->id]);
         

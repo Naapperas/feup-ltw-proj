@@ -293,7 +293,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
 <?php } ?>
 
 <?php function showReview(Review $review) { 
-    $user = User::getById($review->client);
+    $user = $review->getUser();
 
     if ($user == null) return;
     ?>
@@ -302,7 +302,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
             <header class="header">
                 <img 
                     src=<?= $user->getImagePath() ?>
-                    alt="Review profile image for user <?=$user->id?>"
+                    alt="Review profile image for <?=$user->name?>"
                     class="avatar small"
                 >
                 <span class="title"><?= $user->name ?></span>
@@ -393,5 +393,53 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                 );
             ?>
         </div>
+    </article>
+<?php } ?>
+
+<?php function showOrder(Order $order, bool $show_restaurant) { 
+    $user = $order->getUser();
+    $restaurant = $order->getRestaurant();
+
+    if ($user == null) return;
+    ?>
+    <article class="order" data-order-id="<?= $order->id ?>">
+        <?php if ($show_restaurant) { ?>
+        <a href="/restaurant/?id=<?= $restaurant->id ?>">
+            <header class="header">
+                <img 
+                    src=<?= $restaurant->getImagePath() ?>
+                    alt="Order restaurant image for <?= $restaurant->name ?>"
+                    class="avatar small"
+                >
+                <span class="title"><?= $restaurant->name ?></span>
+                <span class="subtitle secondary"><?= date_create($order->order_date)->format('j/n/Y') ?></span>
+            </header>
+        </a>
+        <?php } else { ?>
+        <a href="/profile/?id=<?= $user->id ?>">
+            <header class="header">
+                <img 
+                    src=<?= $user->getImagePath() ?>
+                    alt="Order profile image for <?= $user->name ?>"
+                    class="avatar small"
+                >
+                <span class="title"><?= $user->name ?></span>
+                <span class="subtitle secondary"><?= date_create($order->order_date)->format('j/n/Y') ?></span>
+            </header>
+        </a>
+        <?php } ?>
+        <p>Dishes</p>
+        <ul>
+            <?php foreach ($order->getDishes() as list($dish, $amount)) { ?>
+            <li><?= $amount ?>x <?= $dish->name ?></li>
+            <?php } ?>
+        </ul>
+        <p>Menus</p>
+        <ul>
+            <?php foreach ($order->getMenus() as list($menu, $amount)) { ?>
+            <li><?= $dish->name ?>x <?= $menu->name ?></li>
+            <?php } ?>
+        </ul>
+        <p><?= $order->state ?></p>
     </article>
 <?php } ?>

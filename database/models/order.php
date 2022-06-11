@@ -12,7 +12,7 @@
         public int $restaurant;
 
         protected static function getTableName(): string {
-            return "\"Order\"";
+            return "Order";
         }
         
         public function getUser(): ?User {
@@ -24,13 +24,13 @@
         }
 
         public function getDishes(): array {
-            $query = "SELECT dish AS id FROM Dish_order WHERE order = ?;";
+            $query = "SELECT \"dish\" AS \"id\", \"amount\" FROM \"Dish_order\" WHERE \"order\" = ?;";
 
             $dishes = getQueryResults(static::getDB(), $query, true, [$this->id]);
         
             if ($dishes === false) return [];
 
-            $result = array_map(fn(array $data) => Dish::getById($data['id']), $dishes);
+            $result = array_map(fn(array $data) => [Dish::getById($data['id']), $data['amount']], $dishes);
 
             return $result;
         }
@@ -44,13 +44,13 @@
         }
 
         public function getMenus(): array {
-            $query = "SELECT menu AS id FROM Menu_order WHERE order = ?;";
+            $query = "SELECT \"menu\" AS \"id\", \"amount\" FROM \"Menu_order\" WHERE \"order\" = ?;";
 
             $menus = getQueryResults(static::getDB(), $query, true, [$this->id]);
         
             if ($menus === false) return [];
 
-            $result = array_map(fn(array $data) => Menu::getById($data['id']), $menus);
+            $result = array_map(fn(array $data) => [Menu::getById($data['id']), $data['amount']], $menus);
 
             return $result;
         }

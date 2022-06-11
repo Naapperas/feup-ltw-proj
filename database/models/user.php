@@ -108,7 +108,7 @@
         }
 
         function getOrders(): array {
-            $query = "SELECT id FROM Order WHERE user = ?;";
+            $query = "SELECT \"id\" FROM \"Order\" WHERE \"user\" = ?;";
 
             $queryResults = getQueryResults(static::getDB(), $query, true, [$this->id]);
         

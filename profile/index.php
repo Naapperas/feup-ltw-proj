@@ -32,6 +32,7 @@
     $owned_restaurants = $user->getOwnedRestaurants();
     $favorite_restaurants = $user->getFavoriteRestaurants();
     $favorite_dishes = $user->getFavoriteDishes();
+    $orders = $user->getOrders();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -85,6 +86,7 @@
             createRestaurantList($owned_restaurants, vh: 'h5', title: 'Owned restaurants');
             createRestaurantList($favorite_restaurants, vh: 'h5', title: 'Favorite restaurants');
             createDishList($favorite_dishes, vh: 'h5', title: 'Favorite dishes');
+            createOrderList($orders, vh: 'h5', title: 'Previous orders');
             ?>
         </main>
     </body>

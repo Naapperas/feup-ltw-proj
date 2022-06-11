@@ -1,3 +1,5 @@
+PRAGMA FOREIGN_KEYS = ON;
+
 INSERT INTO "User" ("name", "email", "password", "address", "phone_number", "full_name")
 VALUES ("owner", "owner@owner.com", "$2y$10$CLQNUjI41V6l74P3C3S2b.ujaxi1vUrq8C6zHFPpBbqvX91lbHuaK", "owner address", "999999999", "owner owneronimous");
 
@@ -25,3 +27,15 @@ VALUES ('Kansas Steakhouse Double', 7.90, 1), ('Kansas Steakhouse Single', 6.50,
 ('Big Tasty Single', 6.50, 1), ('CBO', 7.00, 1), ('McRoyal Bacon', 5.50, 1),
 ('McRoyal Deluxe', 5.50, 1), ('McRoyal Cheese', 5.50, 1), ('Big Mac', 4.70, 1),
 ('Double Cheeseburger', 4.35, 1), ('McChicken', 4.35, 1), ('Filet-o-Fish', 4.35, 1);
+
+INSERT INTO "Order" ("state", "user", "restaurant")
+VALUES ('pending', 2, 1);
+
+INSERT INTO "Dish_order" ("dish", "order", "amount")
+VALUES (1, 1, 1), (2, 1, 2), (3, 1, 50);
+
+INSERT INTO "Order" ("state", "user", "restaurant")
+VALUES ('canceled', 2, 1);
+
+INSERT INTO "Order" ("state", "user", "restaurant")
+VALUES ('delivered', 2, 1);

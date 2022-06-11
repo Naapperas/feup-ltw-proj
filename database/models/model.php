@@ -37,11 +37,11 @@
         static function create(array $values): ?static {
             unset($values['id']);
             $props = array_filter(array_keys($values), fn(string $prop) => strcmp($prop, "id"), ARRAY_FILTER_USE_KEY);
-            $prop_names = implode(', ', $props);
+            $prop_names = implode('", "', $props);
             $prop_values = implode(', ', array_map(fn($s) => ":$s", $props));
     
             $table = static::getTableName();
-            $query = "INSERT INTO $table ($prop_names) VALUES ($prop_values);";
+            $query = "INSERT INTO \"$table\" (\"$prop_names\") VALUES ($prop_values);";
             $results = executeQuery(static::getDB(), $query, $values);
     
             if ($results[0] === false)
@@ -51,9 +51,8 @@
         }
     
         static function getById(int|array $idOrIds, OrderClause $order = null): static|array|null {
-            
             $table = static::getTableName();
-            $query = "SELECT * FROM $table WHERE ";
+            $query = "SELECT * FROM \"$table\" WHERE ";
 
             if (is_int($idOrIds)) {
                 $id = $idOrIds;
@@ -92,7 +91,7 @@
         static function getAll(int $limit = null, OrderClause $order = null): array {
 
             $table = static::getTableName();
-            $query = "SELECT * FROM $table";
+            $query = "SELECT * FROM \"$table\"";
 
             if ($order !== null)
                 $query .= $order->getQueryString();
@@ -115,7 +114,7 @@
             if (count($filters) === 0) return static::getAll($limit, $order);
 
             $table = static::getTableName();
-            $query = "SELECT * FROM $table WHERE ";
+            $query = "SELECT * FROM \"$table\" WHERE ";
 
             $queryBuilder = count($filters) === 1 ? $filters[0] : new AndClause($filters);
 
@@ -139,7 +138,7 @@
     
         function delete(): bool {
             $table = static::getTableName();
-            $query = "DELETE FROM $table WHERE id = ?;";
+            $query = "DELETE FROM \"$table\" WHERE \"id\" = ?;";
     
             $results = executeQuery(static::getDB(), $query, [$this->id]);
             return $results[0];
@@ -157,7 +156,7 @@
             
             $subquery = implode(', ', $subquery);
     
-            $query = "UPDATE $table SET $subquery WHERE id = :id;";
+            $query = "UPDATE \"$table\" SET $subquery WHERE \"id\" = :id;";
     
             $results = executeQuery(static::getDB(), $query, [...$props, 'id' => $this->id]);
             return $results[0];

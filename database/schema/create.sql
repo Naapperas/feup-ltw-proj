@@ -74,7 +74,7 @@ CREATE TABLE "Review" (
     "id" INTEGER NOT NULL,
     "score" INTEGER NOT NULL,
     "text" TEXT NOT NULL,
-    "review_date" TEXT NOT NULL,
+    "review_date" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
     "client" INTEGER NOT NULL,
     "restaurant" INTEGER NOT NULL,
     PRIMARY KEY("id"),
@@ -102,21 +102,21 @@ CREATE TABLE "User" (
 CREATE TABLE "Order" (
     "id" INTEGER NOT NULL,
     "state" TEXT NOT NULL,
-    "order_date" TEXT NOT NULL,
+    "order_date" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
     "user" INTEGER NOT NULL,
     "restaurant" INTEGER NOT NULL,
     PRIMARY KEY("id"),
     FOREIGN KEY ("user") REFERENCES "User",
     FOREIGN KEY ("restaurant") REFERENCES "Restaurant",
     CONSTRAINT "valid_state" CHECK (
-        "state" IN ('pending', 'in_progress', 'ready', 'delivered')
+        "state" IN ('pending', 'in_progress', 'ready', 'delivered', 'canceled')
     )
 );
 
 CREATE TABLE "Review_response" (
     "id" INTEGER NOT NULL,
     "text" TEXT NOT NULL,
-    "response_date" TEXT NOT NULL,
+    "response_date" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
     "review" INTEGER NOT NULL,
     PRIMARY KEY("id"),
     FOREIGN KEY("review") REFERENCES "Review",
