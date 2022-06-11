@@ -2,6 +2,9 @@
 declare(strict_types=1);
 
 require_once(__DIR__."/item.php");
+require_once(dirname(__DIR__)."/database/models/restaurant.php");
+require_once(dirname(__DIR__)."/database/models/dish.php");
+require_once(dirname(__DIR__)."/database/models/menu.php");
 ?>
 
 <?php function createRestaurantList(
@@ -203,3 +206,85 @@ require_once(__DIR__."/item.php");
         </ul>
     <?php }
 } ?>
+
+<?php function createCartList(array $cart) {
+
+    $dishes = Dish::getById(array_keys($cart['dishes'] ?? []));
+    $menus = Menu::getById(array_keys($cart['menus'] ?? []));
+
+    $orders_by_restaurant = [];
+    foreach($dishes as $dish) {
+        $orders_by_restaurant[$dish->restaurant] ??= [];
+        $orders_by_restaurant[$dish->restaurant]['dishes'] ??= [];
+        $orders_by_restaurant[$dish->restaurant]['dishes'][] = $dish ;
+    }
+    foreach($menus as $menu) {
+        $orders_by_restaurant[$menu->restaurant] ??= [];
+        $orders_by_restaurant[$menu->restaurant]['menus'] ??= [];
+        $orders_by_restaurant[$menu->restaurant]['menus'][] = $menu ;
+    }
+
+    foreach($orders_by_restaurant as $restaurantId => $orders) {
+
+        $restaurant = Restaurant::getById($restaurantId);
+        if ($restaurant === null) continue;
+
+        list('dishes' => $order_dishes, 'menus' => $order_menus) = $orders;
+
+        createForm(
+            "POST",
+            "place_order_for_{$restaurant->id}",
+            "/actions/place_order.php",
+            "place_order_restaurant_{$restaurant->id}",
+            function() use ($restaurant, $cart, $order_dishes, $order_menus) { ?>
+            
+            <header class="header">
+                <h2 class="title h4">
+                    Orders for <?= $restaurant->name ?>
+                </h2>
+            </header>
+
+            <?php 
+                if ($order_dishes !== null && $order_dishes !== []) { ?>
+                
+                <section class="cart-dish-cards">
+                    <span class="title">Dishes</span>
+                    <div class="column">
+                        <?php 
+                            foreach ($order_dishes as $dish) {
+                                createCartDishCard($dish, $cart['dishes'][$dish->id]);
+                            }
+                        ?>
+                    </div>
+                </section>
+                <?php }
+
+                if ($order_menus !== null && $order_menus !== []) {
+                    if ($order_dishes !== null && $order_dishes !== []) { ?>
+                    <hr class="divider">
+                    <?php } ?>
+                    <section class="cart-menu-cards">
+                        <span class="title">Menus</span>
+                        <div class="column">
+                            <?php 
+                                foreach ($order_menus as $menu) {
+                                    createCartMenuCard($menu, $cart['menus'][$menu->id]);
+                                }
+                            ?>
+                        </div>
+                    </section>
+                <?php } ?> 
+            
+                <input type="hidden" name="restaurantId" value="<?= $restaurant->id ?>">
+            <?php 
+                createButton(
+                    type: ButtonType::CONTAINED,
+                    text: 'Order',
+                    icon: "shopping_bag",
+                    submit: true, 
+                    class: "right"
+                );
+            }
+        );
+    }?>
+<?php } ?>

@@ -313,3 +313,83 @@ require_once(dirname(__DIR__)."/database/models/review.php");
         <p class="review-content"><?= $review->text ?></p>
     </article>
 <?php } ?>
+
+<?php function createCartDishCard(Dish $dish, int $amount) { ?>
+    <article class="header cart-dish-card" data-cart-card-type="dish" data-cart-card-id="<?= $dish->id ?>">
+        <div class="media gradient">
+            <img 
+                src="<?= $dish->getImagePath() ?>" 
+                alt="Image for dish <?= $dish->id ?> in cart page"
+                width="80"
+                height="80"
+            >
+        </div>
+        <h3 class="title h6"><?= $dish->name ?></h3>
+        <span class="subtitle subtitle2 secondary">
+            <?= sprintf('%.2f€', $dish->price) ?>
+        </span>
+        <div class="right">
+            <span>Amount: <span class="product-amount"><?= $amount ?></span></span>
+            <?php   
+                createButton(
+                    type: ButtonType::ICON, 
+                    icon: "add", 
+                    text: "Add one unit of this type to the order", 
+                    attributes: "data-add-unit"
+                );
+                createButton(
+                    type: ButtonType::ICON, 
+                    icon: "remove", 
+                    text: "Remove one unit of this type from the order", 
+                    attributes: "data-remove-unit"
+                );
+                createButton(
+                    type: ButtonType::ICON, 
+                    icon: "close", 
+                    text: "Remove units of this type from the order",
+                    attributes: "data-delete-unit"
+                );
+            ?>
+        </div>
+    </article>
+<?php } ?>
+
+<?php function createCartMenuCard(Menu $menu, int $amount) { ?>
+    <article class="header cart-menu-card" data-cart-card-type="menu" data-cart-card-id="<?= $menu->id ?>">
+        <div class="small media gradient">
+            <img 
+                src="<?= $menu->getImagePath() ?>" 
+                alt="Image for menu <?= $menu->id ?> in cart page"
+                width="80"
+                height="80"
+            >
+        </div>
+        <h3 class="title h6"><?= $menu->name ?></h3>
+        <span class="subtitle subtitle2 secondary">
+            <?= sprintf('%.2f€', $menu->price) ?>
+        </span>
+        <div class="right">
+            <span>Amount: <span class="product-amount"><?= $amount ?></span></span>
+            <?php   
+                createButton(
+                    type: ButtonType::ICON, 
+                    icon: "add", 
+                    text: "Add one unit of this type to the order", 
+                    attributes: "data-add-unit"
+                );
+                createButton(
+                    type: ButtonType::ICON, 
+                    icon: "remove", 
+                    text: "Remove one unit of this type from the order", 
+                    attributes: "data-remove-unit"
+                );
+                createButton(
+                    type: ButtonType::ICON, 
+                    icon: "close", 
+                    text: "Remove units of this type from the order",
+                    attributes: "data-delete-unit"
+                );
+            ?>
+        </div>
+    </article>
+<?php } ?>

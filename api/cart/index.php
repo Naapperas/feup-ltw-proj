@@ -49,6 +49,8 @@
 
                 if ($_SESSION['cart'][$productType][$productToAdd->id] >= 50) {
                     $_SESSION['easter-egg'] = true;
+                } else if ($_SESSION['cart'][$productType][$productToAdd->id] === 0) {
+                    unset($_SESSION['cart'][$productType][$productToAdd->id]);
                 }
             }
         })

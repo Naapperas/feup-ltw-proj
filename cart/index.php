@@ -4,8 +4,8 @@
     require_once("../templates/common.php");
     require_once("../templates/list.php");
     require_once("../templates/metadata.php");
-    require_once('../lib/params.php');
     require_once('../lib/util.php');
+    require_once('../database/models/user.php');
 
     session_start();
 
@@ -17,8 +17,6 @@
     if ($user === null)
         pageError(HTTPStatusCode::INTERNAL_SERVER_ERROR);
 
-    $dishes = Dish::getById(array_keys($_SESSION['cart']['dishes'] ?? []));
-    $menus = Menu::getById(array_keys($_SESSION['cart']['menus'] ?? []));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,18 +26,18 @@
             description: "Cart for XauFome."
         ),
         scripts: [
-            "components/card.js",
             "components/dialog.js",
             "components/slider.js",
-            "components/snackbar.js"
+            "components/snackbar.js",
+            "components/form.js",
+            "pages/cart.js"
         ]
     ); ?>
     <body class="top-app-bar layout">
         <?php createAppBar(); ?>
         <main class="medium medium-spacing column layout">
             <?php
-            createDishList($dishes);
-            createMenuList($menus);
+            createCartList($_SESSION['cart']);
             ?>
         </main>
     </body>
