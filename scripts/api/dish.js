@@ -8,7 +8,7 @@ export const toggleDishLikedStatus = async (id) => {
     const data = new FormData(); // POSTing to PHP requires FormData
     data.append("dishId", id);
 
-    const response = await fetch("/api/user/favorite_dishes", {
+    const response = await fetch("/api/user/favorite_dishes/", {
         method: "POST",
         body: data,
     });

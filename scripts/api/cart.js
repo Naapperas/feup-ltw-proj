@@ -2,7 +2,7 @@
 
 "use-strict";
 
-import { addSnackbar } from '../components/snackbar.js';
+import { addSnackbar } from "../components/snackbar.js";
 
 /**
  *
@@ -18,7 +18,7 @@ export const addProductToCart = async (id, type) => {
     data.append("productId", id.toString(10));
     data.append("productType", type);
 
-    const response = await fetch("/api/cart", {
+    const response = await fetch("/api/cart/", {
         method: "POST",
         body: data,
     });

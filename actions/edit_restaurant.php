@@ -61,8 +61,8 @@
                 'name' => new StringParam(min_len: 1),
                 'price' => new FloatParam(min: 0),
                 'dishes' => new ArrayParam(
-                    default: [],
-                    param_type: new IntParam()
+                    param_type: new IntParam(),
+                    minLen: 2
                 ),
             ])
         ),
@@ -76,8 +76,8 @@
                 'name' => new StringParam(min_len: 1),
                 'price' => new FloatParam(min: 0),
                 'dishes' => new ArrayParam(
-                    default: [],
-                    param_type: new IntParam()
+                    param_type: new IntParam(),
+                    minLen: 2
                 ),
             ])
         )

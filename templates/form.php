@@ -234,7 +234,7 @@ declare(strict_types=1);
             'value' => $dish->id,
             'name' => $name,
             'checked' => $model && $model->hasDish($dish->id)
-        ], Dish::getAll()), '', 'content'); ?>
+        ], Dish::getWithFilters([new Equals('restaurant', $model->restaurant)])), '', 'content'); ?>
         <div class="actions">
             <button class="button text" type="button" data-close-dialog="#<?= $id ?>">Done</button>
         </div>

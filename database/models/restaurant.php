@@ -86,5 +86,15 @@
 
             return array_map(fn(array $data) => Menu::getById($data['id']), $queryResults);
         }
+
+        function getOrders(): array {
+            $query = "SELECT id FROM Order WHERE restaurant = ?;";
+
+            $queryResults = getQueryResults(static::getDB(), $query, true, [$this->id]);
+        
+            if ($queryResults === false) return [];
+
+            return array_map(fn(array $data) => Order::getById($data['id']), $queryResults);
+        }
     }
 ?>

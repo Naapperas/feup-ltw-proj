@@ -16,7 +16,7 @@ export const fetchOrderedRestaurantReviews = async (
     };
 
     const response = await fetch(
-        `/api/restaurant/reviews?${Object.entries(data)
+        `/api/restaurant/reviews/?${Object.entries(data)
             .map(
                 ([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`
             )

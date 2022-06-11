@@ -10,8 +10,10 @@ export const fetchUser = async (/** @type {Number} */ userId) => {
     };
 
     const response = await fetch(
-        `/api/user?${Object.entries(data)
-            .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
+        `/api/user/?${Object.entries(data)
+            .map(
+                ([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`
+            )
             .join("&")}`
     );
 
