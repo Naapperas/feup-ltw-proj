@@ -25,7 +25,8 @@ const empowerOrderForm = (form) => {
         const addButton = card.querySelector("[data-add-unit]");
         const removeButton = card.querySelector("[data-remove-unit]");
         const deleteButton = card.querySelector("[data-delete-unit]");
-        const amountSpan = card.querySelector("span.product-amount")
+        const amountSpan = card.querySelector("span.product-amount");
+        const amountInput = card.querySelector("input:is([name*=dishes_to_order], [name*=menus_to_order])"); // there is only going to be one of this per card
     
         const deleteCard = () => {
             card.remove();
@@ -51,11 +52,14 @@ const empowerOrderForm = (form) => {
 
             await addProductToCart(cartCardId, cartCardType);
 
-            amountSpan.textContent = parseInt(amountSpan.textContent, 10) + 1;
+            const amount = parseInt(amountSpan.textContent, 10) + 1;
+
+            amountSpan.textContent = amount;
     
             const cartCount = parseInt(cartBadge.dataset.badgeContent, 10) + 1;
     
             cartBadge.dataset.badgeContent = cartCount.toString();
+            amountInput.value = amount;
         });
     
         removeButton.addEventListener("click", async () => {
@@ -69,6 +73,8 @@ const empowerOrderForm = (form) => {
             const cartCount = parseInt(cartBadge.dataset.badgeContent, 10) - 1;
     
             cartBadge.dataset.badgeContent = cartCount.toString();
+
+            amountInput.value = amount;
 
             if (amount === 1) {
                 deleteCard();
@@ -85,6 +91,8 @@ const empowerOrderForm = (form) => {
             const cartCount = parseInt(cartBadge.dataset.badgeContent, 10) - amount;
     
             cartBadge.dataset.badgeContent = cartCount.toString();
+
+            amountInput.value = 0;
 
             deleteCard();
         });

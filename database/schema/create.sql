@@ -160,17 +160,21 @@ CREATE TABLE "Favorite_dish" (
 CREATE TABLE "Dish_order" (
     "dish" INTEGER NOT NULL,
     "order" INTEGER NOT NULL,
+    "amount" INTEGER NOT NULL,
     PRIMARY KEY("dish", "order"),
     FOREIGN KEY("dish") REFERENCES "Dish",
-    FOREIGN KEY("order") REFERENCES "Order"
+    FOREIGN KEY("order") REFERENCES "Order",
+    CONSTRAINT "positive_amount" CHECK ("amount" >= 1)
 );
 
 CREATE TABLE "Menu_order" (
     "menu" INTEGER NOT NULL,
     "order" INTEGER NOT NULL,
+    "amount" INTEGER NOT NULL,
     PRIMARY KEY("menu", "order"),
     FOREIGN KEY("menu") REFERENCES "Menu",
-    FOREIGN KEY("order") REFERENCES "Order"
+    FOREIGN KEY("order") REFERENCES "Order",
+    CONSTRAINT "positive_amount" CHECK ("amount" >= 1)
 );
 
 CREATE TABLE "Dish_menu" (

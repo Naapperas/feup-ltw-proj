@@ -12,7 +12,7 @@
         public int $restaurant;
 
         protected static function getTableName(): string {
-            return "Order";
+            return "\"Order\"";
         }
         
         public function getUser(): ?User {
@@ -35,6 +35,14 @@
             return $result;
         }
 
+        public function addDish(int $dishId, int $amount): bool {
+            $query = "INSERT INTO Dish_order VALUES (?, ?, ?);";
+
+            list($success,) = executeQuery(static::getDB(), $query, [$dishId, $this->id, $amount]);
+        
+            return $success;
+        }
+
         public function getMenus(): array {
             $query = "SELECT menu AS id FROM Menu_order WHERE order = ?;";
 
@@ -45,6 +53,14 @@
             $result = array_map(fn(array $data) => Menu::getById($data['id']), $menus);
 
             return $result;
+        }
+
+        public function addMenu(int $menuId, int $amount): bool {
+            $query = "INSERT INTO Menu_order VALUES (?, ?, ?);";
+
+            list($success,) = executeQuery(static::getDB(), $query, [$menuId, $this->id, $amount]);
+        
+            return $success;
         }
     }
 ?>

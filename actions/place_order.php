@@ -1,24 +1,63 @@
 <?php
 
+    require_once("../lib/util.php");
+
     if (strcmp($_SERVER['REQUEST_METHOD'], "POST") !== 0) {
-        header("Location: /");
-        die;
+        pageError(HTTPStatusCode::METHOD_NOT_ALLOWED);
     }
 
     session_start();
 
     if (!isset($_SESSION['user'])) { // prevents order placement from unauthenticated users
-        header("Location: /");
-        die;
+        pageError(HTTPStatusCode::UNAUTHORIZED);
+    }
+
+    require_once("../database/models/user.php");
+
+    $user = User::getById($_SESSION['user']);
+
+    if ($user === null || is_array($user)) {
+        pageError(HTTPStatusCode::INTERNAL_SERVER_ERROR);
     }
 
     require_once('../lib/params.php');
 
     $params = parseParams(body: [
-        'reviewResponse' => new StringParam(),
         'restaurantId' => new IntParam(),
-        'reviewId' => new IntParam()
+        'dishes_to_order' => new ArrayParam(
+            default: [],
+            param_type: new IntParam()
+        ),
+        'menus_to_order' => new ArrayParam(
+            default: [],
+            param_type: new IntParam()
+        )
     ]);
+
+    require_once("../database/models/order.php");
+
+    $order = Order::create([
+        'state' => 'pending',
+        'order_date' => date(DATE_ISO8601),
+        'user' => $user->id,
+        'restaurant' => $params['restaurantId']
+    ]);
+
+    if ($order === null || is_array($order)) {
+        pageError(HTTPStatusCode::INTERNAL_SERVER_ERROR);
+    }
+
+    foreach ($params['dishes_to_order'] as $dishId => $amount) {
+        if ($order->addDish($dishId, $amount)) {
+            unset($_SESSION['cart']['dishes'][$dishId]);
+        }
+    }
+
+    foreach ($params['menus_to_order'] as $menuId => $amount) {
+        if ($order->addMenu($menuId, $amount)) {
+            unset($_SESSION['cart']['menus'][$menuId]);
+        }
+    }
 
     header("Location: /");
 ?>

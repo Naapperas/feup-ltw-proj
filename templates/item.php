@@ -330,6 +330,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
         </span>
         <div class="right">
             <span>Amount: <span class="product-amount"><?= $amount ?></span></span>
+            <input type="hidden" name="dishes_to_order[<?= $dish->id ?>]" value=<?= $amount ?>>
             <?php   
                 createButton(
                     type: ButtonType::ICON, 
@@ -370,6 +371,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
         </span>
         <div class="right">
             <span>Amount: <span class="product-amount"><?= $amount ?></span></span>
+            <input type="hidden" name="menus_to_order[<?= $menu->id ?>]" value=<?= $amount ?>>
             <?php   
                 createButton(
                     type: ButtonType::ICON, 
