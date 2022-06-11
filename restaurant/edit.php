@@ -50,7 +50,7 @@
             <?php createCategoriesDialog(null, id: ''); ?>
         </template>
         <template id="dishes-template">
-            <?php createDishesDialog(null, id: ''); ?>
+            <?php createDishesDialog(null, id: '', restaurant: $restaurant?->id); ?>
         </template>
 
         <?php createAppBar(); ?>
@@ -60,7 +60,6 @@
                 <div class="edit-restaurant-sidebar">
                     <label class="image-input thumbnail rounded">
                         <img
-                            class="thumbnail"
                             src="<?= $restaurant?->getImagePath() ?? '/assets/pictures/restaurant/default.webp' ?>"
                             alt=""
                         >

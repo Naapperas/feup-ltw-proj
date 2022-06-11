@@ -328,28 +328,35 @@ export const createNewDishCard = (index) => {
 
     empowerEditDishCard(card);
 
-    const addToFieldset = (/** @type {HTMLFieldSetElement} */ f) => {
-        /** @type {HTMLElement} */
-        // @ts-ignore
-        const newItem = f.firstElementChild.cloneNode(true);
-        newItem.lastChild.textContent = " ";
-        /** @type {HTMLInputElement} */
-        // @ts-ignore
-        const input = newItem.firstElementChild;
-        input.value = (-index).toString();
-        f.appendChild(newItem);
+    const addToFieldset = (/** @type {HTMLElement} */ f) => {
+        const { id } = f;
+
+        const newCheckbox = document.createElement("label");
+
+        const newInput = document.createElement("input");
+        newInput.type = "checkbox";
+        newInput.value = (-index).toString();
+        newInput.classList.add("checkbox");
+
+        newInput.name = `${
+            id.startsWith("new-menu") ? "menus_to_add" : "menus_to_edit"
+        }[${id.match(/\d+/)?.[0] ?? ""}][dishes][]`;
+
+        newCheckbox.append(newInput, document.createTextNode(" "));
+
+        f.querySelector("fieldset").appendChild(newCheckbox);
     };
 
-    /** @type {NodeListOf<HTMLFieldSetElement>} */
-    const fieldsets = document.querySelectorAll(
-        `dialog[id*="menu-"][id$="-dishes"] fieldset`
+    /** @type {NodeListOf<HTMLElement>} */
+    const dialogs = document.querySelectorAll(
+        `dialog[id*="menu-"][id$="-dishes"]`
     );
-    fieldsets.forEach(addToFieldset);
+    dialogs.forEach(addToFieldset);
     /** @type {HTMLTemplateElement} */
     const dishesTemplate = document.querySelector("#dishes-template");
-    /** @type {HTMLFieldSetElement} */
-    const templateFieldset = dishesTemplate.content.querySelector("fieldset");
-    addToFieldset(templateFieldset);
+    /** @type {HTMLElement} */
+    const templateDialog = dishesTemplate.content.querySelector("dialog");
+    addToFieldset(templateDialog);
 
     return card;
 };

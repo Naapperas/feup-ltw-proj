@@ -82,9 +82,8 @@ require_once(dirname(__DIR__)."/database/models/review.php");
             data-card-type="edit-dish"
             data-dish-id="<?= $dish->id ?>"
         >
-            <label class="image-input full media square">
+            <label class="image-input full media square gradient">
                 <img
-                    class="square"
                     src="<?= $dish->getImagePath() ?>"
                     alt=""
                 >
@@ -190,9 +189,8 @@ require_once(dirname(__DIR__)."/database/models/review.php");
             data-card-type="edit-menu"
             data-menu-id="<?= $menu->id ?>"
         >
-            <label class="image-input full media square">
+            <label class="image-input full media square gradient">
                 <img
-                    class="square"
                     src="<?= $menu->getImagePath() ?>"
                     alt=""
                 >

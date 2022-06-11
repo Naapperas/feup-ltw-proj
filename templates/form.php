@@ -226,7 +226,7 @@ declare(strict_types=1);
     </dialog>
 <?php } ?>
 
-<?php function createDishesDialog(?Menu $model, string $name = 'dishes[]', string $id = 'dishes') { ?>
+<?php function createDishesDialog(?Menu $model, string $name = 'dishes[]', string $id = 'dishes', ?int $restaurant = null) { ?>
     <dialog class="dialog confirmation" id="<?= $id ?>">
         <header><h2 class="h5">Dishes</h2></header>
         <?php createCheckBoxList(array_map(fn(Dish $dish) => [
@@ -234,7 +234,7 @@ declare(strict_types=1);
             'value' => $dish->id,
             'name' => $name,
             'checked' => $model && $model->hasDish($dish->id)
-        ], Dish::getWithFilters([new Equals('restaurant', $model->restaurant)])), '', 'content'); ?>
+        ], Dish::getWithFilters([new Equals('restaurant', $restaurant ?? $model->restaurant)])), '', 'content'); ?>
         <div class="actions">
             <button class="button text" type="button" data-close-dialog="#<?= $id ?>">Done</button>
         </div>

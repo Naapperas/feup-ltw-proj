@@ -36,7 +36,6 @@
                 function() use ($user) { ?>
                     <label class="image-input avatar big">
                         <img 
-                            class="avatar big"
                             src="<?= $user->getImagePath() ?>"
                             alt=""
                             width="280"
