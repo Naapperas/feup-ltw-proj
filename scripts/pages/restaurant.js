@@ -44,12 +44,12 @@ const createReview = async (review) => {
         const {
             id: userId,
             name: userName,
-            address: userAddress,
             image: userPhotoPath,
         } = user;
 
         const reviewElement = document.createElement("article");
         reviewElement.classList.add("review");
+        reviewElement.dataset.reviewId = review.id;
 
         const reviewHeaderLink = document.createElement("a");
         reviewHeaderLink.href = `/profile/?id=${userId}`;
@@ -70,7 +70,7 @@ const createReview = async (review) => {
         reviewDate.classList.add("subtitle", "secondary");
         reviewDate.textContent = new Date(
             review.review_date
-        ).toLocaleDateString();
+        ).toLocaleDateString('pt-PT');
 
         const scoreSpan = document.createElement("span");
         scoreSpan.classList.add("chip", "right");
@@ -97,6 +97,8 @@ const createReview = async (review) => {
         reviewText.innerHTML = review.text;
 
         reviewElement.appendChild(reviewText);
+
+        empowerReview(reviewElement);
 
         return reviewElement;
     } catch {
@@ -152,8 +154,6 @@ const empowerReview = (reviewElement) => {
 
         const review = await fetchReview(reviewId);
         const reviewResponse = await fetchReviewResponse(reviewId);
-
-        console.log({ reviewResponse });
 
         const reviewNode = await createReview(review);
 
