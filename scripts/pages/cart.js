@@ -100,6 +100,7 @@ const empowerOrderForm = (/** @type {HTMLFormElement} */ form) => {
                     cartCardType,
                     -amount
                 );
+                cartBadge.dataset.badgeContent = newCart.size.toString();
 
                 deleteCard();
             });
