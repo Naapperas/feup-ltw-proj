@@ -4,7 +4,7 @@
 
 import { toggleRestaurantLikedStatus } from "../api/restaurant.js";
 import { toggleDishLikedStatus } from "../api/dish.js";
-import { addProductToCart } from "../api/cart.js";
+import { updateCart } from "../api/cart.js";
 import { createTextField } from "./textfield.js";
 import { createImageInput } from "./imageinput.js";
 import {
@@ -90,18 +90,12 @@ export const empowerDishCard = (dishCard) => {
         event?.preventDefault();
 
         try {
-            const newCart = await addProductToCart(parseInt(dishId), "dish");
+            const newCart = await updateCart(parseInt(dishId), "dish");
 
             if (newCart) {
                 /** @type HTMLElement */
                 const cartBadge = document.querySelector("[data-cart]");
-
-                let cartCount = 0;
-                for (const id in newCart.dishes)
-                    cartCount += newCart.dishes[id];
-                for (const id in newCart.menus) cartCount += newCart.menus[id];
-
-                cartBadge.dataset.badgeContent = cartCount.toString();
+                cartBadge.dataset.badgeContent = newCart.size.toString();
                 cartBadge.classList.add("badge");
             }
         } catch {
@@ -130,18 +124,12 @@ export const empowerMenuCard = (menuCard) => {
         event?.preventDefault();
 
         try {
-            const newCart = await addProductToCart(parseInt(menuId), "menu");
+            const newCart = await updateCart(parseInt(menuId), "menu");
 
             if (newCart) {
                 /** @type HTMLElement */
                 const cartBadge = document.querySelector("[data-cart]");
-
-                let cartCount = 0;
-                for (const id in newCart.dishes)
-                    cartCount += newCart.dishes[id];
-                for (const id in newCart.menus) cartCount += newCart.menus[id];
-
-                cartBadge.dataset.badgeContent = cartCount.toString();
+                cartBadge.dataset.badgeContent = newCart.size.toString();
                 cartBadge.classList.add("badge");
             }
         } catch {

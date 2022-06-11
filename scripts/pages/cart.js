@@ -2,104 +2,115 @@
 
 "use strict";
 
-import { addProductToCart, removeProductFromCart, removeBatchFromCart } from "../api/cart.js";
+import { updateCart } from "../api/cart.js";
 
 /** @type HTMLElement */
 const cartBadge = document.querySelector("[data-cart]");
 
-const orderForms = document.querySelectorAll("[id*=place_order_restaurant]");
-
-const empowerOrderForm = (form) => {
-
+const empowerOrderForm = (/** @type {HTMLFormElement} */ form) => {
+    /** @type {HTMLElement} */
     const dishSection = form.querySelector(".cart-dish-cards");
+    /** @type {HTMLElement} */
     const menuSection = form.querySelector(".cart-menu-cards");
 
-    const dishCards = dishSection?.querySelectorAll("article.cart-dish-card") ?? [];
-    const menuCards = menuSection?.querySelectorAll("article.cart-menu-card") ?? [];
+    /** @type {NodeListOf<HTMLElement> | []} */
+    const dishCards =
+        dishSection?.querySelectorAll("[data-cart-card-type=dish]") ?? [];
+    /** @type {NodeListOf<HTMLElement> | []} */
+    const menuCards =
+        menuSection?.querySelectorAll("[data-cart-card-type=menu]") ?? [];
 
-    const empowerCartCard = (section) => (type) => (card) => {
+    const empowerCartCard =
+        (/** @type {HTMLElement} */ section) =>
+        (/** @type {HTMLElement} */ card) => {
+            const { cartCardType } = card.dataset;
+            const cartCardId = parseInt(card.dataset.cartCardId, 10);
 
-        const { cartCardType, cartCardId } = card.dataset;
+            if (cartCardType !== "menu" && cartCardType !== "dish") return;
 
-        /** @type HTMLButtonElement */
-        const addButton = card.querySelector("[data-add-unit]");
-        const removeButton = card.querySelector("[data-remove-unit]");
-        const deleteButton = card.querySelector("[data-delete-unit]");
-        const amountSpan = card.querySelector("span.product-amount");
-        const amountInput = card.querySelector("input:is([name*=dishes_to_order], [name*=menus_to_order])"); // there is only going to be one of this per card
-    
-        const deleteCard = () => {
-            card.remove();
+            /** @type {HTMLButtonElement} */
+            const addButton = card.querySelector("button[data-add-unit]");
+            /** @type {HTMLButtonElement} */
+            const removeButton = card.querySelector("button[data-remove-unit]");
+            /** @type {HTMLButtonElement} */
+            const deleteButton = card.querySelector("button[data-delete-unit]");
+            /** @type {HTMLElement} */
+            const amountSpan = card.querySelector("span.product-amount");
+            /** @type {HTMLInputElement} */
+            const amountInput = card.querySelector(
+                "input:is([name*=dishes_to_order], [name*=menus_to_order])"
+            );
 
-            const sectionLength = section.querySelectorAll(`article.cart-${type}-card`).length;
-            if (sectionLength === 0) {
-                section.remove();
-            }
+            const deleteCard = () => {
+                card.remove();
 
-            const formLength = form.querySelectorAll(":is(.cart-dish-cards, .cart-menu-cards)").length;
-            if (formLength === 0) {
-                form.remove();
-            }
+                const sectionLength = section.querySelectorAll(
+                    `[data-cart-card-type=${cartCardType}]`
+                ).length;
+                if (sectionLength === 0) {
+                    section.remove();
+                }
 
-            const orderFormAmount = document.querySelectorAll("[id*=place_order_restaurant]").length;
-            if (orderFormAmount === 0) {
-                window.location = "/";
-            }
-    
-        };
-    
-        addButton.addEventListener("click", async () => {
+                const formLength = form.querySelectorAll(
+                    ":is(.cart-dish-cards, .cart-menu-cards)"
+                ).length;
+                if (formLength === 0) {
+                    form.remove();
+                }
 
-            await addProductToCart(cartCardId, cartCardType);
+                const orderFormAmount = document.querySelectorAll(
+                    "[id*=place_order_restaurant]"
+                ).length;
+                if (orderFormAmount === 0) {
+                    window.location.assign("/");
+                }
+            };
 
-            const amount = parseInt(amountSpan.textContent, 10) + 1;
+            addButton.addEventListener("click", async () => {
+                const newCart = await updateCart(cartCardId, cartCardType);
+                const amount =
+                    newCart[cartCardType === "dish" ? "dishes" : "menus"][
+                        cartCardId
+                    ].toString();
 
-            amountSpan.textContent = amount;
-    
-            const cartCount = parseInt(cartBadge.dataset.badgeContent, 10) + 1;
-    
-            cartBadge.dataset.badgeContent = cartCount.toString();
-            amountInput.value = amount;
-        });
-    
-        removeButton.addEventListener("click", async () => {
-    
-            await removeProductFromCart(cartCardId, cartCardType);
+                amountSpan.textContent = amount;
+                amountInput.value = amount;
+                cartBadge.dataset.badgeContent = newCart.size.toString();
+            });
 
-            const amount = parseInt(amountSpan.textContent, 10);
-    
-            amountSpan.textContent = amount - 1;
-    
-            const cartCount = parseInt(cartBadge.dataset.badgeContent, 10) - 1;
-    
-            cartBadge.dataset.badgeContent = cartCount.toString();
+            removeButton.addEventListener("click", async () => {
+                const newCart = await updateCart(cartCardId, cartCardType, -1);
+                const amount =
+                    newCart[cartCardType === "dish" ? "dishes" : "menus"][
+                        cartCardId
+                    ].toString();
 
-            amountInput.value = amount;
+                amountSpan.textContent = amount;
+                amountInput.value = amount;
+                cartBadge.dataset.badgeContent = newCart.size.toString();
 
-            if (amount === 1) {
+                if (amount === "0") deleteCard();
+            });
+
+            deleteButton.addEventListener("click", async () => {
+                const amount = parseInt(amountInput.value, 10);
+
+                const newCart = await updateCart(
+                    cartCardId,
+                    cartCardType,
+                    -amount
+                );
+
                 deleteCard();
-                return;
-            }
-        });
-    
-        deleteButton.addEventListener("click", async () => {
+            });
+        };
 
-            const amount = parseInt(amountSpan.textContent, 10);
-            
-            await removeBatchFromCart(cartCardId, cartCardType, amount);
-        
-            const cartCount = parseInt(cartBadge.dataset.badgeContent, 10) - amount;
-    
-            cartBadge.dataset.badgeContent = cartCount.toString();
+    dishCards.forEach(empowerCartCard(dishSection));
+    menuCards.forEach(empowerCartCard(menuSection));
+};
 
-            amountInput.value = 0;
-
-            deleteCard();
-        });
-    }
-
-    dishCards.forEach(empowerCartCard(dishSection)('dish'));
-    menuCards.forEach(empowerCartCard(menuSection)('menu'));
-}
-
+/** @type {NodeListOf<HTMLFormElement>} */
+const orderForms = document.querySelectorAll(
+    "form[id*=place_order_restaurant]"
+);
 orderForms.forEach(empowerOrderForm);
