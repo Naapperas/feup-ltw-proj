@@ -256,8 +256,8 @@ export const createNewDishCard = (index) => {
     const imageInput = createImageInput(
         `dishes_to_add[${index}]`,
         `/assets/pictures/dish/default${Math.floor(Math.random() * 9)}.svg`,
-        ["square", "full", "media"],
-        ["square"]
+        ["square", "full", "media", "gradient"],
+        []
     );
     const nameInput = createTextField("Name", `dishes_to_add[${index}][name]`, {
         type: "text",
@@ -431,8 +431,8 @@ export const createNewMenuCard = (index) => {
     const imageInput = createImageInput(
         `menus_to_add[${index}]`,
         "/assets/pictures/menu/default.svg",
-        ["square", "full", "media"],
-        ["square"]
+        ["square", "full", "media", "gradient"],
+        []
     );
     const nameInput = createTextField("Name", `menus_to_add[${index}][name]`, {
         type: "text",
