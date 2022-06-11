@@ -12,7 +12,8 @@ import { addSnackbar } from "../components/snackbar.js";
  * @returns {Promise<{
  *      dishes: Record<number, number> | undefined,
  *      menus: Record<number, number> | undefined,
- *      size: number
+ *      size: number,
+ *      total: Record<number, number>
  *  }?>}
  */
 export const updateCart = async (id, type, amount = 1) => {

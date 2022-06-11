@@ -229,13 +229,9 @@ require_once(dirname(__DIR__)."/database/models/menu.php");
 
     $orders_by_restaurant = [];
     foreach($dishes as $dish) {
-        $orders_by_restaurant[$dish->restaurant] ??= [];
-        $orders_by_restaurant[$dish->restaurant]['dishes'] ??= [];
         $orders_by_restaurant[$dish->restaurant]['dishes'][] = $dish ;
     }
     foreach($menus as $menu) {
-        $orders_by_restaurant[$menu->restaurant] ??= [];
-        $orders_by_restaurant[$menu->restaurant]['menus'] ??= [];
         $orders_by_restaurant[$menu->restaurant]['menus'][] = $menu ;
     }
 
@@ -246,60 +242,46 @@ require_once(dirname(__DIR__)."/database/models/menu.php");
 
         list('dishes' => $order_dishes, 'menus' => $order_menus) = $orders;
 
+        $total = array_reduce($order_dishes ?? [], fn($d1, $d2) => $d1 + $d2->price * $cart['dishes'][$d2->id], 0)
+               + array_reduce($order_menus ?? [], fn($m1, $m2) => $m1 + $m2->price * $cart['menus'][$m2->id], 0);
+
         createForm(
             "POST",
             "place_order_for_{$restaurant->id}",
             "/actions/place_order.php",
             "place_order_restaurant_{$restaurant->id}",
-            function() use ($restaurant, $cart, $order_dishes, $order_menus) { ?>
-            
-            <header class="header">
-                <h2 class="title h4">
-                    Orders for <?= $restaurant->name ?>
-                </h2>
-            </header>
-
-            <?php 
-                if ($order_dishes !== null && $order_dishes !== []) { ?>
-                
-                <section class="cart-dish-cards">
-                    <span class="title">Dishes</span>
-                    <div class="column">
-                        <?php 
-                            foreach ($order_dishes as $dish) {
-                                createCartDishCard($dish, $cart['dishes'][$dish->id]);
-                            }
-                        ?>
-                    </div>
+            function() use ($restaurant, $cart, $order_dishes, $order_menus, $total) { ?>
+                <header class="header">
+                    <a href="/restaurant/?id=<?= $restaurant->id ?>"><h2 class="title h4">
+                        <?= $restaurant->name ?>
+                    </h2></a>
+                </header>
+                <section class="product-list">
+                    <?php
+                        foreach ($order_dishes as $dish) {
+                            createCartDishCard($dish, $cart['dishes'][$dish->id]);
+                        }
+                        foreach ($order_menus as $menu) {
+                            createCartMenuCard($menu, $cart['menus'][$menu->id]);
+                        }
+                    ?>
                 </section>
-                <?php }
-
-                if ($order_menus !== null && $order_menus !== []) {
-                    if ($order_dishes !== null && $order_dishes !== []) { ?>
-                    <hr class="divider">
-                    <?php } ?>
-                    <section class="cart-menu-cards">
-                        <span class="title">Menus</span>
-                        <div class="column">
-                            <?php 
-                                foreach ($order_menus as $menu) {
-                                    createCartMenuCard($menu, $cart['menus'][$menu->id]);
-                                }
-                            ?>
-                        </div>
-                    </section>
-                <?php } ?> 
-            
+                <section class="info">
+                    <span>
+                        Total &CenterDot;
+                        <span class="cart-total"><?= sprintf('%.2f', $total) ?></span>€
+                    </span>
+                    <?php 
+                    createButton(
+                        type: ButtonType::CONTAINED,
+                        text: 'Order',
+                        icon: "shopping_bag",
+                        submit: true
+                    );
+                    ?>
+                </section>
                 <input type="hidden" name="restaurantId" value="<?= $restaurant->id ?>">
-            <?php 
-                createButton(
-                    type: ButtonType::CONTAINED,
-                    text: 'Order',
-                    icon: "shopping_bag",
-                    submit: true, 
-                    class: "right"
-                );
-            }
+            <?php }
         );
     }?>
 <?php } ?>

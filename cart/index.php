@@ -35,7 +35,7 @@
     ); ?>
     <body class="top-app-bar layout">
         <?php createAppBar(); ?>
-        <main class="medium medium-spacing column layout">
+        <main class="cart layout">
             <?php
             createCartList($_SESSION['cart']);
             ?>

@@ -393,6 +393,41 @@
     }
 }
 
+/* CART */
+
+.cart.layout {
+    display: flex;
+    flex-direction: column;
+    max-width: 960px;
+    width: 100%;
+    gap: 16px;
+    place-self: center;
+}
+
+.cart.layout > .form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    align-items: start;
+}
+
+.cart.layout > .form:not(:first-child) {
+    border-top: 1px solid rgba(var(--color-on-surface), 12%);
+}
+
+.cart.layout > .form > .info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: sticky;
+    top: 72px;
+}
+
+.cart.layout > .form > .product-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
 /* COMMON */
 
 .restaurant-list,

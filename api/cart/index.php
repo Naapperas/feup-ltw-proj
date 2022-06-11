@@ -8,13 +8,30 @@
     require_once("../../database/models/menu.php");
 
     function common(callable $routeHandler): callable {
-
         return function() use ($routeHandler) {
             requireAuth();
 
             $routeHandler();
 
-            return ['cart' => $_SESSION['cart']];
+            $size = 0;
+            $total = [];
+
+            foreach ($_SESSION['cart']['dishes'] as $dish => $amount) {
+                $size += $amount;
+                $dish = Dish::getById($dish);
+                $total[$dish->restaurant] += $amount * $dish->price;
+            }
+
+            foreach ($_SESSION['cart']['menus'] as $menu => $amount) {
+                $size += $amount;
+                $menu = Menu::getById($menu);
+                $total[$menu->restaurant] += $amount * $menu->price;
+            }
+
+            return ['cart' => array_merge($_SESSION['cart'], [
+                'total' => $total,
+                'size' => $size
+            ])];
         };
     }
 

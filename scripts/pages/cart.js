@@ -8,106 +8,91 @@ import { updateCart } from "../api/cart.js";
 const cartBadge = document.querySelector("[data-cart]");
 
 const empowerOrderForm = (/** @type {HTMLFormElement} */ form) => {
-    /** @type {HTMLElement} */
-    const dishSection = form.querySelector(".cart-dish-cards");
-    /** @type {HTMLElement} */
-    const menuSection = form.querySelector(".cart-menu-cards");
-
     /** @type {NodeListOf<HTMLElement> | []} */
-    const dishCards =
-        dishSection?.querySelectorAll("[data-cart-card-type=dish]") ?? [];
-    /** @type {NodeListOf<HTMLElement> | []} */
-    const menuCards =
-        menuSection?.querySelectorAll("[data-cart-card-type=menu]") ?? [];
+    const cards = form.querySelectorAll("[data-cart-card-type]") ?? [];
+    /** @type {HTMLFormElement} */
+    const totalSpan = form.querySelector("span.cart-total");
 
-    const empowerCartCard =
-        (/** @type {HTMLElement} */ section) =>
-        (/** @type {HTMLElement} */ card) => {
-            const { cartCardType } = card.dataset;
-            const cartCardId = parseInt(card.dataset.cartCardId, 10);
+    const restaurantId = parseInt(form.id.match(/\d+/)[0], 10);
 
-            if (cartCardType !== "menu" && cartCardType !== "dish") return;
+    const empowerCartCard = (/** @type {HTMLElement} */ card) => {
+        const { cartCardType } = card.dataset;
+        const cartCardId = parseInt(card.dataset.cartCardId, 10);
 
-            /** @type {HTMLButtonElement} */
-            const addButton = card.querySelector("button[data-add-unit]");
-            /** @type {HTMLButtonElement} */
-            const removeButton = card.querySelector("button[data-remove-unit]");
-            /** @type {HTMLButtonElement} */
-            const deleteButton = card.querySelector("button[data-delete-unit]");
-            /** @type {HTMLElement} */
-            const amountSpan = card.querySelector("span.product-amount");
-            /** @type {HTMLInputElement} */
-            const amountInput = card.querySelector(
-                "input:is([name*=dishes_to_order], [name*=menus_to_order])"
-            );
+        if (cartCardType !== "menu" && cartCardType !== "dish") return;
 
-            const deleteCard = () => {
-                card.remove();
+        /** @type {HTMLButtonElement} */
+        const addButton = card.querySelector("button[data-add-unit]");
+        /** @type {HTMLButtonElement} */
+        const removeButton = card.querySelector("button[data-remove-unit]");
+        /** @type {HTMLButtonElement} */
+        const deleteButton = card.querySelector("button[data-delete-unit]");
+        /** @type {HTMLElement} */
+        const amountSpan = card.querySelector("span.product-amount");
+        /** @type {HTMLInputElement} */
+        const amountInput = card.querySelector(
+            "input:is([name*=dishes_to_order], [name*=menus_to_order])"
+        );
 
-                const sectionLength = section.querySelectorAll(
-                    `[data-cart-card-type=${cartCardType}]`
-                ).length;
-                if (sectionLength === 0) {
-                    section.remove();
-                }
+        const deleteCard = () => {
+            card.remove();
 
-                const formLength = form.querySelectorAll(
-                    ":is(.cart-dish-cards, .cart-menu-cards)"
-                ).length;
-                if (formLength === 0) {
-                    form.remove();
-                }
+            const formLength = form.querySelectorAll(
+                "[data-cart-card-type]"
+            ).length;
+            if (formLength === 0) {
+                form.remove();
+            }
 
-                const orderFormAmount = document.querySelectorAll(
-                    "[id*=place_order_restaurant]"
-                ).length;
-                if (orderFormAmount === 0) {
-                    window.location.assign("/");
-                }
-            };
-
-            addButton.addEventListener("click", async () => {
-                const newCart = await updateCart(cartCardId, cartCardType);
-                const amount =
-                    newCart[cartCardType === "dish" ? "dishes" : "menus"][
-                        cartCardId
-                    ].toString();
-
-                amountSpan.textContent = amount;
-                amountInput.value = amount;
-                cartBadge.dataset.badgeContent = newCart.size.toString();
-            });
-
-            removeButton.addEventListener("click", async () => {
-                const newCart = await updateCart(cartCardId, cartCardType, -1);
-                const amount =
-                    newCart[cartCardType === "dish" ? "dishes" : "menus"][
-                        cartCardId
-                    ].toString();
-
-                amountSpan.textContent = amount;
-                amountInput.value = amount;
-                cartBadge.dataset.badgeContent = newCart.size.toString();
-
-                if (amount === "0") deleteCard();
-            });
-
-            deleteButton.addEventListener("click", async () => {
-                const amount = parseInt(amountInput.value, 10);
-
-                const newCart = await updateCart(
-                    cartCardId,
-                    cartCardType,
-                    -amount
-                );
-                cartBadge.dataset.badgeContent = newCart.size.toString();
-
-                deleteCard();
-            });
+            const orderFormAmount = document.querySelectorAll(
+                "[id*=place_order_restaurant]"
+            ).length;
+            if (orderFormAmount === 0) {
+                window.location.assign("/");
+            }
         };
 
-    dishCards.forEach(empowerCartCard(dishSection));
-    menuCards.forEach(empowerCartCard(menuSection));
+        addButton.addEventListener("click", async () => {
+            const newCart = await updateCart(cartCardId, cartCardType);
+            const amount =
+                newCart[cartCardType === "dish" ? "dishes" : "menus"][
+                    cartCardId
+                ].toString();
+
+            amountSpan.textContent = amount;
+            amountInput.value = amount;
+            totalSpan.textContent = newCart.total[restaurantId].toFixed(2);
+            cartBadge.dataset.badgeContent = newCart.size.toString();
+        });
+
+        removeButton.addEventListener("click", async () => {
+            const newCart = await updateCart(cartCardId, cartCardType, -1);
+            const amount = (
+                newCart[cartCardType === "dish" ? "dishes" : "menus"]?.[
+                    cartCardId
+                ] ?? 0
+            ).toString();
+
+            amountSpan.textContent = amount;
+            amountInput.value = amount;
+            totalSpan.textContent = newCart.total[restaurantId].toFixed(2);
+            cartBadge.dataset.badgeContent = newCart.size.toString();
+
+            if (amount === "0") deleteCard();
+        });
+
+        deleteButton.addEventListener("click", async () => {
+            const amount = parseInt(amountInput.value, 10);
+
+            const newCart = await updateCart(cartCardId, cartCardType, -amount);
+            cartBadge.dataset.badgeContent = newCart.size.toString();
+            totalSpan.textContent = newCart.total[restaurantId].toFixed(2);
+
+            deleteCard();
+        });
+    };
+
+    cards.forEach(empowerCartCard);
 };
 
 /** @type {NodeListOf<HTMLFormElement>} */

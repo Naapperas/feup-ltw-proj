@@ -324,14 +324,14 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                 height="512"
                 class="avatar medium"
             >
-            <h3 class="title h6"><span class="product-amount"><?= $amount ?></span>x <?= $dish->name ?></h3>
+            <h3 class="title h6">
+                <span class="product-amount"><?= $amount ?></span>&times; <?= $dish->name ?>
+            </h3>
             <span class="subtitle subtitle2 secondary">
                 <?= sprintf('%.2f€', $dish->price) ?>
             </span>
             <div class="right">
-                <span>Amount: <span class="product-amount"><?= $amount ?></span></span>
-                <input type="hidden" name="dishes_to_order[<?= $dish->id ?>]" value=<?= $amount ?>>
-                <?php   
+                <?php
                     createButton(
                         type: ButtonType::ICON, 
                         icon: "add", 
@@ -346,13 +346,14 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                     );
                     createButton(
                         type: ButtonType::ICON, 
-                        icon: "close", 
+                        icon: "delete", 
                         text: "Remove $dish->name from the cart",
                         attributes: "data-delete-unit"
                     );
-                ?>
+                    ?>
             </div>
         </header>
+        <input type="hidden" name="dishes_to_order[<?= $dish->id ?>]" value=<?= $amount ?>>
     </article>
 <?php } ?>
 
@@ -366,35 +367,36 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                 height="512"
                 class="avatar medium"
             >
-            <h3 class="title h6"><?= $menu->name ?></h3>
+            <h3 class="title h6">
+                <span class="product-amount"><?= $amount ?></span>&times; <?= $menu->name ?>
+            </h3>
             <span class="subtitle subtitle2 secondary">
                 <?= sprintf('%.2f€', $menu->price) ?>
             </span>
             <div class="right">
-                <span>Amount: <span class="product-amount"><?= $amount ?></span></span>
-                <input type="hidden" name="menus_to_order[<?= $menu->id ?>]" value=<?= $amount ?>>
                 <?php   
                     createButton(
-                        type: ButtonType::ICON, 
-                        icon: "add", 
+                        type: ButtonType::ICON,
+                        icon: "add",
                         text: "Add one $menu->name to the cart", 
                         attributes: "data-add-unit"
                     );
                     createButton(
-                        type: ButtonType::ICON, 
-                        icon: "remove", 
+                        type: ButtonType::ICON,
+                        icon: "remove",
                         text: "Remove one $menu->name from the cart", 
                         attributes: "data-remove-unit"
                     );
                     createButton(
-                        type: ButtonType::ICON, 
-                        icon: "close", 
+                        type: ButtonType::ICON,
+                        icon: "delete",
                         text: "Remove $menu->name from the cart",
                         attributes: "data-delete-unit"
                     );
-                ?>
+                    ?>
             </div>
         </header>
+        <input type="hidden" name="menus_to_order[<?= $menu->id ?>]" value=<?= $amount ?>>
     </article>
 <?php } ?>
 
