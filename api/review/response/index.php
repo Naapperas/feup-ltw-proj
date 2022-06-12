@@ -3,6 +3,7 @@
 
     require_once("../../../lib/api.php");
     require_once("../../../lib/util.php");
+    require_once("../../../database/models/review.php");
 
     APIRoute(
         get: function() {
@@ -12,23 +13,19 @@
                 'reviewId' => new IntParam(),
             ]);
         
-            require_once("../../../database/models/response.php");
-            require_once("../../../database/models/review.php");
-            require_once("../../../database/models/query.php");
-        
-            if (Review::getById($params['reviewId']) === null) {
-                APIError(HTTPStatusCode::BAD_REQUEST, "Review with the given id does not exist");
+            $review = Review::getById($params['reviewId']);
+
+            if ($review === null) {
+                APIError(HTTPStatusCode::BAD_REQUEST, "Review not found");
             }
         
-            $clause = new Equals('review', $params['reviewId']);
-        
-            $response = Response::getWithFilters([$clause]);
+            $response = $review->getResponse();
         
             if ($response === null) {
-                APIError(HTTPStatusCode::NOT_FOUND, "Could not find response for the given review");
+                APIError(HTTPStatusCode::NOT_FOUND, "Response not found");
             }
         
-            return ['response' => $response[0]]; // since 'review' is unique, there is at most one response for this review
+            return ['response' => $response];
         }
     );
 ?>

@@ -235,10 +235,22 @@
     gap: 8px;
 }
 
-.review:not(:first-child) {
+.review > .review-content {
+    margin-left: 56px;
+}
+
+.review:not(:first-of-type) {
     margin-top: 16px;
     padding-top: 16px;
     border-top: solid 1px rgba(var(--color-on-surface), 12%);
+}
+
+/* response */
+.review > .review {
+    margin-left: 16px;
+}
+.review > .review .title::after {
+    content: " replied";
 }
 
 .restaurant-sidebar .order-list {

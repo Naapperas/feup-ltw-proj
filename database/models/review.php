@@ -1,9 +1,11 @@
 <?php
     declare(strict_types=1);
 
-    require_once('model.php');
-    require_once('user.php');
-    require_once('restaurant.php');
+    require_once(__DIR__.'/model.php');
+    require_once(__DIR__.'/user.php');
+    require_once(__DIR__.'/restaurant.php');
+    require_once(__DIR__.'/response.php');
+    require_once(__DIR__.'/query.php');
 
     class Review extends Model {
 
@@ -24,6 +26,10 @@
 
         public function getRestaurant(): ?Restaurant {
             return Restaurant::getById($this->restaurant);
+        }
+
+        public function getResponse(): ?Response {
+            return Response::getWithFilters([new Equals('review', $this->id)])[0];
         }
     }
 ?>

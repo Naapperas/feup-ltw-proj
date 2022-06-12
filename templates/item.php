@@ -295,6 +295,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
 
 <?php function showReview(Review $review) { 
     $user = $review->getUser();
+    $response = $review->getResponse();
 
     if ($user == null) return;
     ?>
@@ -312,6 +313,27 @@ require_once(dirname(__DIR__)."/database/models/review.php");
             </header>
         </a>
         <p class="review-content"><?= $review->text ?></p>
+
+        <?php if ($response) { 
+            $replier = $review->getRestaurant()->getOwner();
+        ?>
+        <article class="review" data-response-id="<?= $response->id ?>">
+            <a href="/profile/?id=<?= $replier->id ?>">
+                <header class="header">
+                    <img 
+                        src=<?= $replier->getImagePath() ?>
+                        alt="Review profile image for <?=$replier->name?>"
+                        class="avatar small"
+                    >
+                    <span class="title"><?= $replier->name ?></span>
+                    <span class="subtitle secondary"><?= date_create($response->response_date)->format('j/n/Y') ?></span>
+                </header>
+            </a>
+            <p class="review-content"><?= $response->text ?></p>
+        </article>
+        <?php } else if ($review->getRestaurant()->owner === $_SESSION['user']) {
+            createButton(ButtonType::TEXT, 'Reply', attributes: "data-reply-button");
+        } ?>
     </article>
 <?php } ?>
 

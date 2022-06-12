@@ -148,52 +148,31 @@ const empowerOrderSelect = (select) => {
  * @param {HTMLElement} reviewElement
  */
 const empowerReview = (reviewElement) => {
-    reviewElement.addEventListener("click", async () => {
-        // do this way so we can run custom code with this specific dialog
-        /** @type {HTMLDialogElement?} */
-        const dialog = document.querySelector(
-            "#review-response[data-owner-logged-in]"
-        );
+    /** @type {HTMLButtonElement?} */
+    const replyButton = reviewElement.querySelector(
+        "button[data-reply-button]"
+    );
+    /** @type {HTMLDialogElement?} */
+    const dialog = document.querySelector("dialog#review-response");
 
-        if (!dialog) return; // the user is not the restaurant owner
+    replyButton?.addEventListener("click", async () => {
+        if (!dialog) return;
 
         const { reviewId } = reviewElement.dataset;
 
-        const review = await fetchReview(parseInt(reviewId ?? ""));
-        const reviewResponse = await fetchReviewResponse(
-            parseInt(reviewId ?? "")
+        /** @type {HTMLElement} */
+        // @ts-ignore
+        const reviewNode = reviewElement.cloneNode(true);
+        reviewNode.querySelector("button[data-reply-button]")?.remove();
+        reviewNode.classList.add("fullwidth");
+
+        dialog.querySelector(".review")?.replaceWith(reviewNode);
+
+        /** @type {HTMLInputElement?} */
+        const hiddenInput = dialog.querySelector(
+            "input[type=hidden][name=reviewId]"
         );
-
-        const reviewNode = await createReview(review);
-
-        dialog
-            .querySelector("div.content > section#response-review")
-            ?.replaceChildren(reviewNode ?? "");
-
-        // TODO: this is kinda monkey-patched, figure out a way of doing
-        // this right
-
-        /** @type {HTMLButtonElement?} */
-        const submitButton = dialog.querySelector("[type=submit]");
-        if (submitButton) submitButton.disabled = false;
-        /** @type {HTMLTextAreaElement?} */
-        const textArea = dialog.querySelector("textarea");
-        if (textArea) textArea.disabled = false;
-        /** @type {HTMLElement?} */
-        const text = dialog.querySelector("#response-text");
-        if (text) text.textContent = "";
-        if (reviewResponse) {
-            if (submitButton) submitButton.disabled = true;
-            if (textArea) textArea.disabled = true;
-            if (text)
-                text.appendChild(document.createTextNode(reviewResponse.text));
-        } else {
-            /** @type {HTMLInputElement?} */
-            const hiddenInput = dialog.querySelector(
-                "input[type=hidden][name=reviewId]"
-            );
-            if (hiddenInput) hiddenInput.value = review?.id.toString() ?? "";
-        }
+        if (hiddenInput) hiddenInput.value = reviewId ?? "";
 
         dialog.showModal();
     });

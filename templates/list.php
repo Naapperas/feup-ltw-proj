@@ -152,30 +152,32 @@ require_once(dirname(__DIR__)."/database/models/menu.php");
             showReview($review);
         } ?>
         </div>
-        <!-- TODO: maybe have different outputs when there already is a response ? -->
-        <dialog class="dialog confirmation" id="review-response" <?php if($_SESSION['user'] === $restaurant->owner) { echo "data-owner-logged-in"; } ?>>
-            <header><h2 class="h4">Respond to review...</h2></header>
-            <div class="content">
-                <section id="response-review"> <!-- FIXME: needs better id -->
-                </section>
-                <section id="response-text"></section> <!-- TODO: STYLES!!!! -->
-                <?php createForm(
-                    'POST', 
-                    'review-response-form', 
-                    '/actions/create_review_response.php', 
-                    'review-response-form',
-                    function() use ($restaurant) { 
-                        createTextField(name: 'reviewResponse', label: 'Write a response...', type: 'multiline');
-                    ?>
-                    <input type="hidden" name="reviewId"></input>
-                    <input type="hidden" name="restaurantId" value="<?= $restaurant->id ?>"></input>
-                <?php }); ?>
-            </div>
-            <div class="actions">
-                <?php createButton(type: ButtonType::TEXT, text: 'Cancel', attributes: 'data-close-dialog="#review-response"') ?>
-                <?php createButton(type: ButtonType::TEXT, text: 'Post', submit: true, attributes: 'form="review-response-form"') ?>
-            </div>
-        </dialog>
+        <?php if($_SESSION['user'] === $restaurant->owner) { ?>
+            <dialog class="dialog confirmation" id="review-response">
+                <header><h2 class="h4">Respond to review...</h2></header>
+                <div class="content">
+                    <?php createForm(
+                        'POST', 
+                        'review-response-form', 
+                        '/actions/create_review_response.php', 
+                        'review-response-form',
+                        function() use ($restaurant) { ?>
+                        <article class="review"></article>
+                        <?php createTextField(
+                            name: 'reviewResponse',
+                            label: 'Write a response...',
+                            type: 'multiline'
+                        ); ?>
+                        <input type="hidden" name="reviewId"></input>
+                        <input type="hidden" name="restaurantId" value="<?= $restaurant->id ?>"></input>
+                    <?php }); ?>
+                </div>
+                <div class="actions">
+                    <?php createButton(type: ButtonType::TEXT, text: 'Cancel', attributes: 'data-close-dialog="#review-response"') ?>
+                    <?php createButton(type: ButtonType::TEXT, text: 'Post', submit: true, attributes: 'form="review-response-form"') ?>
+                </div>
+            </dialog>
+        <?php } ?>
     </section>
 <?php } ?>
 
