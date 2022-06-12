@@ -72,7 +72,7 @@
                 case 'in_progress':
                     return 'In progress';
                 case 'ready':
-                    return 'Ready for pickup';
+                    return 'Ready';
                 case 'delivered':
                     return 'Delivered';
             }

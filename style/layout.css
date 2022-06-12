@@ -241,6 +241,28 @@
     border-top: solid 1px rgba(var(--color-on-surface), 12%);
 }
 
+.restaurant-sidebar .order-list {
+    gap: 16px;
+}
+
+.order .total {
+    margin-top: auto;
+}
+
+@media screen and (min-width: 961px) {
+    .restaurant-sidebar .order.card.responsive {
+        border-radius: unset;
+        border: none;
+        --elevation: var(--elevation-0);
+        padding: 0;
+    }
+
+    .restaurant-sidebar .order.card.responsive:not(:first-of-type) {
+        padding-top: 16px;
+        border-top: 1px solid rgba(var(--color-on-surface), 12%);
+    }
+}
+
 @media screen and (max-width: 960px) {
     .restaurant.layout {
         grid-template:
@@ -293,6 +315,10 @@
 
     .restaurant-info > .header {
         display: none;
+    }
+
+    .restaurant-sidebar .order-list {
+        gap: 8px;
     }
 }
 
@@ -441,7 +467,8 @@
 .restaurant-list,
 .dish-list,
 .menu-list,
-.user-list {
+.user-list,
+.order-list {
     display: grid;
     gap: 8px;
 }
@@ -464,6 +491,10 @@
 
 .user-list {
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+.order-list {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
 @media screen and (max-width: 400px) {

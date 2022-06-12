@@ -20,10 +20,8 @@ const restaurantId = parseInt(
 const empowerRestaurantLikeButton = (button) => {
     if (!button) return;
 
-    const restaurantId = button.dataset.restaurantId;
-
-    const toggleLikedStatus = async (event) => {
-        event?.preventDefault();
+    button.addEventListener("click", async (event) => {
+        event.preventDefault();
 
         try {
             const favorite = await toggleRestaurantLikedStatus(restaurantId);
@@ -35,9 +33,7 @@ const empowerRestaurantLikeButton = (button) => {
         } catch {
             return;
         }
-    };
-
-    button.addEventListener("click", toggleLikedStatus);
+    });
 };
 
 const createReview = async (review) => {
@@ -123,19 +119,26 @@ const empowerOrderSelect = (select) => {
 
             const [attribute, order] = reviewOrdering.split("-");
 
+            if (
+                (attribute != "score" && attribute != "date") ||
+                (order != "asc" && order != "desc")
+            )
+                return;
+
             const reviews = await fetchOrderedRestaurantReviews(
                 restaurantId,
                 attribute,
                 order
             );
 
-            const nodes = await Promise.all(reviews.map(createReview));
+            const nodes = await Promise.all(reviews?.map(createReview) ?? []);
 
             // .replaceChildren didn't work, this did
             for (let i = 0; i < nodes.length; i++) {
                 const elem = reviewList.children[i];
+                const node = nodes[i];
 
-                reviewList.replaceChild(nodes[i], elem);
+                if (node) reviewList.replaceChild(node, elem);
             }
         });
 };
@@ -179,7 +182,7 @@ const empowerReview = (reviewElement) => {
         /** @type {HTMLElement?} */
         const text = dialog.querySelector("#response-text");
         if (text) text.textContent = "";
-        if (reviewResponse !== null) {
+        if (reviewResponse) {
             if (submitButton) submitButton.disabled = true;
             if (textArea) textArea.disabled = true;
             if (text)
@@ -189,7 +192,7 @@ const empowerReview = (reviewElement) => {
             const hiddenInput = dialog.querySelector(
                 "input[type=hidden][name=reviewId]"
             );
-            if (hiddenInput) hiddenInput.value = review.id;
+            if (hiddenInput) hiddenInput.value = review?.id.toString() ?? "";
         }
 
         dialog.showModal();
@@ -200,7 +203,7 @@ const stateDict = {
     pending: "Pending",
     canceled: "Canceled",
     in_progress: "In progress",
-    ready: "Ready for pickup",
+    ready: "Ready",
     delivered: "Delivered",
 };
 
@@ -219,7 +222,7 @@ const empowerOrder = (orderElement) => {
     /** @type {HTMLButtonElement?} */
     const button = buttons.item(buttons.length - 1);
     /** @type {HTMLElement?} */
-    const orderStateEl = orderElement.querySelector(".order-state");
+    const orderStateEl = orderElement.querySelector(".state");
 
     buttons.forEach((b) =>
         b.addEventListener("click", async () => {
@@ -238,6 +241,8 @@ const empowerOrder = (orderElement) => {
                 orderId,
                 newState
             );
+
+            if (!newOrder) return;
 
             if (orderStateEl)
                 orderStateEl.textContent = stateDict[newOrder.state];

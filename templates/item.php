@@ -406,8 +406,10 @@ require_once(dirname(__DIR__)."/database/models/review.php");
     $restaurant = $order->getRestaurant();
 
     if ($user == null) return;
+
+    $total = 0;
     ?>
-    <article class="order" data-order-id="<?= $order->id ?>">
+    <article class="order card responsive" data-order-id="<?= $order->id ?>">
         <?php if ($show_restaurant) { ?>
         <a href="/restaurant/?id=<?= $restaurant->id ?>">
             <header class="header">
@@ -418,6 +420,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                 >
                 <span class="title"><?= $restaurant->name ?></span>
                 <span class="subtitle secondary"><?= date_create($order->order_date)->format('j/n/Y') ?></span>
+                <span class="chip right order-state"><?= $order->getStateString() ?></span>
             </header>
         </a>
         <?php } else { ?>
@@ -430,22 +433,23 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                 >
                 <span class="title"><?= $user->name ?></span>
                 <span class="subtitle secondary"><?= date_create($order->order_date)->format('j/n/Y') ?></span>
+                <span class="chip right state"><?= $order->getStateString() ?></span>
             </header>
         </a>
         <?php } ?>
-        <p>Dishes</p>
         <ul>
-            <?php foreach ($order->getDishes() as list($dish, $amount)) { ?>
+            <?php foreach ($order->getDishes() as list($dish, $amount)) { 
+                $total += $dish->price * $amount;
+            ?>
             <li><?= $amount ?>&times; <?= $dish->name ?></li>
             <?php } ?>
-        </ul>
-        <p>Menus</p>
-        <ul>
-            <?php foreach ($order->getMenus() as list($menu, $amount)) { ?>
+            <?php foreach ($order->getMenus() as list($menu, $amount)) { 
+                $total += $menu->price * $amount;
+            ?>
             <li><?= $amount ?>&times; <?= $menu->name ?></li>
             <?php } ?>
         </ul>
-        <p class="order-state"><?= $order->getStateString() ?></p>
+        <p class="total">Total · <?= $total ?>€</p>
         <?php 
         if (!$show_restaurant) {
             if ($order->state === 'pending') {

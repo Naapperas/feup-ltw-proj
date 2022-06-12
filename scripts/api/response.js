@@ -8,6 +8,7 @@ import { addSnackbar } from "../components/snackbar.js";
  *
  * @param {number} reviewId
  * @returns {Promise<{
+ *      id: number,
  *      text: string,
  *      response_date: string,
  *      review: number

@@ -10,6 +10,7 @@ import { addSnackbar } from "../components/snackbar.js";
  * @param {"score"|"date"} attribute
  * @param {"asc"|"desc"} order
  * @returns {Promise<{
+ *      id: number,
  *      score: number,
  *      text: string,
  *      review_date: string,
@@ -50,6 +51,7 @@ export const fetchOrderedRestaurantReviews = async (
  *
  * @param {number} reviewId
  * @returns {Promise<{
+ *      id: number,
  *      score: number,
  *      text: string,
  *      review_date: string,

@@ -185,15 +185,13 @@ require_once(dirname(__DIR__)."/database/models/menu.php");
 ) {
     if (!$orders) return;
     ?>
-    <section class="restaurant-orders">
+    <section class="order-list">
         <header class="header">
             <h<?= $h ?> class="title <?= $vh ?>"><?= $title ?></h<?= $h ?>>
         </header>
-        <div id="review-list">
         <?php foreach($orders as $order) {
             showOrder($order, $show_restaurant);
         } ?>
-        </div>
     </section>
 <?php } ?>
 

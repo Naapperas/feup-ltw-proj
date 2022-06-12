@@ -8,6 +8,7 @@ import { addSnackbar } from "../components/snackbar.js";
  *
  * @param {number} userId
  * @returns {Promise<{
+ *      id: number,
  *      name: string,
  *      email: string,
  *      address: string,
