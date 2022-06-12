@@ -138,11 +138,11 @@ require_once(dirname(__DIR__)."/database/models/menu.php");
         <header class="header">
             <h<?= $h ?> class="title <?= $vh ?>"><?= $title ?></h<?= $h ?>>
             <div class="select subtitle">
-                <select name="options" id="options"> <!-- TODO: STYLES!!!! -->
-                    <option value="score-desc">Score - Desc</option>
-                    <option value="score-asc">Score - Asc</option>
-                    <option value="date-desc">Date - Desc</option>
-                    <option value="date-asc">Date - Asc</option>
+                <select name="options" id="options">
+                    <option value="score-desc">Highest score</option>
+                    <option value="score-asc">Lowest score</option>
+                    <option value="date-desc">Newest</option>
+                    <option value="date-asc">Oldest</option>
                 </select>
                 <label for="options">Sort by:</label>
             </div>

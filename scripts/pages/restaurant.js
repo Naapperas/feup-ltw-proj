@@ -36,6 +36,7 @@ const empowerRestaurantLikeButton = (button) => {
     });
 };
 
+// TODO: Show response
 const createReview = async (review) => {
     try {
         const user = await fetchUser(review.client);
