@@ -11,23 +11,25 @@
  * @param {HTMLElement} textfield
  */
 export const empowerTextField = (textfield) => {
-    /** @type HTMLInputElement */
+    /** @type {HTMLInputElement?} */
     const input = textfield.querySelector("input");
-    /** @type HTMLButtonElement */
+    /** @type {HTMLButtonElement?} */
     const toggleVisibilityButton = textfield.querySelector(
         "button.toggle-visible"
     );
-    /** @type HTMLElement */
+    /** @type {HTMLElement?} */
     const characterCounter = textfield.querySelector(".character-counter");
 
     if (toggleVisibilityButton)
         toggleVisibilityButton.addEventListener(
             "click",
-            () => (input.type = input.type === "password" ? "text" : "password")
+            () =>
+                input &&
+                (input.type = input.type === "password" ? "text" : "password")
         );
 
     if (characterCounter) {
-        if (input.maxLength !== -1 || input.minLength !== -1) {
+        if (input && (input.maxLength !== -1 || input.minLength !== -1)) {
             const counterValue =
                 input.maxLength === -1 ? input.minLength : input.maxLength;
 
@@ -89,6 +91,6 @@ export const createTextField = (
     return wrapper;
 };
 
-/** @type NodeListOf<HTMLElement> */
+/** @type {NodeListOf<HTMLElement>} */
 const textfields = document.querySelectorAll(".textfield");
 textfields.forEach(empowerTextField);

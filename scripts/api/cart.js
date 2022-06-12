@@ -14,7 +14,7 @@ import { addSnackbar } from "../components/snackbar.js";
  *      menus: Record<number, number> | undefined,
  *      size: number,
  *      total: Record<number, number>
- *  }?>}
+ *  }|undefined>}
  */
 export const updateCart = async (id, type, amount = 1) => {
     const data = new FormData();
@@ -31,6 +31,7 @@ export const updateCart = async (id, type, amount = 1) => {
 
     if (error) {
         addSnackbar(error);
+        return;
     }
 
     cart.size = 0;

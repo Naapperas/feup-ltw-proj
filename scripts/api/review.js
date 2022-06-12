@@ -4,10 +4,23 @@
 
 import { addSnackbar } from "../components/snackbar.js";
 
+/**
+ *
+ * @param {number} restaurantId
+ * @param {"score"|"date"} attribute
+ * @param {"asc"|"desc"} order
+ * @returns {Promise<{
+ *      score: number,
+ *      text: string,
+ *      review_date: string,
+ *      client: number,
+ *      restaurant: number
+ * }[]|undefined>}
+ */
 export const fetchOrderedRestaurantReviews = async (
-    /** @type {Number} */ restaurantId,
-    /** @type {string} */ attribute,
-    /** @type {string} */ order
+    restaurantId,
+    attribute,
+    order
 ) => {
     const data = {
         restaurantId: restaurantId.toString(10),
@@ -27,12 +40,24 @@ export const fetchOrderedRestaurantReviews = async (
 
     if (error) {
         addSnackbar(error);
+        return;
     }
 
     return reviews;
 };
 
-export const fetchReview = async (/** @type {Number} */ reviewId) => {
+/**
+ *
+ * @param {number} reviewId
+ * @returns {Promise<{
+ *      score: number,
+ *      text: string,
+ *      review_date: string,
+ *      client: number,
+ *      restaurant: number
+ * }|undefined>}
+ */
+export const fetchReview = async (reviewId) => {
     const data = {
         id: reviewId.toString(10),
     };
@@ -49,6 +74,7 @@ export const fetchReview = async (/** @type {Number} */ reviewId) => {
 
     if (error) {
         addSnackbar(error);
+        return;
     }
 
     return review;

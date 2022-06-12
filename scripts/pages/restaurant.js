@@ -156,8 +156,10 @@ const empowerReview = (reviewElement) => {
 
         const { reviewId } = reviewElement.dataset;
 
-        const review = await fetchReview(reviewId);
-        const reviewResponse = await fetchReviewResponse(reviewId);
+        const review = await fetchReview(parseInt(reviewId ?? ""));
+        const reviewResponse = await fetchReviewResponse(
+            parseInt(reviewId ?? "")
+        );
 
         const reviewNode = await createReview(review);
 

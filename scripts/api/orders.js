@@ -15,7 +15,7 @@ import { addSnackbar } from "../components/snackbar.js";
  *      order_date: string,
  *      user: number,
  *      restaurant: number
- * }>}
+ * }|undefined>}
  */
 export const setOrderState = async (restaurantId, orderId, state) => {
     const data = new FormData();
@@ -31,6 +31,7 @@ export const setOrderState = async (restaurantId, orderId, state) => {
 
     if (error) {
         addSnackbar(error);
+        return;
     }
 
     return order;

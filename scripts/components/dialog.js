@@ -19,8 +19,8 @@ const closeDialog = (/** @type {HTMLDialogElement} */ dialog) => (e) => {
 /**
  * "Empowers" an html open dialog button using javascript
  *
- * @param {HTMLElement} btn The button to empower
- * @param {HTMLDialogElement} dialog The dialog to open
+ * @param {HTMLElement?} btn The button to empower
+ * @param {HTMLDialogElement?} dialog The dialog to open
  */
 export const empowerOpenDialogButton = (btn, dialog) => {
     if (btn && dialog)
@@ -33,8 +33,8 @@ export const empowerOpenDialogButton = (btn, dialog) => {
 /**
  * "Empowers" an html close dialog button using javascript
  *
- * @param {HTMLElement} btn The button to empower
- * @param {HTMLDialogElement} dialog The dialog to close
+ * @param {HTMLElement?} btn The button to empower
+ * @param {HTMLDialogElement?} dialog The dialog to close
  */
 export const empowerCloseDialogButton = (btn, dialog) => {
     if (btn && dialog) btn.addEventListener("click", closeDialog(dialog));
@@ -45,11 +45,11 @@ export const empowerCloseDialogButton = (btn, dialog) => {
  * @param {HTMLElement} btn The button to empower
  */
 export const empowerDialogButton = (btn) => {
-    /** @type {HTMLDialogElement} */
+    /** @type {HTMLDialogElement?} */
     const dialogToOpen = document.querySelector(
         `dialog${btn.dataset.openDialog}`
     );
-    /** @type {HTMLDialogElement} */
+    /** @type {HTMLDialogElement?} */
     const dialogToClose = document.querySelector(
         `dialog${btn.dataset.closeDialog}`
     );

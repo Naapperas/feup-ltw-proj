@@ -4,7 +4,19 @@
 
 import { addSnackbar } from "../components/snackbar.js";
 
-export const fetchUser = async (/** @type {Number} */ userId) => {
+/**
+ *
+ * @param {number} userId
+ * @returns {Promise<{
+ *      name: string,
+ *      email: string,
+ *      address: string,
+ *      phone_number: string,
+ *      full_name: string,
+ *      image: string
+ * }|undefined>}
+ */
+export const fetchUser = async (userId) => {
     const data = {
         id: userId.toString(10),
     };
@@ -21,6 +33,7 @@ export const fetchUser = async (/** @type {Number} */ userId) => {
 
     if (error) {
         addSnackbar(error);
+        return;
     }
 
     return user;

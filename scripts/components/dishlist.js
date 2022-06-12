@@ -24,7 +24,7 @@ export const empowerEditDishList = (dishList, dishesFieldset) => {
         const target = e.target;
 
         const id = parseInt(target.value);
-        const label = target.labels[0].textContent;
+        const label = target.labels?.[0].textContent;
         const checked = target.checked;
 
         const chip = dishList.querySelector(`li[data-dish-id="${id}"]`);
@@ -32,7 +32,7 @@ export const empowerEditDishList = (dishList, dishesFieldset) => {
         if (chip && !checked) {
             chip.remove();
         } else if (!chip && checked) {
-            const item = createDishItem(label, id);
+            const item = createDishItem(label ?? "", id);
             dishList.appendChild(item);
         }
     });

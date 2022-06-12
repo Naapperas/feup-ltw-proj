@@ -10,11 +10,11 @@
  * @param {HTMLElement} imageInput
  */
 export const empowerImageInput = (imageInput) => {
-    /** @type HTMLInputElement */
+    /** @type {HTMLInputElement?} */
     const input = imageInput.querySelector(
         'input[type="file"][accept^="image/"]'
     );
-    /** @type HTMLImageElement */
+    /** @type {HTMLImageElement?} */
     const image = imageInput.querySelector("img");
 
     const updatePreview = () => {
@@ -22,10 +22,11 @@ export const empowerImageInput = (imageInput) => {
 
         reader.addEventListener(
             "load",
-            () => (image.src = reader.result.toString())
+            () => image && (image.src = reader.result?.toString() ?? "")
         );
 
-        reader.readAsDataURL(input.files[0]);
+        if (input?.files && input.files[0].type.startsWith("image/"))
+            reader.readAsDataURL(input.files[0]);
     };
 
     const cancelEvent = (e) => {
@@ -37,14 +38,14 @@ export const empowerImageInput = (imageInput) => {
     imageInput.addEventListener("drop", (e) => {
         cancelEvent(e);
 
-        const files = e.dataTransfer.files;
-        if (files.length === 1 && files[0].type.startsWith("image/")) {
-            input.files = files;
+        const files = e.dataTransfer?.files;
+        if (files?.length === 1 && files[0].type.startsWith("image/")) {
+            if (input) input.files = files;
             updatePreview();
         }
     });
 
-    input.addEventListener("change", updatePreview);
+    input?.addEventListener("change", updatePreview);
 };
 
 /**

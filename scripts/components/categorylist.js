@@ -18,6 +18,11 @@ export const createCategoryChip = (category, id) => {
     return chip;
 };
 
+/**
+ *
+ * @param {HTMLElement} chipList
+ * @param {HTMLFieldSetElement} categoriesFieldset
+ */
 export const empowerEditCategoryList = (chipList, categoriesFieldset) => {
     categoriesFieldset?.addEventListener("input", (e) => {
         /** @type {HTMLInputElement} */
@@ -25,7 +30,7 @@ export const empowerEditCategoryList = (chipList, categoriesFieldset) => {
         const target = e.target;
 
         const id = parseInt(target.value);
-        const label = target.labels[0].textContent;
+        const label = target.labels?.[0].textContent;
         const checked = target.checked;
 
         const chip = chipList.querySelector(`li[data-category-id="${id}"]`);
@@ -33,7 +38,7 @@ export const empowerEditCategoryList = (chipList, categoriesFieldset) => {
         if (chip && !checked) {
             chip.remove();
         } else if (!chip && checked) {
-            const chip = createCategoryChip(label, id);
+            const chip = createCategoryChip(label ?? "", id);
             chipList.appendChild(chip);
         }
     });

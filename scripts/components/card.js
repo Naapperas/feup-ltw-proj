@@ -31,11 +31,13 @@ export const empowerRestaurantCard = (restaurantCard) => {
         event?.preventDefault();
 
         try {
-            const favorite = await toggleRestaurantLikedStatus(restaurantId);
+            const favorite = await toggleRestaurantLikedStatus(
+                parseInt(restaurantId ?? "")
+            );
 
             if (favorite === undefined) return;
 
-            /** @type NodeListOf<HTMLButtonElement> */
+            /** @type {NodeListOf<HTMLButtonElement>} */
             const favoriteButtons = document.querySelectorAll(
                 `[data-card-type="restaurant"][data-restaurant-id="${restaurantId}"] button[data-favorite-button]`
             );
@@ -49,7 +51,7 @@ export const empowerRestaurantCard = (restaurantCard) => {
         }
     };
 
-    /** @type HTMLButtonElement */
+    /** @type {HTMLButtonElement?} */
     const favoriteButton = restaurantCard.querySelector(
         "button[data-favorite-button]"
     );
@@ -68,11 +70,13 @@ export const empowerDishCard = (dishCard) => {
         event?.stopPropagation();
 
         try {
-            const favorite = await toggleDishLikedStatus(dishId);
+            const favorite = await toggleDishLikedStatus(
+                parseInt(dishId ?? "")
+            );
 
             if (favorite === undefined) return;
 
-            /** @type NodeListOf<HTMLButtonElement> */
+            /** @type {NodeListOf<HTMLButtonElement>} */
             const favoriteButtons = document.querySelectorAll(
                 `[data-card-type="dish"][data-dish-id="${dishId}"] button[data-favorite-button]`
             );
@@ -86,17 +90,19 @@ export const empowerDishCard = (dishCard) => {
         }
     };
 
-    const addDishToCart = async (event) => {
+    const addDishToCart = async () => {
         event?.preventDefault();
 
         try {
-            const newCart = await updateCart(parseInt(dishId), "dish");
+            const newCart = await updateCart(parseInt(dishId ?? ""), "dish");
 
             if (newCart) {
-                /** @type HTMLElement */
+                /** @type {HTMLElement?} */
                 const cartBadge = document.querySelector("[data-cart]");
-                cartBadge.dataset.badgeContent = newCart.size.toString();
-                cartBadge.classList.add("badge");
+                if (cartBadge) {
+                    cartBadge.dataset.badgeContent = newCart.size.toString();
+                    cartBadge.classList.add("badge");
+                }
             }
         } catch {
             return;
@@ -104,7 +110,7 @@ export const empowerDishCard = (dishCard) => {
     };
 
     const cardLink = dishCard.querySelector(".card-link");
-    cardLink.addEventListener("click", addDishToCart);
+    cardLink?.addEventListener("click", addDishToCart);
 
     const favoriteButton = dishCard.querySelector(
         "button[data-favorite-button]"
@@ -124,13 +130,15 @@ export const empowerMenuCard = (menuCard) => {
         event?.preventDefault();
 
         try {
-            const newCart = await updateCart(parseInt(menuId), "menu");
+            const newCart = await updateCart(parseInt(menuId ?? ""), "menu");
 
             if (newCart) {
-                /** @type HTMLElement */
+                /** @type {HTMLElement?} */
                 const cartBadge = document.querySelector("[data-cart]");
-                cartBadge.dataset.badgeContent = newCart.size.toString();
-                cartBadge.classList.add("badge");
+                if (cartBadge) {
+                    cartBadge.dataset.badgeContent = newCart.size.toString();
+                    cartBadge.classList.add("badge");
+                }
             }
         } catch {
             return;
@@ -138,7 +146,7 @@ export const empowerMenuCard = (menuCard) => {
     };
 
     const cardLink = menuCard.querySelector(".card-link");
-    cardLink.addEventListener("click", addDishToCart);
+    cardLink?.addEventListener("click", addDishToCart);
 };
 
 /**
@@ -147,86 +155,90 @@ export const empowerMenuCard = (menuCard) => {
  * @param {HTMLElement} editDishCard
  */
 export const empowerEditDishCard = (editDishCard) => {
-    /** @type {HTMLButtonElement} */
+    /** @type {HTMLButtonElement?} */
     const deleteButton = editDishCard.querySelector(
         "button[data-delete-button]"
     );
-    /** @type {HTMLInputElement} */
+    /** @type {HTMLInputElement?} */
     const nameInput = editDishCard.querySelector("input[name*=name]");
-    /** @type {HTMLInputElement} */
+    /** @type {HTMLInputElement?} */
     const priceInput = editDishCard.querySelector("input[name*=price]");
-    /** @type {HTMLInputElement} */
+    /** @type {HTMLInputElement?} */
     const imageInput = editDishCard.querySelector("input[type=file]");
-    /** @type {HTMLLabelElement} */
+    /** @type {HTMLLabelElement?} */
     const imagePicker = editDishCard.querySelector("label.image-input");
-    /** @type {HTMLInputElement} */
+    /** @type {HTMLInputElement?} */
     const hiddenInput = editDishCard.querySelector("input[type=hidden]");
 
-    /** @type {HTMLAnchorElement} */
+    /** @type {HTMLAnchorElement?} */
     const chipListLink = editDishCard.querySelector("a[data-open-dialog]");
-    /** @type {HTMLElement} */
-    const chipList = chipListLink.querySelector("ul.chip-list");
-    /** @type {HTMLFieldSetElement} */
+    /** @type {HTMLElement?} */
+    const chipList = chipListLink && chipListLink.querySelector("ul.chip-list");
+    /** @type {HTMLFieldSetElement?} */
     const categoriesFieldset = editDishCard.querySelector(
-        `${chipListLink.dataset.openDialog} fieldset`
+        `${chipListLink?.dataset.openDialog} fieldset`
     );
 
-    empowerEditCategoryList(chipList, categoriesFieldset);
+    if (chipList && categoriesFieldset)
+        empowerEditCategoryList(chipList, categoriesFieldset);
 
     const { dishId } = editDishCard.dataset;
 
-    nameInput.addEventListener("change", () => {
+    nameInput?.addEventListener("change", () => {
         /** @type {NodeListOf<HTMLInputElement>} */
         const inputs = document.querySelectorAll(
             `dialog[id*="menu-"][id$="-dishes"] fieldset input[value="${dishId}"]`
         );
-        inputs.forEach(
-            (i) => (i.labels[0].lastChild.textContent = " " + nameInput.value)
-        );
-        /** @type {HTMLTemplateElement} */
+        inputs.forEach((i) => {
+            if (i.labels?.[0]?.lastChild)
+                i.labels[0].lastChild.textContent = " " + nameInput.value;
+        });
+        /** @type {HTMLTemplateElement?} */
         const dishesTemplate = document.querySelector("#dishes-template");
-        /** @type {HTMLInputElement} */
-        const templateInput = dishesTemplate.content.querySelector(
-            `input[value="${dishId}"]`
-        );
-        templateInput.labels[0].lastChild.textContent = " " + nameInput.value;
+        /** @type {HTMLInputElement?} */
+        const templateInput =
+            dishesTemplate &&
+            dishesTemplate.content.querySelector(`input[value="${dishId}"]`);
+        if (templateInput?.labels?.[0]?.lastChild)
+            templateInput.labels[0].lastChild.textContent =
+                " " + nameInput.value;
     });
 
-    const toggleDeletedStatus = async (event) => {
-        event?.preventDefault();
-        const deleted = editDishCard.toggleAttribute("data-deleted");
-
-        deleteButton.dataset.toggleState = deleted ? "off" : "on";
-        deleteButton.ariaLabel = deleted ? "Undo delete" : "Delete";
-        deleteButton.textContent = deleted ? "delete_forever" : "delete";
-
-        if (nameInput) nameInput.disabled = deleted;
-        if (priceInput) priceInput.disabled = deleted;
-        if (imageInput) imageInput.disabled = deleted;
-        imagePicker?.classList.toggle("disabled", deleted);
-        chipListLink?.classList.toggle("disabled", deleted);
-        if (deleted) chipListLink?.removeAttribute("href");
-        else chipListLink?.setAttribute("href", "#");
-        if (categoriesFieldset) categoriesFieldset.disabled = deleted;
-
-        if (hiddenInput) hiddenInput.disabled = !deleted;
-
-        /** @type {NodeListOf<HTMLInputElement>} */
-        const inputs = document.querySelectorAll(
-            `dialog[id*="menu-"][id$="-dishes"] fieldset input[value="${dishId}"]`
-        );
-        inputs.forEach((i) => (i.disabled = deleted));
-        /** @type {HTMLTemplateElement} */
-        const dishesTemplate = document.querySelector("#dishes-template");
-        /** @type {HTMLInputElement} */
-        const templateInput = dishesTemplate.content.querySelector(
-            `input[value="${dishId}"]`
-        );
-        templateInput.disabled = deleted;
-    };
-
     if (deleteButton)
-        deleteButton.addEventListener("click", toggleDeletedStatus);
+        deleteButton.addEventListener("click", async (event) => {
+            event?.preventDefault();
+            const deleted = editDishCard.toggleAttribute("data-deleted");
+
+            deleteButton.dataset.toggleState = deleted ? "off" : "on";
+            deleteButton.ariaLabel = deleted ? "Undo delete" : "Delete";
+            deleteButton.textContent = deleted ? "delete_forever" : "delete";
+
+            if (nameInput) nameInput.disabled = deleted;
+            if (priceInput) priceInput.disabled = deleted;
+            if (imageInput) imageInput.disabled = deleted;
+            imagePicker?.classList.toggle("disabled", deleted);
+            chipListLink?.classList.toggle("disabled", deleted);
+            if (deleted) chipListLink?.removeAttribute("href");
+            else chipListLink?.setAttribute("href", "#");
+            if (categoriesFieldset) categoriesFieldset.disabled = deleted;
+
+            if (hiddenInput) hiddenInput.disabled = !deleted;
+
+            /** @type {NodeListOf<HTMLInputElement>} */
+            const inputs = document.querySelectorAll(
+                `dialog[id*="menu-"][id$="-dishes"] fieldset input[value="${dishId}"]`
+            );
+            inputs.forEach((i) => (i.disabled = deleted));
+            /** @type {HTMLTemplateElement?} */
+            const dishesTemplate = document.querySelector("#dishes-template");
+            /** @type {HTMLInputElement?} */
+            const templateInput =
+                dishesTemplate &&
+                dishesTemplate.content.querySelector(
+                    `input[value="${dishId}"]`
+                );
+            if (templateInput) templateInput.disabled = deleted;
+        });
 };
 
 /**
@@ -275,28 +287,32 @@ export const createNewDishCard = (index) => {
     chipList.classList.add("chip-list", "wrap");
     chipListLink.appendChild(chipList);
 
-    /** @type {HTMLTemplateElement} */
+    /** @type {HTMLTemplateElement?} */
     const categoriesTemplate = document.querySelector("#categories-template");
-    /** @type {HTMLDialogElement} */
+    /** @type {HTMLDialogElement?} */
     // @ts-ignore
-    const categoriesDialog = categoriesTemplate.content
-        .querySelector("dialog")
-        .cloneNode(true);
-    categoriesDialog.id = `new-dish-${index}-categories`;
-    /** @type {HTMLButtonElement} */
-    const closeDialogButton = categoriesDialog.querySelector(
-        "button[data-close-dialog]"
-    );
-    closeDialogButton.dataset.closeDialog = `#new-dish-${index}-categories`;
-    /** @type {NodeListOf<HTMLInputElement>} */
-    const categoryInputs = categoriesDialog.querySelectorAll("input");
-    categoryInputs.forEach(
-        (i) => (i.name = `dishes_to_add[${index}][categories][]`)
-    );
+    const categoriesDialog =
+        categoriesTemplate &&
+        categoriesTemplate.content.querySelector("dialog")?.cloneNode(true);
+    if (categoriesDialog) {
+        categoriesDialog.id = `new-dish-${index}-categories`;
+        /** @type {HTMLButtonElement?} */
+        const closeDialogButton = categoriesDialog.querySelector(
+            "button[data-close-dialog]"
+        );
+        if (closeDialogButton)
+            closeDialogButton.dataset.closeDialog = `#new-dish-${index}-categories`;
+        /** @type {NodeListOf<HTMLInputElement>} */
+        const categoryInputs = categoriesDialog.querySelectorAll("input");
+        categoryInputs.forEach(
+            (i) => (i.name = `dishes_to_add[${index}][categories][]`)
+        );
 
-    empowerDialog(categoriesDialog);
-    empowerOpenDialogButton(chipListLink, categoriesDialog);
-    empowerCloseDialogButton(closeDialogButton, categoriesDialog);
+        empowerDialog(categoriesDialog);
+        empowerOpenDialogButton(chipListLink, categoriesDialog);
+        if (closeDialogButton)
+            empowerCloseDialogButton(closeDialogButton, categoriesDialog);
+    }
 
     const deleteButton = document.createElement("button");
     deleteButton.classList.add("button", "icon", "top-right");
@@ -310,7 +326,7 @@ export const createNewDishCard = (index) => {
         nameInput,
         priceInput,
         chipListLink,
-        categoriesDialog,
+        categoriesDialog ?? "",
         deleteButton
     );
 
@@ -332,7 +348,7 @@ export const createNewDishCard = (index) => {
 
         newCheckbox.append(newInput, document.createTextNode(" "));
 
-        f.querySelector("fieldset").appendChild(newCheckbox);
+        f.querySelector("fieldset")?.appendChild(newCheckbox);
     };
 
     /** @type {NodeListOf<HTMLElement>} */
@@ -340,11 +356,12 @@ export const createNewDishCard = (index) => {
         `dialog[id*="menu-"][id$="-dishes"]`
     );
     dialogs.forEach(addToFieldset);
-    /** @type {HTMLTemplateElement} */
+    /** @type {HTMLTemplateElement?} */
     const dishesTemplate = document.querySelector("#dishes-template");
-    /** @type {HTMLElement} */
-    const templateDialog = dishesTemplate.content.querySelector("dialog");
-    addToFieldset(templateDialog);
+    /** @type {HTMLElement?} */
+    const templateDialog =
+        dishesTemplate && dishesTemplate.content.querySelector("dialog");
+    if (templateDialog) addToFieldset(templateDialog);
 
     return card;
 };
@@ -355,54 +372,52 @@ export const createNewDishCard = (index) => {
  * @param {HTMLElement} editMenuCard
  */
 export const empowerEditMenuCard = (editMenuCard) => {
-    /** @type HTMLButtonElement */
+    /** @type {HTMLButtonElement?} */
     const deleteButton = editMenuCard.querySelector(
         "button[data-delete-button]"
     );
-    /** @type HTMLInputElement */
+    /** @type {HTMLInputElement?} */
     const nameInput = editMenuCard.querySelector("input[name*=name]");
-    /** @type HTMLInputElement */
+    /** @type {HTMLInputElement?} */
     const priceInput = editMenuCard.querySelector("input[name*=price]");
-    /** @type HTMLInputElement */
+    /** @type {HTMLInputElement?} */
     const imageInput = editMenuCard.querySelector("input[type=file]");
-    /** @type HTMLLabelElement */
+    /** @type {HTMLLabelElement?} */
     const imagePicker = editMenuCard.querySelector("label.image-input");
-    /** @type HTMLInputElement */
+    /** @type {HTMLInputElement?} */
     const hiddenInput = editMenuCard.querySelector("input[type=hidden]");
 
-    /** @type {HTMLAnchorElement} */
+    /** @type {HTMLAnchorElement?} */
     const dishListLink = editMenuCard.querySelector("a[data-open-dialog]");
-    /** @type {HTMLElement} */
-    const dishList = dishListLink.querySelector("ul");
-    /** @type {HTMLFieldSetElement} */
+    /** @type {HTMLElement?} */
+    const dishList = dishListLink && dishListLink.querySelector("ul");
+    /** @type {HTMLFieldSetElement?} */
     const dishesFieldset = editMenuCard.querySelector(
-        `${dishListLink.dataset.openDialog} fieldset`
+        `${dishListLink?.dataset.openDialog} fieldset`
     );
 
     empowerEditDishList(dishList, dishesFieldset);
 
-    const toggleDeletedStatus = async (event) => {
-        event?.preventDefault();
-        const deleted = editMenuCard.toggleAttribute("data-deleted");
-
-        deleteButton.dataset.toggleState = deleted ? "off" : "on";
-        deleteButton.ariaLabel = deleted ? "Undo delete" : "Delete";
-        deleteButton.textContent = deleted ? "delete_forever" : "delete";
-
-        if (nameInput) nameInput.disabled = deleted;
-        if (priceInput) priceInput.disabled = deleted;
-        if (imageInput) imageInput.disabled = deleted;
-        imagePicker?.classList.toggle("disabled", deleted);
-        dishListLink?.classList.toggle("disabled", deleted);
-        if (deleted) dishListLink?.removeAttribute("href");
-        else dishListLink?.setAttribute("href", "#");
-        if (dishesFieldset) dishesFieldset.disabled = deleted;
-
-        if (hiddenInput) hiddenInput.disabled = !deleted;
-    };
-
     if (deleteButton)
-        deleteButton.addEventListener("click", toggleDeletedStatus);
+        deleteButton.addEventListener("click", async (event) => {
+            event?.preventDefault();
+            const deleted = editMenuCard.toggleAttribute("data-deleted");
+
+            deleteButton.dataset.toggleState = deleted ? "off" : "on";
+            deleteButton.ariaLabel = deleted ? "Undo delete" : "Delete";
+            deleteButton.textContent = deleted ? "delete_forever" : "delete";
+
+            if (nameInput) nameInput.disabled = deleted;
+            if (priceInput) priceInput.disabled = deleted;
+            if (imageInput) imageInput.disabled = deleted;
+            imagePicker?.classList.toggle("disabled", deleted);
+            dishListLink?.classList.toggle("disabled", deleted);
+            if (deleted) dishListLink?.removeAttribute("href");
+            else dishListLink?.setAttribute("href", "#");
+            if (dishesFieldset) dishesFieldset.disabled = deleted;
+
+            if (hiddenInput) hiddenInput.disabled = !deleted;
+        });
 };
 
 /**
@@ -449,26 +464,33 @@ export const createNewMenuCard = (index) => {
     const dishList = document.createElement("ul");
     dishListLink.appendChild(dishList);
 
-    /** @type {HTMLTemplateElement} */
+    /** @type {HTMLTemplateElement?} */
     const dishesTemplate = document.querySelector("#dishes-template");
-    /** @type {HTMLDialogElement} */
+    /** @type {HTMLDialogElement?} */
     // @ts-ignore
-    const dishesDialog = dishesTemplate.content
-        .querySelector("dialog")
-        .cloneNode(true);
-    dishesDialog.id = `new-menu-${index}-dishes`;
-    /** @type {HTMLButtonElement} */
-    const closeDialogButton = dishesDialog.querySelector(
-        "button[data-close-dialog]"
-    );
-    closeDialogButton.dataset.closeDialog = `#new-menu-${index}-dishes`;
-    /** @type {NodeListOf<HTMLInputElement>} */
-    const dishInputs = dishesDialog.querySelectorAll("input");
-    dishInputs.forEach((i) => (i.name = `menus_to_add[${index}][dishes][]`));
+    const dishesDialog =
+        dishesTemplate &&
+        dishesTemplate.content.querySelector("dialog")?.cloneNode(true);
 
-    empowerDialog(dishesDialog);
-    empowerOpenDialogButton(dishListLink, dishesDialog);
-    empowerCloseDialogButton(closeDialogButton, dishesDialog);
+    if (dishesDialog) {
+        dishesDialog.id = `new-menu-${index}-dishes`;
+        /** @type {HTMLButtonElement?} */
+        const closeDialogButton = dishesDialog.querySelector(
+            "button[data-close-dialog]"
+        );
+        if (closeDialogButton)
+            closeDialogButton.dataset.closeDialog = `#new-menu-${index}-dishes`;
+        /** @type {NodeListOf<HTMLInputElement>} */
+        const dishInputs = dishesDialog.querySelectorAll("input");
+        dishInputs.forEach(
+            (i) => (i.name = `menus_to_add[${index}][dishes][]`)
+        );
+
+        empowerDialog(dishesDialog);
+        empowerOpenDialogButton(dishListLink, dishesDialog);
+        if (closeDialogButton)
+            empowerCloseDialogButton(closeDialogButton, dishesDialog);
+    }
 
     const deleteButton = document.createElement("button");
     deleteButton.classList.add("button", "icon", "top-right");
@@ -482,7 +504,7 @@ export const createNewMenuCard = (index) => {
         nameInput,
         priceInput,
         dishListLink,
-        dishesDialog,
+        dishesDialog ?? "",
         deleteButton
     );
 

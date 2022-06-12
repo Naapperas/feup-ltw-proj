@@ -26,10 +26,10 @@ const empowerForm = (form) => {
     const sections = form.querySelectorAll("fieldset[data-section]");
 
     sections.forEach((section, i) => {
-        /** @type {HTMLButtonElement} */
+        /** @type {HTMLButtonElement?} */
         const backButton = section.querySelector("button[data-back]");
 
-        /** @type {HTMLButtonElement} */
+        /** @type {HTMLButtonElement?} */
         const nextButton = section.querySelector("button[data-next]");
 
         /** @type {NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>} */
@@ -91,7 +91,7 @@ const empowerForm = (form) => {
         }
     });
 
-    /** @type {HTMLButtonElement} */
+    /** @type {HTMLButtonElement?} */
     const submitButton = form.querySelector("button[type=submit]");
 
     /** @type {NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>} */
@@ -99,9 +99,11 @@ const empowerForm = (form) => {
 
     inputs[0].focus();
 
-    const empowerInput = (e) => {
+    const empowerInput = (
+        /** @type {HTMLInputElement| HTMLSelectElement | HTMLTextAreaElement} */ e
+    ) => {
         try {
-            /** @type HTMLElement */
+            /** @type {HTMLElement?} */
             const errorText = document.querySelector(`#${e.dataset.errorText}`);
 
             const resetValidity = () => {
@@ -131,7 +133,7 @@ const empowerForm = (form) => {
     inputs.forEach(empowerInput);
 
     const setButtonState = () =>
-        (submitButton.disabled = !form.checkValidity());
+        submitButton && (submitButton.disabled = !form.checkValidity());
     form.addEventListener("input", setButtonState);
     setButtonState();
 
