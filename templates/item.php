@@ -441,7 +441,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
         <p>Menus</p>
         <ul>
             <?php foreach ($order->getMenus() as list($menu, $amount)) { ?>
-            <li><?= $dish->name ?>&times; <?= $menu->name ?></li>
+            <li><?= $amount ?>&times; <?= $menu->name ?></li>
             <?php } ?>
         </ul>
         <p class="order-state"><?= $order->getStateString() ?></p>
