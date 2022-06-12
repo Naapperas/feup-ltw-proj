@@ -255,7 +255,8 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                 <a href="#" class="card-link"><?= $menu->name ?></a>
             </h<?= $h ?>>
             <span class="subtitle subtitle2 secondary">
-                <?= $show_restaurant ? $restaurant->name : sprintf('%.2f€', $menu->price) ?>
+                <?= sprintf('%.2f€', $menu->price) ?>
+                <?php if ($show_restaurant) echo "· $restaurant->name" ?>
             </span>
         </header>
 
