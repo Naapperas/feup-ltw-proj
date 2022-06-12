@@ -53,11 +53,17 @@
         }
     }
 
+    if (count($_SESSION['cart']['dishes'] ?? []) === 0)
+        unset($_SESSION['cart']['dishes']);
+
     foreach ($params['menus_to_order'] as $menuId => $amount) {
         if ($order->addMenu($menuId, $amount)) {
             unset($_SESSION['cart']['menus'][$menuId]);
         }
     }
+
+    if (count($_SESSION['cart']['menus'] ?? []) === 0)
+        unset($_SESSION['cart']['menus']);
 
     header("Location: /");
 ?>

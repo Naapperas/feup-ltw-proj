@@ -12,6 +12,11 @@
     if (!isset($_SESSION['user']))
         pageError(HTTPStatusCode::UNAUTHORIZED);
 
+    if (!isset($_SESSION['cart']) || $_SESSION['cart'] === null || $_SESSION['cart'] === []) {
+        header("Location: /"); // TODO: change this if we want different behavior
+        die;
+    }
+
     $user = User::getById($_SESSION['user']);
 
     if ($user === null)

@@ -69,6 +69,9 @@
                 } else if ($_SESSION['cart'][$productType][$productToAdd->id] === 0) {
                     unset($_SESSION['cart'][$productType][$productToAdd->id]);
                 }
+
+                if (count($_SESSION['cart'][$productType]) === 0)
+                    unset($_SESSION['cart'][$productType]);
             }
         })
     );
