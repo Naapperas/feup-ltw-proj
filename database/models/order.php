@@ -62,5 +62,18 @@
         
             return $success;
         }
+
+        public function getStateString(): string {
+            switch ($this->state) {
+                case 'pending':
+                    return 'Pending';
+                case 'canceled':
+                    return 'Canceled';
+                case 'in_progress':
+                    return 'In progress';
+                case 'delivered':
+                    return 'Delivered';
+            }
+        }
     }
 ?>

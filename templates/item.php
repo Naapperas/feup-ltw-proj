@@ -435,13 +435,13 @@ require_once(dirname(__DIR__)."/database/models/review.php");
         <p>Dishes</p>
         <ul>
             <?php foreach ($order->getDishes() as list($dish, $amount)) { ?>
-            <li><?= $amount ?>x <?= $dish->name ?></li>
+            <li><?= $amount ?>&times; <?= $dish->name ?></li>
             <?php } ?>
         </ul>
         <p>Menus</p>
         <ul>
             <?php foreach ($order->getMenus() as list($menu, $amount)) { ?>
-            <li><?= $dish->name ?>x <?= $menu->name ?></li>
+            <li><?= $dish->name ?>&times; <?= $menu->name ?></li>
             <?php } ?>
         </ul>
         <p><?= $order->state ?></p>

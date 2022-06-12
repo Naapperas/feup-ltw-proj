@@ -98,6 +98,17 @@ fieldset.selection-list {
     width: 100%;
 }
 
+fieldset.selection-list .icon {
+    vertical-align: middle;
+}
+
+fieldset.selection-list img {
+    vertical-align: middle;
+    height: 32px;
+    border-radius: 4px;
+    background-color: white;
+}
+
 fieldset.selection-list > legend {
     margin-bottom: 8px;
 }

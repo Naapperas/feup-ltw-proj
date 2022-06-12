@@ -252,7 +252,7 @@ require_once(dirname(__DIR__)."/database/models/menu.php");
             "place_order_restaurant_{$restaurant->id}",
             function() use ($restaurant, $cart, $order_dishes, $order_menus, $total) { ?>
                 <header class="header">
-                    <a href="/restaurant/?id=<?= $restaurant->id ?>"><h2 class="title h4">
+                    <a href="/restaurant/?id=<?= $restaurant->id ?>"><h2 class="title h3">
                         <?= $restaurant->name ?>
                     </h2></a>
                 </header>
@@ -267,10 +267,61 @@ require_once(dirname(__DIR__)."/database/models/menu.php");
                     ?>
                 </section>
                 <section class="info">
+                    <h3 class="h4">Details</h3>
                     <span>
-                        Total &CenterDot;
+                        Total ·
                         <span class="cart-total"><?= sprintf('%.2f', $total) ?></span>€
                     </span>
+                    <fieldset class="selection-list">
+                        <legend class="h6">Payment method</legend>
+                        <label>
+                            <input 
+                                type="radio"
+                                name="payment_method"
+                                value="on_pickup"
+                                class="radio"
+                                checked
+                            >
+                            On pickup
+                        </label>
+                        <label>
+                            <input 
+                                type="radio"
+                                name="payment_method"
+                                value="credit_card"
+                                class="radio"
+                                disabled
+                            >
+                            Credit card
+                        </label>
+                        <label>
+                            <input 
+                                type="radio"
+                                name="payment_method"
+                                value="credit_card"
+                                class="radio"
+                                disabled
+                            >
+                            <img
+                                src="https://endpoint-mbway.azureedge.net/wp-content/uploads/2020/07/Logo_MBWay.png"
+                                alt="MBWay"
+                                style="padding: 4px;"
+                            >
+                        </label>
+                        <label>
+                            <input
+                                type="radio"
+                                name="payment_method"
+                                value="paypal"
+                                class="radio"
+                                disabled
+                            >
+                            <img
+                                src="https://www.paypalobjects.com/webstatic/mktg/logo-center/PP_Acceptance_Marks_for_LogoCenter_76x48.png"
+                                alt="Paypal"
+                            >
+                        </label>
+                    </fieldset>
                     <?php 
                     createButton(
                         type: ButtonType::CONTAINED,
