@@ -6,6 +6,11 @@ import { toggleRestaurantLikedStatus } from "../api/restaurant.js";
 import { fetchOrderedRestaurantReviews, fetchReview } from "../api/review.js";
 import { fetchReviewResponse } from "../api/response.js";
 import { fetchUser } from "../api/user.js";
+import { setOrderState } from "../api/orders.js";
+
+const restaurantId = parseInt(
+    new URLSearchParams(window.location.search).get("id") ?? ""
+);
 
 /**
  * "Empowers" a restaurant page's like button using javascript.
@@ -41,11 +46,7 @@ const createReview = async (review) => {
 
         if (!user) return;
 
-        const {
-            id: userId,
-            name: userName,
-            image: userPhotoPath,
-        } = user;
+        const { id: userId, name: userName, image: userPhotoPath } = user;
 
         const reviewElement = document.createElement("article");
         reviewElement.classList.add("review");
@@ -70,7 +71,7 @@ const createReview = async (review) => {
         reviewDate.classList.add("subtitle", "secondary");
         reviewDate.textContent = new Date(
             review.review_date
-        ).toLocaleDateString('pt-PT');
+        ).toLocaleDateString("pt-PT");
 
         const scoreSpan = document.createElement("span");
         scoreSpan.classList.add("chip", "right");
@@ -106,44 +107,47 @@ const createReview = async (review) => {
     }
 };
 
+/**
+ *
+ * @param {HTMLSelectElement} select
+ */
 const empowerOrderSelect = (select) => {
-    /** @type HTMLElement */
+    /** @type {HTMLElement?} */
     const reviewList = document.querySelector("#review-list");
 
-    const handleInputChange = async (e) => {
-        e?.preventDefault();
+    if (reviewList)
+        select.addEventListener("change", async (e) => {
+            e?.preventDefault();
 
-        const restaurantId =
-            e.target.parentElement.parentElement.parentElement.dataset
-                .restaurantId;
+            const reviewOrdering = select.value;
 
-        const reviewOrdering = e.target.value;
+            const [attribute, order] = reviewOrdering.split("-");
 
-        const [attribute, order] = reviewOrdering.split("-");
+            const reviews = await fetchOrderedRestaurantReviews(
+                restaurantId,
+                attribute,
+                order
+            );
 
-        const reviews = await fetchOrderedRestaurantReviews(
-            restaurantId,
-            attribute,
-            order
-        );
+            const nodes = await Promise.all(reviews.map(createReview));
 
-        const nodes = await Promise.all(reviews.map(createReview));
+            // .replaceChildren didn't work, this did
+            for (let i = 0; i < nodes.length; i++) {
+                const elem = reviewList.children[i];
 
-        // .replaceChildren didn't work, this did
-        for (let i = 0; i < nodes.length; i++) {
-            const elem = reviewList.children[i];
-
-            reviewList.replaceChild(nodes[i], elem);
-        }
-    };
-
-    select.addEventListener("change", handleInputChange);
+                reviewList.replaceChild(nodes[i], elem);
+            }
+        });
 };
 
+/**
+ *
+ * @param {HTMLElement} reviewElement
+ */
 const empowerReview = (reviewElement) => {
     reviewElement.addEventListener("click", async () => {
         // do this way so we can run custom code with this specific dialog
-        /** @type {HTMLDialogElement} */
+        /** @type {HTMLDialogElement?} */
         const dialog = document.querySelector(
             "#review-response[data-owner-logged-in]"
         );
@@ -159,48 +163,121 @@ const empowerReview = (reviewElement) => {
 
         dialog
             .querySelector("div.content > section#response-review")
-            ?.replaceChildren(reviewNode);
+            ?.replaceChildren(reviewNode ?? "");
 
         // TODO: this is kinda monkey-patched, figure out a way of doing
         // this right
 
-        /** @type {HTMLButtonElement} */
+        /** @type {HTMLButtonElement?} */
         const submitButton = dialog.querySelector("[type=submit]");
-        submitButton.disabled = false;
-        /** @type {HTMLTextAreaElement} */
+        if (submitButton) submitButton.disabled = false;
+        /** @type {HTMLTextAreaElement?} */
         const textArea = dialog.querySelector("textarea");
-        textArea.disabled = false;
-        // this does not trigger HTML re-parsing
-        /** @type {HTMLElement} */
+        if (textArea) textArea.disabled = false;
+        /** @type {HTMLElement?} */
         const text = dialog.querySelector("#response-text");
-        text.textContent = "";
+        if (text) text.textContent = "";
         if (reviewResponse !== null) {
-            submitButton.disabled = true;
-            textArea.disabled = true;
-            text.appendChild(document.createTextNode(reviewResponse.text));
+            if (submitButton) submitButton.disabled = true;
+            if (textArea) textArea.disabled = true;
+            if (text)
+                text.appendChild(document.createTextNode(reviewResponse.text));
         } else {
-            /** @type {HTMLInputElement} */
+            /** @type {HTMLInputElement?} */
             const hiddenInput = dialog.querySelector(
                 "input[type=hidden][name=reviewId]"
             );
-            hiddenInput.value = review.id;
+            if (hiddenInput) hiddenInput.value = review.id;
         }
 
         dialog.showModal();
     });
 };
 
-/** @type HTMLElement */
-const _restaurantFavoriteButton = document.querySelector(
+const stateDict = {
+    pending: "Pending",
+    canceled: "Canceled",
+    in_progress: "In progress",
+    ready: "Ready for pickup",
+    delivered: "Delivered",
+};
+
+/**
+ *
+ * @param {HTMLElement} orderElement
+ */
+const empowerOrder = (orderElement) => {
+    const orderId = parseInt(orderElement.dataset.orderId ?? "");
+    /** @type {NodeListOf<HTMLButtonElement>} */
+    const buttons = orderElement.querySelectorAll("button[data-order-button]");
+    /** @type {HTMLButtonElement?} */
+    const cancelButton = orderElement.querySelector(
+        'button[data-order-button="canceled"]'
+    );
+    /** @type {HTMLButtonElement?} */
+    const button = buttons.item(buttons.length - 1);
+    /** @type {HTMLElement?} */
+    const orderStateEl = orderElement.querySelector(".order-state");
+
+    buttons.forEach((b) =>
+        b.addEventListener("click", async () => {
+            let { orderButton: newState } = b.dataset;
+
+            if (
+                newState !== "in_progress" &&
+                newState !== "ready" &&
+                newState !== "delivered" &&
+                newState !== "canceled"
+            )
+                return;
+
+            const newOrder = await setOrderState(
+                restaurantId,
+                orderId,
+                newState
+            );
+
+            if (orderStateEl)
+                orderStateEl.textContent = stateDict[newOrder.state];
+
+            if (newOrder.state !== "pending") cancelButton?.remove();
+
+            if (button)
+                switch (newOrder.state) {
+                    case "pending":
+                        break;
+                    case "canceled":
+                    case "delivered":
+                        button.remove();
+                        break;
+                    case "in_progress":
+                        button.dataset.orderButton = "ready";
+                        button.textContent = "Mark as ready";
+                        break;
+                    case "ready":
+                        button.dataset.orderButton = "delivered";
+                        button.textContent = "Mark as delivered";
+                        break;
+                }
+        })
+    );
+};
+
+/** @type {HTMLButtonElement?} */
+const restaurantFavoriteButton = document.querySelector(
     "[data-restaurant-id][data-favorite-button]"
 );
-empowerRestaurantLikeButton(_restaurantFavoriteButton);
+if (restaurantFavoriteButton)
+    empowerRestaurantLikeButton(restaurantFavoriteButton);
 
-/** @type HTMLElement */
+/** @type {HTMLSelectElement?} */
 const orderSelect = document.querySelector(".select > select");
+if (orderSelect) empowerOrderSelect(orderSelect);
 
-empowerOrderSelect(orderSelect);
-
+/** @type {NodeListOf<HTMLElement>} */
 const reviewList = document.querySelectorAll("#review-list > .review");
-
 reviewList.forEach(empowerReview);
+
+/** @type {NodeListOf<HTMLElement>} */
+const orders = document.querySelectorAll(".order");
+orders.forEach(empowerOrder);

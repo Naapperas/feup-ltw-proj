@@ -71,6 +71,8 @@
                     return 'Canceled';
                 case 'in_progress':
                     return 'In progress';
+                case 'ready':
+                    return 'Ready for pickup';
                 case 'delivered':
                     return 'Delivered';
             }

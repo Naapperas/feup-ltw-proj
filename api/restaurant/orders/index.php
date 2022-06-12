@@ -28,10 +28,10 @@
     APIRoute(
         get: common(fn($restaurant) => ['orders' => $restaurant->getOrders()]),
         post: common(function($restaurant) {
-            $params = parseParams(query: [
+            $params = parseParams(body: [
                 'orderId' => new IntParam(),
                 'state' => new StringParam(
-                    pattern: '/^(canceled|in_progress|delivered)$/'
+                    pattern: '/^(canceled|in_progress|ready|delivered)$/'
                 )
             ]);
 
@@ -46,8 +46,12 @@
                 case 'canceled':
                     APIError(HTTPStatusCode::FORBIDDEN, "Order was already canceled");
                 case 'in_progress':
-                    if ($params['state'] != 'delivered')
+                    if ($params['state'] != 'delivered' && $params['state'] != 'ready')
                         APIError(HTTPStatusCode::FORBIDDEN, "Order was already in progress");
+                    break;
+                case 'ready':
+                    if ($params['state'] != 'delivered')
+                        APIError(HTTPStatusCode::FORBIDDEN, "Order was already ready");
                     break;
             }
 

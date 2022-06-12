@@ -444,6 +444,34 @@ require_once(dirname(__DIR__)."/database/models/review.php");
             <li><?= $dish->name ?>&times; <?= $menu->name ?></li>
             <?php } ?>
         </ul>
-        <p><?= $order->state ?></p>
+        <p class="order-state"><?= $order->getStateString() ?></p>
+        <?php 
+        if (!$show_restaurant) {
+            if ($order->state === 'pending') {
+                createButton(
+                    ButtonType::OUTLINED,
+                    'Cancel',
+                    attributes: "data-order-button=\"canceled\""
+                );
+                createButton(
+                    ButtonType::CONTAINED,
+                    'Accept',
+                    attributes: "data-order-button=\"in_progress\""
+                );
+            } else if ($order->state === 'in_progress') {
+                createButton(
+                    ButtonType::CONTAINED,
+                    'Mark as ready',
+                    attributes: "data-order-button=\"ready\""
+                );
+            } else if ($order->state === 'ready') {
+                createButton(
+                    ButtonType::CONTAINED,
+                    'Mark as delivered',
+                    attributes: "data-order-button=\"delivered\""
+                );
+            }
+        }
+        ?>
     </article>
 <?php } ?>
