@@ -8,38 +8,38 @@ require_once(dirname(__DIR__)."/database/models/menu.php");
 ?>
 
 <?php function createRestaurantList(
-    ?array $restaurants, string $h = 'h3', string $vh = 'h4',
+    ?array $restaurants, int $h = 3, string $vh = 'h4',
     string $title = 'Restaurants'
 ) { 
     if (!$restaurants) return;
     ?>
     <section class="restaurant-list">
         <header class="header">
-            <<?= $h ?> class="title <?= $vh ?>"><?= $title ?></<?= $h ?>>
+            <h<?= $h ?> class="title <?= $vh ?>"><?= $title ?></h<?= $h ?>>
         </header>
 
         <?php 
         foreach($restaurants as $restaurant) {
-            createRestaurantCard($restaurant);
+            createRestaurantCard($restaurant, $h + 1);
         }
         ?>
     </section>
 <?php } ?>
 
 <?php function createDishList(
-    ?array $dishes, string $h = 'h3', string $vh = 'h4',
+    ?array $dishes, int $h = 3, string $vh = 'h4',
     string $title = 'Dishes', bool $show_restaurant = false, bool $edit = false
 ) { 
     if (!$dishes && !$edit) return;
     ?>
     <section class="dish-list">
         <header class="header">
-            <<?= $h ?> class="title <?= $vh ?>"><?= $title ?></<?= $h ?>>
+            <h<?= $h ?> class="title <?= $vh ?>"><?= $title ?></h<?= $h ?>>
         </header>
 
         <?php 
         foreach($dishes as $dish) {
-            createDishCard($dish, $show_restaurant, $edit);
+            createDishCard($dish, $h + 1, $show_restaurant, $edit);
         }
 
         if ($edit) { ?>
@@ -80,19 +80,19 @@ require_once(dirname(__DIR__)."/database/models/menu.php");
 } ?> 
 
 <?php function createMenuList(
-    ?array $menus, string $h = 'h3', string $vh = 'h4',
+    ?array $menus, int $h = 3, string $vh = 'h4',
     string $title = 'Menus', bool $show_restaurant = false, bool $edit = false
 ) { 
     if (!$menus && !$edit) return;
     ?>
     <section class="menu-list">
         <header class="header">
-            <<?= $h ?> class="title <?= $vh ?>"><?= $title ?></<?= $h ?>>
+            <h<?= $h ?> class="title <?= $vh ?>"><?= $title ?></h<?= $h ?>>
         </header>
 
         <?php 
         foreach($menus as $menu) {
-            createMenuCard($menu, $show_restaurant, $edit);
+            createMenuCard($menu, $h + 1, $show_restaurant, $edit);
         }
 
         if ($edit) { ?>
@@ -110,33 +110,33 @@ require_once(dirname(__DIR__)."/database/models/menu.php");
 <?php } ?>
 
 <?php function createUserList(
-    ?array $users, string $h = 'h3', string $vh = 'h4',
+    ?array $users, int $h = 3, string $vh = 'h4',
     string $title = 'Users'
 ) { 
     if (!$users) return;
     ?>
     <section class="user-list">
         <header class="header">
-            <<?= $h ?> class="title <?= $vh ?>"><?= $title ?></<?= $h ?>>
+            <h<?= $h ?> class="title <?= $vh ?>"><?= $title ?></h<?= $h ?>>
         </header>
 
         <?php 
         foreach($users as $user) {
-            createProfileCard($user);
+            createProfileCard($user, $h + 1);
         }
         ?>
     </section>
 <?php } ?>
 
 <?php function createReviewList(
-    ?array $reviews, Restaurant $restaurant, string $h = 'h3', string $vh = 'h4',
+    ?array $reviews, Restaurant $restaurant, int $h = 3, string $vh = 'h4',
     string $title = 'Reviews'
 ) {
     if (!$reviews || $restaurant === null) return;
     ?>
     <section class="restaurant-reviews" data-restaurant-id="<?= $restaurant->id ?>">
         <header class="header">
-            <<?= $h ?> class="title <?= $vh ?>"><?= $title ?></<?= $h ?>>
+            <h<?= $h ?> class="title <?= $vh ?>"><?= $title ?></h<?= $h ?>>
             <div class="select subtitle">
                 <select name="options" id="options"> <!-- TODO: STYLES!!!! -->
                     <option value="score-desc">Score - Desc</option>
@@ -180,14 +180,14 @@ require_once(dirname(__DIR__)."/database/models/menu.php");
 <?php } ?>
 
 <?php function createOrderList(
-    ?array $orders, string $h = 'h3', string $vh = 'h4',
+    ?array $orders, int $h = 3, string $vh = 'h4',
     string $title = 'Orders', bool $show_restaurant = true
 ) {
     if (!$orders) return;
     ?>
     <section class="restaurant-orders">
         <header class="header">
-            <<?= $h ?> class="title <?= $vh ?>"><?= $title ?></<?= $h ?>>
+            <h<?= $h ?> class="title <?= $vh ?>"><?= $title ?></h<?= $h ?>>
         </header>
         <div id="review-list">
         <?php foreach($orders as $order) {

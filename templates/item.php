@@ -8,7 +8,7 @@ require_once(dirname(__DIR__)."/database/models/user.php");
 require_once(dirname(__DIR__)."/database/models/review.php");
 ?>
 
-<?php function createRestaurantCard(Restaurant $restaurant) { ?>
+<?php function createRestaurantCard(Restaurant $restaurant, int $h) { ?>
     <article
         class="card responsive interactive"
         data-card-type="restaurant"
@@ -23,14 +23,14 @@ require_once(dirname(__DIR__)."/database/models/review.php");
             />
         </div>
         <header class="header">
-            <h3 class="title h6">
+            <h<?= $h ?> class="title h6">
                 <a
                     href="/restaurant/?id=<?= $restaurant->id ?>"
                     class="card-link"
                 >
                     <?= $restaurant->name ?>
                 </a>
-            </h3>
+            </h<?= $h ?>>
             <span class="subtitle subtitle2 secondary"><?= $restaurant->address ?></span>
             <?php if ($restaurant->score !== null) { ?>
             <span class="chip right"><?php createIcon(icon: "star") ?><?= round($restaurant->score, 1) ?></span>
@@ -73,7 +73,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
     </article>
 <?php } ?>
 
-<?php function createDishCard(Dish $dish, bool $show_restaurant = false, bool $edit = false) { 
+<?php function createDishCard(Dish $dish, int $h, bool $show_restaurant = false, bool $edit = false) { 
     if ($show_restaurant && ($restaurant = $dish->getRestaurant()) === null) return;
 
     if ($edit) { ?>
@@ -144,9 +144,9 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                 />
             </div>
             <header class="header">
-                <h3 class="title h6">
+                <h<?= $h ?> class="title h6">
                     <a href="#" class="card-link"><?= $dish->name ?></a>
-                </h3>
+                </h<?= $h ?>>
                 <span class="subtitle subtitle2 secondary">
                     <?= sprintf('%.2f€', $dish->price) ?>
                     <?php if ($show_restaurant) echo "· $restaurant->name" ?>
@@ -180,7 +180,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
         </article>
 <?php } } ?>
 
-<?php function createMenuCard(Menu $menu, bool $show_restaurant = false, bool $edit = false) { 
+<?php function createMenuCard(Menu $menu, int $h, bool $show_restaurant = false, bool $edit = false) { 
     if ($show_restaurant && ($restaurant = $menu->getRestaurant()) === null) return;
 
     if ($edit) { ?>
@@ -251,9 +251,9 @@ require_once(dirname(__DIR__)."/database/models/review.php");
             />
         </div>
         <header class="header">
-            <h3 class="title h6">
+            <h<?= $h ?> class="title h6">
                 <a href="#" class="card-link"><?= $menu->name ?></a>
-            </h3>
+            </h<?= $h ?>>
             <span class="subtitle subtitle2 secondary">
                 <?= $show_restaurant ? $restaurant->name : sprintf('%.2f€', $menu->price) ?>
             </span>
@@ -263,7 +263,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
     </article>
 <?php } } ?>
 
-<?php function createProfileCard(User $user) { ?>
+<?php function createProfileCard(User $user, int $h) { ?>
     <article 
         class="card responsive interactive"
         data-card-type="user" 
@@ -277,14 +277,14 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                 alt="Profile picture for <?= $user->name ?>"
                 class="avatar medium"
             />
-            <h3 class="title h6">
+            <h<?= $h ?> class="title h6">
                 <a 
                     href="/profile/?id=<?= $user->id ?>"
                     class="card-link"
                 >
                     <?= $user->name ?>
                 </a>
-            </h3>
+            </h<?= $h ?>>
             <span class="subtitle subtitle2 secondary">
                 <?= $user->address ?>
             </span>
