@@ -17,6 +17,51 @@
         return $user;
     }
 
+    function deleteModel($Model, ?callable $verification = null) {
+        return function() use ($Model, $verification) {
+            list('id' => $id) = parseParams(query: [
+                'id' => new IntParam(),
+            ]);
+
+            $model = $Model::getById($id);
+
+            if (!isset($model) || is_array($model))
+                APIError(HTTPStatusCode::NOT_FOUND, "$Model not found");
+
+            if ($verification)
+                $verification($model);
+
+            return ['success' => $model->delete()];
+        };
+    }
+
+    function postModel($Model, array $params, ?callable $verification = null, ?string $name = null) {
+        $name ??= strtolower($Model);
+        return function() use ($Model, $name, $params, $verification) {
+            list('id' => $id) = parseParams(query: [
+                'id' => new IntParam(),
+            ]);
+
+            $model = $Model::getById($id);
+
+            if (!isset($model) || is_array($model))
+                APIError(HTTPStatusCode::NOT_FOUND, "$Model not found");
+
+            if ($verification)
+                $verification($model);
+            
+            $values = parseParams(body: $params);
+
+            foreach ($values as $key => $value) {
+                if ($value)
+                    $model->{$key} = $value;
+            }
+            $model->update();
+
+            return [$name => $model];
+        };
+    }
+
     function getModel($Model, ?string $name = null, ?string $plural = null) {
         $name ??= strtolower($Model);
         $plural ??= "{$name}s";
