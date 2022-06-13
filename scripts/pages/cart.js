@@ -83,7 +83,8 @@ const empowerOrderForm = (/** @type {HTMLFormElement} */ form) => {
             if (amountSpan) amountSpan.textContent = amount;
             if (amountInput) amountInput.value = amount;
             if (totalSpan)
-                totalSpan.textContent = newCart.total[restaurantId].toFixed(2);
+                totalSpan.textContent =
+                    newCart.total[restaurantId]?.toFixed(2) ?? "";
             if (cartBadge)
                 cartBadge.dataset.badgeContent = newCart.size.toString();
 
@@ -100,7 +101,8 @@ const empowerOrderForm = (/** @type {HTMLFormElement} */ form) => {
             if (cartBadge)
                 cartBadge.dataset.badgeContent = newCart.size.toString();
             if (totalSpan)
-                totalSpan.textContent = newCart.total[restaurantId].toFixed(2);
+                totalSpan.textContent =
+                    newCart.total[restaurantId]?.toFixed(2) ?? "";
 
             deleteCard();
         });
