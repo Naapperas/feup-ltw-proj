@@ -16,10 +16,23 @@
             'price' => new FloatParam(
                 min: 0,
                 optional: true
-            )], function($menu) {
-                if ($menu->getRestaurant()->owner !== requireAuth()->id)
-                    APIError(HTTPStatusCode::FORBIDDEN, "That menu is not yours");
-            }),
+            )
+        ], [
+            'name' => new StringParam(
+                min_len: 1
+            ),
+            'price' => new FloatParam(
+                min: 0
+            ),
+            'restaurant' => new IntParam()
+        ], function($menu) {
+            if ($menu->getRestaurant()->owner !== requireAuth()->id)
+                APIError(HTTPStatusCode::FORBIDDEN, "That menu is not yours");
+        }, function($values) {
+            $rest = Restaurant::getById($values['restaurant']);
+            if (!isset($rest) || $rest->owner !== requireAuth()->id)
+                APIError(HTTPStatusCode::FORBIDDEN, "That restaurant is not yours");
+        }),
         delete: deleteModel(Menu::class, function($menu) {
             if ($menu->getRestaurant()->owner !== requireAuth()->id)
                 APIError(HTTPStatusCode::FORBIDDEN, "That menu is not yours");

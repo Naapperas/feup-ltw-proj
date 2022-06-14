@@ -30,9 +30,11 @@
                 pattern: '/^\d{9}$/',
                 optional: true
             ),
-        ], function($model) {
+        ], [], function($model) {
             if ($model->id !== requireAuth()->id)
                 APIError(HTTPStatusCode::FORBIDDEN, "Can't modify other users");
+        }, function($values) {
+            APIError(HTTPStatusCode::BAD_REQUEST, 'Invalid arguments');
         }),
         delete: deleteModel(User::class, function($model) {
             if ($model->id !== requireAuth()->id)

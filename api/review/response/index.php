@@ -11,12 +11,11 @@
 
     APIRoute(
         get: function() {
-
             $params = parseParams(query: [
-                'reviewId' => new IntParam(),
+                'id' => new IntParam(),
             ]);
         
-            $review = Review::getById($params['reviewId']);
+            $review = Review::getById($params['id']);
 
             if ($review === null) {
                 APIError(HTTPStatusCode::BAD_REQUEST, "Review not found");
@@ -30,34 +29,24 @@
         
             return ['response' => $response];
         },
-        post: function() {
+        post: postModel(Review::class, [], [
+            'text' => new StringParam(min_len: 1),
+            'review' => new IntParam(),
+        ], function($review) {
+            APIError(HTTPStatusCode::BAD_REQUEST, 'Invalid arguments');
+        }, function(&$values) {
+            $review = Review::getById($values['review']);
 
-            $user = requireSessionAuth();
+            if (!isset($review))
+                APIError(HTTPStatusCode::NOT_FOUND, 'Review not found');
 
-            $params = parseParams(body: [
-                'reviewResponse' => new StringParam(),
-                'restaurantId' => new IntParam(),
-                'reviewId' => new IntParam(),
-            ]);
-                
-            if (($restaurant = Restaurant::getById($params['restaurantId'])) === null || ($review = Review::getById($params['reviewId'])) === null) {
-                header("Location: /");
-                die;
-            }
-            
-            if ($restaurant->owner !== $user->id) // only owner can post review responses
-                APIError(HTTPStatusCode::FORBIDDEN, 'Only restaurant owners can post responses to reviews');
-                
-            $response = Response::create([
-                'text' => $params['reviewResponse'],
-                'review' => $review->id,
-                'response_date' => date(DATE_ISO8601)
-            ]);
+            $restaurant = Restaurant::getById($values['restaurant']);
+            $user = requireAuth();
 
-            if ($response === null || is_array($response))
-                APIError(HTTPStatusCode::INTERNAL_SERVER_ERROR, 'Error while creating response');
+            if ($restaurant->owner !== $user->id)
+                APIError(HTTPStatusCode::FORBIDDEN, 'Only owner can reply');
 
-            return ['response' => $response];
-        }
+            $values['response_date'] = date(DATE_ISO8601);
+        })
     );
 ?>

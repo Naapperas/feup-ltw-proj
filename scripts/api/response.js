@@ -14,7 +14,7 @@
  */
 export const fetchReviewResponse = async (reviewId) => {
     const data = {
-        reviewId: reviewId.toString(10),
+        id: reviewId.toString(10),
     };
 
     const response = await fetch(

@@ -56,29 +56,48 @@
         };
     }
 
-    function postModel($Model, array $params, ?callable $verification = null, ?string $name = null) {
+    function postModel(
+        $Model,
+        array $params,
+        array $createParams,
+        ?callable $verification = null,
+        ?callable $verify_params = null,
+        ?string $name = null
+    ) {
         $name ??= strtolower($Model);
-        return function() use ($Model, $name, $params, $verification) {
+        return function() use ($Model, $name, $params, $createParams, $verification, $verify_params) {
             list('id' => $id) = parseParams(query: [
-                'id' => new IntParam(),
+                'id' => new IntParam(optional: true),
             ]);
 
-            $model = $Model::getById($id);
+            if ($id === null) {
+                $values = parseParams(body: $createParams);
 
-            if (!isset($model) || is_array($model))
-                APIError(HTTPStatusCode::NOT_FOUND, "$Model not found");
+                if ($verify_params)
+                    $verify_params($values);
 
-            if ($verification)
-                $verification($model);
-            
-            $values = parseParams(body: $params);
+                $model = $Model::create($values);
 
-            foreach ($values as $key => $value) {
-                if ($value)
-                    $model->{$key} = $value;
+                if (!isset($model))
+                    APIError(HTTPStatusCode::FORBIDDEN, "Could not create $name");
+            } else {
+                $model = $Model::getById($id);
+    
+                if (!isset($model) || is_array($model))
+                    APIError(HTTPStatusCode::NOT_FOUND, "$Model not found");
+    
+                if ($verification)
+                    $verification($model);
+                
+                $values = parseParams(body: $params);
+    
+                foreach ($values as $key => $value) {
+                    if ($value)
+                        $model->{$key} = $value;
+                }
+                $model->update();
             }
-            $model->update();
-
+            
             return [$name => $model];
         };
     }

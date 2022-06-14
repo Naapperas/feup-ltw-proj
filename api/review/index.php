@@ -10,37 +10,27 @@
 
     APIRoute(
         get: getModel(Review::class),
-        post: function() {
-            
-            $user = requireSessionAuth();
+        post: postModel(Review::class, [], [
+            'score' => new IntParam(
+                max: 5,
+                min: 0
+            ),
+            'text' => new StringParam(min_len: 1),
+            'restaurant' => new IntParam(),
+        ], function($review) {
+            APIError(HTTPStatusCode::BAD_REQUEST, 'Invalid arguments');
+        }, function(&$values) {
+            $restaurant = Restaurant::getById($values['restaurant']);
+            $user = requireAuth();
 
-            $params = parseParams(body: [
-                'score' => new IntParam(
-                    max: 5,
-                    min: 0
-                ),
-                'content' => new StringParam(),
-                'restaurantId' => new IntParam(),
-            ]);
-
-            if (($restaurant = Restaurant::getById($params['restaurantId'])) === null)
+            if (!isset($restaurant))
                 APIError(HTTPStatusCode::NOT_FOUND, 'Restaurant not found');
-            
-            if ($restaurant->owner === $user->id) // owner cant post reviews
-                APIError(HTTPStatusCode::FORBIDDEN, 'Owner can\'t post reviews on one of his restaurants');    
-        
-            $review = Review::create([
-                'text' => $params['content'],
-                'score' => round($params['score'], 1),
-                'restaurant' => $params['restaurantId'],
-                'client' => $user->id,
-                'review_date' => date(DATE_ISO8601)
-            ]);
 
-            if ($review === null || is_array($review))
-                APIError(HTTPStatusCode::INTERNAL_SERVER_ERROR, 'Error while creating review');
+            if ($restaurant->owner === $user->id)
+                APIError(HTTPStatusCode::FORBIDDEN, 'Owner can\'t post reviews to one of his own restaurants');
 
-            return ['review' => $review];
-        }
+            $values['client'] = $user->id;
+            $values['review_date'] = date(DATE_ISO8601);
+        })
     );
 ?>
