@@ -3,7 +3,6 @@
     require_once("../lib/session.php");
 
     $session = new Session();
-    session_start();
 
     if ($session->isAuthenticated())
         $session->set('user', null);

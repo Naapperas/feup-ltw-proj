@@ -11,6 +11,10 @@
         post: function () {
             $session = new Session();
             
+            if ($session->isAuthenticated())
+                APIError(HTTPStatusCode::FORBIDDEN, 'Can\'t login if already logged in');
+            
+
             $params = parseParams(body: [
                 'username' => new StringParam(min_len: 1),
                 'password' => new StringParam(min_len: 1),
@@ -31,5 +35,16 @@
 
             return ['user' => $user];
         },
+        delete: function() {
+            $session = new Session();
+            
+            if ($session->isAuthenticated())
+                $session->set('user', null);
+                
+            if ($session->get('cart') !== null)
+                $session->unset('cart');
+
+            return [];
+        }
     );
 ?>
