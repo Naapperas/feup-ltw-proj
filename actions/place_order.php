@@ -21,6 +21,7 @@
     }
 
     require_once('../lib/params.php');
+    require_once('../lib/page.php');
 
     $params = parseParams(body: [
         'restaurantId' => new IntParam(),

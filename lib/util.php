@@ -14,16 +14,4 @@
     function error(HTTPStatusCode $error_code) {
         http_response_code($_SESSION['easter-egg'] ? HTTPStatusCode::IM_A_TEAPOT->value : $error_code->value);
     }
-
-    function pageError(HTTPStatusCode $error_code) {
-        error($error_code);
-        require(dirname(__DIR__).'/error.php');
-        die;
-    }
-
-    function APIError(HTTPStatusCode $error_code, string $error_message) {
-        error($error_code);
-        echo json_encode(['error' => $error_message]);
-        die;
-    }
 ?>

@@ -8,6 +8,7 @@
     session_start();
 
     require_once('../lib/params.php');
+    require_once('../lib/page.php');
 
     $params = parseParams(body: [
         'email' => new StringParam(

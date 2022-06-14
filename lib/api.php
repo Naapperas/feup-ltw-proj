@@ -3,6 +3,12 @@
     require_once(__DIR__."/util.php");
     require_once(__DIR__."/params.php");
 
+    function APIError(HTTPStatusCode $error_code, string $error_message) {
+        error($error_code);
+        echo json_encode(['error' => $error_message]);
+        die;
+    }
+
     function requireAuth() {
         if (!isset($_SESSION['user']))
             APIError(HTTPStatusCode::UNAUTHORIZED, 'You are not logged in');

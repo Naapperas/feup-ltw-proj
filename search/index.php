@@ -9,6 +9,7 @@
     require_once("../templates/metadata.php");
 
     require_once("../lib/params.php");
+    require_once('../lib/page.php');
     require_once("../database/models/query.php");
 
     $params = parseParams(query: [

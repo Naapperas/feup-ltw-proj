@@ -9,6 +9,7 @@
     require_once("../database/models/restaurant.php");
 
     require_once('../lib/params.php');
+    require_once('../lib/page.php');
     require_once('../lib/util.php');
 
     session_start();

@@ -4,7 +4,10 @@ declare(strict_types=1);
 require_once(__DIR__.'/util.php');
 
 function _error() {
-    pageError(HTTPStatusCode::BAD_REQUEST);
+    if (function_exists('pageError'))
+        pageError(HTTPStatusCode::BAD_REQUEST);
+    else
+        APIError(HTTPStatusCode::BAD_REQUEST, 'Invalid arguments');
 }
 
 abstract class Param {
@@ -184,7 +187,6 @@ class ObjectParam extends Param {
     }
 }
 
-// FIXME: Support api errors instead
 function parseParams(array $query = [], array $body = []) {
     foreach ($query as $name => $p) {
         if (is_int($name)){

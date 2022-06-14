@@ -7,6 +7,7 @@
     require_once('../templates/metadata.php');
 
     require_once('../lib/params.php');
+    require_once('../lib/page.php');
     
     require_once('../database/models/user.php');
     require_once('../database/models/restaurant.php');
