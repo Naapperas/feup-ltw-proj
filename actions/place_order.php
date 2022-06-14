@@ -34,8 +34,12 @@
         'menus_to_order' => new ArrayParam(
             default: [],
             param_type: new IntParam()
-        )
+        ),
+        'csrf'
     ]);
+
+    if ($session->get('csrf') !== $params['csrf'])
+        pageError(HTTPStatusCode::BAD_REQUEST);
 
     require_once("../database/models/order.php");
 

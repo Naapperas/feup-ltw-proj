@@ -19,8 +19,12 @@
     $params = parseParams(body: [
         'username' => new StringParam(min_len: 1),
         'password' => new StringParam(min_len: 1),
+        'csrf',
         'referer'
     ]);
+
+    if ($session->get('csrf') !== $params['csrf'])
+        pageError(HTTPStatusCode::BAD_REQUEST);
 
     require_once('../database/models/user.php');
     require_once('../database/models/query.php');

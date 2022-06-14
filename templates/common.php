@@ -64,6 +64,8 @@
         $cartItemCount = array_sum($session->get('cart')['dishes'] ?? []) 
                        + array_sum($session->get('cart')['menus'] ?? []);
     
+        $csrfToken = urlencode($session->get('csrf'));
+
         createButton(
             type: ButtonType::ICON,
             text: "Shopping cart",
@@ -82,7 +84,7 @@
             type: ButtonType::ICON,
             text: "Logout",
             icon: "logout",
-            href: "/actions/logout.php");
+            href: "/actions/logout.php?csrf=$csrfToken");
     } else {
         createButton(
             type: ButtonType::TEXT,
@@ -103,7 +105,9 @@
     );
 } ?>
 
-<?php function createSearchBar(?string $query) { ?>
+<?php function createSearchBar(?string $query) { 
+    $session = new Session();
+    ?>
     <form class="search" action="/search/" method="GET">
         <input
             type="search"
@@ -169,6 +173,7 @@
                 <?php createButton(type: ButtonType::TEXT, text: 'Done', attributes: 'data-close-dialog="#filters"') ?>
             </div>
         </dialog>
+        <input type="hidden" name="csrf" value="<?= $session->get('csrf') ?>">
     </form>
 <?php } ?>
 

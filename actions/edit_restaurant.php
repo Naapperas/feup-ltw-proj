@@ -83,10 +83,14 @@
                     minLen: 2
                 ),
             ])
-        )
+        ),
+        'csrf'
     ]);
 
     $session = new Session();
+
+    if ($session->get('csrf') !== $params['csrf'])
+        pageError(HTTPStatusCode::BAD_REQUEST);
 
     if (!$session->isAuthenticated()) { // prevents edits from unauthenticated users
         header("Location: /restaurant?id=".$params['id']);

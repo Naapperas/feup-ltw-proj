@@ -19,8 +19,12 @@
     $params = parseParams(body: [
         'reviewResponse' => new StringParam(),
         'restaurantId' => new IntParam(),
-        'reviewId' => new IntParam()
+        'reviewId' => new IntParam(),
+        'csrf'
     ]);
+
+    if ($session->get('csrf') !== $params['csrf'])
+        pageError(HTTPStatusCode::BAD_REQUEST);
 
     require_once('../database/models/restaurant.php');
     require_once('../database/models/review.php');

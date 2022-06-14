@@ -26,8 +26,12 @@
         'name' => new StringParam(min_len: 1),
         'address' => new StringParam(min_len: 1),
         'phone' => new StringParam(pattern: '/^\d{9}$/'),
+        'csrf',
         'referer'
     ]);
+
+    if ($session->get('csrf') !== $params['csrf'])
+        pageError(HTTPStatusCode::BAD_REQUEST);
 
     $registrationError = function(string $errorMsg) use ($params, $session): void {
         $session->set('register-error', $errorMsg);

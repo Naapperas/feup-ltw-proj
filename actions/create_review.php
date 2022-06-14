@@ -23,7 +23,11 @@
         ),
         'content' => new StringParam(),
         'restaurantId' => new IntParam(),
+        'csrf'
     ]);
+
+    if ($session->get('csrf') !== $params['csrf'])
+        pageError(HTTPStatusCode::BAD_REQUEST);
 
     require_once('../database/models/restaurant.php');
     require_once('../database/models/user.php');

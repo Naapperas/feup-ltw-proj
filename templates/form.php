@@ -119,6 +119,7 @@ declare(strict_types=1);
         if (isset($error)) { ?>
         <span class="form-error"><?= $error ?></span>
         <?php } ?>
+        <input type="hidden" name="csrf" value="<?= $session->get('csrf') ?>">
     </form>
 <?php } ?>
 

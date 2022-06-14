@@ -29,8 +29,12 @@
         'password' => new StringParam(min_len: 8, optional: true),
         'address' => new StringParam(min_len: 1),
         'phone' => new StringParam(pattern: '/^\d{9}$/'),
-        'username' => new StringParam(min_len: 1)
+        'username' => new StringParam(min_len: 1),
+        'csrf'
     ]);
+
+    if ($session->get('csrf') !== $params['csrf'])
+        pageError(HTTPStatusCode::BAD_REQUEST);
 
     $user = User::getById($session->get('user'));
 
