@@ -30,12 +30,12 @@
                 pattern: '/^\d{9}$/',
                 optional: true
             ),
-        ], function(Session $session, User $user) {
-            if ($user->id !== requireAuthUser($session)->id)
+        ], function($model) {
+            if ($model->id !== requireAuth()->id)
                 APIError(HTTPStatusCode::FORBIDDEN, "Can't modify other users");
         }),
-        delete: deleteModel(User::class, function(Session $session, User $user) {
-            if ($user->id !== requireAuthUser($session)->id)
+        delete: deleteModel(User::class, function($model) {
+            if ($model->id !== requireAuth()->id)
                 APIError(HTTPStatusCode::FORBIDDEN, "Can't delete other users");
         })
     );

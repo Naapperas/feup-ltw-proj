@@ -2,12 +2,11 @@
     declare(strict_types = 1);
 
     require_once("../../../lib/api.php");
-    require_once("../../../lib/session.php");
 
     require_once("../../../database/models/user.php");
 
-    function common(Session $session) {
-        $user = requireAuthUser($session);
+    function common() {
+        $user = requireAuth();
 
         $params = parseParams(body: [
             'dishId' => new IntParam(),
@@ -22,7 +21,7 @@
     }
 
     APIRoute(
-        get: function(Session $_) {
+        get: function() {
             $params = parseParams(query: [
                 'id' => new IntParam(),
                 'dishId' => new IntParam(optional: true),
@@ -44,19 +43,19 @@
                 return ['favoriteDishes' => $user->getFavoriteDishes()];
             }
         },
-        put: function(Session $session) {
-            list($user, $dish) = common($session);
+        put: function() {
+            list($user, $dish) = common();
             $success = $user->addLikedDish($dish->id);
             return ['favorite' => true];
         },
-        delete: function(Session $session) {
-            list($user, $dish) = common($session);
+        delete: function() {
+            list($user, $dish) = common();
             $success = $user->removeLikedDish($dish->id);
 
             return ['favorite' => false];
         },
-        post: function(Session $session) {
-            list($user, $dish) = common($session);
+        post: function() {
+            list($user, $dish) = common();
 
             $isFavorite = $dish->isLikedBy($user);
             $action = $isFavorite ? 'removeLikedDish' : 'addLikedDish';

@@ -10,9 +10,9 @@
     require_once("../../database/models/menu.php");
 
     function common(callable $routeHandler): callable {
-        return function(Session $session) use ($routeHandler) {
-            requireAuth($session);
-
+        return function() use ($routeHandler) {
+            $session = requireSessionAuth();
+            
             $routeHandler($session);
 
             $size = 0;
@@ -38,6 +38,7 @@
     }
 
     APIRoute(
+        cors: false,
         get: common(function (Session $session) {
             $session->get('cart')['dishes'] ??= [];
             $session->get('cart')['menus'] ??= [];

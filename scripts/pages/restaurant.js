@@ -3,7 +3,7 @@
 "use strict";
 
 import { toggleRestaurantLikedStatus } from "../api/restaurant.js";
-import { fetchOrderedRestaurantReviews, fetchReview } from "../api/review.js";
+import { fetchOrderedRestaurantReviews } from "../api/review.js";
 import { fetchReviewResponse } from "../api/response.js";
 import { fetchUser } from "../api/user.js";
 import { setOrderState } from "../api/orders.js";
@@ -40,6 +40,7 @@ const empowerRestaurantLikeButton = (button) => {
 const createReview = async (review) => {
     try {
         const user = await fetchUser(review.client);
+        const response = await fetchReviewResponse(review.id);
 
         if (!user) return;
 
@@ -82,19 +83,48 @@ const createReview = async (review) => {
         scoreSpan.append(iconSpan, scoreText);
 
         reviewHeader.append(profilePicture, profileName, reviewDate, scoreSpan);
-
         reviewHeaderLink.appendChild(reviewHeader);
-
-        reviewElement.appendChild(reviewHeaderLink);
 
         const reviewText = document.createElement("p");
         reviewText.classList.add("review-content");
-        // this is safe to use here because this text comes from stored
-        // reviews, which can only be created through the given action which
-        // uses StringParams that escape the given text
         reviewText.innerHTML = review.text;
 
-        reviewElement.appendChild(reviewText);
+        reviewElement.append(reviewHeaderLink, reviewText);
+
+        if (document.querySelector("dialog#review-response") && !response) {
+            const replyButton = document.createElement("button");
+            replyButton.classList.add("button", "text");
+            replyButton.dataset.replyButton = "";
+            replyButton.type = "button";
+            replyButton.innerText = "Reply";
+
+            reviewElement.appendChild(replyButton);
+        } else if (response) {
+            const responseElement = document.createElement("article");
+            responseElement.classList.add("review");
+
+            /** @type {HTMLElement?} */
+            const responseHeaderLink = document
+                .querySelector("#response-template")
+                // @ts-ignore
+                ?.content.children[0].cloneNode(true);
+
+            /** @type {HTMLElement?} */
+            const responseDate =
+                responseHeaderLink &&
+                responseHeaderLink.querySelector(".subtitle");
+            if (responseDate)
+                responseDate.textContent = new Date(
+                    response.response_date
+                ).toLocaleDateString("pt-PT");
+
+            const responseText = document.createElement("p");
+            responseText.classList.add("review-content");
+            responseText.innerHTML = response.text;
+
+            responseElement.append(responseHeaderLink ?? "", responseText);
+            reviewElement.append(responseElement);
+        }
 
         empowerReview(reviewElement);
 

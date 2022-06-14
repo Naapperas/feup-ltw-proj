@@ -16,12 +16,12 @@
             'price' => new FloatParam(
                 min: 0,
                 optional: true
-            )], function(Session $session, Menu $menu) {
-                if ($menu->getRestaurant()->owner !== requireAuthUser($session)->id)
+            )], function($menu) {
+                if ($menu->getRestaurant()->owner !== requireAuth()->id)
                     APIError(HTTPStatusCode::FORBIDDEN, "That menu is not yours");
             }),
-        delete: deleteModel(Menu::class, function(Session $session, Menu $menu) {
-            if ($menu->getRestaurant()->owner !== requireAuthUser($session)->id)
+        delete: deleteModel(Menu::class, function($menu) {
+            if ($menu->getRestaurant()->owner !== requireAuth()->id)
                 APIError(HTTPStatusCode::FORBIDDEN, "That menu is not yours");
         })
     );

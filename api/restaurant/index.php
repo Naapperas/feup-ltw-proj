@@ -33,12 +33,12 @@
             'closing_time' => new StringParam(
                 pattern: '/^([01]\d|2[0-3]):[0-5]\d$/',
                 optional: true
-            )], function(Session $session, Restaurant $restaurant) {
-                if ($restaurant->owner !== requireAuthUser($session)->id)
+            )], function($restaurant) {
+                if ($restaurant->owner !== requireAuth()->id)
                     APIError(HTTPStatusCode::FORBIDDEN, "That restaurant is not yours");
             }),
-        delete: deleteModel(Restaurant::class, function(Session $session, Restaurant $restaurant) {
-            if ($restaurant->owner !== requireAuthUser($session)->id)
+        delete: deleteModel(Restaurant::class, function($restaurant) {
+            if ($restaurant->owner !== requireAuth()->id)
                 APIError(HTTPStatusCode::FORBIDDEN, "That restaurant is not yours");
         })
     );

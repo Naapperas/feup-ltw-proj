@@ -2,11 +2,9 @@
     declare(strict_types = 1);
 
     require_once("../../../lib/api.php");
-    require_once("../../../lib/session.php");
     require_once("../../../lib/params.php");
 
-    APIRoute(get: function(Session $_) {
-
+    APIRoute(get: function() {
         $params = parseParams(query: [
             'restaurantId' => new IntParam(),
             'attribute' => new StringParam(

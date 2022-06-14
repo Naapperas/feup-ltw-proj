@@ -46,6 +46,21 @@
     );
     ?>
     <body class="top-app-bar restaurant layout">
+        <template id="response-template">
+            <?php $replier = $restaurant->getOwner(); ?>
+            <a href="/profile/?id=<?= $replier->id ?>">
+                <header class="header">
+                    <img 
+                        src=<?= $replier->getImagePath() ?>
+                        alt="Review profile image for <?=$replier->name?>"
+                        class="avatar small"
+                    >
+                    <span class="title"><?= $replier->name ?></span>
+                    <span class="subtitle secondary"></span>
+                </header>
+            </a>
+        </template>
+
         <?php
         createAppBar();
         if ($user) {

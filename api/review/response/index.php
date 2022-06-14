@@ -3,12 +3,11 @@
 
     require_once("../../../lib/api.php");
     require_once("../../../lib/util.php");
-    require_once("../../../lib/session.php");
 
     require_once("../../../database/models/review.php");
 
     APIRoute(
-        get: function(Session $_) {
+        get: function() {
             require_once("../../../lib/params.php");
 
             $params = parseParams(query: [

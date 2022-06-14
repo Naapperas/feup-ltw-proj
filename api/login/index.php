@@ -8,7 +8,8 @@
     require_once("../../database/models/user.php");
 
     APIRoute(
-        post: function (Session $session) {
+        post: function () {
+            $session = new Session();
             
             $params = parseParams(body: [
                 'username' => new StringParam(min_len: 1),

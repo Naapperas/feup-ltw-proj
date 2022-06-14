@@ -10,22 +10,32 @@
         die;
     }
 
-    function requireAuth(Session $session): void {
-        if (!$session->isAuthenticated())
-            APIError(HTTPStatusCode::UNAUTHORIZED, 'You are not logged in');
+    function requireAuth(): User {
+        if (isset($_SERVER['PHP_AUTH_USER'])) {
+            $user = User::getWithFilters([new Equals('name', $_SERVER['PHP_AUTH_USER'])])[0];
+            
+            if (!isset($user) || !$user->validatePassword($_SERVER['PHP_AUTH_PW']))
+                APIError(HTTPStatusCode::FORBIDDEN, 'Invalid credentials');
+
+            return $user;
+        } else {
+            $session = requireSessionAuth();
+            return $session->getUser();
+        }
     }
 
-    function requireAuthUser(Session $session): User {
-        if (!$session->isAuthenticated() 
-         || ($user = User::getById($session->get('user'))) === null
-         || is_array($user))
+    function requireSessionAuth() {
+        $session = new Session();
+        if (!$session->isAuthenticated()) {
+            header('WWW-Authenticate: Basic realm="XauFome"');
             APIError(HTTPStatusCode::UNAUTHORIZED, 'You are not logged in');
+        }
 
-        return $user;
+        return $session;
     }
 
     function deleteModel($Model, ?callable $verification = null) {
-        return function(Session $session) use ($Model, $verification) {
+        return function() use ($Model, $verification) {
             list('id' => $id) = parseParams(query: [
                 'id' => new IntParam(),
             ]);
@@ -36,7 +46,7 @@
                 APIError(HTTPStatusCode::NOT_FOUND, "$Model not found");
 
             if ($verification)
-                $verification($session, $model);
+                $verification($model);
 
             return ['success' => $model->delete()];
         };
@@ -44,7 +54,7 @@
 
     function postModel($Model, array $params, ?callable $verification = null, ?string $name = null) {
         $name ??= strtolower($Model);
-        return function(Session $session) use ($Model, $name, $params, $verification) {
+        return function() use ($Model, $name, $params, $verification) {
             list('id' => $id) = parseParams(query: [
                 'id' => new IntParam(),
             ]);
@@ -55,7 +65,7 @@
                 APIError(HTTPStatusCode::NOT_FOUND, "$Model not found");
 
             if ($verification)
-                $verification($session, $model);
+                $verification($model);
             
             $values = parseParams(body: $params);
 
@@ -72,7 +82,7 @@
     function getModel($Model, ?string $name = null, ?string $plural = null) {
         $name ??= strtolower($Model);
         $plural ??= "{$name}s";
-        return function(Session $_) use ($Model, $name, $plural) {
+        return function() use ($Model, $name, $plural) {
             $params = parseParams(query: [
                 'id' => new IntParam(optional: true),
             ]);
@@ -93,32 +103,30 @@
 
     function APIRoute(
         callable $get = null, callable $post = null,
-        callable $put = null, callable $delete = null
+        callable $put = null, callable $delete = null,
+        bool $cors = true
     ) {
-
-        $session = new Session();
-
         header("Content-type: application/json");
     
         if ($_SERVER['REQUEST_METHOD'] === 'GET' && $get) {
-            echo json_encode($get($session));
+            echo json_encode($get());
             return;
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $post) {
-            echo json_encode($post($session));
+            echo json_encode($post());
             return;
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'PUT' && $put) {
             parse_str(file_get_contents('php://input'), $_POST);
-            echo json_encode($put($session));
+            echo json_encode($put());
             return;
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'DELETE' && $delete) {
             parse_str(file_get_contents('php://input'), $_POST);
-            echo json_encode($delete($session));
+            echo json_encode($delete());
             return;
         }
 
@@ -132,6 +140,12 @@
         header("Allow: $methods");
 
         if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            if ($cors) {
+                header('Access-Control-Allow-Origin: *');
+                header("Access-Control-Allow-Methods: $methods");
+                header('Access-Control-Allow-Headers: Content-Type');
+            }
+
             return;
         }
 

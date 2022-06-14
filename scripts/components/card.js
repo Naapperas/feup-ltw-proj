@@ -14,6 +14,7 @@ import {
 } from "./dialog.js";
 import { empowerEditCategoryList } from "./categorylist.js";
 import { empowerEditDishList } from "./dishlist.js";
+import { addSnackbar } from "./snackbar.js";
 
 /**
  * "Empowers" a restaurant card using javascript.
@@ -103,6 +104,8 @@ export const empowerDishCard = (dishCard) => {
                     cartBadge.dataset.badgeContent = newCart.size.toString();
                     cartBadge.classList.add("badge");
                 }
+
+                addSnackbar("Dish added to cart");
             }
         } catch {
             return;
@@ -139,6 +142,8 @@ export const empowerMenuCard = (menuCard) => {
                     cartBadge.dataset.badgeContent = newCart.size.toString();
                     cartBadge.classList.add("badge");
                 }
+
+                addSnackbar("Menu added to cart");
             }
         } catch {
             return;

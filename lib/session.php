@@ -27,6 +27,10 @@
             return $_SESSION[$key];
         }
 
+        public function &getUser(): ?User {
+            return User::getById($this->get('user'));
+        }
+
         public function isAuthenticated(): bool {
             return $this->get('user') !== null;
         }

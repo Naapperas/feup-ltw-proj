@@ -2,8 +2,6 @@
 
 "use strict";
 
-import { addSnackbar } from "../components/snackbar.js";
-
 /**
  *
  * @param {number} reviewId
@@ -30,7 +28,6 @@ export const fetchReviewResponse = async (reviewId) => {
     const { response: reviewResponse, error } = await response.json();
 
     if (error) {
-        addSnackbar(error);
         return;
     }
 

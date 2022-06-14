@@ -3,13 +3,12 @@
 
     require_once("../../../lib/api.php");
     require_once("../../../lib/PARAMS.php");
-    require_once("../../../lib/session.php");
 
     require_once("../../../database/models/menu.php");
     require_once("../../../database/models/dish.php");
 
     APIRoute(
-        get: function(Session $_) {
+        get: function() {
 
             $params = parseParams(query: [
                 'menuId' => new IntParam()
