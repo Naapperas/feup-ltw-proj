@@ -62,7 +62,7 @@
                 <div class="edit-restaurant-sidebar">
                     <label class="image-input thumbnail rounded fullwidth">
                         <img
-                            src="<?= $restaurant?->getImagePath() ?>"
+                            src="<?= $restaurant?->getImagePath() ?? '/assets/pictures/restaurant/default.svg' ?>"
                             alt=""
                         >
                         <input

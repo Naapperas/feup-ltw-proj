@@ -204,8 +204,8 @@ export const empowerEditDishCard = (editDishCard) => {
         const templateInput =
             dishesTemplate &&
             dishesTemplate.content.querySelector(`input[value="${dishId}"]`);
-        if (templateInput?.labels?.[0]?.lastChild)
-            templateInput.labels[0].lastChild.textContent =
+        if (templateInput?.parentElement?.lastChild)
+            templateInput.parentElement.lastChild.textContent =
                 " " + nameInput.value;
     });
 
@@ -400,6 +400,20 @@ export const empowerEditMenuCard = (editMenuCard) => {
     const dishesFieldset = editMenuCard.querySelector(
         `${dishListLink?.dataset.openDialog} fieldset`
     );
+
+    const onDishesInput = () => {
+        const checked =
+            dishesFieldset?.querySelectorAll("input:checked")?.length ?? 0;
+
+        if (checked < 2) imageInput?.setCustomValidity("At least two dishes");
+        else imageInput?.setCustomValidity("");
+
+        console.log(dishesFieldset, checked);
+    };
+
+    dishesFieldset?.addEventListener("change", onDishesInput);
+    nameInput?.addEventListener("input", onDishesInput);
+    priceInput?.addEventListener("input", onDishesInput);
 
     empowerEditDishList(dishList, dishesFieldset);
 

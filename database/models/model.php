@@ -2,7 +2,7 @@
     declare(strict_types=1);
 
     require_once(dirname(__DIR__).'/connection.php');
-    require_once('query.php');
+    require_once(__DIR__.'/query.php');
 
     abstract class Model implements JsonSerializable {
         public readonly int $id;

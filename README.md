@@ -80,3 +80,9 @@
 user/12345678
 
 owner/12345678
+
+## Instructions
+
+Requires php 8.1.
+
+Run the script [`createdb`](/database/createdb) in the [database folder](/database/) to create a simple example database.

@@ -133,13 +133,12 @@ const empowerForm = (form) => {
     inputs.forEach(empowerInput);
 
     const setButtonState = () =>
-        submitButton && (submitButton.disabled = !form.checkValidity());
+        submitButton &&
+        setTimeout(() => (submitButton.disabled = !form.checkValidity()), 100);
     form.addEventListener("input", setButtonState);
     setButtonState();
 
     const observer = new MutationObserver((mutations) => {
-        console.log(mutations);
-
         for (const mutation of mutations) {
             if (mutation.type == "childList")
                 for (const node of mutation.addedNodes) {

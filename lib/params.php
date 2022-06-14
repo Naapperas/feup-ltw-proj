@@ -189,7 +189,7 @@ class ObjectParam extends Param {
         if (!is_array($val))
             return $this->error();
 
-        if (!isset($r))
+        if (!isset($val))
             if ($this->optional)
                 return null;
             else
