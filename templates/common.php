@@ -173,7 +173,6 @@
                 <?php createButton(type: ButtonType::TEXT, text: 'Done', attributes: 'data-close-dialog="#filters"') ?>
             </div>
         </dialog>
-        <input type="hidden" name="csrf" value="<?= $session->get('csrf') ?>">
     </form>
 <?php } ?>
 

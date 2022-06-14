@@ -3,12 +3,12 @@
 
     require_once("../../../lib/api.php");
     require_once("../../../lib/util.php");
+    require_once("../../../lib/params.php");
 
     require_once("../../../database/models/review.php");
 
     APIRoute(
         get: function() {
-            require_once("../../../lib/params.php");
 
             $params = parseParams(query: [
                 'reviewId' => new IntParam(),
