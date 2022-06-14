@@ -2,10 +2,12 @@
     declare(strict_types = 1);
 
     require_once("../../../lib/api.php");
+    require_once("../../../lib/session.php");
+
     require_once("../../../database/models/user.php");
 
     APIRoute(
-        get: function() {
+        get: function(Session $session) {
             $params = parseParams(query: [
                 'id' => new IntParam(),
             ]);

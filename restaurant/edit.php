@@ -8,11 +8,12 @@
 
     require_once('../lib/params.php');
     require_once('../lib/page.php');
+    require_once('../lib/session.php');
     
     require_once('../database/models/user.php');
     require_once('../database/models/restaurant.php');
     
-    session_start();
+    $session = new Session();
 
     list('id' => $id) = parseParams(query: [
         'id' => new IntParam(
@@ -25,7 +26,7 @@
         die();
     }
     
-    if (isset($restaurant) && $restaurant->owner !== $_SESSION['user']) {
+    if (isset($restaurant) && $restaurant->owner !== $session->get('user')) {
         header("Location: /restaurant/?id=$id");
         die;
     }
@@ -61,7 +62,7 @@
                 <div class="edit-restaurant-sidebar">
                     <label class="image-input thumbnail rounded fullwidth">
                         <img
-                            src="<?= $restaurant?->getImagePath() ?? '/assets/pictures/restaurant/default.svg' ?>"
+                            src="<?= $restaurant?->getImagePath() ?>"
                             alt=""
                         >
                         <input

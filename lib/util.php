@@ -11,7 +11,12 @@
         case INTERNAL_SERVER_ERROR = 500;
     }
 
+    // use $_SESSION directly to avoid having to require a whole new file, this use case is a valid exception
     function error(HTTPStatusCode $error_code) {
         http_response_code($_SESSION['easter-egg'] ? HTTPStatusCode::IM_A_TEAPOT->value : $error_code->value);
+    }
+
+    function generate_random_token() {
+        return bin2hex(openssl_random_pseudo_bytes(32));
     }
 ?>

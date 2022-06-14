@@ -2,6 +2,8 @@
     declare(strict_types = 1);
 
     require_once("../../lib/api.php");
+    require_once("../../lib/session.php");
+
     require_once("../../database/models/dish.php");
 
     APIRoute(
@@ -14,12 +16,12 @@
             'price' => new FloatParam(
                 min: 0,
                 optional: true
-            )], function($dish) {
-                if ($dish->getRestaurant()->owner !== requireAuthUser()->id)
+            )], function(Session $session, Dish $dish) {
+                if ($dish->getRestaurant()->owner !== requireAuthUser($session)->id)
                     APIError(HTTPStatusCode::FORBIDDEN, "That dish is not yours");
             }),
-        delete: deleteModel(Dish::class, function($dish) {
-            if ($dish->getRestaurant()->owner !== requireAuthUser()->id)
+        delete: deleteModel(Dish::class, function(Session $session, Dish $dish) {
+            if ($dish->getRestaurant()->owner !== requireAuthUser($session)->id)
                 APIError(HTTPStatusCode::FORBIDDEN, "That dish is not yours");
         })
     );

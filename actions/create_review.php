@@ -5,9 +5,10 @@
         die;
     }
 
-    session_start();
+    require_once('../lib/session.php');
+    $session = new Session();
 
-    if (!isset($_SESSION['user'])) { // prevents reviews from unauthenticated users
+    if (!$session->isAuthenticated()) { // prevents reviews from unauthenticated users
         header("Location: /");
         die;
     }
@@ -22,25 +23,17 @@
         ),
         'content' => new StringParam(),
         'restaurantId' => new IntParam(),
-        'userId' => new IntParam(
-            default: $_SESSION['user']
-        )
     ]);
-
-    if ($_SESSION['user'] !== $params['userId']) { // prevents reviews from other users on our behalf
-        header("Location: /");
-        die;
-    }
 
     require_once('../database/models/restaurant.php');
     require_once('../database/models/user.php');
 
-    if (($restaurant = Restaurant::getById($params['restaurantId'])) === null || User::getById($params['userId']) === null) {
+    if (($restaurant = Restaurant::getById($params['restaurantId'])) === null) {
         header("Location: /");
         die;
     }
     
-    if ($restaurant->owner === $params['userId']) { // owner cant post reviews
+    if ($restaurant->owner === $session->get('user')) { // owner cant post reviews
         header("Location: /restaurant?id=".$params['restaurantId']);
         die;
     }
@@ -51,7 +44,7 @@
         'text' => $params['content'],
         'score' => round($params['score'], 1),
         'restaurant' => $params['restaurantId'],
-        'client' => $params['userId'],
+        'client' => $session->get('user'),
         'review_date' => date(DATE_ISO8601)
     ]);
 

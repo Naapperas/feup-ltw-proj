@@ -2,6 +2,8 @@
     declare(strict_types = 1);
 
     require_once("../../lib/api.php");
+    require_once("../../lib/session.php");
+
     require_once("../../database/models/user.php");
 
     APIRoute(
@@ -28,12 +30,12 @@
                 pattern: '/^\d{9}$/',
                 optional: true
             ),
-        ], function($model) {
-            if ($model->id !== requireAuthUser()->id)
+        ], function(Session $session, User $user) {
+            if ($user->id !== requireAuthUser($session)->id)
                 APIError(HTTPStatusCode::FORBIDDEN, "Can't modify other users");
         }),
-        delete: deleteModel(User::class, function($model) {
-            if ($model->id !== requireAuthUser()->id)
+        delete: deleteModel(User::class, function(Session $session, User $user) {
+            if ($user->id !== requireAuthUser($session)->id)
                 APIError(HTTPStatusCode::FORBIDDEN, "Can't delete other users");
         })
     );

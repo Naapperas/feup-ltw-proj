@@ -11,8 +11,9 @@
     require_once('../lib/params.php');
     require_once('../lib/page.php');
     require_once('../lib/util.php');
+    require_once('../lib/session.php');
 
-    session_start();
+    $session = new Session();
 
     list('id' => $id) = parseParams(query: [
         'id' => new IntParam(),
@@ -23,8 +24,12 @@
     if ($restaurant === null)
         pageError(HTTPStatusCode::NOT_FOUND);
 
-    if (isset($_SESSION['user'])) {
-        $user = User::getById($_SESSION['user']);
+    if ($session->isAuthenticated()) {
+        $user = User::getById($session->get('user'));
+
+        if (is_array($user)) {
+            unset($user);
+        }
     }
 ?>
 <!DOCTYPE html>
@@ -121,7 +126,7 @@
                     } else {
                         createForm(
                             'POST', 'review', '/actions/create_review.php', 'create-review-form',
-                            function() use ($restaurant, $user) {
+                            function() use ($restaurant) {
                                 ?><header class="header">
                                     <h3 class="title h4">Leave a review</h3>
                                 </header>
@@ -133,8 +138,7 @@
                                     <input class="radio" type="radio" name="score" value="4">
                                     <input class="radio" type="radio" name="score" value="5">
                                 </fieldset>
-                                <input type="hidden" name="restaurantId" value="<?= $restaurant->id ?>">
-                                <input type="hidden" name="userId" value="<?= $user->id ?>"><?php
+                                <input type="hidden" name="restaurantId" value="<?= $restaurant->id ?>"><?php
                                 createTextField(name: 'content', label: 'Details', type: 'multiline');
                                 createButton(text: 'Post', submit: true);
                             }

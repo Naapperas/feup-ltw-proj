@@ -5,7 +5,13 @@
         die;
     }
 
-    session_start();
+    require_once('../lib/session.php');
+    $session = new Session();
+
+    if ($session->isAuthenticated()) {
+        header("Location: /");
+        die();
+    }
 
     require_once('../lib/params.php');
     require_once('../lib/page.php');
@@ -24,13 +30,13 @@
     $user = (count($candidateUser) > 0) ? $candidateUser[0] : null;
 
     if ($user === null || !$user->validatePassword($params['password'])) {
-        $_SESSION['login-error'] = 'Incorrect username or password!'; // to be handled by the login page
-        $_SESSION['referer'] = $params['referer'];
+        $session->set('login-error', 'Incorrect username or password!'); // to be handled by the login page
+        $session->set('referer', $params['referer']);
         header('Location: /login/');
         die();
     }
 
-    unset($_SESSION['referer']);
-    $_SESSION['user'] = $user->id;
+    $session->set('referer', null);
+    $session->set('user', $user->id);
     header('Location: ' . $params['referer']); 
 ?>

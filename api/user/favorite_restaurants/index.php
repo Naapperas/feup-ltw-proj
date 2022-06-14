@@ -2,10 +2,12 @@
     declare(strict_types = 1);
 
     require_once("../../../lib/api.php");
+    require_once("../../../lib/session.php");
+
     require_once("../../../database/models/user.php");
 
-    function common() {
-        $user = requireAuthUser();
+    function common(Session $session) {
+        $user = requireAuthUser($session);
 
         $params = parseParams(body: [
             'restaurantId' => new IntParam(),
@@ -42,20 +44,20 @@
                 return ['favoriteRestaurants' => $user->getFavoriteRestaurants()];
             }
         },
-        put: function() {
-            list($user, $restaurant) = common();
+        put: function(Session $session) {
+            list($user, $restaurant) = common($session);
             $success = $user->addLikedRestaurant($restaurant->id);
 
             return ['favorite' => true];
         },
-        delete: function() {
-            list($user, $restaurant) = common();
+        delete: function(Session $session) {
+            list($user, $restaurant) = common($session);
             $success = $user->removeLikedRestaurant($restaurant->id);
 
             return ['favorite' => false];
         },
-        post: function() {
-            list($user, $restaurant) = common();
+        post: function(Session $session) {
+            list($user, $restaurant) = common($session);
 
             $isFavorite = $restaurant->isLikedBy($user);
             $action = $isFavorite ? 'removeLikedRestaurant' : 'addLikedRestaurant';

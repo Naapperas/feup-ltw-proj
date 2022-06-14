@@ -2,6 +2,8 @@
     declare(strict_types = 1);
 
     require_once("../../lib/api.php");
+    require_once("../../lib/session.php");
+
     require_once("../../database/models/restaurant.php");
 
     APIRoute(
@@ -31,12 +33,12 @@
             'closing_time' => new StringParam(
                 pattern: '/^([01]\d|2[0-3]):[0-5]\d$/',
                 optional: true
-            )], function($restaurant) {
-                if ($restaurant->owner !== requireAuthUser()->id)
+            )], function(Session $session, Restaurant $restaurant) {
+                if ($restaurant->owner !== requireAuthUser($session)->id)
                     APIError(HTTPStatusCode::FORBIDDEN, "That restaurant is not yours");
             }),
-        delete: deleteModel(Restaurant::class, function($restaurant) {
-            if ($restaurant->owner !== requireAuthUser()->id)
+        delete: deleteModel(Restaurant::class, function(Session $session, Restaurant $restaurant) {
+            if ($restaurant->owner !== requireAuthUser($session)->id)
                 APIError(HTTPStatusCode::FORBIDDEN, "That restaurant is not yours");
         })
     );

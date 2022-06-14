@@ -2,6 +2,7 @@
     declare(strict_types=1);
     require_once(__DIR__."/util.php");
     require_once(__DIR__."/params.php");
+    require_once(__DIR__."/session.php");
 
     function APIError(HTTPStatusCode $error_code, string $error_message) {
         error($error_code);
@@ -9,14 +10,14 @@
         die;
     }
 
-    function requireAuth() {
-        if (!isset($_SESSION['user']))
+    function requireAuth(Session $session): void {
+        if (!$session->isAuthenticated())
             APIError(HTTPStatusCode::UNAUTHORIZED, 'You are not logged in');
     }
 
-    function requireAuthUser() {
-        if (!isset($_SESSION['user']) 
-         || ($user = User::getById($_SESSION['user'])) === null
+    function requireAuthUser(Session $session): User {
+        if (!$session->isAuthenticated() 
+         || ($user = User::getById($session->get('user'))) === null
          || is_array($user))
             APIError(HTTPStatusCode::UNAUTHORIZED, 'You are not logged in');
 
@@ -24,7 +25,7 @@
     }
 
     function deleteModel($Model, ?callable $verification = null) {
-        return function() use ($Model, $verification) {
+        return function(Session $session) use ($Model, $verification) {
             list('id' => $id) = parseParams(query: [
                 'id' => new IntParam(),
             ]);
@@ -35,7 +36,7 @@
                 APIError(HTTPStatusCode::NOT_FOUND, "$Model not found");
 
             if ($verification)
-                $verification($model);
+                $verification($session, $model);
 
             return ['success' => $model->delete()];
         };
@@ -43,7 +44,7 @@
 
     function postModel($Model, array $params, ?callable $verification = null, ?string $name = null) {
         $name ??= strtolower($Model);
-        return function() use ($Model, $name, $params, $verification) {
+        return function(Session $session) use ($Model, $name, $params, $verification) {
             list('id' => $id) = parseParams(query: [
                 'id' => new IntParam(),
             ]);
@@ -54,7 +55,7 @@
                 APIError(HTTPStatusCode::NOT_FOUND, "$Model not found");
 
             if ($verification)
-                $verification($model);
+                $verification($session, $model);
             
             $values = parseParams(body: $params);
 
@@ -71,7 +72,7 @@
     function getModel($Model, ?string $name = null, ?string $plural = null) {
         $name ??= strtolower($Model);
         $plural ??= "{$name}s";
-        return function() use ($Model, $name, $plural) {
+        return function(Session $_) use ($Model, $name, $plural) {
             $params = parseParams(query: [
                 'id' => new IntParam(optional: true),
             ]);
@@ -94,28 +95,30 @@
         callable $get = null, callable $post = null,
         callable $put = null, callable $delete = null
     ) {
-        session_start();
+
+        $session = new Session();
+
         header("Content-type: application/json");
     
         if ($_SERVER['REQUEST_METHOD'] === 'GET' && $get) {
-            echo json_encode($get());
+            echo json_encode($get($session));
             return;
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $post) {
-            echo json_encode($post());
+            echo json_encode($post($session));
             return;
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'PUT' && $put) {
             parse_str(file_get_contents('php://input'), $_POST);
-            echo json_encode($put());
+            echo json_encode($put($session));
             return;
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'DELETE' && $delete) {
             parse_str(file_get_contents('php://input'), $_POST);
-            echo json_encode($delete());
+            echo json_encode($delete($session));
             return;
         }
 

@@ -1,16 +1,18 @@
 <?php
-declare(strict_types=1);
+    declare(strict_types=1);
 
-enum ButtonType: string {
-    case CONTAINED = "contained";
-    case OUTLINED = "outlined";
-    case TEXT = "text";
-    case ICON = "icon";
-    case FAB = "icon fab";
-    case MINI_FAB = "icon fab mini";
-}
+    enum ButtonType: string {
+        case CONTAINED = "contained";
+        case OUTLINED = "outlined";
+        case TEXT = "text";
+        case ICON = "icon";
+        case FAB = "icon fab";
+        case MINI_FAB = "icon fab mini";
+    }
 
-require_once(__DIR__.'/form.php');
+    require_once(__DIR__.'/form.php');
+
+    require_once(dirname(__DIR__).'/lib/session.php');
 ?>
 
 <?php function createButton(
@@ -55,9 +57,12 @@ require_once(__DIR__.'/form.php');
 <?php } ?>
 
 <?php function createUserButtons() {
-    if (isset($_SESSION['user'])) {    
-        $cartItemCount = array_sum($_SESSION['cart']['dishes'] ?? []) 
-                       + array_sum($_SESSION['cart']['menus'] ?? []);
+
+    $session = new Session();
+
+    if ($session->isAuthenticated()) {    
+        $cartItemCount = array_sum($session->get('cart')['dishes'] ?? []) 
+                       + array_sum($session->get('cart')['menus'] ?? []);
     
         createButton(
             type: ButtonType::ICON,
@@ -144,6 +149,17 @@ require_once(__DIR__.'/form.php');
                         labelText: "Price",
                         min: 0,
                         max: 20, 
+                        step: 0.01,
+                        ranged: true
+                    ); ?>
+                </section>
+                <section>
+                    <h3 class="title h5">Menus</h3>
+                    <?php createSlider(
+                        name: "menu_price",
+                        labelText: "Price",
+                        min: 0,
+                        max: 500, 
                         step: 0.01,
                         ranged: true
                     ); ?>

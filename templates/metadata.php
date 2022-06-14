@@ -1,11 +1,15 @@
 <?php
-declare(strict_types=1);
+    declare(strict_types=1);
+
+    require_once(dirname(__DIR__).'/lib/session.php');
 ?>
 
 <?php function createHead(
     callable $metadata,
     array $styles = [], array $scripts = []
-) { ?>
+) { 
+    $session = new Session();
+?>
     <head>
         <?php $metadata() ?>
         
@@ -21,12 +25,14 @@ declare(strict_types=1);
             <script src="/scripts/<?= $script ?>" defer type="module"></script>
         <?php } ?>
 
-        <?php if ($_SESSION['easter-egg'] === true) { ?>
-        <style>
-            * {
-                float: right;
-            }
-        </style>
+        <?php 
+        // this use case is a valid exception
+        if ($session->get('easter-egg') === true) { ?>
+            <style>
+                * {
+                    float: right;
+                }
+            </style>
         <?php } ?>
     </head>
 <?php } ?>

@@ -10,12 +10,14 @@
     require_once('../lib/params.php');
     require_once('../lib/page.php');
     require_once('../lib/util.php');
+    require_once('../lib/session.php');
 
+    $session = new Session();
     session_start();
 
     list('id' => $id) = parseParams(query: [
         'id' => new IntParam(
-            default: $_SESSION['user'], 
+            default: $session->get('user'), 
             optional: true
         ),
     ]);
@@ -57,7 +59,7 @@
                 height="280"
             />
             <?php
-                if ($user->id === $_SESSION['user']) {
+                if ($user->id === $session->get('user')) {
                     createButton(
                         type: ButtonType::FAB,
                         text: "Edit",
@@ -80,6 +82,7 @@
 
                 <?php createIcon('email') ?><a href="mailto:<?=$user->email?>"><?=$user->email?></a>
                 <?php createIcon('badge') ?><span><?=$user->full_name?></span>
+                <?php createIcon('place') ?><span><?=$user->address?></span>
                 <?php createIcon('phone') ?><span><?=$user->phone_number?></span>
             </section>
 

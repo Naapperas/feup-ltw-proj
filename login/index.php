@@ -1,11 +1,13 @@
 <?php 
-declare(strict_types=1);
+    declare(strict_types=1);
 
-require_once("../templates/common.php");
-require_once("../templates/form.php");
-require_once("../templates/metadata.php");
+    require_once("../templates/common.php");
+    require_once("../templates/form.php");
+    require_once("../templates/metadata.php");
 
-session_start();
+    require_once("../lib/session.php");
+
+    $session = new Session();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +20,7 @@ session_start();
 
         <?php createForm(
             'POST', 'login', '/actions/login.php', 'login-form',
-            function() {
+            function() use ($session) {
                 createTextField(
                     name: "username", label: "Username", autocomplete: "username"
                 );
@@ -28,7 +30,7 @@ session_start();
                     toggleVisibility: true
                 );
                 createButton(text: "Login", submit: true); ?>
-                <input type="hidden" name="referer" value="<?=$_SESSION['referer'] ?? $_SERVER["HTTP_REFERER"]?>"><?php
+                <input type="hidden" name="referer" value="<?=$session->get('referer') ?? $_SERVER["HTTP_REFERER"]?>"><?php
             }
         ) ?>
 

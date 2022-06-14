@@ -1,21 +1,26 @@
 <?php 
-declare(strict_types=1);
+    declare(strict_types=1);
 
-require_once("./templates/common.php");
-require_once("./templates/list.php");
-require_once("./templates/metadata.php");
-require_once("./database/models/restaurant.php");
+    require_once("./templates/common.php");
+    require_once("./templates/list.php");
+    require_once("./templates/metadata.php");
 
-session_start();
+    require_once("./database/models/restaurant.php");
 
-if (isset($_SESSION['user'])) {
-    $user = User::getById($_SESSION['user']);
-    $favorite_restaurants = $user->getFavoriteRestaurants();
-    $favorite_dishes = $user->getFavoriteDishes();
-}
+    require_once("./lib/session.php");
 
-$recommended_restaurants = Restaurant::getAll();
-$recommended_dishes = DIsh::getAll();
+    $session = new Session();
+
+    session_start();
+
+    if ($session->isAuthenticated()) {
+        $user = User::getById($session->get('user'));
+        $favorite_restaurants = $user->getFavoriteRestaurants();
+        $favorite_dishes = $user->getFavoriteDishes();
+    }
+
+    $recommended_restaurants = Restaurant::getAll();
+    $recommended_dishes = DIsh::getAll();
 ?>
 <!DOCTYPE html>
 <html lang="en">

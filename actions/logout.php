@@ -1,12 +1,16 @@
 <?php
+
+    require_once("../lib/session.php");
+
+    $session = new Session();
     session_start();
 
-    if (isset($_SESSION["user"]))
-        unset($_SESSION["user"]);
+    if ($session->isAuthenticated())
+        $session->set('user', null);
         
-    if (isset($_SESSION["cart"]))
-        unset($_SESSION["cart"]);
-
-    $_SESSION['easter-egg'] = false;
+    if ($session->get('cart') !== null)
+        $session->unset('cart');
+        
+    $session->set('easter-egg', false);
     header('Location: /');
 ?>

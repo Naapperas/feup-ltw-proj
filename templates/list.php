@@ -1,10 +1,12 @@
 <?php
-declare(strict_types=1);
+    declare(strict_types=1);
 
-require_once(__DIR__."/item.php");
-require_once(dirname(__DIR__)."/database/models/restaurant.php");
-require_once(dirname(__DIR__)."/database/models/dish.php");
-require_once(dirname(__DIR__)."/database/models/menu.php");
+    require_once(__DIR__."/item.php");
+    require_once(dirname(__DIR__)."/database/models/restaurant.php");
+    require_once(dirname(__DIR__)."/database/models/dish.php");
+    require_once(dirname(__DIR__)."/database/models/menu.php");
+
+    require_once(dirname(__DIR__)."/lib/session.php");
 ?>
 
 <?php function createRestaurantList(
@@ -133,6 +135,8 @@ require_once(dirname(__DIR__)."/database/models/menu.php");
     string $title = 'Reviews'
 ) {
     if (!$reviews || $restaurant === null) return;
+
+    $session = new Session();
     ?>
     <section class="restaurant-reviews" data-restaurant-id="<?= $restaurant->id ?>">
         <header class="header">
@@ -152,7 +156,7 @@ require_once(dirname(__DIR__)."/database/models/menu.php");
             showReview($review);
         } ?>
         </div>
-        <?php if($_SESSION['user'] === $restaurant->owner) { ?>
+        <?php if($session->get('user') === $restaurant->owner) { ?>
             <dialog class="dialog confirmation" id="review-response">
                 <header><h2 class="h4">Respond to review...</h2></header>
                 <div class="content">

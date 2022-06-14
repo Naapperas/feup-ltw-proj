@@ -33,6 +33,16 @@
             min: 0,
             max: 50,
             optional: true,
+        ),
+        'min_menu_price' => new FloatParam(
+            min: 0,
+            max: 50,
+            optional: true,
+        ),
+        'max_menu_price' => new FloatParam(
+            min: 0,
+            max: 500,
+            optional: true,
         )
     ]);
 
@@ -46,6 +56,11 @@
     $dishPriceFilter = new AndClause([
         isset($params['min_dish_price']) ? new GreaterThanOrEqual('price', $params['min_dish_price']) : null,
         isset($params['max_dish_price']) ? new LessThanOrEqual('price', $params['max_dish_price']) : null
+    ]);
+    
+    $menuPriceFilter = new AndClause([
+        isset($params['min_menu_price']) ? new GreaterThanOrEqual('price', $params['min_menu_price']) : null,
+        isset($params['max_menu_price']) ? new LessThanOrEqual('price', $params['max_menu_price']) : null
     ]);
 
     require_once("../database/models/user.php");
@@ -69,7 +84,7 @@
         Dish::getByCategoryIds($categoryIds)
     ));
 
-    $menus = Menu::getWithFilters([$nameContainsSearchTermFilter], limit: 10);
+    $menus = Menu::getWithFilters([$nameContainsSearchTermFilter, $menuPriceFilter], limit: 10);
 ?>
 <!DOCTYPE html>
 <html lang="en">

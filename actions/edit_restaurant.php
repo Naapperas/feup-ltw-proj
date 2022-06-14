@@ -8,6 +8,8 @@
     require_once("../lib/params.php");
     require_once('../lib/page.php');
     require_once("../lib/files.php");
+    require_once("../lib/session.php");
+
     require_once("../database/models/user.php");
     require_once("../database/models/restaurant.php");
 
@@ -84,9 +86,9 @@
         )
     ]);
 
-    session_start();
+    $session = new Session();
 
-    if (!isset($_SESSION['user'])) { // prevents edits from unauthenticated users
+    if (!$session->isAuthenticated()) { // prevents edits from unauthenticated users
         header("Location: /restaurant?id=".$params['id']);
         die;
     }
@@ -99,7 +101,7 @@
             'website' => $params['website'],
             'opening_time' => $params['opening_time'],
             'closing_time' => $params['closing_time'],
-            'owner' => $_SESSION['user']
+            'owner' => $session->get('user')
         ]);
     } else {
         $restaurant = Restaurant::getById($params['id']);
@@ -109,7 +111,7 @@
             die;
         }
     
-        if($_SESSION['user'] !== $restaurant->owner) { // prevents edits from everyone other than the restaurant owner
+        if($session->get('user') !== $restaurant->owner) { // prevents edits from everyone other than the restaurant owner
             header("Location: /restaurant?id=".$params['id']);
             die();
         }

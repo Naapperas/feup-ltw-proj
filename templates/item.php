@@ -1,11 +1,13 @@
 <?php 
-declare(strict_types=1); 
+    declare(strict_types=1); 
 
-require_once(dirname(__DIR__)."/database/models/restaurant.php");
-require_once(dirname(__DIR__)."/database/models/dish.php");
-require_once(dirname(__DIR__)."/database/models/menu.php");
-require_once(dirname(__DIR__)."/database/models/user.php");
-require_once(dirname(__DIR__)."/database/models/review.php");
+    require_once(dirname(__DIR__)."/database/models/restaurant.php");
+    require_once(dirname(__DIR__)."/database/models/dish.php");
+    require_once(dirname(__DIR__)."/database/models/menu.php");
+    require_once(dirname(__DIR__)."/database/models/user.php");
+    require_once(dirname(__DIR__)."/database/models/review.php");
+    
+    require_once(dirname(__DIR__)."/lib/session.php");
 ?>
 
 <?php function createRestaurantCard(Restaurant $restaurant, int $h) { ?>
@@ -41,8 +43,10 @@ require_once(dirname(__DIR__)."/database/models/review.php");
             createCategoryList($categories);
         }
 
-        if (isset($_SESSION['user'])) {
-            if ($restaurant->owner === $_SESSION['user']) {
+        $session = new Session();
+
+        if ($session->isAuthenticated()) {
+            if ($restaurant->owner === $session->get('user')) {
                 createButton(
                     type: ButtonType::ICON,
                     text: "Edit",
@@ -50,7 +54,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
                     class: "top-right",
                     href: "/restaurant/edit.php?id=$restaurant->id");
             } else {
-                $currentUser = User::getById($_SESSION['user']);
+                $currentUser = User::getById($session->get('user'));
 
                 if ($currentUser !== null && $restaurant->isLikedBy($currentUser)) {
                     $state = "on";
@@ -155,9 +159,11 @@ require_once(dirname(__DIR__)."/database/models/review.php");
             <?php
             createCategoryList($dish->getCategories(), $edit);
 
-            if (isset($_SESSION['user'])) {
+            $session = new Session();
 
-                $currentUser = User::getById($_SESSION['user']);
+            if ($session->isAuthenticated()) {
+
+                $currentUser = User::getById($session->get('user'));
 
                 if ($currentUser !== null && $dish->isLikedBy($currentUser)) {
                     $state = "on";
@@ -331,7 +337,7 @@ require_once(dirname(__DIR__)."/database/models/review.php");
             </a>
             <p class="review-content"><?= $response->text ?></p>
         </article>
-        <?php } else if ($review->getRestaurant()->owner === $_SESSION['user']) {
+        <?php } else if ($review->getRestaurant()->owner === (new Session())->get('user')) {
             createButton(ButtonType::TEXT, 'Reply', attributes: "data-reply-button");
         } ?>
     </article>

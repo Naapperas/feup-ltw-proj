@@ -5,7 +5,13 @@
         die();
     }
 
-    session_start();
+    require_once('../lib/session.php');
+    $session = new Session();
+    
+    if ($session->isAuthenticated()) {
+        header("Location: /");
+        die();
+    }
 
     require_once('../lib/params.php');
     require_once('../lib/page.php');
@@ -23,9 +29,9 @@
         'referer'
     ]);
 
-    $registrationError = function(string $errorMsg) use ($params): void {
-        $_SESSION['register-error'] = $errorMsg;
-        $_SESSION['referer'] = $params['referer'];
+    $registrationError = function(string $errorMsg) use ($params, $session): void {
+        $session->set('register-error', $errorMsg);
+        $session->set('referer', $params['referer']);
         header('Location: /register/');
         die;
     };
@@ -60,7 +66,7 @@
         $registrationError('Error registering user');
     }
     
-    unset($_SESSION['referer']);
-    $_SESSION['user'] = $user->id;
+    $session->unset('referer');
+    $session->set('user', $user->id);
     header('Location: '.$params['referer']);
 ?>

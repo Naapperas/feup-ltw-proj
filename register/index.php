@@ -1,11 +1,13 @@
 <?php 
-declare(strict_types=1);
+    declare(strict_types=1);
 
-require_once("../templates/common.php");
-require_once("../templates/form.php");
-require_once("../templates/metadata.php");
+    require_once("../templates/common.php");
+    require_once("../templates/form.php");
+    require_once("../templates/metadata.php");
 
-session_start();
+    require_once("../lib/session.php");
+
+    $session = new Session();
 
 ?>
 <!DOCTYPE html>
@@ -19,8 +21,8 @@ session_start();
 
         <?php createForm(
             'POST', 'register', '/actions/register.php', 'register-form',
-            function() { ?>
-                <input type="hidden" name="referer" value="<?= $_SESSION['referer'] ?? $_SERVER["HTTP_REFERER"]?>">
+            function() use ($session) { ?>
+                <input type="hidden" name="referer" value="<?= $session->get('referer') ?? $_SERVER["HTTP_REFERER"]?>">
             <?php },
             function() {
                 createTextField(

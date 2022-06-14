@@ -6,15 +6,17 @@
         pageError(HTTPStatusCode::METHOD_NOT_ALLOWED);
     }
 
+    require_once("../lib/session.php");
+    $session = new Session();
     session_start();
 
-    if (!isset($_SESSION['user'])) { // prevents order placement from unauthenticated users
+    if (!$session->isAuthenticated()) { // prevents order placement from unauthenticated users
         pageError(HTTPStatusCode::UNAUTHORIZED);
     }
 
     require_once("../database/models/user.php");
 
-    $user = User::getById($_SESSION['user']);
+    $user = User::getById($session->get('user'));
 
     if ($user === null || is_array($user)) {
         pageError(HTTPStatusCode::INTERNAL_SERVER_ERROR);
@@ -50,21 +52,21 @@
 
     foreach ($params['dishes_to_order'] as $dishId => $amount) {
         if ($order->addDish($dishId, $amount)) {
-            unset($_SESSION['cart']['dishes'][$dishId]);
+            unset($session->get('cart')['dishes'][$dishId]);
         }
     }
 
-    if (count($_SESSION['cart']['dishes'] ?? []) === 0)
-        unset($_SESSION['cart']['dishes']);
+    if (count($session->get('cart')['dishes'] ?? []) === 0)
+        unset($session->get('cart')['dishes']);
 
     foreach ($params['menus_to_order'] as $menuId => $amount) {
         if ($order->addMenu($menuId, $amount)) {
-            unset($_SESSION['cart']['menus'][$menuId]);
+            unset($session->get('cart')['menus'][$menuId]);
         }
     }
 
-    if (count($_SESSION['cart']['menus'] ?? []) === 0)
-        unset($_SESSION['cart']['menus']);
+    if (count($session->get('cart')['menus'] ?? []) === 0)
+        unset($session->get('cart')['menus']);
 
     header("Location: /");
 ?>

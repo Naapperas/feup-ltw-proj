@@ -8,19 +8,18 @@
     require_once("../lib/params.php");
     require_once('../lib/page.php');
     require_once("../lib/files.php");
+
     require_once("../database/models/user.php");
 
-    session_start();
+    require_once("../lib/session.php");
+    $session = new Session();
 
-    if (!isset($_SESSION['user'])) { // user has to be authenticated
+    if (!$session->isAuthenticated()) { // user has to be authenticated
         header("Location: /");
         die;
     }
 
     $params = parseParams(body: [
-        'id' => new IntParam(
-            default: $_SESSION['user'] // default to current user
-        ),
         'email' => new StringParam(
             pattern: '/^[a-zA-Z0-9.!#$%&\'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/',
             min_len: 1,
@@ -32,12 +31,7 @@
         'username' => new StringParam(min_len: 1)
     ]);
 
-    if ($_SESSION['user'] !== $params['id']) { // trying to edit another user's profile
-        header("Location: /profile/"); // since we already verify that we are authenticated, redirecting to the profile page should give no errors
-        die;
-    }
-
-    $user = User::getById($params['id']);
+    $user = User::getById($session->get('user'));
 
     if ($user === null) { // in case there was an error fetching the current user object from the DB
         header("Location: /profile/");

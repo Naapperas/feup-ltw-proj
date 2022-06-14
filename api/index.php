@@ -1,5 +1,8 @@
 <?php
-    // TODO: Use APIRoute
+    declare(strict_types = 1);
 
-    echo json_encode(array('ok' => true)); // health check
+    require_once("../lib/api.php");
+    require_once("../lib/session.php");
+
+    APIRoute(get: function(Session $_) { return ['ok' => true]; });  // health check
 ?>

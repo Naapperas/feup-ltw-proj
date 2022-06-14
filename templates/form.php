@@ -111,10 +111,10 @@ declare(strict_types=1);
 
         $sections[0]();
         
-        session_start();
+        $session = new Session();
 
-        $error = $_SESSION["$name-error"];
-        unset($_SESSION["$name-error"]);
+        $error = $session->get("$name-error");
+        $session->unset("$name-error");
 
         if (isset($error)) { ?>
         <span class="form-error"><?= $error ?></span>

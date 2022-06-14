@@ -4,20 +4,24 @@
     require_once("../templates/common.php");
     require_once("../templates/list.php");
     require_once("../templates/metadata.php");
+
     require_once('../lib/util.php');
+    require_once('../lib/session.php');
+    
     require_once('../database/models/user.php');
 
+    $session = new Session();
     session_start();
 
-    if (!isset($_SESSION['user']))
+    if (!$session->isAuthenticated())
         pageError(HTTPStatusCode::UNAUTHORIZED);
 
-    if (!isset($_SESSION['cart']) || $_SESSION['cart'] === []) {
+    if ($session->get('cart') === null || $session->get('cart') === []) {
         header("Location: /");
         die;
     }
 
-    $user = User::getById($_SESSION['user']);
+    $user = User::getById($session->get('user'));
 
     if ($user === null)
         pageError(HTTPStatusCode::INTERNAL_SERVER_ERROR);
@@ -42,7 +46,7 @@
         <?php createAppBar(); ?>
         <main class="cart layout">
             <?php
-            createCartList($_SESSION['cart']);
+            createCartList($session->get('cart'));
             ?>
         </main>
     </body>

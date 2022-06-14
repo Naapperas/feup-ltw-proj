@@ -7,10 +7,12 @@
     
     require_once('../database/models/user.php');
     
-    session_start();
+    require_once('../lib/session.php');
     
-    if (!isset($_SESSION['user']) 
-    || ($user = User::getById($_SESSION['user'])) === null) {
+    $session = new Session();
+    
+    if (!$session->isAuthenticated() 
+    || ($user = User::getById($session->get('user'))) === null) {
         header("Location: /profile/");
         die;
     }
@@ -70,8 +72,7 @@
                         errors: ["pattern-mismatch" => "Error: invalid phone number"],
                         value: $user->phone_number
                     );
-                    createButton(text: "Edit", submit: true); ?>
-                    <input type="hidden" name="id" value="<?=$user->id?>"><?php
+                    createButton(text: "Edit", submit: true);
                 }
             ) ?>
         </main>

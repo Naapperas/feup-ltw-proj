@@ -5,9 +5,10 @@
         die;
     }
 
-    session_start();
+    require_once("../lib/session.php");
+    $session = new Session();
 
-    if (!isset($_SESSION['user'])) { // prevents reviews from unauthenticated users
+    if (!$session->isAuthenticated()) { // prevents reviews from unauthenticated users
         header("Location: /");
         die;
     }
@@ -29,7 +30,7 @@
         die;
     }
     
-    if ($restaurant->owner !== $_SESSION['user']) { // only owner can post review responses
+    if ($restaurant->owner !== $session->get('user')) { // only owner can post review responses
         header("Location: /restaurant?id=".$params['restaurantId']);
         die;
     }
