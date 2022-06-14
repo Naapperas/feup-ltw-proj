@@ -55,6 +55,13 @@
                         name: "username", label: "Username", autocomplete: "username", value: $user->name
                     );
                     createTextField(
+                        name: "password", label: "New password", 
+                        type: "password", autocomplete: "new-password",
+                        minlength: 8, toggleVisibility: true, characterCounter: true,
+                        errors: ["too-short" => "Error: at least 8 characters"],
+                        optional: true
+                    );
+                    createTextField(
                         name: "email", label: "Email", 
                         type: "email", autocomplete: "email",
                         errors: ["type-mismatch" => "Error: invalid email address"],

@@ -11,13 +11,22 @@
 
 <?php function createRestaurantList(
     ?array $restaurants, int $h = 3, string $vh = 'h4',
-    string $title = 'Restaurants'
+    string $title = 'Restaurants', bool $edit = false
 ) { 
-    if (!$restaurants) return;
+    if (!$restaurants && !$edit) return;
     ?>
     <section class="restaurant-list">
         <header class="header">
             <h<?= $h ?> class="title <?= $vh ?>"><?= $title ?></h<?= $h ?>>
+            <?php if ($edit) {
+                createButton(
+                        type: ButtonType::TEXT,
+                        text: 'Create restaurant',
+                        icon: 'add_business',
+                        href: '/restaurant/create.php',
+                        class: 'right'
+                    );
+            } ?>
         </header>
 
         <?php 

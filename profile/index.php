@@ -65,13 +65,6 @@
                         text: "Edit",
                         icon: "edit",
                         href: "/profile/edit.php");
-                    // TODO: Maybe move this
-                    createButton(
-                        type: ButtonType::CONTAINED,
-                        text: 'New restaurant',
-                        icon: 'add',
-                        href: '/restaurant/create.php'
-                    );
                 }
             ?>
 
@@ -87,7 +80,7 @@
             </section>
 
             <?php 
-            createRestaurantList($owned_restaurants, vh: 'h5', title: 'Owned restaurants');
+            createRestaurantList($owned_restaurants, vh: 'h5', title: 'Owned restaurants', edit: $user->id === $session->get('user'));
             createRestaurantList($favorite_restaurants, vh: 'h5', title: 'Favorite restaurants');
             createDishList($favorite_dishes, vh: 'h5', title: 'Favorite dishes');
             createOrderList($orders, vh: 'h5', title: 'Previous orders');

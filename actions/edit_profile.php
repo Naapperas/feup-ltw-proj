@@ -26,6 +26,7 @@
             case_insensitive: true
         ),
         'name' => new StringParam(min_len: 1),
+        'password' => new StringParam(min_len: 8, optional: true),
         'address' => new StringParam(min_len: 1),
         'phone' => new StringParam(pattern: '/^\d{9}$/'),
         'username' => new StringParam(min_len: 1)
@@ -43,6 +44,10 @@
     $user->phone_number = $params['phone'];
     $user->address = $params['address'];
     $user->name = $params['username'];
+    
+    if (isset($params['password'])) {
+        $user->password = hashPassword($params['password']);
+    }
 
     $user->update();
 

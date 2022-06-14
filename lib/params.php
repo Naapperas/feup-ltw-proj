@@ -44,8 +44,11 @@ class StringParam extends Param {
         if (is_array($r))
             return $this->error();
 
-        if (!$this->optional && !isset($r))
-            return $this->error();
+        if (!isset($r))
+            if ($this->optional)
+                return null;
+            else
+                return $this->error();
 
         $r = strval($r);
 
@@ -81,8 +84,11 @@ class IntParam extends Param {
         if (is_array($r))
             return $this->error();
 
-        if (!$this->optional && !isset($r))
-            return $this->error();
+        if (!isset($r))
+            if ($this->optional)
+                return null;
+            else
+                return $this->error();
 
         $r = intval($r);
 
@@ -112,8 +118,11 @@ class FloatParam extends Param {
         if (is_array($r))
             return $this->error();
 
-        if (!$this->optional && !isset($r))
-            return $this->error();
+        if (!isset($r))
+            if ($this->optional)
+                return null;
+            else
+                return $this->error();
 
         $r = floatval($r);
 
@@ -147,8 +156,11 @@ class ArrayParam extends Param {
         if (!is_array($r))
             return $this->error();
 
-        if (!$this->optional && !isset($r))
-            return $this->error();
+        if (!isset($r))
+            if ($this->optional)
+                return null;
+            else
+                return $this->error();
 
         if (isset($this->minLen) && count($r) < $this->minLen)
             return $this->error();
@@ -177,8 +189,11 @@ class ObjectParam extends Param {
         if (!is_array($val))
             return $this->error();
 
-        if (!$this->optional && !isset($val))
-            return $this->error();
+        if (!isset($r))
+            if ($this->optional)
+                return null;
+            else
+                return $this->error();
             
         foreach ($this->object_schema as $key => $value)
             $r[$key] = $value->parse($val[$key]);

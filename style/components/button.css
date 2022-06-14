@@ -29,8 +29,11 @@
 }
 
 .button:is(.text, .outlined, .contained) .icon {
-    margin-left: -4px;
     margin-right: 8px;
+}
+
+.button:is(.outlined, .contained) .icon {
+    margin-left: -4px;
 }
 
 .button.icon {
