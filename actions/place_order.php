@@ -42,6 +42,8 @@
         pageError(HTTPStatusCode::BAD_REQUEST);
 
     require_once("../database/models/order.php");
+    require_once("../database/models/dish.php");
+    require_once("../database/models/menu.php");
 
     $order = Order::create([
         'state' => 'pending',
@@ -55,6 +57,10 @@
     }
 
     foreach ($params['dishes_to_order'] as $dishId => $amount) {
+
+        $dish = Dish::getById($dishId);
+        if ($dish->restaurant !== $restaurant->id) continue;
+
         if ($order->addDish($dishId, $amount)) {
             unset($session->get('cart')['dishes'][$dishId]);
         }
@@ -64,6 +70,10 @@
         unset($session->get('cart')['dishes']);
 
     foreach ($params['menus_to_order'] as $menuId => $amount) {
+
+        $menu = Menu::getById($menuId);
+        if ($menu->restaurant !== $restaurant->id) continue;
+
         if ($order->addMenu($menuId, $amount)) {
             unset($session->get('cart')['menus'][$menuId]);
         }

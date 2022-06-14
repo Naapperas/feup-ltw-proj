@@ -6,6 +6,9 @@
     require_once("../../database/models/review.php");
 
     APIRoute(
-        get: getModel(Review::class)
+        get: getModel(Review::class),
+        post: function() {
+            
+        }
     );
 ?>
