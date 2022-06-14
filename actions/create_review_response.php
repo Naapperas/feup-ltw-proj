@@ -18,7 +18,7 @@
 
     $params = parseParams(body: [
         'reviewResponse' => new StringParam(),
-        'restaurantId' => new IntParam(),
+        'restaurantId' => new IntParam(), // found out later that this param is not necessary since restaurantId can come from the review
         'reviewId' => new IntParam(),
         'csrf'
     ]);
@@ -29,7 +29,7 @@
     require_once('../database/models/restaurant.php');
     require_once('../database/models/review.php');
 
-    if (($restaurant = Restaurant::getById($params['restaurantId'])) === null || ($review = Review::getById($params['reviewId'])) === null) {
+    if (($restaurant = Restaurant::getById($params['restaurantId'])) === null || ($review = Review::getById($params['reviewId'])) === null || $review->restaurant !== $restaurant->id) {
         header("Location: /");
         die;
     }
@@ -43,7 +43,7 @@
 
     Response::create([
         'text' => $params['reviewResponse'],
-        'review' => $params['reviewId'],
+        'review' => $review->id,
         'response_date' => date(DATE_ISO8601)
     ]);
 
