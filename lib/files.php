@@ -13,7 +13,9 @@
      * @return true  if it was successful
      */
     function uploadImage(?array $file, string $path, int $id, int $size, float|int $aspect_ratio = 0, ?int $index = null): bool {
-        if (!isset($file) || ($index == null ? $file['error'] : $file['error'][$index]))
+        if (!isset($file)
+        || ($index == null ? $file['error'] : $file['error'][$index])
+        || !str_starts_with($index == null ? $file['type'] : $file['type'][$index], 'image/'))
             return false;
 
         $image_path = dirname(__DIR__)."/assets/pictures/$path/$id.webp";
