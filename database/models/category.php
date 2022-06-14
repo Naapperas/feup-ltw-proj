@@ -62,6 +62,22 @@
             return count($queryResults) > 0;
         }
 
+        public function addCategory(int $categoryID) : bool {
+            $table = static::getTableName();
+            $column = static::getCategoryTableColumn();
+            $query = "INSERT INTO {$table}_category ($column, category) VALUES (?, ?);";
+
+            return getQueryResults(static::getDB(), $query, true, [$this->id, $categoryID]);
+        }
+
+        public function removeCategory(int $categoryID) : bool {
+            $table = static::getTableName();
+            $column = static::getCategoryTableColumn();
+            $query = "DELETE FROM {$table}_category WHERE $column = ? AND category = ?;";
+
+            return getQueryResults(static::getDB(), $query, true, [$this->id, $categoryID]);
+        }
+
         public function setCategories(array $categories) : bool {
             $table = static::getTableName();
             $column = static::getCategoryTableColumn();

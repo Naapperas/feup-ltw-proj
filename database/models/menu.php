@@ -47,6 +47,18 @@
             return count($queryResults) > 0;
         }
 
+        public function addDish(int $dishID) : bool {
+            $query = "INSERT INTO Dish_menu (menu, dish) VALUES (?, ?);";
+
+            return getQueryResults(static::getDB(), $query, true, [$this->id, $dishID]);
+        }
+
+        public function removeDish(int $dishID) : bool {
+            $query = "DELETE FROM Dish_menu WHERE menu = ? AND dish = ?;";
+
+            return getQueryResults(static::getDB(), $query, true, [$this->id, $dishID]);
+        }
+
         public function setDishes(array $dishes) : bool {
             $deleteQuery = "DELETE FROM Dish_menu WHERE menu = ?;";
 
