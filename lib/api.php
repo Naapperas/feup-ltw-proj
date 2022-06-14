@@ -19,16 +19,20 @@
 
             return $user;
         } else {
-            $session = requireSessionAuth();
+            $session = requireSessionAuth(true);
             return $session->getUser();
         }
     }
 
-    function requireSessionAuth() {
+    function requireSessionAuth(bool $basicAuth = false) {
         $session = new Session();
         if (!$session->isAuthenticated()) {
-            header('WWW-Authenticate: Basic realm="XauFome"');
-            APIError(HTTPStatusCode::UNAUTHORIZED, 'You are not logged in');
+            if ($basicAuth) {
+                header('WWW-Authenticate: Basic realm="XauFome"');
+                APIError(HTTPStatusCode::UNAUTHORIZED, 'You are not logged in');
+            } else {
+                APIError(HTTPStatusCode::FORBIDDEN, 'You are not logged in');
+            }
         }
 
         return $session;
