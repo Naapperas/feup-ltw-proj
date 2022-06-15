@@ -4,5 +4,5 @@
     require_once("../lib/api.php");
     require_once("../lib/session.php");
 
-    APIRoute(get: function() { return ['ok' => true]; });  // health check
+    APIRoute(get: fn () => ['ok' => true]);  // health check
 ?>

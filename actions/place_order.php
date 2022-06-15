@@ -8,7 +8,6 @@
 
     require_once("../lib/session.php");
     $session = new Session();
-    session_start();
 
     if (!$session->isAuthenticated()) { // prevents order placement from unauthenticated users
         pageError(HTTPStatusCode::UNAUTHORIZED);
@@ -59,7 +58,7 @@
     foreach ($params['dishes_to_order'] as $dishId => $amount) {
 
         $dish = Dish::getById($dishId);
-        if ($dish->restaurant !== $restaurant->id) continue;
+        if ($dish->restaurant !== $params['restaurantId']) continue;
 
         if ($order->addDish($dishId, $amount)) {
             unset($session->get('cart')['dishes'][$dishId]);
@@ -72,7 +71,7 @@
     foreach ($params['menus_to_order'] as $menuId => $amount) {
 
         $menu = Menu::getById($menuId);
-        if ($menu->restaurant !== $restaurant->id) continue;
+        if ($menu->restaurant !== $params['restaurantId']) continue;
 
         if ($order->addMenu($menuId, $amount)) {
             unset($session->get('cart')['menus'][$menuId]);
